@@ -1,0 +1,104 @@
+﻿<UserControl x:Class="MesAdmin.Views.NetRoleView"
+    xmlns="http://schemas.microsoft.com/netfx/2009/xaml/presentation" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
+    xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+    xmlns:viewmodel="clr-namespace:MesAdmin.ViewModels"
+    xmlns:view="clr-namespace:MesAdmin.Views"             
+    xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
+    xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
+    mc:Ignorable="d"
+    d:DesignHeight="650"
+    d:DesignWidth="670">
+    <UserControl.DataContext>
+        <viewmodel:NetRoleVM />
+    </UserControl.DataContext>
+    <Grid>
+        <DockPanel>
+            <dxr:RibbonControl DockPanel.Dock="Top">
+                <dxr:RibbonDefaultPageCategory Caption="defaultCategory">
+                    <dxr:RibbonPage Caption="Home">
+                        <dxr:RibbonPageGroup Caption="Role관리 Task">
+                            <dxb:BarButtonItem Content="저장" KeyGesture="CTRL+S" LargeGlyph="{dx:DXImage SvgImages/Save/Save.svg}">
+                                <dxmvvm:Interaction.Behaviors>
+                                    <dxmvvm:ConfirmationBehavior Command="{Binding RoleSaveCmd}"
+                                            MessageText="저장하시겠습니까?" 
+                                            MessageIcon="Question" 
+                                            MessageButton="YesNo" />
+                                </dxmvvm:Interaction.Behaviors>
+                            </dxb:BarButtonItem>
+                            <dxb:BarButtonItem Content="Role 추가" KeyGesture="CTRL+N" Command="{Binding NewCmd}" LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/AddFile.svg}" />
+                            <dxb:BarButtonItem Content="Role 삭제" KeyGesture="CTRL+D" Command="{Binding DeleteCmd}" LargeGlyph="{dx:DXImage SvgImages/Snap/SnapDeleteList.svg}" />
+                            <dxb:BarButtonItem Content="새로고침" KeyGesture="CTRL+R" Command="{Binding RefreshCmd}" LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_Refresh.svg}" />
+                        </dxr:RibbonPageGroup>
+                    </dxr:RibbonPage>
+                </dxr:RibbonDefaultPageCategory>
+            </dxr:RibbonControl>
+            <dxg:GridControl
+               
+                Width="500"
+                Margin="12 12 4 12"
+                ItemsSource="{Binding Collections}">
+                <dxmvvm:Interaction.Behaviors>
+                    <dxmvvm:EventToCommand EventName="SelectedItemChanged" Command="{Binding SelectedItemChangedCmd}" />
+                </dxmvvm:Interaction.Behaviors>
+                <dxg:GridControl.View>
+                    <dxg:TableView
+                        AllowPerPixelScrolling="True"
+                        ShowTotalSummary="False"
+                        ShowGroupPanel="False"
+                        FocusedRow="{Binding SelectedItem}"
+                        AutoWidth="True"
+                        AllowEditing="{Binding IsNew}"
+                        EnableImmediatePosting="True"
+                        EditorShowMode="MouseUpFocused">
+                        <dxmvvm:Interaction.Behaviors>
+                            <dxmvvm:EventToCommand EventName="CellValueChanged" Command="{Binding CellValueChangedCmd}" />
+                        </dxmvvm:Interaction.Behaviors>
+                    </dxg:TableView>
+                </dxg:GridControl.View>
+                <dxg:GridControl.Columns>
+                    <dxg:GridColumn 
+                        Header=" "
+                        FieldName="State"
+                        FixedWidth="True" 
+                        Width="20" 
+                        CellTemplate="{StaticResource StateTemplate}" 
+                        ReadOnly="True"
+                        AllowFocus="False" />
+                    <dxg:GridColumn FieldName="RoleName" Header="RoleName" />
+                    <dxg:GridColumn FieldName="Description" Header="Description" />
+                </dxg:GridControl.Columns>
+            </dxg:GridControl>
+
+            <dxg:TreeListControl
+               
+                Margin="0 12 12 12"
+                ItemsSource="{Binding Menus}">
+                <dxg:TreeListControl.Columns>
+                    <dxg:TreeListColumn FieldName="MenuName" Header="MenuName" />
+                </dxg:TreeListControl.Columns>
+                <dxg:TreeListControl.View>
+                    <dxg:TreeListView 
+                            AutoExpandAllNodes="True"
+                            TreeLineStyle="Solid"
+                            AutoWidth="True"
+                            KeyFieldName="MenuId" 
+                            AllowEditing="False"
+                            ShowCheckboxes="True"
+                            AllowRecursiveNodeChecking="True"
+                            CheckBoxFieldName="IsChecked"
+                            ParentFieldName="PMenuId" />
+                </dxg:TreeListControl.View>
+            </dxg:TreeListControl>
+        </DockPanel>
+    </Grid>
+</UserControl>
+

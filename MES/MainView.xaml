@@ -1,0 +1,173 @@
+﻿<UserControl    x:Class="MesAdmin.MainView"
+                xmlns="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
+                xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+                xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+                xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
+                xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+                xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+                xmlns:dxn="http://schemas.devexpress.com/winfx/2008/xaml/navbar"
+                xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                xmlns:common="clr-namespace:MesAdmin.Common.Common"
+                xmlns:local="clr-namespace:MesAdmin.Common.Utils"
+                xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
+                xmlns:org="clr-namespace:MesAdmin.Models"
+                mc:Ignorable="d"
+                d:DesignHeight="644"
+                d:DesignWidth="929"
+                x:Name="UCMainView">
+    <dxmvvm:Interaction.Behaviors>
+        <dxmvvm:EventToCommand EventName="Loaded" Command="{Binding LoadCmd}" />
+    </dxmvvm:Interaction.Behaviors>
+    <UserControl.Resources>
+        <local:NotVisibilityConverter x:Key="NotVisibilityConverter"/>
+        <DataTemplate x:Key="groupContentTemplate">
+            <TreeView
+                ItemsSource="{Binding}"
+                x:Name="TreeView" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                Background="Transparent"
+                BorderThickness="0">
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="{x:Type TreeViewItem}">
+                        <EventSetter Event="Expanded" Handler="TreeViewItem_Expanded" />
+                        <EventSetter Event="Collapsed" Handler="TreeViewItem_Collapsed" />
+                        <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Style.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="True" />
+                                </MultiTrigger.Conditions>
+                                <MultiTrigger.Setters>
+                                    <Setter Property="Foreground" Value="White" />
+                                    <Setter Property="Background" Value="#007ACC"/>
+                                </MultiTrigger.Setters>
+                            </MultiTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TreeView.ItemContainerStyle>
+                <TreeView.Resources>
+                    <HierarchicalDataTemplate DataType="{x:Type org:NetMenu}" ItemsSource="{Binding Path=Submenu}">
+                        <TextBlock Text="{Binding MenuName}">
+                            <dxmvvm:Interaction.Behaviors>
+                                <dxmvvm:EventToCommand EventName="MouseLeftButtonDown" Command="{Binding Command}" UseDispatcher="True" DispatcherPriority="Background"
+                                        CommandParameter="{Binding SelectedItem.CommandParameter, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType={x:Type TreeView}}}" />
+                            </dxmvvm:Interaction.Behaviors>
+                        </TextBlock>
+                    </HierarchicalDataTemplate>
+                </TreeView.Resources>
+            </TreeView>
+        </DataTemplate>
+        <DataTemplate x:Key="MyStatusBarContentTemplate">
+            <TextBlock Text="{Binding DBName}" />
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <dxb:BarManager dxb:BarManager.KeyGestureWorkingMode="AllKeyGestureFromRoot">
+            <DockPanel>
+                <dxr:RibbonControl DockPanel.Dock="Top" RibbonStyle="Office2019" MinimizationButtonVisibility="Collapsed"  ToolbarShowMode="Hide" RibbonHeaderVisibility="Collapsed"  ShowApplicationButton="False">
+                    <dxr:RibbonDefaultPageCategory Caption="defaultCategory">
+                        <dxr:RibbonPage Caption="Home">
+                            <dxr:RibbonPageGroup>
+                                <dxb:BarButtonItem
+                                    Content="사용자  변경"
+                                    KeyGesture="CTRL+U" Glyph="{dx:DXImage Office2013/People/AssignToMe_32x32.png}" LargeGlyph="{dx:DXImage Office2013/People/AssignToMe_32x32.png}">
+                                    <dxmvvm:Interaction.Behaviors>
+                                        <dxmvvm:ConfirmationBehavior Command="{Binding ReLoginCmd}"
+                                            MessageText="재접속 하시겠습니까?" MessageIcon="Question" MessageButton="YesNo" />
+                                    </dxmvvm:Interaction.Behaviors>
+                                </dxb:BarButtonItem>
+                                <dxb:BarButtonItem 
+                                    Content="프로그램 종료"
+                                    KeyGesture="CTRL+E" LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Exit.svg}" Glyph="{dx:DXImage SvgImages/XAF/Action_Exit.svg}">
+                                    <dxmvvm:Interaction.Behaviors>
+                                        <dxmvvm:ConfirmationBehavior Command="{Binding ExitCmd}"
+                                            MessageText="프로그램을 종료하시겠습니까?" MessageIcon="Question" MessageButton="YesNo" />
+                                    </dxmvvm:Interaction.Behaviors>
+                                </dxb:BarButtonItem>
+                                <dxb:BarButtonItem 
+                                    Content="View 닫기"
+                                    KeyGesture="CTRL+Q" 
+                                    Command="{Binding CloseCmd}" LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/Close.svg}" Glyph="{dx:DXImage SvgImages/Outlook Inspired/Close.svg}" />
+                            </dxr:RibbonPageGroup>
+                        </dxr:RibbonPage>
+                    </dxr:RibbonDefaultPageCategory>
+                </dxr:RibbonControl>
+                <dxr:RibbonStatusBarControl DockPanel.Dock="Bottom">
+                    <dxr:RibbonStatusBarControl.LeftItems>
+                        <dxb:BarStaticItem Content="{Binding DataContext.Ver, ElementName=UCMainView}"/>
+                        <dxb:BarItemSeparator />
+                        <dxb:BarStaticItem Content="{Binding DataContext.ViewName, ElementName=UCMainView}"/>
+                        <dxb:BarStaticItem>
+                            <dxb:BarStaticItem.ContentTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding DataContext.UpdaterText, ElementName=UCMainView}" Foreground="Yellow" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                                   Visibility="{Binding DataContext.UpdateService.UpdateAvailable, ElementName=UCMainView, Converter={StaticResource NotVisibilityConverter}}"/>
+                                        <TextBlock Text="새로운 버전이 설치되었습니다. 프로그램을 재시작하세요!" Foreground="Yellow" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                                   Visibility="{Binding DataContext.UpdateService.UpdateAvailable, ElementName=UCMainView, Converter={dxmvvm:BooleanToVisibilityConverter}}"/>
+                                        <dx:SimpleButton Content="재시작 하기" Margin="5 0 0 0" Glyph="{dx:DXImageGrayscale Image=Refresh_16x16.png}"
+                                                         Visibility="{Binding DataContext.UpdateService.UpdateAvailable, ElementName=UCMainView, Converter={dxmvvm:BooleanToVisibilityConverter}}">
+                                            <dxmvvm:Interaction.Behaviors>
+                                                <dxmvvm:ConfirmationBehavior Command="{Binding DataContext.ReStartCmd, ElementName=UCMainView}"
+                                                    MessageText="프로그램을 재시작 하시겠습니까?" MessageIcon="Question" MessageButton="YesNo" />
+                                            </dxmvvm:Interaction.Behaviors>
+                                        </dx:SimpleButton>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </dxb:BarStaticItem.ContentTemplate>
+                        </dxb:BarStaticItem>
+                    </dxr:RibbonStatusBarControl.LeftItems>
+                    <dxr:RibbonStatusBarControl.RightItems>
+                        <dxb:BarStaticItem Content="{Binding DataContext.DBName, ElementName=UCMainView}"/>
+                        <dxb:BarItemSeparator/>
+                        <dxb:BarStaticItem Content="{Binding DataContext.BizAreaCode, ElementName=UCMainView}"/>
+                        <dxb:BarStaticItem Content="{Binding DataContext.UserName, ElementName=UCMainView}"/>
+                    </dxr:RibbonStatusBarControl.RightItems>
+                </dxr:RibbonStatusBarControl>
+                <Grid>
+                    <dxdo:DockLayoutManager>
+                        <dxdo:LayoutGroup Caption="LayoutRoot">
+                            <dxdo:LayoutPanel MaxWidth="200" AllowSizing="False" ShowCloseButton="False" AllowClose="False" AllowFloat="False" ShowPinButton="False" ShowCaption="False" ShowBorder="False">
+                                <dxn:NavBarControl
+                                    ItemsSource="{Binding NaviItems}"
+                                    SelectedGroup="{Binding SelectedGroup}">
+                                    <dxn:NavBarControl.View>
+                                        <dxn:NavigationPaneView
+                                            IsExpanded="{common:SettingBindingExtension PaneExpanded}"
+                                            IsExpandButtonVisible="True"
+                                            MaxVisibleGroupCount="7"
+                                            MaxPopupWidth="300"
+                                            dxn:ScrollingSettings.ScrollMode="ScrollBar">
+                                            <dxmvvm:Interaction.Behaviors>
+                                                <dxmvvm:EventToCommand EventName="GroupAdding" Command="{Binding GroupAddingCmd}" PassEventArgsToCommand="True"/>
+                                            </dxmvvm:Interaction.Behaviors>
+                                        </dxn:NavigationPaneView>
+                                    </dxn:NavBarControl.View>
+                                </dxn:NavBarControl>
+                            </dxdo:LayoutPanel>
+                            <dxdo:DocumentGroup x:Name="documentGroup" ClosingBehavior="ImmediatelyRemove" ClosePageButtonShowMode="InActiveTabPageAndTabControlHeader" TabContentCacheMode="CacheAllTabs" Opacity="{Binding Opacity}">
+                                <dxmvvm:Interaction.Behaviors>
+                                    <dx:SplashScreenManagerService SplashScreenType="custom:TabOpening"/>
+                                    <dxdo:TabbedDocumentUIService x:Name="MainViewService">
+                                        <dxmvvm:Interaction.Behaviors>
+                                            <dxmvvm:EventToCommand EventName="ActiveDocumentChanged" Command="{Binding ActiveDocumentChangedCmd}" />
+                                        </dxmvvm:Interaction.Behaviors>
+                                    </dxdo:TabbedDocumentUIService>
+                                </dxmvvm:Interaction.Behaviors>
+                            </dxdo:DocumentGroup>
+                        </dxdo:LayoutGroup>
+                    </dxdo:DockLayoutManager>
+                </Grid>
+            </DockPanel>
+        </dxb:BarManager>
+        <!--devexpress optimizing-->
+        <dxg:GridControl Visibility="Hidden">
+            <dxg:GridControl.Columns>
+                <dxg:GridColumn/>
+            </dxg:GridControl.Columns>
+        </dxg:GridControl>
+    </Grid>
+</UserControl>

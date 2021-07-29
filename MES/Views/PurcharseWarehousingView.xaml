@@ -1,0 +1,251 @@
+﻿<UserControl x:Class="MesAdmin.Views.PurcharseWarehousingView"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"  
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
+    xmlns:ViewModels="clr-namespace:MesAdmin.ViewModels" 
+    xmlns:local="clr-namespace:MesAdmin" 
+    xmlns:view="clr-namespace:MesAdmin.Views"
+    mc:Ignorable="d"
+    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+    xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+    xmlns:utils="clr-namespace:MesAdmin.Common.Utils" 
+    xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"             
+    d:DesignHeight="436" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <ViewModels:PurcharseWarehousingVM/>
+    </UserControl.DataContext>
+
+    <dxmvvm:Interaction.Behaviors>
+        <dx:DialogService Name="PopupPurcharseOrderDetailView" DialogWindowStartupLocation="CenterOwner">
+            <dx:DialogService.ViewTemplate>
+                <DataTemplate>
+                    <view:PopupPurcharseOrderDetailView/>
+                </DataTemplate>
+            </dx:DialogService.ViewTemplate>
+            <dx:DialogService.DialogStyle>
+                <Style TargetType="dx:DXDialogWindow">
+                    <Setter Property="Width" Value="800"/>
+                    <Setter Property="Height" Value="600"/>
+                </Style>
+            </dx:DialogService.DialogStyle>
+        </dx:DialogService>
+        <dx:DialogService Name="PopupPurcharseWarehousingView" DialogWindowStartupLocation="CenterOwner">
+            <dx:DialogService.ViewTemplate>
+                <DataTemplate>
+                    <view:PopupPurcharseWarehousingView/>
+                </DataTemplate>
+            </dx:DialogService.ViewTemplate>
+            <dx:DialogService.DialogStyle>
+                <Style TargetType="dx:DXDialogWindow">
+                    <Setter Property="Width" Value="800"/>
+                    <Setter Property="Height" Value="600"/>
+                </Style>
+            </dx:DialogService.DialogStyle>
+        </dx:DialogService>
+    </dxmvvm:Interaction.Behaviors>
+    <UserControl.Resources>
+        <DataTemplate x:Key="WhCode">
+            <dxg:LookUpEdit
+                Name="PART_Editor"
+                ItemsSource="{Binding View.DataContext.WhCode}"
+                ValueMember="MinorCode"
+                DisplayMember="MinorName"
+                EditValue="{Binding RowData.Row.WhCode, UpdateSourceTrigger=PropertyChanged}"
+                ShowSizeGrip="False"
+                IsTextEditable="True"
+                AutoPopulateColumns="False"
+                InvalidValueBehavior="AllowLeaveEditor"
+                IsPopupAutoWidth="False"
+                PopupContentTemplate="{StaticResource WhCodeTemplate}" />
+        </DataTemplate>
+    </UserControl.Resources>
+    
+    <Grid>
+        <dxb:BarManager>
+            <DockPanel>
+                <dxr:RibbonControl DockPanel.Dock="Top">
+                    <dxr:RibbonDefaultPageCategory Caption="defaultCategory">
+                        <dxr:RibbonPage Caption="Home">
+                            <dxr:RibbonPageGroup Caption="구매입고등록 Task">
+                                <dxb:BarButtonItem Content="신규" KeyGesture="CTRL+R" LargeGlyph="{dx:DXImage SvgImages/Actions/New.svg}">
+                                    <dxmvvm:Interaction.Behaviors>
+                                        <dxmvvm:ConfirmationBehavior 
+                                            Command="{Binding NewCmd}" 
+                                            MessageText="입력모드로 전환됩니다."
+                                            MessageIcon="Question"
+                                            MessageButton="YesNo" />
+                                    </dxmvvm:Interaction.Behaviors>
+                                </dxb:BarButtonItem>
+                                <dxb:BarButtonItem Content="저장" KeyGesture="CTRL+S" LargeGlyph="{dx:DXImage SvgImages/Save/Save.svg}">
+                                    <dxmvvm:Interaction.Behaviors>
+                                        <dxmvvm:ConfirmationBehavior
+                                            Command="{Binding SaveCmd}"
+                                            MessageText="저장하시겠습니까?"
+                                            MessageIcon="Question"
+                                            MessageButton="YesNo" />
+                                    </dxmvvm:Interaction.Behaviors>
+                                </dxb:BarButtonItem>
+                                <dxb:BarButtonItem Content="삭제" KeyGesture="CTRL+D" Command="{Binding DelCmd}" LargeGlyph="{dx:DXImage SvgImages/Snap/SnapDeleteList.svg}" />
+                            </dxr:RibbonPageGroup>
+                            <dxr:RibbonPageGroup Caption="참조">
+                                <dxb:BarButtonItem Content="발주내역" Command="{Binding ReferPoCmd}" LargeGlyph="{dx:DXImageOffice2013 Image=Up_32x32.png}" />
+                            </dxr:RibbonPageGroup>
+                        </dxr:RibbonPage>
+                    </dxr:RibbonDefaultPageCategory>
+                </dxr:RibbonControl>
+                <Grid DockPanel.Dock="Top" Style="{StaticResource SearchPanel}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="200" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Grid.Column="0">
+                        <TextBlock>입고번호</TextBlock>
+                    </Border>
+                    <Border Grid.Row="1" Grid.Column="0">
+                        <TextBlock>공급처</TextBlock>
+                    </Border>
+                    <Border Grid.Row="2" Grid.Column="0">
+                        <TextBlock>입고일</TextBlock>
+                    </Border>
+                    <Border Grid.Row="3" Grid.Column="0">
+                        <TextBlock>비고</TextBlock>
+                    </Border>
+                    <dxe:ButtonEdit 
+                        Grid.Row="0" 
+                        Grid.Column="1"
+                        IsReadOnly="True"
+                        VerticalAlignment="Bottom"
+                        AllowDefaultButton="False"
+                        Background="#F3F6FB"
+                        Margin="2 0 0 0"
+                        EditValue="{Binding GrNo}">
+                        <dxe:ButtonEdit.Buttons>
+                            <dxe:ButtonInfo IsDefaultButton="True" GlyphKind="Regular" Command="{Binding ShowDialogCmd}"/>
+                        </dxe:ButtonEdit.Buttons>
+                    </dxe:ButtonEdit>
+                    <dxg:LookUpEdit
+                        ItemsSource="{Binding BizPartnerList}"
+                        SelectedItem="{Binding SelectedPartner}"
+                        IsEnabled="{Binding IsNew}"
+                        DisplayMember="BizCode"
+                        ValueMember="BizCode"
+                        EditValue="{Binding SelectedPartner.BizCode}"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        ShowSizeGrip="False"
+                        Margin="2 0 0 0"
+                        Background="#F6EDCB"
+                        VerticalAlignment="Bottom"
+                        IsTextEditable="False"
+                        AutoPopulateColumns="False"
+                        IsPopupAutoWidth="False">
+                        <dxmvvm:Interaction.Behaviors>
+                            <dxmvvm:EventToCommand Command="{Binding BizPartneChangedCmd}" EventName="EditValueChanged" />
+                        </dxmvvm:Interaction.Behaviors>
+                        <dxg:LookUpEdit.PopupContentTemplate>
+                            <ControlTemplate>
+                                <dxg:GridControl
+                                    x:Name="PART_GridControl"
+                                    Width="400"
+                                    ShowBorder="False" >
+                                    <dxg:GridControl.View>
+                                        <dxg:TableView 
+                                            ShowGroupPanel="False" 
+                                            ShowIndicator="False"
+                                            AutoWidth="True"/>
+                                    </dxg:GridControl.View>
+                                    <dxg:GridControl.Columns>
+                                        <dxg:GridColumn FieldName="BizCode" Header="공급처코드" />
+                                        <dxg:GridColumn FieldName="BizName" Header="공급처명"/>
+                                    </dxg:GridControl.Columns>
+                                </dxg:GridControl>
+                            </ControlTemplate>
+                        </dxg:LookUpEdit.PopupContentTemplate>
+                    </dxg:LookUpEdit>
+                    <dxe:TextEdit 
+                        Text="{Binding SelectedPartner.BizName}"
+                        IsEnabled="{Binding IsNew}"
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        Margin="2 0 0 0" 
+                        VerticalAlignment="Bottom"
+                        Background="#F6EDCB"
+                        IsReadOnly="True" />
+                    <dxe:DateEdit
+                        Grid.Row="2"
+                        Grid.Column="1" 
+                        EditValue="{Binding InputDate}"
+                        IsEnabled="{Binding IsNew}"
+                        Margin="2 0 0 0" 
+                        VerticalAlignment="Bottom"
+                        Background="#F6EDCB" />
+                    <dxe:TextEdit
+                        Text="{Binding Memo}"
+                        VerticalAlignment="Bottom"
+                        IsEnabled="{Binding IsNew}"
+                        Margin="2 0 0 0" Background="White"
+                        Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"/>
+                </Grid>
+                <custom:DSGridControl 
+                    ItemsSource="{Binding Collections}"
+                    DockPanel.Dock="Top"
+                    SelectedItems="{Binding SelectedItems, UpdateSourceTrigger=PropertyChanged}"
+                    SelectionMode="Cell"
+                    ShowBorder="False"
+                    ClipboardCopyMode="ExcludeHeader"
+                    ShowLoadingPanel="{Binding IsBusy, Mode=TwoWay}"
+                    EnableSmartColumnsGeneration="True">
+                    <dxg:GridControl.Resources>
+                        <ControlTemplate x:Key="{dxgt:GridControlThemeKey IsThemeIndependent=true, ResourceKey=BorderTemplate}" TargetType="{x:Type ContentControl}">
+                            <Border BorderThickness="0 1 0 0" BorderBrush="#859EBF">
+                                <ContentPresenter />
+                            </Border>
+                        </ControlTemplate>
+                    </dxg:GridControl.Resources>
+                    <dxg:GridControl.View>
+                        <dxg:TableView
+                            AllowPerPixelScrolling="True" 
+                            ShowTotalSummary="False"
+                            ShowGroupPanel="False"
+                            AllowEditing="{Binding IsNew}"
+                            EnableImmediatePosting="True"
+                            EnterMoveNextColumn="True"
+                            VerticalScrollbarVisibility="Auto"
+                            MultiSelectMode="Cell"
+                            EditorShowMode="MouseUpFocused"
+                            AutoWidth="False">
+                        </dxg:TableView>
+                    </dxg:GridControl.View>
+                    <dxg:GridControl.Columns>
+                        <dxg:GridColumn FieldName="ItemCode" Header="품목코드" AllowEditing="False" Width="100" />
+                        <dxg:GridColumn FieldName="ItemName" Header="품목명" AllowEditing="False" Width="150"/>
+                        <dxg:GridColumn FieldName="ItemSpec" Header="품목사양" AllowEditing="False" Width="150"/>
+                        <dxg:GridColumn FieldName="QrFlag" Header="수입검사 여부" AllowEditing="False" Width="100"/>
+                        <dxg:GridColumn FieldName="LotNo" Header="Lot No." Width="150" />
+                        <dxg:GridColumn FieldName="Qty" Header="입고수량" Width="100" />
+                        <dxg:GridColumn FieldName="BasicUnit" Header="단위" AllowEditing="False" FixedWidth="True" Width="80" />
+                        <dxg:GridColumn FieldName="WhCode" Header="입고창고" AllowEditing="True" Width="150" CellTemplate="{StaticResource WhCode}"/>
+                        <dxg:GridColumn FieldName="PmNo" Header="재고처리번호" AllowEditing="False" Width="150"/>
+                        <dxg:GridColumn FieldName="PmSeq" Header="재고처리순번" AllowEditing="False" Width="150"/>
+                        <dxg:GridColumn FieldName="QrNo" Header="검사요청번호" AllowEditing="False" Width="150"/>
+                        <dxg:GridColumn FieldName="PoNo" Header="P/O No." AllowEditing="False" Width="150"/>
+                        <dxg:GridColumn FieldName="PoSeq" Header="P/O 순번" AllowEditing="False" Width="80"/>
+                    </dxg:GridControl.Columns>
+                </custom:DSGridControl>
+            </DockPanel>
+        </dxb:BarManager>
+    </Grid>
+</UserControl>

@@ -1,0 +1,282 @@
+﻿<UserControl 
+    x:Class="MesAdmin.Views.CommonItemNewView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    mc:Ignorable="d"
+    xmlns:dxt="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys"
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+    d:DesignHeight="600" d:DesignWidth="900"
+    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+    xmlns:ViewModels="clr-namespace:MesAdmin.ViewModels"
+    xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+    xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
+    xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
+    xmlns:view="clr-namespace:MesAdmin.Views"
+    DataContext="{dxmvvm:ViewModelSource Type=ViewModels:CommonItemNewVM}">
+
+    <UserControl.Resources>
+        <dxmvvm:ObjectToObjectConverter x:Key="EntityStateConverter">
+            <dxmvvm:MapItem Source="Added" Target="True"/>
+            <dxmvvm:MapItem Source="Modified" Target="False"/>
+        </dxmvvm:ObjectToObjectConverter>
+    </UserControl.Resources>
+    <dxmvvm:Interaction.Behaviors>
+        <dx:DialogService Name="PopupItemView" DialogWindowStartupLocation="CenterOwner">
+            <dx:DialogService.ViewTemplate>
+                <DataTemplate>
+                    <view:PopupItemView/>
+                </DataTemplate>
+            </dx:DialogService.ViewTemplate>
+            <dx:DialogService.DialogStyle>
+                <Style TargetType="dx:DXDialogWindow">
+                    <Setter Property="Width" Value="680"/>
+                    <Setter Property="Height" Value="550"/>
+                </Style>
+            </dx:DialogService.DialogStyle>
+        </dx:DialogService>
+    </dxmvvm:Interaction.Behaviors>
+
+    <Grid IsEnabled="{Binding IsEnabled}">
+        <dxr:RibbonControl DockPanel.Dock="Top">
+            <dxr:RibbonDefaultPageCategory Caption="defaultCategory">
+                <dxr:RibbonPage Caption="Home">
+                    <dxr:RibbonPageGroup Caption="">
+                        <dxb:BarButtonItem Content="저장" KeyGesture="CTRL+S" LargeGlyph="{dx:DXImage SvgImages/Save/Save.svg}">
+                            <dxmvvm:Interaction.Behaviors>
+                                <dxmvvm:ConfirmationBehavior Command="{Binding SaveCmd}" MessageIcon="Question" 
+                                        MessageText="저장하시겠습니까?" MessageButton="YesNo" />
+                            </dxmvvm:Interaction.Behaviors>
+                        </dxb:BarButtonItem>
+                    </dxr:RibbonPageGroup>
+                </dxr:RibbonPage>
+            </dxr:RibbonDefaultPageCategory>
+        </dxr:RibbonControl>
+
+        <dx:DXTabControl Margin="5 20 5 5" Height="400" VerticalAlignment="Top">
+            <dx:DXTabControl.BackgroundTemplate>
+                <DataTemplate>
+                    <Border BorderBrush="LightSlateGray" BorderThickness="1" />
+                </DataTemplate>
+            </dx:DXTabControl.BackgroundTemplate>
+            <dx:DXTabItem Header="기준정보">
+                <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Auto" Margin="0,-1,0,1">
+                    <Grid Style="{StaticResource SearchPanel}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="130" />
+                            <ColumnDefinition Width="220" />
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="130" />
+                            <ColumnDefinition Width="220" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Border Grid.Row="0" Grid.Column="0">
+                            <TextBlock>품목코드</TextBlock>
+                        </Border>
+                        <dxe:TextEdit
+                            Text="{Binding SelectedItem.ItemCode, UpdateSourceTrigger=PropertyChanged}"
+                            Grid.Row="0" 
+                            Background="#F6EDCB"
+                            IsEnabled="{Binding SelectedItem.State, Converter={StaticResource EntityStateConverter}}"
+                            ShowError="False"
+                            Grid.Column="1"
+                            VerticalAlignment="Bottom"
+                            Margin="2 0 0 0" />
+                        <Border Grid.Row="0" Grid.Column="3">
+                            <TextBlock>품목명</TextBlock>
+                        </Border>
+                        <dxe:TextEdit
+                            Text="{Binding SelectedItem.ItemName, UpdateSourceTrigger=PropertyChanged}"
+                            Grid.Row="0"
+                            Grid.Column="4"
+                            Background="#F6EDCB"
+                            ShowError="False"
+                            VerticalAlignment="Bottom"
+                            Margin="2 0 0 0" />
+                        <Border Grid.Row="1" Grid.Column="0">
+                            <TextBlock>품목사양</TextBlock>
+                        </Border>
+                        <dxe:TextEdit
+                            Text="{Binding SelectedItem.ItemSpec, UpdateSourceTrigger=PropertyChanged}"
+                            Background="White"
+                            ShowError="False"
+                            Grid.Row="1" 
+                            Grid.Column="1"
+                            VerticalAlignment="Bottom"
+                            Margin="2 0 0 0" />
+                        <Border Grid.Row="1" Grid.Column="3">
+                            <TextBlock>품목계정</TextBlock>
+                        </Border>
+                        <dxe:ComboBoxEdit
+                            Grid.Row="1"
+                            Grid.Column="4"
+                            HorizontalAlignment="Stretch"
+                            IsTextEditable="False"
+                            Background="#F6EDCB"
+                            ItemsSource="{Binding ItemAccount}"
+                            EditValue="{Binding SelectedItem.ItemAccount, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="2 0 0 0"
+                            VerticalAlignment="Bottom"
+                            DisplayMember="MinorName"
+                            ValueMember="MinorCode"/>
+                        <Border Grid.Row="2" Grid.Column="0">
+                            <TextBlock>품목단위</TextBlock>
+                        </Border>
+                        <dxe:ComboBoxEdit
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            HorizontalAlignment="Stretch"
+                            IsTextEditable="False"
+                            Background="#F6EDCB"
+                            ItemsSource="{Binding BasicUnit}"
+                            EditValue="{Binding SelectedItem.BasicUnit, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="2 0 0 0"
+                            VerticalAlignment="Bottom"
+                            DisplayMember="MinorName"
+                            ValueMember="MinorCode"/>
+                        <Border Grid.Row="3" Grid.Column="0">
+                            <TextBlock>입고창고</TextBlock>
+                        </Border>
+                        <dxg:LookUpEdit
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Background="White"
+                            ItemsSource="{Binding WhCode}"
+                            ValueMember="MinorCode"
+                            DisplayMember="MinorName"
+                            EditValue="{Binding SelectedItem.InWhCode, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="2 0 0 0"
+                            VerticalAlignment="Bottom"
+                            ShowSizeGrip="False"
+                            IsTextEditable="True" 
+                            NullValueButtonPlacement="EditBox"
+                            AutoPopulateColumns="False"
+                            IsPopupAutoWidth="False"
+                            PopupContentTemplate="{StaticResource WhCodeTemplate}" />
+                        <Border Grid.Row="3" Grid.Column="3">
+                            <TextBlock>출고창고</TextBlock>
+                        </Border>
+                        <dxg:LookUpEdit
+                            Grid.Row="3"
+                            Grid.Column="4"
+                            Background="White"
+                            ItemsSource="{Binding WhCode}"
+                            ValueMember="MinorCode"
+                            DisplayMember="MinorName"
+                            EditValue="{Binding SelectedItem.OutWhCode, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="2 0 0 0"
+                            VerticalAlignment="Bottom"
+                            ShowSizeGrip="False"
+                            IsTextEditable="True" 
+                            NullValueButtonPlacement="EditBox"
+                            AutoPopulateColumns="False"
+                            IsPopupAutoWidth="False"
+                            PopupContentTemplate="{StaticResource WhCodeTemplate}" />
+                        <Border Grid.Row="5" Grid.Column="0">
+                            <TextBlock>수입검사</TextBlock>
+                        </Border>
+                        <dxe:CheckEdit IsChecked="{Binding SelectedItem.IQCFlag, UpdateSourceTrigger=PropertyChanged}"
+                                Grid.Row="5" Grid.Column="1" VerticalAlignment="Bottom" Margin="2 0 0 0" />
+                        <Border Grid.Row="6" Grid.Column="0">
+                            <TextBlock>공정검사</TextBlock>
+                        </Border>
+                        <dxe:CheckEdit IsChecked="{Binding SelectedItem.LQCFlag, UpdateSourceTrigger=PropertyChanged}"
+                                Grid.Row="6" Grid.Column="1" VerticalAlignment="Bottom" Margin="2 0 0 0" />
+                        <Border Grid.Row="7" Grid.Column="0">
+                            <TextBlock>최종검사</TextBlock>
+                        </Border>
+                        <dxe:CheckEdit IsChecked="{Binding SelectedItem.FQCFlag, UpdateSourceTrigger=PropertyChanged}"
+                                Grid.Row="7" Grid.Column="1" VerticalAlignment="Bottom" Margin="2 0 0 0" />
+                        <Border Grid.Row="8" Grid.Column="0">
+                            <TextBlock>포장검사</TextBlock>
+                        </Border>
+                        <dxe:CheckEdit IsChecked="{Binding SelectedItem.OQCFlag, UpdateSourceTrigger=PropertyChanged}"
+                                Grid.Row="8" Grid.Column="1" VerticalAlignment="Bottom" Margin="2 0 0 0" />
+
+                        <Border Grid.Row="10" Grid.Column="0">
+                            <TextBlock>사용여부</TextBlock>
+                        </Border>
+                        <dxe:CheckEdit IsChecked="{Binding SelectedItem.IsEnabled, UpdateSourceTrigger=PropertyChanged}"
+                                Grid.Row="10" Grid.Column="1" VerticalAlignment="Bottom" Margin="2 0 0 0" />
+                    </Grid>
+                </ScrollViewer>
+            </dx:DXTabItem >
+            <dx:DXTabItem Header="대체품관리">
+                <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Auto">
+                    <Grid Style="{StaticResource SearchPanel}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="5" />
+                            <RowDefinition Height="300"/>
+                        </Grid.RowDefinitions>
+                        <Button Grid.Row="0" Grid.Column="0" Content="대체품추가" Width="100" HorizontalAlignment="Left" Command="{Binding AddAltItemCmd}" />
+                        <Button Grid.Row="0" Grid.Column="0" Content="대체품삭제" Width="100" HorizontalAlignment="Left" Command="{Binding DelAltItemCmd}" Margin="105 0 0 0" />
+                        <custom:DSGridControl
+                            ItemsSource="{Binding AltItems}" 
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            SelectedItem="{Binding SelectedAltItem, UpdateSourceTrigger=PropertyChanged}"
+                            SelectionMode="Cell"
+                            ShowBorder="True"
+                            ClipboardCopyMode="ExcludeHeader"
+                            EnableSmartColumnsGeneration="True">
+                            <dxg:GridControl.View>
+                                <dxg:TableView
+                                    AllowPerPixelScrolling="True"
+                                    ShowGroupPanel="False"
+                                    VerticalScrollbarVisibility="Auto"                  
+                                    AllowEditing="True"
+                                    EditorShowMode="MouseUpFocused"
+                                    EnableImmediatePosting="True"
+                                    AutoWidth="True">
+                                    <dxmvvm:Interaction.Behaviors>
+                                        <dxmvvm:EventToCommand EventName="HiddenEditor" Command="{Binding HiddenEditorCmd}">
+                                            <dxmvvm:EventToCommand.EventArgsConverter>
+                                                <utils:HiddenEditorEventArgsConverter />
+                                            </dxmvvm:EventToCommand.EventArgsConverter>
+                                        </dxmvvm:EventToCommand>
+                                        <dxmvvm:EventToCommand EventName="CellValueChanged" Command="{Binding CellValueChangedCmd}" />
+                                        <utils:RestrictEditingHelper>
+                                            <utils:RestrictEditingHelper.Conditions>
+                                                <utils:RestrictEditingCondition FieldName="AltItemCode" Expression="State != 'Added'"/>
+                                            </utils:RestrictEditingHelper.Conditions>
+                                        </utils:RestrictEditingHelper>
+                                    </dxmvvm:Interaction.Behaviors>
+                                </dxg:TableView>
+                            </dxg:GridControl.View>
+                            <dxg:GridControl.Columns>
+                                <dxg:GridColumn FieldName="AltItemCode" Header="품목코드" CellTemplate="{StaticResource AltItemCode}" />
+                                <dxg:GridColumn FieldName="ItemName" Header="품목명" AllowEditing="False" />
+                                <dxg:GridColumn FieldName="ItemSpec" Header="품목사양" AllowEditing="False" />
+                                <dxg:GridColumn FieldName="Order" Header="우선순위" />
+                            </dxg:GridControl.Columns>
+                        </custom:DSGridControl>
+                    </Grid>
+                </ScrollViewer>
+            </dx:DXTabItem>
+            <dx:DXTabControl.View>
+                <dx:TabControlScrollView ShowHeaderMenu="True" AllowHideTabItems="False" HeaderLocation="Left" />
+            </dx:DXTabControl.View>
+        </dx:DXTabControl>
+    </Grid>
+</UserControl>

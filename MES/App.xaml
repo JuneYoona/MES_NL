@@ -1,0 +1,8 @@
+﻿<Application x:Class="MesAdmin.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:view="clr-namespace:MesAdmin.Views"
+             StartupUri="Authentication\LoginView.xaml" Exit="Application_Exit">
+    <Application.Resources>
+        <ResourceDictionary Source="/Resources/Dictionary/ResourceDictionary.xaml" />
+    </Application.Resources>
+</Application>

@@ -1,0 +1,227 @@
+﻿<UserControl x:Class="MesAdmin.Views.PopupSalesOrderReqView"
+    xmlns="http://schemas.microsoft.com/netfx/2009/xaml/presentation" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
+    xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+    xmlns:viewmodel="clr-namespace:MesAdmin.ViewModels"
+    xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
+    xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
+    xmlns:common="clr-namespace:MesAdmin.Common.Common"
+    xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"             
+    mc:Ignorable="d" 
+    d:DesignHeight="400"
+    d:DesignWidth="670">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <utils:MinorCodeConverter x:Key="MinorCodeConverter"/>
+            <utils:BizCodeConverter x:Key="BizCodeConverter"/>
+            <utils:SoTypeCodeConverter x:Key="SoTypeCodeConverter"/>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicatorState.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <dxmvvm:Interaction.Behaviors>
+        <dxmvvm:CurrentWindowService Window="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+    </dxmvvm:Interaction.Behaviors>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="24"/>
+            <RowDefinition Height="83"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <dxb:ToolBarControl Grid.Row="0" ShowDragWidget="False" BarItemDisplayMode="ContentAndGlyph" AllowQuickCustomization="False" DockPanel.Dock="Top" Height="25" Grid.RowSpan="2">
+            <dxb:BarButtonItem Content="조회" KeyGesture="F5" Glyph="{dx:DXImage SvgImages/Spreadsheet/Zoom.svg}" Command="{Binding SearchCmd}" />
+            <dxb:BarStaticItem />
+        </dxb:ToolBarControl>
+
+        <Grid Grid.Row="1" Style="{StaticResource SearchPanel}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130" />
+                <ColumnDefinition Width="180" />
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="130" />
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="100" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0" Grid.Column="0">
+                <TextBlock>출하요청번호</TextBlock>
+            </Border>
+            <Border Grid.Row="1" Grid.Column="0">
+                <TextBlock>납품처</TextBlock>
+            </Border>
+            <Border Grid.Row="0" Grid.Column="3">
+                <TextBlock>출하요청일</TextBlock>
+            </Border>
+            <dxe:TextEdit
+                Text="{Binding ReqNo, UpdateSourceTrigger=PropertyChanged}"
+                Background="White"
+                Grid.Row="0" 
+                Grid.Column="1" VerticalAlignment="Bottom" Margin="2 0 0 0">
+                <dxe:TextEdit.InputBindings>
+                    <KeyBinding Key="Enter" Command="{Binding SearchCmd}" />
+                </dxe:TextEdit.InputBindings>
+            </dxe:TextEdit>
+            <dxe:DateEdit 
+                Background="White"
+                Grid.Row="0" 
+                Grid.Column="4"
+                EditValue="{Binding StartDate, UpdateSourceTrigger=PropertyChanged}"
+                VerticalAlignment="Bottom" 
+                Margin="2 0 0 0">
+                <dxe:TextEdit.InputBindings>
+                    <KeyBinding Key="Enter" Command="{Binding SearchCmd}" />
+                </dxe:TextEdit.InputBindings>
+            </dxe:DateEdit>
+            <TextBlock Grid.Row="0" Grid.Column="5" HorizontalAlignment="Center">~</TextBlock>
+            <dxe:DateEdit
+                Background="White"
+                Grid.Row="0" 
+                Grid.Column="6"
+                EditValue="{Binding EndDate, UpdateSourceTrigger=PropertyChanged}"
+                VerticalAlignment="Bottom" 
+                Margin="2 0 0 0">
+                <dxe:TextEdit.InputBindings>
+                    <KeyBinding Key="Enter" Command="{Binding SearchCmd}" />
+                </dxe:TextEdit.InputBindings>
+            </dxe:DateEdit>
+            <dxg:LookUpEdit
+                ItemsSource="{Binding BizPartnerList}"
+                SelectedItem="{Binding SelectedPartner}"
+                NullValueButtonPlacement="EditBox"
+                DisplayMember="BizName"
+                ValueMember="BizCode"
+                EditValue="{Binding SelectedPartner.BizCode}"
+                Grid.Row="1"
+                Grid.Column="1"
+                ShowSizeGrip="False"
+                Margin="2 0 0 0"
+                Background="White"
+                VerticalAlignment="Bottom"
+                IsTextEditable="True"
+                AutoComplete="False" FilterCondition="Contains"
+                ImmediatePopup="True"
+                AutoPopulateColumns="False"
+                IsPopupAutoWidth="False">
+                <dxg:LookUpEdit.InputBindings>
+                    <KeyBinding Key="Enter" Command="{Binding SearchCmd}" />
+                </dxg:LookUpEdit.InputBindings>
+                <dxg:LookUpEdit.PopupContentTemplate>
+                    <ControlTemplate>
+                        <dxg:GridControl
+                            x:Name="PART_GridControl"
+                            Width="400"
+                            ShowBorder="False" >
+                            <dxg:GridControl.View>
+                                <dxg:TableView 
+                                ShowGroupPanel="False" 
+                                ShowIndicator="False"
+                                AutoWidth="True"/>
+                            </dxg:GridControl.View>
+                            <dxg:GridControl.Columns>
+                                <dxg:GridColumn FieldName="BizCode" Header="주문처코드" />
+                                <dxg:GridColumn FieldName="BizName" Header="주문처명"/>
+                            </dxg:GridControl.Columns>
+                        </dxg:GridControl>
+                    </ControlTemplate>
+                </dxg:LookUpEdit.PopupContentTemplate>
+            </dxg:LookUpEdit>
+        </Grid>
+
+        <dxg:GridControl 
+            Grid.Row="2"
+            common:GridRowIndicatorHelper.IsEnabled="True"
+            ItemsSource="{Binding CollectionsHeader}" 
+            SelectedItem="{Binding SelectedHeader}"
+            ClipboardCopyMode="ExcludeHeader"
+            SelectionMode="Cell"
+            ShowLoadingPanel="{Binding IsBusy}">
+            <dxmvvm:Interaction.Behaviors>
+                <dxmvvm:EventToCommand Command="{Binding ConfirmCmd}" EventName="MouseDoubleClick"/>
+                <dxmvvm:EventToCommand Command="{Binding MouseDownCmd}" EventName="SelectedItemChanged"/>
+            </dxmvvm:Interaction.Behaviors>
+            <!--<dxg:GridControl.Resources>
+                <ControlTemplate x:Key="{dxgt:GridControlThemeKey IsThemeIndependent=true, ResourceKey=BorderTemplate}" TargetType="{x:Type ContentControl}">
+                    <Border BorderThickness="0 1 0 1" BorderBrush="#859EBF">
+                        <ContentPresenter />
+                    </Border>
+                </ControlTemplate>
+            </dxg:GridControl.Resources>-->
+            <dxg:GridControl.View>
+                <custom:DSTableView 
+                    ShowGroupPanel="False"
+                    AllowEditing="False"
+                    VerticalScrollbarVisibility="Auto"
+                    AutoWidth="False"/>
+            </dxg:GridControl.View>
+            <dxg:GridControl.Columns>
+                <dxg:GridColumn FieldName="ReqNo" Header="출하요청번호" Width="100"/>
+                <dxg:GridColumn Binding="{Binding RowData.Row.ShipTo, Converter={StaticResource BizCodeConverter}}" Header="주문처" Width="120"/>
+                <dxg:GridColumn FieldName="ReqDate" Header="출하요청일" Width="80"/>
+                <dxg:GridColumn Binding="{Binding RowData.Row.SoType, Converter={StaticResource SoTypeCodeConverter}}" Header="수주형태" Width="120"/>
+                <dxg:GridColumn FieldName="Memo" Header="비고" Width="120"/>
+                <dxg:GridColumn FieldName="UpdateId" Header="입력자Id" Width="80"/>
+                <dxg:GridColumn FieldName="UpdateDate" Header="입력일" Width="80"/>
+            </dxg:GridControl.Columns>
+        </dxg:GridControl>
+
+        <dxg:GridControl 
+            Grid.Row="3"
+            common:GridRowIndicatorHelper.IsEnabled="True"
+            ItemsSource="{Binding CollectionsDetail}"
+            SelectionMode="Cell"
+            ClipboardCopyMode="ExcludeHeader"
+            Margin="0 10 0 0">
+            <!--<dxg:GridControl.Resources>
+                <ControlTemplate x:Key="{dxgt:GridControlThemeKey IsThemeIndependent=true, ResourceKey=BorderTemplate}" TargetType="{x:Type ContentControl}">
+                    <Border BorderThickness="0 1 0 1" BorderBrush="#859EBF">
+                        <ContentPresenter />
+                    </Border>
+                </ControlTemplate>
+            </dxg:GridControl.Resources>-->
+            <dxg:GridControl.View>
+                <custom:DSTableView 
+                    ShowGroupPanel="False"
+                    VerticalScrollbarVisibility="Auto"
+                    AllowEditing="False" />
+            </dxg:GridControl.View>
+            <dxg:GridControl.Columns>
+                <dxg:GridColumn FieldName="ItemCode" Header="품목코드"/>
+                <dxg:GridColumn FieldName="ItemName" Header="품목명"/>
+                <dxg:GridColumn FieldName="ItemSpec" Header="품목사양"/>
+                <dxg:GridColumn FieldName="BasicUnit" Header="단위" AllowEditing="False" FixedWidth="True" Width="80" />
+                <dxg:GridColumn FieldName="Qty" Header="수량" Width="100" EditSettings="{StaticResource NumericEditor}" />
+                <dxg:GridColumn FieldName="UnitPrice" Header="단가" Width="100" EditSettings="{StaticResource NumericEditor}" />
+                <dxg:GridColumn FieldName="NetAmt" Header="수주금액" AllowEditing="False" Width="100" EditSettings="{StaticResource NumericEditor}" />
+                <dxg:GridColumn FieldName="VATRate" Header="부가세율(%)" AllowEditing="False" Width="100" EditSettings="{StaticResource NumericEditor}" />
+                <dxg:GridColumn FieldName="VATAmt" Header="부가세금액" AllowEditing="False" Width="100" EditSettings="{StaticResource NumericEditor}" />
+                <dxg:GridColumn MinWidth="150" Header="출고창고">
+                    <dxg:GridColumn.Binding>
+                        <MultiBinding Converter="{StaticResource MinorCodeConverter}">
+                            <Binding Source="I0011" />
+                            <Binding Path="Data.WhCode" />
+                        </MultiBinding>
+                    </dxg:GridColumn.Binding>
+                </dxg:GridColumn>
+                <dxg:GridColumn FieldName="Memo" Header="비고" MinWidth="250" />
+            </dxg:GridControl.Columns>
+        </dxg:GridControl>
+    </Grid>
+</UserControl>

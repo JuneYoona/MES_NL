@@ -1,0 +1,23 @@
+﻿<dx:ThemedWindow    x:Class="MesAdmin.MainWindow"
+                    Title="MES NeoLux"
+                    WindowState="{common:SettingBindingExtension WindowState}"
+                    Height="{common:SettingBindingExtension Height}" Width="{common:SettingBindingExtension Width}"
+                    Left="{common:SettingBindingExtension Left}" Top="{common:SettingBindingExtension Top}"
+                    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+                    xmlns:local="clr-namespace:MesAdmin"
+                    xmlns:common="clr-namespace:MesAdmin.Common.Common"
+                    TitleAlignment="Left"
+                    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm">
+    <dx:ThemedWindow.HeaderItems>
+        <dx:HeaderItemControl Content="도움말">
+            <dxmvvm:Interaction.Behaviors>
+                <dxmvvm:EventToCommand EventName="Click" Command="{Binding HelpCmd}" />
+            </dxmvvm:Interaction.Behaviors>
+        </dx:HeaderItemControl>
+    </dx:ThemedWindow.HeaderItems>
+    <Grid>
+        <local:MainView />
+    </Grid>
+</dx:ThemedWindow>

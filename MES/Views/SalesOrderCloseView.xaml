@@ -1,0 +1,201 @@
+﻿<UserControl x:Class="MesAdmin.Views.SalesOrderCloseView"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"  
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+    xmlns:viewmodel="clr-namespace:MesAdmin.ViewModels"
+    xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
+    xmlns:local="clr-namespace:MesAdmin"
+    mc:Ignorable="d"
+    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+    xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    d:DesignHeight="436" 
+    d:DesignWidth="800"
+    xmlns:view="clr-namespace:MesAdmin.Views">
+    <UserControl.DataContext>
+        <viewmodel:SalesOrderDetailsVM />
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <utils:MinorCodeConverter x:Key="MinorCodeConverter"/>
+        <utils:BizCodeConverter x:Key="BizCodeConverter"/>
+        <utils:SoTypeCodeConverter x:Key="SoTypeCodeConverter"/>
+    </UserControl.Resources>
+
+    <dxmvvm:Interaction.Behaviors>
+        <dx:DialogService Name="ItemView" DialogWindowStartupLocation="CenterOwner">
+            <dx:DialogService.ViewTemplate>
+                <DataTemplate>
+                    <view:PopupItemView/>
+                </DataTemplate>
+            </dx:DialogService.ViewTemplate>
+            <dx:DialogService.DialogStyle>
+                <Style TargetType="dx:DXDialogWindow">
+                    <Setter Property="Width" Value="680"/>
+                    <Setter Property="Height" Value="550"/>
+                </Style>
+            </dx:DialogService.DialogStyle>
+        </dx:DialogService>
+    </dxmvvm:Interaction.Behaviors>
+
+    <Grid>
+        <dxb:BarManager>
+            <DockPanel>
+                <dxr:RibbonControl DockPanel.Dock="Top">
+                    <dxr:RibbonDefaultPageCategory Caption="defaultCategory">
+                        <dxr:RibbonPage Caption="Home">
+                            <dxr:RibbonPageGroup Caption="수주마감등록 Task">
+                                <dxb:BarButtonItem Content="전체선택" KeyGesture="CTRL+T" Command="{Binding SelectAllCmd}" LargeGlyph="{dx:DXImageOffice2013 Image=Selectall_32x32.png}" />
+                                <dxb:BarButtonItem Content="저장" KeyGesture="CTRL+S" LargeGlyph="{dx:DXImage SvgImages/Save/Save.svg}">
+                                    <dxmvvm:Interaction.Behaviors>
+                                        <dxmvvm:ConfirmationBehavior
+                                            Command="{Binding SaveCmd}"
+                                            MessageText="저장하시겠습니까?"
+                                            MessageIcon="Question"
+                                            MessageButton="YesNo" />
+                                    </dxmvvm:Interaction.Behaviors>
+                                </dxb:BarButtonItem>
+                                <dxb:BarButtonItem Content="검색" KeyGesture="F5" Command="{Binding SearchCmd}" LargeGlyph="{dx:DXImage SvgImages/Spreadsheet/Zoom.svg}" />
+                            </dxr:RibbonPageGroup>
+                            <dxr:RibbonPageGroup Caption="Find">
+                                <dxb:BarStaticItem>
+                                    <dxb:BarStaticItem.ContentTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
+                                                <dxmvvm:Interaction.Behaviors>
+                                                    <dxmvvm:KeyToCommand KeyGesture="F5" Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}"/>
+                                                </dxmvvm:Interaction.Behaviors>
+                                                <StackPanel Orientation="Vertical">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="Start Date(수주일) : " Width="110" TextAlignment="Right" FontStyle="Italic" Foreground="Gray"/>
+                                                        <dxe:DateEdit 
+                                                            Background="White"
+                                                            Width="150"
+                                                            ShowClearButton="False"
+                                                            EditValue="{Binding DataContext.StartDate, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}">
+                                                            <dxe:TextEdit.InputBindings>
+                                                                <KeyBinding Key="Enter" Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}" />
+                                                            </dxe:TextEdit.InputBindings>
+                                                        </dxe:DateEdit>
+                                                    </StackPanel>
+                                                    <StackPanel Orientation="Horizontal" Margin="0 2 0 0">
+                                                        <TextBlock Text="End Date(수주일) : " Width="110" TextAlignment="Right" FontStyle="Italic" Foreground="Gray"/>
+                                                        <dxe:DateEdit 
+                                                            Background="White" 
+                                                            Width="150"
+                                                            ShowClearButton="False"
+                                                            EditValue="{Binding DataContext.EndDate, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}">
+                                                            <dxe:TextEdit.InputBindings>
+                                                                <KeyBinding Key="Enter" Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}" />
+                                                            </dxe:TextEdit.InputBindings>
+                                                        </dxe:DateEdit>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Vertical" Margin="5 0 0 0">
+                                                    <dxe:ComboBoxEdit
+                                                        NullText="주문처"
+                                                        ItemsSource="{Binding DataContext.BizPartnerList, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}" 
+                                                        EditValue="{Binding DataContext.BizCode, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}"
+                                                        NullValueButtonPlacement="EditBox"
+                                                        ValueMember="BizCode"
+                                                        DisplayMember="BizName"
+                                                        Background="White">
+                                                        <dxe:ComboBoxEdit.InputBindings>
+                                                            <KeyBinding Key="Enter" Command="{Binding DataContext.SearchCmd, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}" />
+                                                        </dxe:ComboBoxEdit.InputBindings>
+                                                    </dxe:ComboBoxEdit>
+                                                    <dxe:ButtonEdit
+                                                        Width="150"
+                                                        Background="White"
+                                                        Margin="0 2 0 0"
+                                                        NullText="품목코드"
+                                                        Text="{Binding DataContext.ItemCode, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}">
+                                                        <dxe:TextEdit.InputBindings>
+                                                            <KeyBinding Key="Enter" Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}" />
+                                                        </dxe:TextEdit.InputBindings>
+                                                        <dxmvvm:Interaction.Behaviors>
+                                                            <dxmvvm:EventToCommand EventName="DefaultButtonClick" Command="{Binding DataContext.ShowDialogCmd, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}" />
+                                                        </dxmvvm:Interaction.Behaviors>
+                                                    </dxe:ButtonEdit>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </dxb:BarStaticItem.ContentTemplate>
+                                </dxb:BarStaticItem>
+                            </dxr:RibbonPageGroup>
+                        </dxr:RibbonPage>
+                    </dxr:RibbonDefaultPageCategory>
+                </dxr:RibbonControl>
+
+                <dxg:GridControl
+                    ItemsSource="{Binding CheckCollections}"
+                    ShowBorder="False"
+                    ClipboardCopyMode="ExcludeHeader"
+                    ShowLoadingPanel="{Binding IsBusy, Mode=TwoWay}"
+                    EnableSmartColumnsGeneration="True">
+                    <dxg:GridControl.View>
+                        <dxg:TableView x:Name="TableView" 
+                            AllowPerPixelScrolling="True" 
+                            FocusedRow="{Binding SelectedItem}"
+                            ShowTotalSummary="False"
+                            ShowGroupPanel="True"
+                            AllowEditing="True"
+                            VerticalScrollbarVisibility="Auto"                                       
+                            MultiSelectMode="Cell"
+                            EditorShowMode="MouseUpFocused"
+                            ImmediateUpdateRowPosition="True"
+                            ShowValidationAttributeErrors="False"
+                            EnableImmediatePosting="True">
+                            <dxmvvm:Interaction.Behaviors>
+                                <utils:RestrictEditingHelper>
+                                    <utils:RestrictEditingHelper.Conditions>
+                                        <utils:RestrictEditingCondition FieldName="SoDate" Expression="1>0"/>
+                                        <utils:RestrictEditingCondition FieldName="ReqDlvyDate" Expression="1>0"/>
+                                        <utils:RestrictEditingCondition FieldName="UpdateDate" Expression="1>0"/>
+                                    </utils:RestrictEditingHelper.Conditions>
+                                </utils:RestrictEditingHelper>
+                            </dxmvvm:Interaction.Behaviors>
+                        </dxg:TableView>
+                    </dxg:GridControl.View>
+                    <dxg:GridControl.Columns>
+                        <dxg:GridColumn Header="선택" Width="60" HorizontalHeaderContentAlignment="Center">
+                            <dxg:GridColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding RowData.Row.IsChecked}" HorizontalAlignment="Center" />
+                                </DataTemplate>
+                            </dxg:GridColumn.CellTemplate>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="CloseFlag" Header="마감" Width="60" ReadOnly="True" />
+                        <dxg:GridColumn FieldName="SoNo" Header="S/O No." Width="120" ReadOnly="True" />
+                        <dxg:GridColumn FieldName="Seq" Header="순번" Width="60" ReadOnly="True" />
+                        <dxg:GridColumn Binding="{Binding RowData.Row.ShipTo, Converter={StaticResource BizCodeConverter}}" Header="주문처" ReadOnly="True" />
+                        <dxg:GridColumn FieldName="SoDate" Header="수주일" Width="90" ReadOnly="True" />
+                        <dxg:GridColumn FieldName="ReqDlvyDate" Header="납기일" Width="90" ReadOnly="True" />
+                        <dxg:GridColumn FieldName="ItemCode" Header="품목명" Width="120" ReadOnly="True" />
+                        <dxg:GridColumn FieldName="ItemName" Header="품목명" Width="120" ReadOnly="True" />
+                        <dxg:GridColumn FieldName="ItemSpec" Header="품목사양" Width="140" ReadOnly="True" />
+                        <dxg:GridColumn FieldName="Currency" Header="통화" Width="140" ReadOnly="True" />
+                        <dxg:GridColumn FieldName="Qty" Header="수량" Width="100" ReadOnly="True" EditSettings="{StaticResource NumericEditor}"/>
+                        <dxg:GridColumn FieldName="UnitPrice" Header="단가" Width="100" ReadOnly="True" EditSettings="{StaticResource NumericEditor}"/>
+                        <dxg:GridColumn FieldName="NetAmt" Header="금액" Width="100" ReadOnly="True" EditSettings="{StaticResource NumericEditor}"/>
+                        <dxg:GridColumn FieldName="ReqQty" Header="출하요청수량" Width="100" ReadOnly="True" EditSettings="{StaticResource NumericEditor}"/>
+                        <dxg:GridColumn FieldName="BasicUnit" Header="단위" Width="80" ReadOnly="True" />
+                        <dxg:GridColumn Binding="{Binding RowData.Row.SoType, Converter={StaticResource SoTypeCodeConverter}}" Width="100" Header="수주형태" />
+                        <dxg:GridColumn Binding="{Binding RowData.Row.WhCode, Converter={StaticResource MinorCodeConverter}}" Width="150" Header="출고창고" ReadOnly="True" />
+                        <dxg:GridColumn FieldName="UpdateId" Header="입력자 Id" MinWidth="80" ReadOnly="True" />
+                        <dxg:GridColumn FieldName="UpdateDate" Header="입력시간" MinWidth="120" ReadOnly="True" >
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:DateEditSettings Mask="yyyy-MM-dd HH:mm" MaskType="DateTime" MaskUseAsDisplayFormat="True" />
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                    </dxg:GridControl.Columns>
+                </dxg:GridControl>
+            </DockPanel>
+        </dxb:BarManager>
+    </Grid>
+</UserControl>
+

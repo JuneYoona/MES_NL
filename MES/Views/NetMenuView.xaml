@@ -1,0 +1,164 @@
+﻿<UserControl x:Class="MesAdmin.Views.NetMenuView"
+    xmlns="http://schemas.microsoft.com/netfx/2009/xaml/presentation" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
+    xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+    xmlns:viewmodel="clr-namespace:MesAdmin.ViewModels"
+    xmlns:view="clr-namespace:MesAdmin.Views"             
+    xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
+    xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
+    mc:Ignorable="d"
+    d:DesignHeight="650"
+    d:DesignWidth="670">
+    <UserControl.DataContext>
+        <viewmodel:NetMenuVM />
+    </UserControl.DataContext>
+
+    <UserControl.Resources>
+        <Style x:Key="borderTmp" TargetType="{x:Type dxe:TextEdit}">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderTemplate">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ContentControl}">
+                        <Grid x:Name="Grid1" Background="#FFFFFFFF" MinWidth="0" MinHeight="0">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="InternalFocusStates">
+                                    <VisualState x:Name="InternalFocused">
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="FocusElement" Storyboard.TargetProperty="Opacity" Duration="0" To="1" />
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="InternalUnfocused" />
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Border BorderBrush="#94ADCC" Height="23" BorderThickness="1" Background="{Binding Path=Background, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type dxe:TextEdit}}}"/>
+                            <ContentPresenter />
+                            <Border x:Name="FocusElement" BorderBrush="#007ACC" BorderThickness="1" Opacity="0" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Status}" Value="Added">
+                    <Setter Property="Background" Value="#F6EDCB" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <DockPanel>
+            <dxr:RibbonControl DockPanel.Dock="Top">
+                <dxr:RibbonDefaultPageCategory Caption="defaultCategory">
+                    <dxr:RibbonPage Caption="Home">
+                        <dxr:RibbonPageGroup Caption="Menu관리 Task">
+                            <dxb:BarButtonItem Content="저장" Command="{Binding SaveCmd}" LargeGlyph="{dx:DXImage SvgImages/Save/Save.svg}">
+                                <dxb:BarButtonItem.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource MultiValueConverter}">
+                                        <Binding ElementName="ComboBoxEdit1" />
+                                        <Binding ElementName="TextEdit1" />
+                                        <Binding ElementName="SpinEdit1" />
+                                        <Binding ElementName="TextEdit2" />
+                                    </MultiBinding>
+                                </dxb:BarButtonItem.CommandParameter>
+                            </dxb:BarButtonItem>
+                            <dxb:BarButtonItem Content="추가" Command="{Binding NewCmd}" LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/AddFile.svg}" />
+                            <dxb:BarButtonItem Content="삭제" Command="{Binding DeleteCmd}" LargeGlyph="{dx:DXImage SvgImages/Snap/SnapDeleteList.svg}" />
+                        </dxr:RibbonPageGroup>
+                    </dxr:RibbonPage>
+                </dxr:RibbonDefaultPageCategory>
+            </dxr:RibbonControl>
+            <dxlc:FlowLayoutControl Orientation="Horizontal" StretchContent="True" MaximizedElement="{Binding ElementName=TreeListControl}">
+                <dxg:TreeListControl
+                    x:Name="TreeListControl"
+                   
+                    ItemsSource="{Binding Collections}"
+                    SelectedItem="{Binding SelectedItem}">
+                    <dxmvvm:Interaction.Behaviors>
+                        <dxmvvm:EventToCommand EventName="SelectedItemChanged" Command="{Binding ChangeStatusCmd}" />
+                    </dxmvvm:Interaction.Behaviors>
+                    <dxg:TreeListControl.Columns>
+                        <dxg:TreeListColumn FieldName="MenuName" Header="MenuName" />
+                        <dxg:TreeListColumn FieldName="Sequence" Width="100" FixedWidth="True" />
+                        <dxg:TreeListColumn FieldName="CommandParameter" />
+                    </dxg:TreeListControl.Columns>
+                    <dxg:TreeListControl.View>
+                        <dxg:TreeListView 
+                            AutoExpandAllNodes="False"
+                            TreeLineStyle="Solid"
+                            AutoWidth="True"
+                            KeyFieldName="MenuId" 
+                            AllowEditing="False"
+                            ParentFieldName="PMenuId" />
+                    </dxg:TreeListControl.View>
+                </dxg:TreeListControl>
+                <dxlc:GroupBox Header="Menu 정보">
+                    <Grid Style="{StaticResource SearchPanel}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="130" />
+                            <ColumnDefinition Width="200" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Border Grid.Row="0" Grid.Column="0">
+                            <TextBlock>Parent Menu</TextBlock>
+                        </Border>
+                        <Border Grid.Row="1" Grid.Column="0">
+                            <TextBlock>Menu Name</TextBlock>
+                        </Border>
+                        <Border Grid.Row="2" Grid.Column="0">
+                            <TextBlock>Sequence</TextBlock>
+                        </Border>
+                        <Border Grid.Row="3" Grid.Column="0">
+                            <TextBlock>Command Parameter</TextBlock>
+                        </Border>
+                        <dxe:ComboBoxEdit x:Name="ComboBoxEdit1" 
+                            ItemsSource="{Binding CbCollections}" 
+                            EditValue="{Binding SelectedItem.PMenuId, UpdateSourceTrigger=Explicit}"
+                            ShowError="False" 
+                            DisplayMember="MenuNameFull" 
+                            ValueMember="MenuId"
+                            NullValueButtonPlacement="EditBox"
+                            Grid.Row="0" 
+                            Grid.Column="1" 
+                            Margin="2 0 0 0"
+                            VerticalAlignment="Bottom"                                          
+                            Style="{StaticResource borderTmp}" />
+                        <dxe:TextEdit x:Name="TextEdit1"
+                            Text="{Binding SelectedItem.MenuName, UpdateSourceTrigger=Explicit}"
+                            Grid.Row="1" 
+                            Grid.Column="1" 
+                            Margin="2 0 0 0"
+                            VerticalAlignment="Bottom"                                      
+                            Style="{StaticResource borderTmp}" />
+                        <dxe:SpinEdit x:Name="SpinEdit1"
+                            Text="{Binding SelectedItem.Sequence, UpdateSourceTrigger=Explicit}"
+                            Grid.Row="2" 
+                            Grid.Column="1"
+                            Margin="2 0 0 0"
+                            VerticalAlignment="Bottom"                                      
+                            Style="{StaticResource borderTmp}" />
+                        <dxe:TextEdit x:Name="TextEdit2"
+                            Text="{Binding SelectedItem.CommandParameter, UpdateSourceTrigger=Explicit}"
+                            Grid.Row="3" 
+                            Grid.Column="1"
+                            Margin="2 0 0 0"
+                            VerticalAlignment="Bottom"                        
+                            Style="{StaticResource borderTmp}" />
+                    </Grid>
+                </dxlc:GroupBox>
+            </dxlc:FlowLayoutControl>
+        </DockPanel>
+    </Grid>
+</UserControl>

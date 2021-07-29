@@ -1,0 +1,154 @@
+﻿<UserControl xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"  x:Class="MesAdmin.Views.CommonBOMView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+             xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" xmlns:ViewModels="clr-namespace:MesAdmin.ViewModels"
+             mc:Ignorable="d"
+             xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
+             d:DesignHeight="600" d:DesignWidth="600"
+             xmlns:view="clr-namespace:MesAdmin.Views"
+             xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
+             DataContext="{dxmvvm:ViewModelSource Type=ViewModels:CommonBOMVM}">
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="ItemCode">
+            <dxe:ButtonEdit 
+                Name="PART_Editor"
+                EditValue="{Binding RowData.Row.CItemCode}"
+                IsTextEditable="False"
+                IsReadOnly="{DXBinding !View.DataContext.IsNew}">
+                <dxmvvm:Interaction.Behaviors>
+                    <dxmvvm:EventToCommand EventName="DefaultButtonClick" Command="{Binding View.DataContext.ShowDialogCmd}" />
+                </dxmvvm:Interaction.Behaviors>
+            </dxe:ButtonEdit>
+        </DataTemplate>
+    </UserControl.Resources>
+    <dxmvvm:Interaction.Behaviors>
+        <dx:DialogService DialogWindowStartupLocation="CenterOwner">
+            <dx:DialogService.ViewTemplate>
+                <DataTemplate>
+                    <view:PopupItemView/>
+                </DataTemplate>
+            </dx:DialogService.ViewTemplate>
+            <dx:DialogService.DialogStyle>
+                <Style TargetType="dx:DXDialogWindow">
+                    <Setter Property="Width" Value="680"/>
+                    <Setter Property="Height" Value="550"/>
+                </Style>
+            </dx:DialogService.DialogStyle>
+        </dx:DialogService>
+    </dxmvvm:Interaction.Behaviors>
+    <Grid>
+        <DockPanel>
+            <dxr:RibbonControl DockPanel.Dock="Top">
+                <dxr:RibbonDefaultPageCategory Caption="defaultCategory">
+                    <dxr:RibbonPage Caption="Home">
+                        <dxr:RibbonPageGroup Caption="BOM관리 Task">
+                            <dxb:BarButtonItem Content="저장" KeyGesture="CTRL+S" LargeGlyph="{dx:DXImage SvgImages/Save/Save.svg}">
+                                <dxmvvm:Interaction.Behaviors>
+                                    <dxmvvm:ConfirmationBehavior Command="{Binding SaveCmd}" MessageIcon="Question" 
+                                        MessageText="저장하시겠습니까?" MessageButton="YesNo" />
+                                </dxmvvm:Interaction.Behaviors>
+                            </dxb:BarButtonItem>
+                            <dxb:BarButtonItem Content="추가" KeyGesture="CTRL+N" Command="{Binding AddCmd}" CommandParameter="{Binding ElementName=grid}" LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/AddFile.svg}" />
+                            <dxb:BarButtonItem Content="삭제" KeyGesture="CTRL+D" Command="{Binding DeleteCmd}" LargeGlyph="{dx:DXImage SvgImages/Snap/SnapDeleteList.svg}" />
+                            <dxb:BarButtonItem Content="검색" KeyGesture="F5" Command="{Binding SearchCmd}" LargeGlyph="{dx:DXImage SvgImages/Spreadsheet/Zoom.svg}" />
+                        </dxr:RibbonPageGroup>
+                        <dxr:RibbonPageGroup Caption="Find">
+                            <dxb:BarStaticItem>
+                                <dxb:BarStaticItem.ContentTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Vertical" Margin="5">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="기준일 : " Width="50" TextAlignment="Left" FontStyle="Italic" Foreground="Gray"/>
+                                                <dxe:DateEdit 
+                                                    Background="White"
+                                                    Width="150"
+                                                    ShowClearButton="False"
+                                                    EditValue="{Binding DataContext.CheckDate, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}">
+                                                    <dxe:TextEdit.InputBindings>
+                                                        <KeyBinding Key="Enter" Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}" />
+                                                    </dxe:TextEdit.InputBindings>
+                                                </dxe:DateEdit>
+                                            </StackPanel>
+                                            <dxe:ButtonEdit
+                                                Width="200"
+                                                Margin ="0 3 0 0"
+                                                Background="#F6EDCB"
+                                                NullText="품목코드"
+                                                Text="{Binding DataContext.ItemCode, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}">
+                                                <dxe:TextEdit.InputBindings>
+                                                    <KeyBinding Key="Enter" 
+                                                                Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}" 
+                                                                CommandParameter="{Binding ElementName=view}" />
+                                                </dxe:TextEdit.InputBindings>
+                                                <dxmvvm:Interaction.Behaviors>
+                                                    <dxmvvm:EventToCommand EventName="DefaultButtonClick" Command="{Binding DataContext.ShowDialogCmd, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}" CommandParameter="Header" />
+                                                </dxmvvm:Interaction.Behaviors>
+                                            </dxe:ButtonEdit>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </dxb:BarStaticItem.ContentTemplate>
+                            </dxb:BarStaticItem>
+                        </dxr:RibbonPageGroup>
+                        <dxr:RibbonPageGroup Caption="ERP Sync Task">
+                            <dxb:BarButtonItem Content="ERP 동기화" KeyGesture="CTRL+Y" Command="{Binding SyncErpCmd}" LargeGlyph="{dx:DXImage SvgImages/Dashboards/ConvertTo.svg}" />
+                        </dxr:RibbonPageGroup>
+                    </dxr:RibbonPage>
+                </dxr:RibbonDefaultPageCategory>
+            </dxr:RibbonControl>
+            <custom:DSTreeListControl x:Name="grid"
+                ItemsSource="{Binding Collections}"
+                SelectedItems="{Binding SelectedItems}"
+                ShowBorder="False"
+                SelectionMode="Cell"
+                ClipboardCopyMode="ExcludeHeader">
+                <dxg:TreeListControl.Columns>
+                    <dxg:TreeListColumn Header="품목코드" FieldName="CItemCode" CellTemplate="{StaticResource ItemCode}" />
+                    <dxg:TreeListColumn Header="품목명" FieldName="ItemName" Width="180" AllowEditing="False" />
+                    <dxg:TreeListColumn Header="Level" FieldName="RecursionLevel" Width="50" FixedWidth="True" AllowEditing="False" />
+                    <dxg:TreeListColumn Header="자품목기준수" FieldName="CPerQty" Width="80" FixedWidth="True"/>
+                    <dxg:TreeListColumn Header="단위" FieldName="CUnit" Width="50" FixedWidth="True" AllowEditing="False"/>
+                    <dxg:TreeListColumn Header="모품목기준수" FieldName="PPerQty" Width="80" FixedWidth="True"/>
+                    <dxg:TreeListColumn Header="단위" FieldName="PUnit" Width="50" FixedWidth="True" AllowEditing="False"/>
+                    <dxg:TreeListColumn Header="시작일" FieldName="StartDate" Width="100" FixedWidth="True" />
+                    <dxg:TreeListColumn Header="종료일" FieldName="EndDate" Width="100" FixedWidth="True"/>
+                    <dxg:TreeListColumn Header=" " FieldName="State" AllowResizing="False" AllowColumnFiltering="False" AllowSorting="False" Width="20" CellTemplate="{StaticResource StateTemplate}" ReadOnly="True" AllowFocus="False" />
+                </dxg:TreeListControl.Columns>
+                <dxg:TreeListControl.View>
+                    <dxg:TreeListView x:Name="view"
+                        AutoExpandAllNodes="True"
+                        KeyFieldName="KeyFieldName"
+                        FocusedRow="{Binding FocusedItem, UpdateSourceTrigger=PropertyChanged}"
+                        AllowEditing="True"
+                        ParentFieldName="ParentFieldName"
+                        EditorShowMode="MouseUpFocused"
+                        EnableImmediatePosting="True" FetchSublevelChildrenOnExpand="True">
+                        <dxmvvm:Interaction.Behaviors>
+                            <dxmvvm:EventToCommand EventName="HiddenEditor" Command="{Binding HiddenEditorCmd}">
+                                <dxmvvm:EventToCommand.EventArgsConverter>
+                                    <utils:HiddenTreeListEditorEventArgsConverter />
+                                </dxmvvm:EventToCommand.EventArgsConverter>
+                            </dxmvvm:EventToCommand>
+                            <dxmvvm:EventToCommand EventName="CellValueChanged" Command="{Binding CellValueChangedCmd}" />
+                            <utils:RestrictEditingHelper2>
+                                <utils:RestrictEditingHelper2.Conditions>
+                                    <utils:RestrictEditingCondition FieldName="CItemCode" Expression="State != 'Added'"/>
+                                    <utils:RestrictEditingCondition FieldName="StartDate" Expression="RecursionLevel == 0"/>
+                                    <utils:RestrictEditingCondition FieldName="EndDate" Expression="RecursionLevel == 0"/>
+                                    <utils:RestrictEditingCondition FieldName="PPerQty" Expression="RecursionLevel == 0"/>
+                                    <utils:RestrictEditingCondition FieldName="CPerQty" Expression="RecursionLevel == 0"/>
+                                </utils:RestrictEditingHelper2.Conditions>
+                            </utils:RestrictEditingHelper2>
+                        </dxmvvm:Interaction.Behaviors>
+                    </dxg:TreeListView>
+                </dxg:TreeListControl.View>
+            </custom:DSTreeListControl>
+        </DockPanel>
+    </Grid>
+</UserControl>

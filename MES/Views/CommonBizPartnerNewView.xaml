@@ -1,0 +1,346 @@
+﻿<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    x:Class="MesAdmin.Views.CommonBizPartnerNewView"
+    mc:Ignorable="d"
+    xmlns:dxt="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys"
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+    d:DesignHeight="600" d:DesignWidth="800"
+    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+    xmlns:ViewModels="clr-namespace:MesAdmin.ViewModels"
+    xmlns:view="clr-namespace:MesAdmin.Views"
+    xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+    DataContext="{dxmvvm:ViewModelSource Type=ViewModels:CommonBizPartnerNewVM}">
+
+    <UserControl.Resources>
+        <dxmvvm:ObjectToObjectConverter x:Key="EntityStateConverter">
+            <dxmvvm:MapItem Source="Added" Target="True"/>
+            <dxmvvm:MapItem Source="Deleted" Target="False"/>
+            <dxmvvm:MapItem Source="Unchanged" Target="False"/>
+            <dxmvvm:MapItem Source="Changed" Target="False"/>
+        </dxmvvm:ObjectToObjectConverter>
+    </UserControl.Resources>
+
+    <Grid IsEnabled="{Binding IsEnabled}">
+        <DockPanel>
+            <dxr:RibbonControl DockPanel.Dock="Top">
+                <dxr:RibbonDefaultPageCategory Caption="defaultCategory">
+                    <dxr:RibbonPage Caption="Home">
+                        <dxr:RibbonPageGroup Caption="">
+                            <dxb:BarButtonItem Content="저장" KeyGesture="CTRL+S" LargeGlyph="{dx:DXImage SvgImages/Save/Save.svg}">
+                                <dxmvvm:Interaction.Behaviors>
+                                    <dxmvvm:ConfirmationBehavior Command="{Binding SaveCmd}" MessageIcon="Question" 
+                                        MessageText="저장하시겠습니까?" MessageButton="YesNo" />
+                                </dxmvvm:Interaction.Behaviors>
+                            </dxb:BarButtonItem>
+                        </dxr:RibbonPageGroup>
+                    </dxr:RibbonPage>
+                </dxr:RibbonDefaultPageCategory>
+            </dxr:RibbonControl>
+            <dx:DXTabControl Margin="5 20 5 5" Height="400" VerticalAlignment="Top">
+                <dx:DXTabControl.BackgroundTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="LightSlateGray" BorderThickness="1" />
+                    </DataTemplate>
+                </dx:DXTabControl.BackgroundTemplate>
+                <dx:DXTabItem Header="사업자정보">
+                    <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Auto" Margin="0,-1,0,1">
+                        <Grid Style="{StaticResource SearchPanel}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130" />
+                                <ColumnDefinition Width="220" />
+                                <ColumnDefinition Width="50" />
+                                <ColumnDefinition Width="130" />
+                                <ColumnDefinition Width="220" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Border Grid.Row="0" Grid.Column="0">
+                                <TextBlock>거래처 코드</TextBlock>
+                            </Border>
+                            <dxe:TextEdit
+                                Text="{Binding CommonBizPartnerItem.BizCode, UpdateSourceTrigger=PropertyChanged}"
+                                IsEnabled="False"
+                                Grid.Row="0" Background="#D9E5F3"
+                                ShowError="False"
+                                Grid.Column="1"
+                                VerticalAlignment="Bottom"
+                                Margin="2 0 0 0" />
+                            <Border Grid.Row="0" Grid.Column="3">
+                                <TextBlock>거래처 구분</TextBlock>
+                            </Border>
+                            <dxe:ComboBoxEdit 
+                                Grid.Row="0"
+                                Grid.Column="4"
+                                HorizontalAlignment="Stretch"
+                                IsTextEditable="False"
+                                Background="#F6EDCB"
+                                ItemsSource="{Binding BizType, UpdateSourceTrigger=PropertyChanged}"
+                                EditValue="{Binding CommonBizPartnerItem.BizType, UpdateSourceTrigger=PropertyChanged}"
+                                Margin="2 0 0 0"
+                                VerticalAlignment="Bottom"
+                                DisplayMember="MinorName"
+                                ValueMember="MinorCode"/>
+                            <Border Grid.Row="1" Grid.Column="0">
+                                <TextBlock>거래처 약명</TextBlock>
+                            </Border>
+                            <dxe:TextEdit
+                                Text="{Binding CommonBizPartnerItem.BizName, UpdateSourceTrigger=PropertyChanged}"
+                                Background="#F6EDCB"
+                                ShowError="False"
+                                Grid.Row="1" 
+                                Grid.Column="1"
+                                VerticalAlignment="Bottom"
+                                Margin="2 0 0 0" />
+                            <Border Grid.Row="1" Grid.Column="3">
+                                <TextBlock>거래처 전명</TextBlock>
+                            </Border>
+                            <dxe:TextEdit
+                                Text="{Binding CommonBizPartnerItem.BizFullName, UpdateSourceTrigger=PropertyChanged}"
+                                Background="White"
+                                ShowError="False"
+                                Grid.Row="1" 
+                                Grid.Column="4"
+                                VerticalAlignment="Bottom"
+                                Margin="2 0 0 0" />
+                            <Border Grid.Row="2" Grid.Column="0">
+                                <TextBlock>사업자 등록번호</TextBlock>
+                            </Border>
+                            <dxe:TextEdit
+                                Text="{Binding CommonBizPartnerItem.BizRegNo, UpdateSourceTrigger=PropertyChanged}"
+                                Grid.Row="2"
+                                Background="White"
+                                ShowError="False"
+                                Grid.Column="1"
+                                VerticalAlignment="Bottom"
+                                Margin="2 0 0 0" />
+                            <Border Grid.Row="2" Grid.Column="3">
+                                <TextBlock>대표자명</TextBlock>
+                            </Border>
+                            <dxe:TextEdit
+                                Text="{Binding CommonBizPartnerItem.PresidentName, UpdateSourceTrigger=PropertyChanged}"
+                                Grid.Row="2"
+                                Background="White"
+                                ShowError="False"
+                                Grid.Column="4"
+                                VerticalAlignment="Bottom"
+                                Margin="2 0 0 0" />
+                            <Border Grid.Row="3" Grid.Column="0">
+                                <TextBlock>계좌번호</TextBlock>
+                            </Border>
+                            <dxe:TextEdit
+                                Text="{Binding CommonBizPartnerItem.AccountNo, UpdateSourceTrigger=PropertyChanged}"
+                                Background="White"
+                                ShowError="False"
+                                Grid.Row="3" 
+                                Grid.Column="1"
+                                VerticalAlignment="Bottom"
+                                Margin="2 0 0 0" />
+                            <Border Grid.Row="3" Grid.Column="3">
+                                <TextBlock>예금주</TextBlock>
+                            </Border>
+                            <dxe:TextEdit
+                                Text="{Binding CommonBizPartnerItem.AccountHolder, UpdateSourceTrigger=PropertyChanged}"
+                                Background="White"
+                                ShowError="False"
+                                Grid.Row="3" 
+                                Grid.Column="4"
+                                VerticalAlignment="Bottom"
+                                Margin="2 0 0 0" />
+                            <Border Grid.Row="4" Grid.Column="0">
+                                <TextBlock>업태</TextBlock>
+                            </Border>
+                            <dxe:TextEdit
+                                Text="{Binding CommonBizPartnerItem.IndClass, UpdateSourceTrigger=PropertyChanged}"
+                                Background="White"
+                                ShowError="False"
+                                Grid.Row="4" 
+                                Grid.Column="1"
+                                VerticalAlignment="Bottom"
+                                Margin="2 0 0 0" />
+                            <Border Grid.Row="4" Grid.Column="3">
+                                <TextBlock>업종</TextBlock>
+                            </Border>
+                            <dxe:TextEdit
+                                Text="{Binding CommonBizPartnerItem.IndType, UpdateSourceTrigger=PropertyChanged}"
+                                Background="White"
+                                ShowError="False"
+                                Grid.Row="4" 
+                                Grid.Column="4"
+                                VerticalAlignment="Bottom"
+                                Margin="2 0 0 0" />
+                            <Border Grid.Row="5" Grid.Column="0">
+                                <TextBlock>부가세포함여부</TextBlock>
+                            </Border>
+                            <dxe:ComboBoxEdit 
+                                Grid.Row="5"
+                                Grid.Column="1"
+                                HorizontalAlignment="Stretch"
+                                IsTextEditable="False"
+                                Background="White"
+                                ItemsSource="{Binding VATFlag, UpdateSourceTrigger=PropertyChanged}"
+                                EditValue="{Binding CommonBizPartnerItem.VATFlag, UpdateSourceTrigger=PropertyChanged}"
+                                VerticalAlignment="Bottom"
+                                Margin="2 0 0 0"
+                                DisplayMember="Name"
+                                ValueMember="Code"/>
+                            <Border Grid.Row="5" Grid.Column="3">
+                                <TextBlock>부가세율(%)</TextBlock>
+                            </Border>
+                            <dxe:TextEdit
+                                Text="{Binding CommonBizPartnerItem.VATRate, UpdateSourceTrigger=PropertyChanged}"
+                                Background="White"
+                                ShowError="False"
+                                Mask="\d{0,9}(\R.\d{0,2})?"
+                                MaskType="RegEx"
+                                MaskUseAsDisplayFormat="True"
+                                Grid.Row="5"
+                                Grid.Column="4"
+                                VerticalAlignment="Bottom"
+                                Margin="2 0 0 0" />
+                            <Border Grid.Row="6" Grid.Column="0">
+                                <TextBlock>통화</TextBlock>
+                            </Border>
+                            <dxe:ComboBoxEdit 
+                                Grid.Row="6"
+                                Grid.Column="1"
+                                HorizontalAlignment="Stretch"
+                                IsTextEditable="False"
+                                Background="White"
+                                ItemsSource="{Binding Currency, UpdateSourceTrigger=PropertyChanged}"
+                                EditValue="{Binding CommonBizPartnerItem.Currency, UpdateSourceTrigger=PropertyChanged}"
+                                VerticalAlignment="Bottom"
+                                Margin="2 0 0 0"
+                                DisplayMember="MinorCode"
+                                ValueMember="MinorCode"/>
+                            <Border Grid.Row="6" Grid.Column="3">
+                                <TextBlock>사용여부</TextBlock>
+                            </Border>
+                            <dxe:CheckEdit IsChecked="{Binding CommonBizPartnerItem.IsEnabled, UpdateSourceTrigger=PropertyChanged}"
+                                Grid.Row="6" Grid.Column="4" VerticalAlignment="Bottom" Margin="2 0 0 0" IsEnabled="{Binding IsEnabled}" />
+                        </Grid>
+                    </ScrollViewer>
+                </dx:DXTabItem >
+                <dx:DXTabItem Header="일반정보">
+                    <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Auto">
+                        <Grid Style="{StaticResource SearchPanel}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130" />
+                                <ColumnDefinition Width="300" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Border Grid.Row="0" Grid.Column="0">
+                                <TextBlock>우편번호</TextBlock>
+                            </Border>
+                            <dxe:TextEdit
+                                Text="{Binding CommonBizPartnerItem.ZipCode, UpdateSourceTrigger=PropertyChanged}"
+                                Grid.Row="0"
+                                Background="White"
+                                ShowError="False"
+                                Width="100"
+                                HorizontalAlignment="Left"
+                                Grid.Column="1"
+                                VerticalAlignment="Bottom"
+                                Margin="2 0 0 0" />
+                            <Border Grid.Row="1" Grid.Column="0">
+                                <TextBlock>주소</TextBlock>
+                            </Border>
+                            <dxe:TextEdit
+                                Text="{Binding CommonBizPartnerItem.Addr1, UpdateSourceTrigger=PropertyChanged}"
+                                Grid.Row="1"
+                                Background="White"
+                                ShowError="False"
+                                Grid.Column="1"
+                                VerticalAlignment="Bottom"
+                                Margin="2 0 0 0" />
+                            <dxe:TextEdit
+                                Text="{Binding CommonBizPartnerItem.Addr2, UpdateSourceTrigger=PropertyChanged}"
+                                Grid.Row="2"
+                                Background="White"
+                                ShowError="False"
+                                Grid.Column="1"
+                                VerticalAlignment="Bottom"
+                                Margin="2 0 0 0" />
+                            <Border Grid.Row="3" Grid.Column="0">
+                                <TextBlock>영문주소</TextBlock>
+                            </Border>
+                            <dxe:TextEdit
+                                Text="{Binding NetUserItem.UserName, UpdateSourceTrigger=PropertyChanged}"
+                                Grid.Row="3"
+                                Background="White"
+                                VerticalAlignment="Bottom"
+                                ShowError="False"
+                                Grid.Column="1"
+                                Margin="2 0 0 0" />
+                            <dxe:TextEdit
+                                Text="{Binding NetUserItem.UserName, UpdateSourceTrigger=PropertyChanged}"
+                                Grid.Row="4"
+                                Background="White"
+                                ShowError="False"
+                                Grid.Column="1"
+                                VerticalAlignment="Bottom"
+                                Margin="2 0 0 0" />
+                            <Border Grid.Row="5" Grid.Column="0">
+                                <TextBlock>전화번호1</TextBlock>
+                            </Border>
+                            <dxe:TextEdit
+                                Text="{Binding CommonBizPartnerItem.TelNo1, UpdateSourceTrigger=PropertyChanged}"
+                                Grid.Row="5"
+                                Background="White"
+                                VerticalAlignment="Bottom"
+                                ShowError="False"
+                                Grid.Column="1" 
+                                Margin="2 0 0 0" />
+                            <Border Grid.Row="6" Grid.Column="0">
+                                <TextBlock>전화번호2</TextBlock>
+                            </Border>
+                            <dxe:TextEdit
+                                Text="{Binding CommonBizPartnerItem.TelNo2, UpdateSourceTrigger=PropertyChanged}"
+                                Grid.Row="6"
+                                Background="White"
+                                ShowError="False"
+                                Grid.Column="1"
+                                VerticalAlignment="Bottom"
+                                Margin="2 0 0 0" />
+                            <Border Grid.Row="7" Grid.Column="0">
+                                <TextBlock>Fax</TextBlock>
+                            </Border>
+                            <dxe:TextEdit
+                                Text="{Binding CommonBizPartnerItem.FaxNo, UpdateSourceTrigger=PropertyChanged}"
+                                Grid.Row="7"
+                                Background="White"
+                                ShowError="False"
+                                Grid.Column="1"
+                                VerticalAlignment="Bottom"
+                                Margin="2 0 0 0" />
+                        </Grid>
+                    </ScrollViewer>
+                </dx:DXTabItem>
+                <dx:DXTabControl.View>
+                    <dx:TabControlScrollView ShowHeaderMenu="True" AllowHideTabItems="False" HeaderLocation="Left" />
+                </dx:DXTabControl.View>
+            </dx:DXTabControl>
+        </DockPanel>
+    </Grid>
+</UserControl>

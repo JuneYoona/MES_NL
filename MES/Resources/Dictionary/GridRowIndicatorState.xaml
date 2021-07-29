@@ -1,0 +1,70 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	                    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+                        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+	                    xmlns:dxgt="clr-namespace:DevExpress.Xpf.Grid.Themes;assembly=DevExpress.Xpf.Grid.v21.1"
+                        xmlns:util="clr-namespace:MesAdmin.Common.Utils">
+    <DataTemplate x:Key="{dxgt:RowIndicatorThemeKey ResourceKey=IconPresenterTemplate, IsThemeIndependent=True}">
+        <DockPanel x:Name="root" Background="Transparent">
+            <TextBlock Margin="5 2 2 2" Text="{DXBinding Expr='RowHandle.Value &gt;= 0 ? RowHandle.Value + 1 : null'}">
+                <!--<TextBlock.Text>
+                    <MultiBinding Mode="OneWay" Converter="{util:RowNumberConverter}">
+                        <Binding Path="View.DataControl" />
+                        <Binding Path="RowHandle.Value" />
+                    </MultiBinding>
+                </TextBlock.Text>-->
+            </TextBlock>
+            <ContentPresenter x:Name="iconPresenter" Content="{x:Null}" IsHitTestVisible="False" />
+            <Image x:Name="Image" Height="11" Width="11" Source="{x:Null}" Visibility="Collapsed" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 2 0" />
+        </DockPanel>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding Path=IndicatorState}" Value="Focused">
+                <Setter Property="ContentTemplate" Value="{DynamicResource {dxgt:RowIndicatorThemeKey ResourceKey=FocusedIconTemplate}}" TargetName="iconPresenter" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=IndicatorState}" Value="Changed">
+                <Setter Property="ContentTemplate" Value="{DynamicResource {dxgt:RowIndicatorThemeKey ResourceKey=ChangedIconTemplate}}" TargetName="iconPresenter" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=IndicatorState}" Value="NewItemRow">
+                <Setter Property="ContentTemplate" Value="{DynamicResource {dxgt:RowIndicatorThemeKey ResourceKey=NewItemRowIconTemplate}}" TargetName="iconPresenter" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=IndicatorState}" Value="Editing">
+                <Setter Property="ContentTemplate" Value="{DynamicResource {dxgt:RowIndicatorThemeKey ResourceKey=EditingIconTemplate}}" TargetName="iconPresenter" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=IndicatorState}" Value="Error">
+                <Setter Property="ContentTemplate" Value="{DynamicResource {dxgt:RowIndicatorThemeKey ResourceKey=ErrorIconTemplate}}" TargetName="iconPresenter" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=IndicatorState}" Value="FocusedError">
+                <Setter Property="ContentTemplate" Value="{DynamicResource {dxgt:RowIndicatorThemeKey ResourceKey=FocusedErrorIconTemplate}}" TargetName="iconPresenter" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=IndicatorState}" Value="AutoFilterRow">
+                <Setter Property="ContentTemplate" Value="{DynamicResource {dxgt:RowIndicatorThemeKey ResourceKey=AutoFilterRowIconTemplate}}" TargetName="iconPresenter" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=(dxe:BaseEdit.HasValidationError)}" Value="True">
+                <Setter Property="ToolTip" TargetName="root">
+                    <Setter.Value>
+                        <DockPanel>
+                            <dxe:ErrorControl Content="{Binding Path=(dxe:BaseEdit.ValidationError)}" />
+                            <ContentPresenter VerticalAlignment="Center" Content="{Binding Path=(dxe:BaseEdit.ValidationError).ErrorContent}" />
+                        </DockPanel>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding Row.State, Mode=OneWay}" Value="Deleted">
+                <Setter TargetName="iconPresenter" Property="Visibility" Value="Collapsed" />
+                <Setter TargetName="Image" Property="Visibility" Value="Visible" />
+                <Setter TargetName="Image" Property="Source" Value="/Resources/Images/Red pin.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Row.State, Mode=OneWay}" Value="Added">
+                <Setter TargetName="iconPresenter" Property="Visibility" Value="Collapsed" />
+                <Setter TargetName="Image" Property="Visibility" Value="Visible" />
+                <Setter TargetName="Image" Property="Source" Value="/Resources/Images/Blue pin.png" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Row.State, Mode=OneWay}" Value="Modified">
+                <Setter TargetName="iconPresenter" Property="Visibility" Value="Collapsed" />
+                <Setter TargetName="Image" Property="Visibility" Value="Visible" />
+                <Setter TargetName="Image" Property="Source" Value="/Resources/Images/Yellow pin.png" />
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+</ResourceDictionary>

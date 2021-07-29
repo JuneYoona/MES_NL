@@ -1,0 +1,332 @@
+﻿<UserControl 
+    x:Class="MesAdmin.Views.LotTracingView"
+    xmlns="http://schemas.microsoft.com/netfx/2009/xaml/presentation" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
+    xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+    xmlns:view="clr-namespace:MesAdmin.Views"
+    xmlns:viewmodel="clr-namespace:MesAdmin.ViewModels"
+    xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
+    xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
+    xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
+    mc:Ignorable="d"
+    d:DesignHeight="650"
+    d:DesignWidth="670">
+    <UserControl.DataContext>
+        <viewmodel:LotTracingVM />
+    </UserControl.DataContext>
+    
+    <UserControl.Resources>
+        <utils:MinorCodeConverter x:Key="MinorCodeConverter"/>
+        <utils:WaCodeConverter x:Key="WaCodeConverter"/>
+        <utils:BizCodeConverter x:Key="BizCodeConverter"/>
+    </UserControl.Resources>
+    
+    <Grid>
+        <DockPanel>
+            <dxr:RibbonControl DockPanel.Dock="Top">
+                <dxr:RibbonDefaultPageCategory Caption="defaultCategory">
+                    <dxr:RibbonPage Caption="Home">
+                        <dxr:RibbonPageGroup>
+                            <dxb:BarButtonItem Content="검색" KeyGesture="F5" Command="{Binding SearchCmd}" LargeGlyph="{dx:DXImage SvgImages/Spreadsheet/Zoom.svg}" />
+                        </dxr:RibbonPageGroup>
+                    </dxr:RibbonPage>
+                </dxr:RibbonDefaultPageCategory>
+            </dxr:RibbonControl>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="80"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Border Grid.Row="0" BorderThickness="0 0 0 1" BorderBrush="#859EBF">
+                <Grid Style="{StaticResource SearchPanel}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="200" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Grid.Column="0">
+                        <TextBlock>전개구분</TextBlock>
+                    </Border>
+                        <RadioButton
+                            Grid.Row="0" 
+                            Grid.Column="1" IsChecked="{Binding Forward, UpdateSourceTrigger=PropertyChanged}" Content="정전개">
+                            <RadioButton.InputBindings>
+                                <KeyBinding Key="Enter" Command="{Binding SearchCmd}" />
+                            </RadioButton.InputBindings>
+                        </RadioButton>
+                        <RadioButton
+                            Grid.Row="0" 
+                            Grid.Column="1" IsChecked="{Binding Reverse, UpdateSourceTrigger=PropertyChanged}" Margin="100 0 0 0" Content="역전개">
+                            <RadioButton.InputBindings>
+                                <KeyBinding Key="Enter" Command="{Binding SearchCmd}" />
+                            </RadioButton.InputBindings>
+                        </RadioButton>
+                        <Border Grid.Row="1" Grid.Column="0">
+                        <TextBlock>Lot No.</TextBlock>
+                    </Border>
+                    <dxe:TextEdit 
+                        Text="{Binding LotNo, UpdateSourceTrigger=PropertyChanged}"
+                        Margin="2 0 0 0"
+                        VerticalAlignment="Bottom"
+                        Background="#F6EDCB"
+                        Grid.Row="1" 
+                        Grid.Column="1">
+                        <dxmvvm:Interaction.Behaviors>
+                            <dxmvvm:FocusBehavior FocusDelay="0:0:0.1"/>
+                        </dxmvvm:Interaction.Behaviors>
+                        <dxe:TextEdit.InputBindings>
+                            <KeyBinding Key="Enter" Command="{Binding SearchCmd}" />
+                        </dxe:TextEdit.InputBindings>
+                    </dxe:TextEdit>
+                </Grid>
+                </Border>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="7*" />
+                    </Grid.ColumnDefinitions>
+                    <dxg:TreeListControl
+                        Grid.Column="0"
+                       
+                        ShowBorder="False"
+                        ItemsSource="{Binding Collections}"
+                        SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}"
+                        ClipboardCopyMode="ExcludeHeader"
+                        SelectionMode="Cell"
+                        ShowLoadingPanel="{Binding IsBusy}">
+                        <dxmvvm:Interaction.Behaviors>
+                            <dxmvvm:EventToCommand EventName="SelectedItemChanged" Command="{Binding SelectedItemChangedCmd}" />
+                        </dxmvvm:Interaction.Behaviors>
+                        <dxg:TreeListControl.Resources>
+                            <DataTemplate x:Key="{dxgt:RowIndicatorThemeKey ResourceKey=IconPresenterTemplate, IsThemeIndependent=True}">
+                                <StackPanel x:Name="root" Orientation="Horizontal" Background="Transparent" HorizontalAlignment="Center">
+                                    <TextBlock Text="{Binding Path=DataContext.Lvl}" Margin="2"/>
+                                    <ContentPresenter x:Name="iconPresenter" Content="{x:Null}" IsHitTestVisible="False"/>
+                                </StackPanel>
+                            </DataTemplate>
+
+                            <ControlTemplate x:Key="{dxgt:GridColumnHeaderThemeKey ResourceKey=IndicatorColumnHeaderTemplate, IsThemeIndependent=True}">
+                                <Grid Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock>단계</TextBlock>
+                                </Grid>
+                            </ControlTemplate>
+                            
+                            <ControlTemplate x:Key="{dxgt:GridControlThemeKey IsThemeIndependent=true, ResourceKey=BorderTemplate}" TargetType="{x:Type ContentControl}">
+                                <Border BorderThickness="0 0 1 0" BorderBrush="#859EBF">
+                                    <ContentPresenter />
+                                </Border>
+                            </ControlTemplate>
+                        </dxg:TreeListControl.Resources>
+                        <dxg:TreeListControl.Columns>
+                            <dxg:TreeListColumn FieldName="LotNo" Header="Lot No." />
+                            <dxg:TreeListColumn FieldName="Lvl" Visible="False" />
+                            <dxg:TreeListColumn FieldName="ProductOrderNo" Visible="False" />
+                            <dxg:TreeListColumn FieldName="CProductOrderNo" Visible="False" />
+                            <dxg:TreeListColumn FieldName="ParentFieldName" Visible="False" />
+                            <dxg:TreeListColumn FieldName="KeyFieldName" Visible="False" />
+                        </dxg:TreeListControl.Columns>
+                        <dxg:TreeListControl.View>
+                            <dxg:TreeListView 
+                                AutoExpandAllNodes="True"
+                                IndicatorWidth="50"
+                                TreeLineStyle="Solid"
+                                AllowSorting="False"
+                                AllowFilterEditor="False"
+                                AutoWidth="True"
+                                KeyFieldName="KeyFieldName"
+                                AllowEditing="False"
+                                ParentFieldName="ParentFieldName">
+                            </dxg:TreeListView>
+                        </dxg:TreeListControl.View>
+                    </dxg:TreeListControl>
+                    
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="230"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0" Style="{StaticResource SearchPanel}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="200" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Border Grid.Row="0" Grid.Column="0">
+                                <TextBlock>품목코드</TextBlock>
+                            </Border>
+                            <dxe:TextEdit 
+                                Text="{Binding ItemCode}"
+                                Margin="2 0 0 0"
+                                VerticalAlignment="Bottom"
+                                Background="White"
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                IsReadOnly="True" />
+                            <Border Grid.Row="1" Grid.Column="0">
+                                <TextBlock>품목명</TextBlock>
+                            </Border>
+                            <dxe:TextEdit 
+                                Text="{Binding ItemName}"
+                                Margin="2 0 0 0"
+                                VerticalAlignment="Bottom"
+                                Background="White"
+                                Grid.Row="1" 
+                                Grid.Column="1"
+                                IsReadOnly="True" />
+                            <Border Grid.Row="2" Grid.Column="0">
+                                <TextBlock>Spec</TextBlock>
+                            </Border>
+                            <dxe:TextEdit 
+                                Text="{Binding ItemSpec}"
+                                Margin="2 0 0 0"
+                                VerticalAlignment="Bottom"
+                                Background="White"
+                                Grid.Row="2" 
+                                Grid.Column="1"
+                                IsReadOnly="True" />
+                            <Border Grid.Row="3" Grid.Column="0">
+                                <TextBlock>단위</TextBlock>
+                            </Border>
+                            <dxe:TextEdit 
+                                Text="{Binding BasicUnit}"
+                                Margin="2 0 0 0"
+                                VerticalAlignment="Bottom"
+                                Background="White"
+                                Grid.Row="3"
+                                Width="80"
+                                HorizontalAlignment="Left"
+                                Grid.Column="1"
+                                IsReadOnly="True" />
+                            <Border Grid.Row="5" Grid.Column="0">
+                                <TextBlock>로트생성일</TextBlock>
+                            </Border>
+                            <dxe:DateEdit 
+                                Text="{Binding DocumentDate}"
+                                Margin="2 0 0 0"
+                                VerticalAlignment="Bottom"
+                                Background="White"
+                                Grid.Row="5"
+                                Width="100"
+                                ShowError="False"
+                                HorizontalAlignment="Left"
+                                Grid.Column="1"
+                                Mask="yyyy-MM-dd" MaskUseAsDisplayFormat="True"
+                                ShowEditorButtons="False"
+                                IsReadOnly="True" />
+                            <Border Grid.Row="6" Grid.Column="0">
+                                <TextBlock>공정</TextBlock>
+                            </Border>
+                            <dxe:TextEdit 
+                                Text="{Binding WaCode, Converter={StaticResource WaCodeConverter}}"
+                                Margin="2 0 0 0"
+                                ShowError="False"
+                                VerticalAlignment="Bottom"
+                                Background="White"
+                                Grid.Row="6"
+                                Grid.Column="1"
+                                IsReadOnly="True" />
+                            <Border Grid.Row="7" Grid.Column="0">
+                                <TextBlock>입고수량</TextBlock>
+                            </Border>
+                            <dxe:TextEdit 
+                                Text="{Binding Qty}"
+                                Margin="2 0 0 0"
+                                VerticalAlignment="Bottom"
+                                ShowError="False"
+                                Background="White"
+                                Grid.Row="7"
+                                Width="100"
+                                HorizontalAlignment="Left"
+                                Grid.Column="7"
+                                IsReadOnly="True" />
+                        </Grid>
+                        <dxg:GridControl
+                            Grid.Row="1"
+                           
+                            Margin="5 0 0 0"
+                            ItemsSource="{Binding Details, UpdateSourceTrigger=PropertyChanged}"
+                            ShowBorder="False"
+                            ClipboardCopyMode="ExcludeHeader"
+                            EnableSmartColumnsGeneration="True"
+                            ShowLoadingPanel="{Binding DetailBusy}">
+                            <dxg:GridControl.Resources>
+                                <ControlTemplate x:Key="{dxgt:GridControlThemeKey IsThemeIndependent=true, ResourceKey=BorderTemplate}" TargetType="{x:Type ContentControl}">
+                                    <Border BorderThickness="1 1 0 0" BorderBrush="#859EBF">
+                                        <ContentPresenter />
+                                    </Border>
+                                </ControlTemplate>
+                            </dxg:GridControl.Resources>
+                            <dxg:GridControl.View>
+                                <dxg:TableView
+                                    AllowPerPixelScrolling="True" 
+                                    ShowTotalSummary="False"
+                                    ShowGroupPanel="False"
+                                    AllowEditing="False"
+                                    MultiSelectMode="Cell"
+                                    PrintAutoWidth="False"
+                                    VerticalScrollbarVisibility="Auto"                                       
+                                    ShowValidationAttributeErrors="False"
+                                    EnableImmediatePosting="True" />
+                            </dxg:GridControl.View>
+                            <dxg:GridControl.Columns>
+                                <dxg:GridColumn FieldName="DocumentNo" Header="수불번호" Width="120" />
+                                <dxg:GridColumn FieldName="DocumentDate" Header="수불일" Width="90" />
+                                <dxg:GridColumn FieldName="LotNo" Header="Lot No" Width="100" />
+                                <dxg:GridColumn FieldName="Qty" Header="수량" Width="80" />
+                                <dxg:GridColumn Header="창고" Width="110" FieldName="WhCode">
+                                    <dxg:GridColumn.Binding>
+                                        <MultiBinding Converter="{StaticResource MinorCodeConverter}">
+                                            <Binding Source="I0011" />
+                                            <Binding Path="Data.WhCode" />
+                                        </MultiBinding>
+                                    </dxg:GridColumn.Binding>
+                                </dxg:GridColumn>
+                                <dxg:GridColumn Header="수불유형" Width="120" FieldName="MoveType">
+                                    <dxg:GridColumn.Binding>
+                                        <MultiBinding Converter="{StaticResource MinorCodeConverter}">
+                                            <Binding Source="I0001" />
+                                            <Binding Path="Data.MoveType" />
+                                        </MultiBinding>
+                                    </dxg:GridColumn.Binding>
+                                </dxg:GridColumn>
+                                <dxg:GridColumn FieldName="TransItemCode" Header="변경품목코드" Width="100" />
+                                <dxg:GridColumn FieldName="TransLotNo" Header="변경 Lot No" Width="100" />
+                                <dxg:GridColumn Header="이동창고" Width="110" FieldName="TransWhCode">
+                                    <dxg:GridColumn.Binding>
+                                        <MultiBinding Converter="{StaticResource MinorCodeConverter}">
+                                            <Binding Source="I0011" />
+                                            <Binding Path="Data.TransWhCode" />
+                                        </MultiBinding>
+                                    </dxg:GridColumn.Binding>
+                                </dxg:GridColumn>
+                                <dxg:GridColumn FieldName="ProductOrderNo" Header="제조오더번호" Width="120" />
+                                <dxg:GridColumn Binding="{Binding RowData.Row.BizCode, Converter={StaticResource BizCodeConverter}}" Header="거래처명" Width="120" />
+                                <dxg:GridColumn FieldName="ReqDate" Header="출하요청일" Width="100" />
+                            </dxg:GridControl.Columns>
+                        </dxg:GridControl>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </DockPanel>
+    </Grid>
+</UserControl>

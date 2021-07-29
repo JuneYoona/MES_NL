@@ -1,0 +1,178 @@
+﻿<UserControl 
+    x:Class="MesAdmin.Views.CommonMinorView"
+    xmlns="http://schemas.microsoft.com/netfx/2009/xaml/presentation" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
+    xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+    xmlns:ViewModels="clr-namespace:MesAdmin.ViewModels"
+    xmlns:view="clr-namespace:MesAdmin.Views"
+    xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
+    xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
+    xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
+    xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
+    xmlns:common="clr-namespace:MesAdmin.Common.Common"
+    xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
+    mc:Ignorable="d"
+    d:DesignHeight="650"
+    d:DesignWidth="670"
+    DataContext="{dxmvvm:ViewModelSource ViewModels:CommonMinorVM}">
+    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicatorState.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <Grid>
+        <DockPanel>
+            <dxr:RibbonControl DockPanel.Dock="Top">
+                <dxr:RibbonDefaultPageCategory Caption="defaultCategory">
+                    <dxr:RibbonPage Caption="Home">
+                        <dxr:RibbonPageGroup Caption="Minor 코드 Task">
+                            <dxb:BarButtonItem Content="저장" KeyGesture="CTRL+S" LargeGlyph="{dx:DXImage SvgImages/Save/Save.svg}">
+                                <dxmvvm:Interaction.Behaviors>
+                                    <dxmvvm:ConfirmationBehavior 
+                                            Command="{Binding SaveCmd}" 
+                                            MessageText="저장하시겠습니까?"
+                                            MessageIcon="Question"
+                                            MessageButton="YesNo" />
+                                </dxmvvm:Interaction.Behaviors>
+                            </dxb:BarButtonItem>
+                            <dxb:BarButtonItem Content="추가" KeyGesture="CTRL+N" Command="{Binding NewCmd}" LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/AddFile.svg}" />
+                            <dxb:BarButtonItem Content="삭제" KeyGesture="CTRL+D" Command="{Binding DeleteCmd}" LargeGlyph="{dx:DXImage SvgImages/Snap/SnapDeleteList.svg}" />
+                            <dxb:BarButtonItem Content="새로고침" KeyGesture="CTRL+R" Command="{Binding RefreshCmd}" LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_Refresh.svg}" />
+                        </dxr:RibbonPageGroup>
+                    </dxr:RibbonPage>
+                </dxr:RibbonDefaultPageCategory>
+            </dxr:RibbonControl>
+
+            <dxdo:DockLayoutManager>
+                <dxdo:DockLayoutManager.LayoutRoot>
+                    <dxdo:LayoutGroup Orientation="Horizontal" Margin="5">
+                        <dxdo:LayoutPanel HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" ItemWidth="400" AllowClose="False" AllowDrag="False" AllowFloat="False" AllowHide="False" ShowCaption="False" ShowBorder="False">
+                            <dxlc:GroupBox Padding="0">
+                                <dxlc:GroupBox.HeaderTemplate>
+                                    <DataTemplate>
+                                        <Border>
+                                            <TextBlock FontStyle="Italic" FontWeight="Bold" Margin="3" Text="Major Code"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </dxlc:GroupBox.HeaderTemplate>
+                                <dxg:GridControl
+                                        common:GridRowIndicatorHelper.IsEnabled="True"
+                                        ItemsSource="{Binding CollectionsMajor}"
+                                        SelectedItem="{Binding SelectedMajor, UpdateSourceTrigger=PropertyChanged}"
+                                        SelectionMode="Row"
+                                        ShowBorder="False"
+                                        ClipboardCopyMode="ExcludeHeader"
+                                        EnableSmartColumnsGeneration="True">
+                                    <dxmvvm:Interaction.Behaviors>
+                                        <dxmvvm:EventToCommand EventName="SelectedItemChanged" Command="{Binding SelectedItemChangedCmd}" />
+                                    </dxmvvm:Interaction.Behaviors>
+                                    <dxg:GridControl.View>
+                                        <dxg:TableView
+                                                AllowPerPixelScrolling="True"
+                                                ShowTotalSummary="False"
+                                                ShowGroupPanel="False" 
+                                                AllowEditing="False"
+                                                AutoWidth="True" />
+                                    </dxg:GridControl.View>
+                                    <dxg:GridControl.Columns>
+                                        <dxg:GridColumn 
+                                                FieldName="MajorCode" 
+                                                Header="Major 코드" 
+                                                FixedWidth="True" 
+                                                Width="150" />
+                                        <dxg:GridColumn FieldName="MajorName" Header="Major 코드명" />
+                                    </dxg:GridControl.Columns>
+                                </dxg:GridControl>
+                            </dxlc:GroupBox>
+                        </dxdo:LayoutPanel>
+                        <dxdo:LayoutPanel HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" ItemWidth="*" AllowClose="False" AllowDrag="False" AllowFloat="False" AllowHide="False" ShowCaption="False" ShowBorder="False">
+                            <dxlc:GroupBox Padding="0">
+                                <dxlc:GroupBox.HeaderTemplate>
+                                    <DataTemplate>
+                                        <Border>
+                                            <TextBlock FontStyle="Italic" FontWeight="Bold" Margin="3" Text="Minor Code"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </dxlc:GroupBox.HeaderTemplate>
+                                <custom:DSGridControl
+                                    x:Name="MinorGrid"
+                                    common:GridRowIndicatorHelper.IsEnabled="True"
+                                    ItemsSource="{Binding CollectionsMinor}"
+                                    SelectionMode="Cell"
+                                    ShowBorder="False"
+                                    ClipboardCopyMode="ExcludeHeader"
+                                    EnableSmartColumnsGeneration="True">
+                                    <dxg:GridControl.View>
+                                        <dxg:TableView
+                                            AllowPerPixelScrolling="True"
+                                            FocusedRow="{Binding SelectedMinor, UpdateSourceTrigger=PropertyChanged}"
+                                            ShowTotalSummary="False"
+                                            ShowGroupPanel="False"
+                                            AllowEditing="True"
+                                            EditorShowMode="MouseUpFocused"
+                                            EnableImmediatePosting="True">
+                                            <dxmvvm:Interaction.Behaviors>
+                                                <dxmvvm:EventToCommand EventName="CellValueChanged" Command="{Binding CellValueChangedCmd}" />
+                                                <utils:RestrictEditingHelper>
+                                                    <utils:RestrictEditingHelper.Conditions>
+                                                        <utils:RestrictEditingCondition FieldName="MinorCode" Expression="State != 'Added'"/>
+                                                    </utils:RestrictEditingHelper.Conditions>
+                                                </utils:RestrictEditingHelper>
+                                            </dxmvvm:Interaction.Behaviors>
+                                        </dxg:TableView>
+                                    </dxg:GridControl.View>
+                                    <dxg:GridControl.Columns>
+                                        <dxg:GridColumn 
+                                            FieldName="MinorCode" 
+                                            Header="Minor 코드"
+                                            FixedWidth="True" 
+                                            Width="100" />
+                                        <dxg:GridColumn FieldName="MinorName" Header="Minor 코드명" Width="150" />
+                                        <dxg:GridColumn FieldName="Ref01" Header="참조1" Width="100" />
+                                        <dxg:GridColumn FieldName="Ref02" Header="참조2" Width="100" />
+                                        <dxg:GridColumn FieldName="Ref03" Header="참조3" Width="100" />
+                                        <dxg:GridColumn FieldName="Ref04" Header="참조4" Width="100" />
+                                        <dxg:GridColumn FieldName="Ref05" Header="참조5" Width="100" />
+                                        <dxg:GridColumn FieldName="UpdateId" Header="입력자 Id" FixedWidth="True" Width="100" ReadOnly="True" />
+                                        <dxg:GridColumn FieldName="UpdateDate" Header="입력 시간" FixedWidth="True" Width="100" ReadOnly="True" AllowFocus="False" />
+                                        <dxg:GridColumn FieldName="IsEnabled" Header="사용여부" FixedWidth="True" Width="60">
+                                            <dxg:GridColumn.EditSettings>
+                                                <dxe:CheckEditSettings></dxe:CheckEditSettings>
+                                            </dxg:GridColumn.EditSettings>
+                                        </dxg:GridColumn>
+                                        <!--<dxg:GridColumn Header="사용여부" FixedWidth="True" Width="60">
+                                    <dxg:GridColumn.EditSettings>
+                                        <dxe:CheckEditSettings>
+                                            <dxe:CheckEditSettings/>
+                                            -->
+                                        <!--<dxe:CheckEdit
+                                                x:Name="PART_Editor"
+                                                IsChecked="{Binding RowData.Row.IsEnabled}"
+                                                HorizontalAlignment="Center" />-->
+                                        <!--
+                                        </dxe:CheckEditSettings>
+                                    
+                                    </dxg:GridColumn.EditSettings>
+                                </dxg:GridColumn>-->
+                                    </dxg:GridControl.Columns>
+                                </custom:DSGridControl>
+                            </dxlc:GroupBox>
+                        </dxdo:LayoutPanel>
+                    </dxdo:LayoutGroup>
+                </dxdo:DockLayoutManager.LayoutRoot>
+            </dxdo:DockLayoutManager>
+        </DockPanel>
+    </Grid>
+</UserControl>

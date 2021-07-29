@@ -1,0 +1,204 @@
+﻿<UserControl x:Class="MesAdmin.Views.NetUserNewView"
+    xmlns="http://schemas.microsoft.com/netfx/2009/xaml/presentation" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+    xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"             
+    xmlns:viewmodel="clr-namespace:MesAdmin.ViewModels"
+    xmlns:view="clr-namespace:MesAdmin.Views"             
+    xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
+    mc:Ignorable="d" 
+    d:DesignHeight="650"
+    d:DesignWidth="670">
+    <UserControl.DataContext>
+        <viewmodel:NetUserNewVM />
+    </UserControl.DataContext>
+
+    <UserControl.Resources>
+        <dxmvvm:ObjectToObjectConverter x:Key="EntityStateConverter">
+            <dxmvvm:MapItem Source="Added" Target="True"/>
+            <dxmvvm:MapItem Source="Deleted" Target="False"/>
+            <dxmvvm:MapItem Source="Unchanged" Target="False"/>
+            <dxmvvm:MapItem Source="Changed" Target="False"/>
+        </dxmvvm:ObjectToObjectConverter>
+        <dxmvvm:ObjectToObjectConverter x:Key="EntityMessageTypeConverter">
+            <dxmvvm:MapItem Source="Added" Target="True"/>
+            <dxmvvm:MapItem Source="Changed" Target="False"/>
+        </dxmvvm:ObjectToObjectConverter>
+        <DataTemplate x:Key="LookUpTemplate">
+            <dxg:LookUpEdit
+                Name="PART_Editor"
+                ItemsSource="{Binding View.DataContext.LueNetRoles}"
+                IsEnabled="{Binding RowData.Row.State, Converter={StaticResource EntityStateConverter}}"
+                ValueMember="RoleId"
+                DisplayMember="RoleName"
+                EditValue="{Binding RowData.Row.RoleId}"
+                ShowSizeGrip="False"
+                IsTextEditable="False"
+                AutoPopulateColumns="False"
+                ShowError="False" ShowErrorToolTip="False"
+                IsPopupAutoWidth="False">
+                <dxg:LookUpEdit.PopupContentTemplate>
+                    <ControlTemplate>
+                        <dxg:GridControl
+                            Name="PART_GridControl"
+                            Width="400" 
+                            ShowBorder="False" >
+                            <dxg:GridControl.View>
+                                <dxg:TableView 
+                                    ShowGroupPanel="False" 
+                                    ShowIndicator="False"
+                                    AutoWidth="True"/>
+                            </dxg:GridControl.View>
+                            <dxg:GridControl.Columns>
+                                <dxg:GridColumn FieldName="RoleName" Header="RoleName" />
+                                <dxg:GridColumn FieldName="Description" Header="Description"/>
+                            </dxg:GridControl.Columns>
+                        </dxg:GridControl>
+                    </ControlTemplate>
+                </dxg:LookUpEdit.PopupContentTemplate>
+            </dxg:LookUpEdit>
+        </DataTemplate>
+    </UserControl.Resources>
+    
+    <Grid>
+        <DockPanel>
+            <dxr:RibbonControl DockPanel.Dock="Top">
+                <dxr:RibbonDefaultPageCategory Caption="defaultCategory">
+                    <dxr:RibbonPage Caption="Home">
+                        <dxr:RibbonPageGroup Caption="Role관리 Task">
+                            <dxb:BarButtonItem Content="저장" KeyGesture="CTRL+S" LargeGlyph="{dx:DXImage SvgImages/Save/Save.svg}">
+                                <dxmvvm:Interaction.Behaviors>
+                                    <dxmvvm:ConfirmationBehavior Command="{Binding SaveCmd}" MessageIcon="Question" 
+                                        MessageText="저장하시겠습니까?" MessageButton="YesNo" />
+                                </dxmvvm:Interaction.Behaviors>
+                            </dxb:BarButtonItem>
+                            <dxb:BarButtonItem Content="Role 추가" KeyGesture="CTRL+N" Command="{Binding AddRoleCmd}" LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/AddFile.svg}" />
+                            <dxb:BarButtonItem Content="Role 삭제" KeyGesture="CTRL+D" Command="{Binding DelRoleCmd}" LargeGlyph="{dx:DXImage SvgImages/Snap/SnapDeleteList.svg}" />
+                        </dxr:RibbonPageGroup>
+                    </dxr:RibbonPage>
+                </dxr:RibbonDefaultPageCategory>
+            </dxr:RibbonControl>
+            <dxlc:FlowLayoutControl Orientation="Vertical" StretchContent="True">
+                <dxlc:GroupBox Header="사용자 정보">
+                    <Grid Style="{StaticResource SearchPanel}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="130" />
+                            <ColumnDefinition Width="180" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Border Grid.Row="0" Grid.Column="0">
+                            <TextBlock>사용자 ID</TextBlock>
+                        </Border>
+                        <Border Grid.Row="1" Grid.Column="0">
+                            <TextBlock>사용자 Name</TextBlock>
+                        </Border>
+                        <Border Grid.Row="2" Grid.Column="0">
+                            <TextBlock>비밀번호</TextBlock>
+                        </Border>
+                        <Border Grid.Row="3" Grid.Column="0">
+                            <TextBlock>Email</TextBlock>
+                        </Border>
+                        <Border Grid.Row="4" Grid.Column="0">
+                            <TextBlock>작업장</TextBlock>
+                        </Border>
+                        <Border Grid.Row="5" Grid.Column="0">
+                            <TextBlock>사용여부</TextBlock>
+                        </Border>
+                        <dxe:TextEdit
+                            Text="{Binding NetUserItem.UserName, UpdateSourceTrigger=PropertyChanged}"
+                            IsEnabled="{Binding Status, Converter={StaticResource EntityMessageTypeConverter}}"
+                            Grid.Row="0"
+                            Background="#F6EDCB"
+                            Grid.Column="1"
+                            VerticalAlignment="Bottom"
+                            Margin="2 0 0 0">
+                        </dxe:TextEdit>
+                        <dxe:TextEdit
+                            Text="{Binding NetUserItem.Profile.KorName, UpdateSourceTrigger=PropertyChanged}"
+                            Grid.Row="1"
+                            IsEnabled="{Binding IsEnabled}"
+                            Background="#F6EDCB"
+                            VerticalAlignment="Bottom"
+                            Grid.Column="1" 
+                            Margin="2 0 0 0" />
+                        <dxe:PasswordBoxEdit
+                            Text="{Binding NetUserItem.Password, UpdateSourceTrigger=PropertyChanged}" 
+                            Grid.Row="2"
+                            Background="#F6EDCB"
+                            IsEnabled="{Binding IsEnabled}"
+                            Grid.Column="1"
+                            VerticalAlignment="Bottom"
+                            Margin="2 0 0 0" />
+                        <dxe:TextEdit
+                            Text="{Binding NetUserItem.Email, UpdateSourceTrigger=PropertyChanged}" 
+                            Grid.Row="3"
+                            Background="White"
+                            IsEnabled="{Binding IsEnabled}"
+                            Grid.Column="1"
+                            VerticalAlignment="Bottom"
+                            Margin="2 0 0 0" />
+                        <dxe:ComboBoxEdit
+                            Grid.Column="1"
+                            Grid.Row="4"
+                            Background="White"
+                            IsEnabled="{Binding IsEnabled}"
+                            Margin="2 0 0 0"
+                            VerticalAlignment="Bottom"
+                            ItemsSource="{Binding WAItems}" AllowDefaultButton="True"
+                            EditValue="{Binding SelectedWACode, UpdateSourceTrigger=PropertyChanged}"
+						    DisplayMember="WaName"
+                            ValueMember="WaCode">
+                            <dxe:ComboBoxEdit.StyleSettings>
+                                <dxe:CheckedComboBoxStyleSettings />
+                            </dxe:ComboBoxEdit.StyleSettings>
+                        </dxe:ComboBoxEdit>
+                        <dxe:CheckEdit IsChecked="{Binding NetUserItem.IsApproved, UpdateSourceTrigger=PropertyChanged}"
+                            Grid.Row="5" Grid.Column="1" VerticalAlignment="Bottom" Margin="2 0 0 0" IsEnabled="{Binding IsEnabled}" />
+                    </Grid>
+                </dxlc:GroupBox>
+                <dxlc:GroupBox x:Name="RoleBox" Header="Role 정보" Height="300">
+                    <dxg:GridControl
+                        ItemsSource="{Binding NetUserItem.Roles}"
+                        SelectedItem="{Binding SelectedRole}">
+                        <dxg:GridControl.View>
+                            <dxg:TableView 
+                                ShowGroupPanel="False"
+                                AutoWidth="True"/>
+                        </dxg:GridControl.View>
+                        <dxg:GridControl.Columns>
+                            <dxg:GridColumn 
+                                Header=" "
+                                FieldName="State"
+                                FixedWidth="True" 
+                                Width="20" 
+                                CellTemplate="{StaticResource StateTemplate}" 
+                                ReadOnly="True"
+                                AllowFocus="False" />
+                            <dxg:GridColumn 
+                                FieldName="RoleId" 
+                                Header="Role 이름" 
+                                FixedWidth="True" 
+                                Width="150" 
+                                CellTemplate="{StaticResource LookUpTemplate}" />
+                            <dxg:GridColumn
+                                FieldName="Description" 
+                                Header="Role 설명" 
+                                AllowEditing="False" 
+                                AllowFocus="True" />
+                        </dxg:GridControl.Columns>
+                    </dxg:GridControl>
+                </dxlc:GroupBox>
+            </dxlc:FlowLayoutControl>
+        </DockPanel>
+    </Grid>
+</UserControl>
+

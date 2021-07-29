@@ -1,0 +1,92 @@
+﻿<UserControl xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"  x:Class="MesAdmin.Views.StockCloseView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    mc:Ignorable="d"
+    xmlns:dxt="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys"
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+    d:DesignHeight="600" d:DesignWidth="800"
+    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+    xmlns:ViewModels="clr-namespace:MesAdmin.ViewModels"
+    xmlns:view="clr-namespace:MesAdmin.Views"             
+    DataContext="{dxmvvm:ViewModelSource Type=ViewModels:StockCloseVM}"             
+    xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon">
+
+    <Grid IsEnabled="{Binding IsEnabled}">
+        <dx:DXTabControl Margin="5 20 5 5" Height="400" VerticalAlignment="Top">
+            <dx:DXTabControl.BackgroundTemplate>
+                <DataTemplate>
+                    <Border BorderBrush="LightSlateGray" BorderThickness="1" />
+                </DataTemplate>
+            </dx:DXTabControl.BackgroundTemplate>
+            <dx:DXTabItem>
+                <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Auto" Margin="0,-1,0,1">
+                    <Grid Style="{StaticResource SearchPanel}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="130" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Border Grid.Row="0" Grid.Column="0">
+                            <TextBlock>최종마감 년월</TextBlock>
+                        </Border>
+                        <dxe:DateEdit
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            EditValue="{Binding StockClose.ClosedDate, UpdateSourceTrigger=PropertyChanged}"
+                            AllowDefaultButton="False"
+                            VerticalAlignment="Bottom"
+                            Margin="2 0 0 0"
+                            IsReadOnly="True"
+                            Mask="yyyy-MM"
+                            Background="#F3F6FB"
+                            MaskType="DateTime"
+                            MaskUseAsDisplayFormat="True" />
+                        <Button Grid.Row="0" Grid.Column="3" Content="수불마감취소" Height="24" Margin="0 1 0 0">
+                            <dxmvvm:Interaction.Behaviors>
+                                <dxmvvm:ConfirmationBehavior 
+                                    Command="{Binding CancelCmd}" 
+                                    MessageText="취소 하시겠습니까?"
+                                    MessageIcon="Question"
+                                    MessageButton="YesNo" />
+                            </dxmvvm:Interaction.Behaviors>
+                        </Button>
+                        <Border Grid.Row="1" Grid.Column="0">
+                            <TextBlock>작업대상 년월</TextBlock>
+                        </Border>
+                        <dxe:DateEdit
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            EditValue="{Binding StockClose.ClosingDate, UpdateSourceTrigger=PropertyChanged}"
+                            VerticalAlignment="Bottom"
+                            Margin="2 0 0 0"
+                            Mask="yyyy-MM"
+                            Background="#F6EDCB"
+                            MaskType="DateTime"
+                            MaskUseAsDisplayFormat="True" />
+                        <Button Grid.Row="1" Grid.Column="3" Content="수불마감" Height="24" Margin="0 1 0 0">
+                            <dxmvvm:Interaction.Behaviors>
+                                <dxmvvm:ConfirmationBehavior 
+                                    Command="{Binding CloseCmd}" 
+                                    MessageText="마감 하시겠습니까?"
+                                    MessageIcon="Question"
+                                    MessageButton="YesNo" />
+                            </dxmvvm:Interaction.Behaviors>
+                        </Button>
+                    </Grid>
+                </ScrollViewer>
+            </dx:DXTabItem>
+            <dx:DXTabControl.View>
+                <dx:TabControlScrollView ShowHeaderMenu="False" AllowHideTabItems="True" HeaderLocation="None" />
+            </dx:DXTabControl.View>
+        </dx:DXTabControl>
+    </Grid>
+</UserControl>
