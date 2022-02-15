@@ -9,15 +9,13 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:MesAdmin.Common.Utils"
                     xmlns:models="clr-namespace:MesAdmin.Models">
-    
     <local:MultiValueConverter x:Key="MultiValueConverter"/>
     <!--#region ScrollBarMode TouchOverlap-->
     <Style TargetType="Grid">
         <Setter Property="dx:ScrollBarExtensions.ScrollBarMode" Value="TouchOverlap"/>
     </Style>
     <!--#endregion-->
-    
-    <!--search panel style-->
+    <!--#region search panel style-->
     <Style x:Key="SearchPanel" TargetType="Grid">
         <Setter Property="Margin" Value="10" />
         <Style.Resources>
@@ -34,7 +32,8 @@
             </Style>
         </Style.Resources>
     </Style>
-    <!--read only cell color-->
+    <!--#endregion-->
+    <!--#region ReadOnly Column-->
     <Style TargetType="dxg:GridColumn">
         <Style.Triggers>
             <Trigger Property="AllowEditing" Value="False">
@@ -73,8 +72,8 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    <!--read only control-->
-    
+    <!--#endregion-->
+    <!--#region StateTemplate-->
     <DataTemplate x:Key="StateTemplate">
         <Image x:Name="Image" Height="14" Width="13" Source="{x:Null}"/>
         <DataTemplate.Triggers>
@@ -89,6 +88,8 @@
             </DataTrigger>
         </DataTemplate.Triggers>
     </DataTemplate>
+    <!--#endregion-->
+    <!--#region file attached Template-->
     <DataTemplate x:Key="AttachedTemplate">
         <Image x:Name="Image" Height="16" Width="16" Source="{x:Null}"/>
         <DataTemplate.Triggers>
@@ -97,172 +98,15 @@
             </DataTrigger>
         </DataTemplate.Triggers>
     </DataTemplate>
-    
-    <DataTemplate x:Key="AltItemCode">
-        <dxe:ButtonEdit 
-            Name="PART_Editor"
-            EditValue="{Binding RowData.Row.AltItemCode, UpdateSourceTrigger=PropertyChanged}"
-            IsTextEditable="True">
-            <dxmvvm:Interaction.Behaviors>
-                <dxmvvm:EventToCommand EventName="DefaultButtonClick" Command="{Binding View.DataContext.ShowDialogCmd}" CommandParameter="PopupItemView"/>
-            </dxmvvm:Interaction.Behaviors>
-        </dxe:ButtonEdit>
-    </DataTemplate>
-    
-    <Style x:Key="AddedTemplate" TargetType="dxg:LightweightCellEditor" BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}">
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding Path=SelectionState}" Value="Focused">
-                <Setter Property="Background" Value="#FCF1C2" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding RowData.Row.State}" Value="Added">
-                <Setter Property="Background" Value="White" />
-            </DataTrigger>
-        </Style.Triggers>
-    </Style>
-    <!--BizAreaCode ControlTemplate -->
-    <ControlTemplate x:Key="BizAreaCodeTemplate">
-        <dxg:GridControl
-            Name="PART_GridControl"
-            ShowBorder="False" >
-            <dxg:GridControl.View>
-                <dxg:TableView 
-                    ShowGroupPanel="False" 
-                    ShowIndicator="False"
-                    AutoWidth="True"/>
-            </dxg:GridControl.View>
-            <dxg:GridControl.Columns>
-                <dxg:GridColumn FieldName="MinorCode" Header="코드"/>
-                <dxg:GridColumn FieldName="MinorName" Header="공장정보명"  />
-            </dxg:GridControl.Columns>
-        </dxg:GridControl>
-    </ControlTemplate>
-    <!--End BizAreaCode ControlTemplate-->
-    <!--WaCode ControlTemplate -->
-    <ControlTemplate x:Key="WaCodeTemplate">
-        <dxg:GridControl
-            Name="PART_GridControl"
-            ShowBorder="False" >
-            <dxg:GridControl.View>
-                <dxg:TableView 
-                    ShowGroupPanel="False" 
-                    ShowIndicator="False"
-                    AutoWidth="True"/>
-            </dxg:GridControl.View>
-            <dxg:GridControl.Columns>
-                <dxg:GridColumn FieldName="WaCode" Header="코드"/>
-                <dxg:GridColumn FieldName="WaName" Header="공정명"  />
-            </dxg:GridControl.Columns>
-        </dxg:GridControl>
-    </ControlTemplate>
-    <!--End ProcCode ControlTemplate-->
-    <!--EqpCode ControlTemplate -->
-    <ControlTemplate x:Key="EqpCodeTemplate">
-        <dxg:GridControl
-            Name="PART_GridControl"
-            ShowBorder="False" >
-            <dxg:GridControl.View>
-                <dxg:TableView 
-                    ShowGroupPanel="False" 
-                    ShowIndicator="False"
-                    AutoWidth="True"/>
-            </dxg:GridControl.View>
-            <dxg:GridControl.Columns>
-                <dxg:GridColumn FieldName="EqpCode" Header="코드"/>
-                <dxg:GridColumn FieldName="EqpName" Header="설비명"  />
-            </dxg:GridControl.Columns>
-        </dxg:GridControl>
-    </ControlTemplate>
-    <!--End EqpCode ControlTemplate-->
-    <!--WhCode ControlTemplate -->
-    <ControlTemplate x:Key="WhCodeTemplate">
-        <dxg:GridControl
-            Name="PART_GridControl"
-            ShowBorder="False" >
-            <dxg:GridControl.View>
-                <dxg:TableView 
-                    ShowGroupPanel="False" 
-                    ShowIndicator="False"
-                    AutoWidth="True"/>
-            </dxg:GridControl.View>
-            <dxg:GridControl.Columns>
-                <dxg:GridColumn FieldName="MinorCode" Header="코드" Width="100"/>
-                <dxg:GridColumn FieldName="MinorName" Header="창고명" Width="200"/>
-            </dxg:GridControl.Columns>
-        </dxg:GridControl>
-    </ControlTemplate>
-    <!--End EqpCode ControlTemplate-->
-    <ControlTemplate x:Key="MajorCodeTemplate">
-        <dxg:GridControl
-            Name="PART_GridControl"
-            ShowBorder="False" >
-            <dxg:GridControl.View>
-                <dxg:TableView 
-                    ShowGroupPanel="False" 
-                    ShowIndicator="False" Width="400"
-                    AutoWidth="True"/>
-            </dxg:GridControl.View>
-            <dxg:GridControl.Columns>
-                <dxg:GridColumn FieldName="MajorCode" Header="Major 코드"/>
-                <dxg:GridColumn FieldName="MajorName" Header="Major 코드명"  />
-            </dxg:GridControl.Columns>
-        </dxg:GridControl>
-    </ControlTemplate>
-
-    <ControlTemplate x:Key="BizTemplate">
-        <dxg:GridControl
-            x:Name="PART_GridControl"
-            Width="400"
-            ShowBorder="False" >
-            <dxg:GridControl.View>
-                <dxg:TableView 
-                    ShowGroupPanel="False" 
-                    ShowIndicator="False"
-                    AutoWidth="True"/>
-            </dxg:GridControl.View>
-            <dxg:GridControl.Columns>
-                <dxg:GridColumn FieldName="BizCode" Header="납품처코드" />
-                <dxg:GridColumn FieldName="BizName" Header="납품처명"/>
-            </dxg:GridControl.Columns>
-        </dxg:GridControl>
-    </ControlTemplate>
-    
-    <DataTemplate x:Key="PassFailTemplate">
-        <dxe:ComboBoxEdit Name="PART_Editor" DisplayMember="Text" ValueMember="Value">
-            <models:ItemInfo Text="Pass" Value="Pass"/>
-            <models:ItemInfo Text="Fail" Value="Fail"/>
-            <models:ItemInfo Text="N/A" Value="N/A"/>
-        </dxe:ComboBoxEdit>
-    </DataTemplate>
-
+    <!--#endregion-->
+    <!--#region numeric mask 0~4-->
     <dxe:TextEditSettings x:Key="NumericEditor0" MaskType="Numeric" Mask="n0" MaskUseAsDisplayFormat="True" />
     <dxe:TextEditSettings x:Key="NumericEditor" MaskType="Numeric" Mask="n2" MaskUseAsDisplayFormat="True" />
     <dxe:TextEditSettings x:Key="NumericEditor1" MaskType="Numeric" Mask="n1" MaskUseAsDisplayFormat="True" />
     <dxe:TextEditSettings x:Key="NumericEditor2" MaskType="Numeric" Mask="n2" MaskUseAsDisplayFormat="True" />
     <dxe:TextEditSettings x:Key="NumericEditor3" MaskType="Numeric" Mask="n3" MaskUseAsDisplayFormat="True" />
     <dxe:TextEditSettings x:Key="NumericEditor4" MaskType="Numeric" Mask="n4" MaskUseAsDisplayFormat="True" />
-    
-    <Style TargetType="dxe:TextEdit" x:Key="NumericStyle">
-        <Setter Property="MaskType" Value="Numeric"  />
-        <Setter Property="Mask" Value="n2"  />
-        <Setter Property="MaskUseAsDisplayFormat" Value="True"  />
-    </Style>
-
-    <ControlTemplate x:Key="SearchBizTemplate">
-        <dxg:GridControl x:Name="PART_GridControl"
-            ShowBorder="False">
-            <dxg:GridControl.View>
-                <dxg:TableView ShowGroupPanel="False" 
-                    ShowIndicator="False"
-                    ShowColumnHeaders="False"
-                    ShowHorizontalLines="False"
-                    AutoWidth="True" />
-            </dxg:GridControl.View>
-            <dxg:GridControl.Columns>
-                <dxg:GridColumn FieldName="BizName" />
-            </dxg:GridControl.Columns>
-        </dxg:GridControl>
-    </ControlTemplate>
-
+    <!--#endregion-->
     <!--#region BaseEdit line color -->
     <Style x:Key="BaseEditStyle" TargetType="dxe:BaseEdit">
         <Setter Property="BorderTemplate">
@@ -328,7 +172,7 @@
         </Border>
     </DataTemplate>
     <!--#endregion-->
-    
+
     <Style TargetType="dxe:TextEdit" BasedOn="{StaticResource BaseEditStyle}"/>
     <Style TargetType="dxe:ComboBoxEdit" BasedOn="{StaticResource BaseEditStyle}" />
     <Style TargetType="dxe:DateEdit" BasedOn="{StaticResource BaseEditStyle}"/>
@@ -337,7 +181,6 @@
     <Style TargetType="dxe:SpinEdit" BasedOn="{StaticResource BaseEditStyle}"/>
     <Style TargetType="dxe:PopupBaseEdit" BasedOn="{StaticResource BaseEditStyle}"/>
     <!--#endregion-->
-
     <!--#region MessageBoxService and min width-->
     <dx:DXMessageBoxService x:Key="MessageBoxService" />
     <Style TargetType="dx:ThemedMessageBoxWindow">
@@ -530,4 +373,145 @@
         </dxe:ComboBoxEdit>
     </DataTemplate>
     <!--#endregion-->
+    
+    <DataTemplate x:Key="AltItemCode">
+        <dxe:ButtonEdit
+            Name="PART_Editor"
+            EditValue="{Binding RowData.Row.AltItemCode, UpdateSourceTrigger=PropertyChanged}"
+            IsTextEditable="True">
+            <dxmvvm:Interaction.Behaviors>
+                <dxmvvm:EventToCommand EventName="DefaultButtonClick" Command="{Binding View.DataContext.ShowDialogCmd}" CommandParameter="PopupItemView"/>
+            </dxmvvm:Interaction.Behaviors>
+        </dxe:ButtonEdit>
+    </DataTemplate>
+
+    <Style x:Key="AddedTemplate" TargetType="dxg:LightweightCellEditor" BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=SelectionState}" Value="Focused">
+                <Setter Property="Background" Value="#FCF1C2" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding RowData.Row.State}" Value="Added">
+                <Setter Property="Background" Value="White" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    <!--WaCode ControlTemplate -->
+    <ControlTemplate x:Key="WaCodeTemplate">
+        <dxg:GridControl
+            Name="PART_GridControl"
+            ShowBorder="False" >
+            <dxg:GridControl.View>
+                <dxg:TableView 
+                    ShowGroupPanel="False" 
+                    ShowIndicator="False"
+                    AutoWidth="True"/>
+            </dxg:GridControl.View>
+            <dxg:GridControl.Columns>
+                <dxg:GridColumn FieldName="WaCode" Header="코드"/>
+                <dxg:GridColumn FieldName="WaName" Header="공정명"  />
+            </dxg:GridControl.Columns>
+        </dxg:GridControl>
+    </ControlTemplate>
+    <!--End ProcCode ControlTemplate-->
+    <!--EqpCode ControlTemplate -->
+    <ControlTemplate x:Key="EqpCodeTemplate">
+        <dxg:GridControl
+            Name="PART_GridControl"
+            ShowBorder="False" >
+            <dxg:GridControl.View>
+                <dxg:TableView 
+                    ShowGroupPanel="False" 
+                    ShowIndicator="False"
+                    AutoWidth="True"/>
+            </dxg:GridControl.View>
+            <dxg:GridControl.Columns>
+                <dxg:GridColumn FieldName="EqpCode" Header="코드"/>
+                <dxg:GridColumn FieldName="EqpName" Header="설비명"  />
+            </dxg:GridControl.Columns>
+        </dxg:GridControl>
+    </ControlTemplate>
+    <!--End EqpCode ControlTemplate-->
+    <!--WhCode ControlTemplate -->
+    <ControlTemplate x:Key="WhCodeTemplate">
+        <dxg:GridControl
+            Name="PART_GridControl"
+            ShowBorder="False" >
+            <dxg:GridControl.View>
+                <dxg:TableView 
+                    ShowGroupPanel="False" 
+                    ShowIndicator="False"
+                    AutoWidth="True"/>
+            </dxg:GridControl.View>
+            <dxg:GridControl.Columns>
+                <dxg:GridColumn FieldName="MinorCode" Header="코드" Width="100"/>
+                <dxg:GridColumn FieldName="MinorName" Header="창고명" Width="200"/>
+            </dxg:GridControl.Columns>
+        </dxg:GridControl>
+    </ControlTemplate>
+    <!--End EqpCode ControlTemplate-->
+    <ControlTemplate x:Key="MajorCodeTemplate">
+        <dxg:GridControl
+            Name="PART_GridControl"
+            ShowBorder="False" >
+            <dxg:GridControl.View>
+                <dxg:TableView 
+                    ShowGroupPanel="False" 
+                    ShowIndicator="False" Width="400"
+                    AutoWidth="True"/>
+            </dxg:GridControl.View>
+            <dxg:GridControl.Columns>
+                <dxg:GridColumn FieldName="MajorCode" Header="Major 코드"/>
+                <dxg:GridColumn FieldName="MajorName" Header="Major 코드명"  />
+            </dxg:GridControl.Columns>
+        </dxg:GridControl>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="BizTemplate">
+        <dxg:GridControl
+            x:Name="PART_GridControl"
+            Width="400"
+            ShowBorder="False" >
+            <dxg:GridControl.View>
+                <dxg:TableView 
+                    ShowGroupPanel="False" 
+                    ShowIndicator="False"
+                    AutoWidth="True"/>
+            </dxg:GridControl.View>
+            <dxg:GridControl.Columns>
+                <dxg:GridColumn FieldName="BizCode" Header="납품처코드" />
+                <dxg:GridColumn FieldName="BizName" Header="납품처명"/>
+            </dxg:GridControl.Columns>
+        </dxg:GridControl>
+    </ControlTemplate>
+    
+    <DataTemplate x:Key="PassFailTemplate">
+        <dxe:ComboBoxEdit Name="PART_Editor" DisplayMember="Text" ValueMember="Value">
+            <models:ItemInfo Text="Pass" Value="Pass"/>
+            <models:ItemInfo Text="Fail" Value="Fail"/>
+            <models:ItemInfo Text="N/A" Value="N/A"/>
+        </dxe:ComboBoxEdit>
+    </DataTemplate>
+    
+    
+    <Style TargetType="dxe:TextEdit" x:Key="NumericStyle">
+        <Setter Property="MaskType" Value="Numeric"  />
+        <Setter Property="Mask" Value="n2"  />
+        <Setter Property="MaskUseAsDisplayFormat" Value="True"  />
+    </Style>
+
+    <ControlTemplate x:Key="SearchBizTemplate">
+        <dxg:GridControl x:Name="PART_GridControl"
+            ShowBorder="False">
+            <dxg:GridControl.View>
+                <dxg:TableView ShowGroupPanel="False" 
+                    ShowIndicator="False"
+                    ShowColumnHeaders="False"
+                    ShowHorizontalLines="False"
+                    AutoWidth="True" />
+            </dxg:GridControl.View>
+            <dxg:GridControl.Columns>
+                <dxg:GridColumn FieldName="BizName" />
+            </dxg:GridControl.Columns>
+        </dxg:GridControl>
+    </ControlTemplate>
 </ResourceDictionary>

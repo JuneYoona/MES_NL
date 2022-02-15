@@ -28,10 +28,10 @@ namespace MesAdmin.ViewModels
             get { return GetProperty(() => SelectedItem); }
             set { SetProperty(() => SelectedItem, value); }
         }
-        public CommonMinorList BizAreaCode
+        public CommonMinorList BizAreaCodeList
         {
-            get { return GetProperty(() => BizAreaCode); }
-            set { SetProperty(() => BizAreaCode, value); }
+            get { return GetProperty(() => BizAreaCodeList); }
+            set { SetProperty(() => BizAreaCodeList, value); }
         }
         public CommonMinorList WhCode
         {
@@ -60,7 +60,7 @@ namespace MesAdmin.ViewModels
 
         public CommonProcInfoVM()
         {
-            BizAreaCode = new CommonMinorList(majorCode: "I0004");
+            BizAreaCodeList = new CommonMinorList(majorCode: "I0004");
             WhCode = new CommonMinorList(majorCode: "I0011");
 
             NewCmd = new DelegateCommand(OnNew);
@@ -69,7 +69,7 @@ namespace MesAdmin.ViewModels
             SaveCmd = new DelegateCommand(OnSave, CanSave);
             CellValueChangedCmd = new DelegateCommand(OnCellValueChanged);
 
-            EditBizAreaCode = BizAreaCode.FirstOrDefault(u => u.MinorCode == DSUser.Instance.BizAreaCode);
+            EditBizAreaCode = BizAreaCodeList.FirstOrDefault(u => u.MinorCode == DSUser.Instance.BizAreaCode);
         }
 
         public bool CanSave()
@@ -132,6 +132,7 @@ namespace MesAdmin.ViewModels
         {
             CommonWorkAreaInfo proc = new CommonWorkAreaInfo
             {
+                BizAreaCode = EditBizAreaCode.MinorCode,
                 UpdateDate = DateTime.Now,
                 State = EntityState.Added,
                 IsEnabled = true
