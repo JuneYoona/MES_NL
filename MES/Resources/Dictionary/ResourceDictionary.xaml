@@ -439,8 +439,25 @@
             FilterCondition="Contains"
             ValidateOnTextInput="False"
             IncrementalFiltering="True"
-            ImmediatePopup="True"
-            Background="White">
+            ImmediatePopup="True">
+            <dxe:ComboBoxEdit.InputBindings>
+                <KeyBinding Key="Enter" Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}" />
+            </dxe:ComboBoxEdit.InputBindings>
+        </dxe:ComboBoxEdit>
+    </DataTemplate>
+    <DataTemplate x:Key="BizCode2">
+        <dxe:ComboBoxEdit x:Name="PART_Editor"
+            NullText="공급처"
+            NullValueButtonPlacement="EditBox"
+            ItemsSource="{Binding DataContext.BizCodeList, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}"
+            IsTextEditable="True"
+            ValueMember="BizCode"
+            DisplayMember="BizName"
+            AutoComplete="False"
+            FilterCondition="Contains"
+            ValidateOnTextInput="False"
+            IncrementalFiltering="True"
+            ImmediatePopup="True">
             <dxe:ComboBoxEdit.InputBindings>
                 <KeyBinding Key="Enter" Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}" />
             </dxe:ComboBoxEdit.InputBindings>

@@ -48,15 +48,15 @@ namespace MesAdmin.ViewModels
                 return qrType;
             }
         }
-        public IEnumerable<CommonMinor> BizAreaCode
+        public IEnumerable<CommonMinor> BizAreaCodeList
+        {
+            get { return GetProperty(() => BizAreaCodeList); }
+            set { SetProperty(() => BizAreaCodeList, value); }
+        }
+        public string BizAreaCode
         {
             get { return GetProperty(() => BizAreaCode); }
             set { SetProperty(() => BizAreaCode, value); }
-        }
-        public string EditBizAreaCode
-        {
-            get { return GetProperty(() => EditBizAreaCode); }
-            set { SetProperty(() => EditBizAreaCode, value); }
         }
         public DateTime StartDate
         {
@@ -100,12 +100,12 @@ namespace MesAdmin.ViewModels
         {
             Messenger.Default.Register<string>(this, OnMessage);
 
-            BizAreaCode = GlobalCommonMinor.Instance.Where(u => u.MajorCode == "I0004");
+            BizAreaCodeList = GlobalCommonMinor.Instance.Where(u => u.MajorCode == "I0004");
             if (!string.IsNullOrEmpty(DSUser.Instance.BizAreaCode))
-                EditBizAreaCode = BizAreaCode.FirstOrDefault(u => u.MinorCode == DSUser.Instance.BizAreaCode).MinorCode;
+                BizAreaCode = BizAreaCodeList.FirstOrDefault(u => u.MinorCode == DSUser.Instance.BizAreaCode).MinorCode;
 
             BindingBizPartnerList();
-            StartDate = DateTime.Now.AddMonths(-3);
+            StartDate = DateTime.Now.AddMonths(-1);
             EndDate = DateTime.Now;
             SearchCmd = new AsyncCommand(OnSearch, CanSearch);
             MouseDoubleClickCmd = new DelegateCommand(OnMouseDoubleClick, CanMouseDoubleClick);
@@ -139,7 +139,7 @@ namespace MesAdmin.ViewModels
         }
         public void SearchCore()
         {
-            DataTable dt = new QualityRequestList().GetRequestDetail(QrType, StartDate, EndDate, BizCode, EditBizAreaCode);
+            DataTable dt = new QualityRequestList().GetRequestDetail(QrType, StartDate, EndDate, BizCode, BizAreaCode);
             Collections = dt;
             IsBusy = false;
         }
@@ -182,7 +182,7 @@ namespace MesAdmin.ViewModels
             if (document == null)
             {
                 MainViewModel.TabLoadingOpen();
-                document = MainViewModel.CreateDocument(viewName, title, new DocumentParamter(EntityMessageType.Changed, pm, EditBizAreaCode, MainViewModel));
+                document = MainViewModel.CreateDocument(viewName, title, new DocumentParamter(EntityMessageType.Changed, pm, BizAreaCode, MainViewModel));
                 document.DestroyOnClose = true;
                 document.Id = documentId;
             }

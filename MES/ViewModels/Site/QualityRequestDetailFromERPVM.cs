@@ -77,10 +77,10 @@ namespace MesAdmin.ViewModels
             get { return GetProperty(() => BizCode); }
             set { SetProperty(() => BizCode, value); }
         }
-        public IEnumerable<CommonBizPartner> BizPartnerList
+        public IEnumerable<CommonBizPartner> BizCodeList
         {
-            get { return GetProperty(() => BizPartnerList); }
-            set { SetProperty(() => BizPartnerList, value); }
+            get { return GetProperty(() => BizCodeList); }
+            set { SetProperty(() => BizCodeList, value); }
         }
         public string ItemCode
         {
@@ -131,12 +131,12 @@ namespace MesAdmin.ViewModels
         // 시간이 많이 걸리는 작업이어서 async binding
         private async void BindingBizPartnerList()
         {
-            var task = Task.Run(() => { return GlobalCommonBizPartner.Instance.Where(u => u.BizType == "C" || u.BizType == "CS"); });
+            var task = Task.Run(() => { return GlobalCommonBizPartner.Instance; });
             await task;
 
             if (task.IsCompleted)
             {
-                BizPartnerList = task.Result;
+                BizCodeList = task.Result;
             }
         }
 
