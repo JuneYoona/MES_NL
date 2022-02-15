@@ -58,6 +58,11 @@ namespace MesAdmin.Models
             get { return GetProperty(() => InspectValue); }
             set { SetProperty(() => InspectValue, value); }
         }
+        public string InspectValue_BP
+        {
+            get { return GetProperty(() => InspectValue_BP); }
+            set { SetProperty(() => InspectValue_BP, value); }
+        }
         public DateTime InspectDate
         {
             get { return GetProperty(() => InspectDate); }
@@ -153,7 +158,7 @@ namespace MesAdmin.Models
                 base.Add(
                     new QualityResult
                     {
-                        State = MesAdmin.Common.Common.EntityState.Unchanged,
+                        State = EntityState.Unchanged,
                         QrNo = (string)u["QrNo"],
                         Order = (int)u["Order"],
                         QrType = (string)u["QrType"],
@@ -178,9 +183,9 @@ namespace MesAdmin.Models
         public void Save()
         {
             IEnumerable<QualityResult> items = this.Items;
-            Insert(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Added));
-            Update(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Modified));
-            Delete(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Deleted));
+            Insert(items.Where(u => u.State == EntityState.Added));
+            Update(items.Where(u => u.State == EntityState.Modified));
+            Delete(items.Where(u => u.State == EntityState.Deleted));
         }
 
         public void Insert(IEnumerable<QualityResult> items)

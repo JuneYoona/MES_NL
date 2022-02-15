@@ -24,7 +24,7 @@ namespace MesAdmin.ViewModels
         #endregion
 
         #region Public Properties
-        public object MainViewModel { get; set; }
+        public MainViewModel MainViewModel { get { return (MainViewModel)((ISupportParentViewModel)this).ParentViewModel; } }
         public IEnumerable<MaterialDispenseDetail> Collections
         {
             get { return GetProperty(() => Collections); }
@@ -120,15 +120,15 @@ namespace MesAdmin.ViewModels
              
             var pm = SelectedItem;
             string documentId = SelectedItem.MDNo + SelectedItem.Seq.ToString();
-            IDocument document = FindDocument(documentId);
+            IDocument document = MainViewModel.FindDocument(documentId);
             if (document == null)
             {
-                ((MainViewModel)MainViewModel).TabLoadingOpen();
-                document = DocumentManagerService.CreateDocument("MaterialDispenseView", new DocumentParamter(EntityMessageType.Changed, pm, MainViewModel), this);
+                MainViewModel.TabLoadingOpen();
+                document = MainViewModel.CreateDocument("MaterialDispenseView", "자재불출승인", new DocumentParamter(EntityMessageType.Changed, pm, MainViewModel));
                 document.DestroyOnClose = true;
                 document.Id = documentId;
-                document.Title = "자재불출승인";
             }
+
             document.Show();
             SelectedItem = null;
         }
@@ -146,14 +146,6 @@ namespace MesAdmin.ViewModels
             {
                 ItemCode = vmItem.ConfirmItem.ItemCode;
             }
-        }
-
-        IDocument FindDocument(string documentId)
-        {
-            foreach (var doc in DocumentManagerService.Documents)
-                if (documentId.Equals(doc.Id))
-                    return doc;
-            return null;
         }
 
         void OnMessage(string pm)
@@ -184,15 +176,9 @@ namespace MesAdmin.ViewModels
         protected override void OnParameterChanged(object parameter)
         {
             base.OnParameterChanged(parameter);
-            if (ViewModelBase.IsInDesignMode) return;
+            if (IsInDesignMode) return;
 
-            DocumentParamter pm = parameter as DocumentParamter;
-            MainViewModel = pm.ParentViewmodel;
-
-            Task.Factory.StartNew(SearchCore).ContinueWith(task =>
-            {
-                ((MainViewModel)MainViewModel).TabLoadingClose();
-            });
+            Task.Factory.StartNew(SearchCore).ContinueWith(task => MainViewModel.TabLoadingClose());
         }
     }
 }

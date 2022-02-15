@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Collections.ObjectModel;
 using System.Linq;
 using DevExpress.Mvvm;
@@ -200,7 +201,7 @@ namespace MesAdmin.ViewModels
 
                 foreach (var item in QualityElementIVLList)
                 {
-                    item.State = Common.Common.EntityState.Added;
+                    item.State = EntityState.Added;
                     item.QrNo = Header.QrNo;
                     item.LumRef = Convert.ToDecimal(LumRef);
                     item.LumLot = Convert.ToDecimal(LumLot);
@@ -215,7 +216,7 @@ namespace MesAdmin.ViewModels
 
                 foreach (var item in QualityElementIVLList)
                 {
-                    if (item.State != Common.Common.EntityState.Added) item.State = Common.Common.EntityState.Modified;
+                    if (item.State != EntityState.Added) item.State = EntityState.Modified;
                 }
             }
 
@@ -424,7 +425,7 @@ namespace MesAdmin.ViewModels
 
                 foreach (var item in QualityElementLTList)
                 {
-                    item.State = Common.Common.EntityState.Added;
+                    item.State = EntityState.Added;
                     item.QrNo = Header.QrNo;
                     item.Const = Convert.ToDecimal(LT);
                 }
@@ -438,7 +439,7 @@ namespace MesAdmin.ViewModels
 
                 foreach (var item in QualityElementLTList)
                 {
-                    if (item.State != Common.Common.EntityState.Added) item.State = Common.Common.EntityState.Modified;
+                    if (item.State != EntityState.Added) item.State = EntityState.Modified;
                 }
             }
 
@@ -490,9 +491,9 @@ namespace MesAdmin.ViewModels
                 else
                 {
                     QualityElementLTList.ToList().ForEach(item =>
-                    item.State = item.State == Common.Common.EntityState.Deleted ?
-                    Common.Common.EntityState.Unchanged :
-                    Common.Common.EntityState.Deleted);
+                    item.State = item.State == EntityState.Deleted ?
+                    EntityState.Unchanged :
+                    EntityState.Deleted);
                 }
             }
         }
@@ -509,9 +510,9 @@ namespace MesAdmin.ViewModels
                 else
                 {
                     QualityElementIVLList.ToList().ForEach(item =>
-                    item.State = item.State == Common.Common.EntityState.Deleted ?
-                    Common.Common.EntityState.Unchanged :
-                    Common.Common.EntityState.Deleted);
+                    item.State = item.State == EntityState.Deleted ?
+                    EntityState.Unchanged :
+                    EntityState.Deleted);
                 }
             }
         }

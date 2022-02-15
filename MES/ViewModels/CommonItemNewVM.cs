@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using DevExpress.Mvvm;
 using MesAdmin.Models;
 using MesAdmin.Common.Common;
@@ -96,7 +97,7 @@ namespace MesAdmin.ViewModels
         {
             AltItems.Insert(AltItems.Count, new CommonAltItem
             {
-                State = Common.Common.EntityState.Added,
+                State = EntityState.Added,
                 ItemCode = SelectedItem.ItemCode,
             });
         }
@@ -139,10 +140,10 @@ namespace MesAdmin.ViewModels
 
                     // send mesaage to parent view
                     CommonItem copyObj = SelectedItem.DeepCloneReflection();
-                    copyObj.State = Common.Common.EntityState.Unchanged;
+                    copyObj.State = EntityState.Unchanged;
                     Messenger.Default.Send(new EntityMessage<CommonItem>(copyObj, Status));
                     Status = EntityMessageType.Changed;
-                    SelectedItem.State = Common.Common.EntityState.Modified;
+                    SelectedItem.State = EntityState.Modified;
                 }
                 catch (Exception ex)
                 {
@@ -188,8 +189,8 @@ namespace MesAdmin.ViewModels
 
         public void OnCellValueChanged()
         {
-            if (SelectedAltItem.State == Common.Common.EntityState.Unchanged)
-                SelectedAltItem.State = Common.Common.EntityState.Modified;
+            if (SelectedAltItem.State == EntityState.Unchanged)
+                SelectedAltItem.State = EntityState.Modified;
         }
 
         public void OnHiddenEditor(HiddenEditorEvent pm)
@@ -217,10 +218,10 @@ namespace MesAdmin.ViewModels
         public void OnDelAltItem()
         {
 
-            if (SelectedAltItem.State == Common.Common.EntityState.Added)
+            if (SelectedAltItem.State == EntityState.Added)
                 AltItems.Remove(SelectedAltItem);
             else
-                SelectedAltItem.State = SelectedAltItem.State == Common.Common.EntityState.Deleted ? Common.Common.EntityState.Unchanged : Common.Common.EntityState.Deleted;
+                SelectedAltItem.State = SelectedAltItem.State == EntityState.Deleted ? EntityState.Unchanged : EntityState.Deleted;
         }
 
         protected override void OnParameterChanged(object parameter)
@@ -235,13 +236,13 @@ namespace MesAdmin.ViewModels
             if (Status == EntityMessageType.Added)
             {
                 SelectedItem = new CommonItem();
-                SelectedItem.State = Common.Common.EntityState.Added;
+                SelectedItem.State = EntityState.Added;
                 SelectedItem.IsEnabled = true;
             }
             else
             {
                 SelectedItem = ((CommonItem)info.Item).DeepCloneReflection();
-                SelectedItem.State = Common.Common.EntityState.Modified;
+                SelectedItem.State = EntityState.Modified;
                 AltItems = new CommonAltItemList(SelectedItem.ItemCode);
             }
         }

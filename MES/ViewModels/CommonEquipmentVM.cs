@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Collections.ObjectModel;
 using System.Linq;
 using DevExpress.Mvvm;
@@ -96,7 +97,7 @@ namespace MesAdmin.ViewModels
         {
             CommonEquipment item = new CommonEquipment
             {
-                State = Common.Common.EntityState.Added,
+                State = EntityState.Added,
                 BizAreaCode = DSUser.Instance.BizAreaCode,
                 UpdateDate = DateTime.Now,
                 EqpState = "W",

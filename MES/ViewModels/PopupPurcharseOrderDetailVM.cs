@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Collections.ObjectModel;
 using System.Linq;
 using DevExpress.Mvvm;
@@ -138,7 +139,7 @@ namespace MesAdmin.ViewModels
             {
                 ConfirmItems.Add(new PurcharseWarehousing
                 {
-                    State = Common.Common.EntityState.Added,
+                    State = EntityState.Added,
                     BizCode = item.BizCode,
                     ItemCode = item.ItemCode,
                     ItemName = item.ItemName,

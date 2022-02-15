@@ -60,7 +60,7 @@ namespace MesAdmin.ViewModels
             get { return GetProperty(() => IsBusy); }
             set { SetProperty(() => IsBusy, value); }
         }
-        public object MainViewModel { get; set; }
+        public MainViewModel MainViewModel { get { return (MainViewModel)((ISupportParentViewModel)this).ParentViewModel; } }
         #endregion
 
         #region Commands
@@ -124,22 +124,15 @@ namespace MesAdmin.ViewModels
         }
         public void OnAdd()
         {
-            ((MainViewModel)MainViewModel).TabLoadingOpen();
+            MainViewModel.TabLoadingOpen();
             IDocument document;
-            document = DocumentManagerService.CreateDocument("ProductionHandOverView", new DocumentParamter(EntityMessageType.Added, SelectedItems, MainViewModel), this);
+            //document = DocumentManagerService.CreateDocument("ProductionHandOverView", "제품인계 등록", new DocumentParamter(EntityMessageType.Added, SelectedItems, MainViewModel));
+            document = MainViewModel.CreateDocument("ProductionHandOverView", "제품인계 등록", new DocumentParamter(EntityMessageType.Added, SelectedItems, MainViewModel));
             document.DestroyOnClose = true;
             document.Id = Guid.NewGuid();
             document.Title = "제품인계 등록";
             document.Show();
             //SelectedItems = null;
-        }
-
-        IDocument FindDocument(string documentId)
-        {
-            foreach (var doc in DocumentManagerService.Documents)
-                if (documentId.Equals(doc.Id))
-                    return doc;
-            return null;
         }
 
         void OnMessage(string pm)
@@ -151,16 +144,9 @@ namespace MesAdmin.ViewModels
         protected override void OnParameterChanged(object parameter)
         {
             base.OnParameterChanged(parameter);
-            if (ViewModelBase.IsInDesignMode) return;
+            if (IsInDesignMode) return;
 
-            DocumentParamter pm = parameter as DocumentParamter;
-            MainViewModel = pm.ParentViewmodel;
-
-            Task.Factory.StartNew(SearchCore).ContinueWith(task =>
-            {
-                ((MainViewModel)MainViewModel).TabLoadingClose();
-            });
-
+            Task.Run(SearchCore).ContinueWith(task => MainViewModel.TabLoadingClose());
         }
     }
 }

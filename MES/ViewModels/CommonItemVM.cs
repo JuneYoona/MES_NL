@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Linq;
 using DevExpress.Mvvm;
 using System.Windows.Input;
@@ -28,16 +29,6 @@ namespace MesAdmin.ViewModels
         {
             get { return GetProperty(() => SelectedItem); }
             set { SetProperty(() => SelectedItem, value); }
-        }
-        public CommonMinorList ItemAccount
-        {
-            get { return GetProperty(() => ItemAccount); }
-            set { SetProperty(() => ItemAccount, value); }
-        }
-        public CommonMinorList BasicUnit
-        {
-            get { return GetProperty(() => BasicUnit); }
-            set { SetProperty(() => BasicUnit, value); }
         }
         public IEnumerable<CommonMinor> BizAreaCode
         {
@@ -82,9 +73,6 @@ namespace MesAdmin.ViewModels
             BizAreaCode = GlobalCommonMinor.Instance.Where(u => u.MajorCode == "I0004");
             if (!string.IsNullOrEmpty(DSUser.Instance.BizAreaCode))
                 EditBizAreaCode = BizAreaCode.FirstOrDefault(u => u.MinorCode == DSUser.Instance.BizAreaCode).MinorCode;
-
-            ItemAccount = new CommonMinorList("P1001");
-            BasicUnit = new CommonMinorList("P1100");
 
             NewCmd = new DelegateCommand(OnNew);
             EditCmd = new DelegateCommand(OnEdit);

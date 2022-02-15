@@ -66,6 +66,11 @@ namespace MesAdmin.Models
             get { return GetProperty(() => Remark5); }
             set { SetProperty(() => Remark5, value); }
         }
+        public string QrState
+        {
+            get { return GetProperty(() => QrState); }
+            set { SetProperty(() => QrState, value); }
+        }
         public decimal Qty
         {
             get { return GetProperty(() => Qty); }
@@ -166,6 +171,7 @@ namespace MesAdmin.Models
                         WaCode = (string)u["WaCode"],
                         LotNo = (string)u["LotNo"],
                         Remark5 = u["Remark5"].ToString(),
+                        QrState = u["QrState"].ToString(),
                         Qty = (decimal)u["Qty"],
                         QrQty = (decimal)u["QrQty"],
                         BasicUnit = (string)u["BasicUnit"],

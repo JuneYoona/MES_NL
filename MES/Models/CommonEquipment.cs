@@ -110,7 +110,7 @@ namespace MesAdmin.Models
                 base.Add(
                     new CommonEquipment
                     {
-                        State = MesAdmin.Common.Common.EntityState.Unchanged,
+                        State = EntityState.Unchanged,
                         BizAreaCode = (string)u["BizAreaCode"],
                         EqpCode = (string)u["EqpCode"],
                         EqpName = (string)u["EqpName"],
@@ -139,9 +139,9 @@ namespace MesAdmin.Models
                 DbTransaction trans = conn.BeginTransaction();
                 try
                 {
-                    Insert(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Added), db, trans, dbCom);
-                    Update(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Modified), db, trans, dbCom);
-                    Delete(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Deleted), db, trans, dbCom);
+                    Insert(items.Where(u => u.State == EntityState.Added), db, trans, dbCom);
+                    Update(items.Where(u => u.State == EntityState.Modified), db, trans, dbCom);
+                    Delete(items.Where(u => u.State == EntityState.Deleted), db, trans, dbCom);
                     trans.Commit();
 
                     // Global 기준정보를 다시 가져오기 위해 Instance 초기화

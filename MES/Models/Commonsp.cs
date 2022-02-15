@@ -24,6 +24,17 @@ namespace MesAdmin.Models
             return ds.Tables[0].Rows.Count == 0 ? null : ds.Tables[0].Rows[0];
         }
 
+        public static DataTable GetInpectItem(string itemCode, string gate)
+        {
+            Database db = ProviderFactory.Instance;
+            DbCommand dbCom = db.GetStoredProcCommand("usps_Quality_InspectItem");
+            db.AddInParameter(dbCom, "@ItemCode", DbType.String, itemCode);
+            db.AddInParameter(dbCom, "@Gate", DbType.String, gate);
+            DataSet ds = db.ExecuteDataSet(dbCom);
+
+            return ds.Tables[0];
+        }
+
         public static DataTable BAC60INDICATORR005S(string syyyymm, string eyyyymm, string itemCode)
         {
             Database db = ProviderFactory.Instance;
@@ -76,6 +87,18 @@ namespace MesAdmin.Models
             {
                 throw;
             }
+        }
+
+        public static DataTable SIBAC60SD001RS(DateTime startDate, DateTime endDate, string lotNo)
+        {
+            Database db = ProviderFactory.Instance;
+            DbCommand dbCom = db.GetStoredProcCommand("SIBAC60SD001RS");
+            db.AddInParameter(dbCom, "@StartDate", DbType.Date, startDate);
+            db.AddInParameter(dbCom, "@EndDate", DbType.Date, endDate);
+            db.AddInParameter(dbCom, "@LotNo", DbType.String, lotNo);
+            DataSet ds = db.ExecuteDataSet(dbCom);
+
+            return ds.Tables[0];
         }
     }
 }

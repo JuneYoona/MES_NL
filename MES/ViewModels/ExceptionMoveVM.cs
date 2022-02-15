@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Collections.ObjectModel;
 using System.Linq;
 using DevExpress.Mvvm;
@@ -263,7 +264,7 @@ namespace MesAdmin.ViewModels
                             Collections.Insert(idx++,
                                 new StockMovementDetail
                                 {
-                                    State = Common.Common.EntityState.Added,
+                                    State = EntityState.Added,
                                     BizAreaCode = item.BizAreaCode,
                                     ItemCode = item.ItemCode,
                                     ItemName = item.ItemName,
@@ -319,10 +320,10 @@ namespace MesAdmin.ViewModels
         {
             SelectedItems.ToList().ForEach(u =>
             {
-                if (u.State == Common.Common.EntityState.Added)
+                if (u.State == EntityState.Added)
                     Collections.Remove(u);
                 else
-                    u.State = u.State == Common.Common.EntityState.Deleted ? Common.Common.EntityState.Unchanged : Common.Common.EntityState.Deleted;
+                    u.State = u.State == EntityState.Deleted ? EntityState.Unchanged : EntityState.Deleted;
             });
         }
 
@@ -353,7 +354,7 @@ namespace MesAdmin.ViewModels
             }
             Collections.Insert(Collections.Count, new StockMovementDetail
             {
-                State = Common.Common.EntityState.Added,
+                State = EntityState.Added,
                 TransType = SelectedMoveType.Ref02,
                 MoveType = SelectedMoveType.MinorCode,
                 DCFlag = SelectedMoveType.Ref01,
@@ -380,7 +381,7 @@ namespace MesAdmin.ViewModels
             if (IsNew)
             {
                 // 필수 입력값 처리
-                foreach (StockMovementDetail item in Collections.Where(u => u.State == Common.Common.EntityState.Added))
+                foreach (StockMovementDetail item in Collections.Where(u => u.State == EntityState.Added))
                 {
                     if (string.IsNullOrEmpty(item.ItemCode) || item.Qty == null || item.TransItemCode == null || item.TransLotNo == null || item.TransLotNo.Trim() == "")
                     {
@@ -391,7 +392,7 @@ namespace MesAdmin.ViewModels
                 if (Collections.Count == 0) return false;
             }
             else
-                ret = Collections.Where(u => u.State == Common.Common.EntityState.Deleted).Count() > 0;
+                ret = Collections.Where(u => u.State == EntityState.Deleted).Count() > 0;
 
             return ret;
         }

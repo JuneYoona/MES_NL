@@ -99,7 +99,7 @@ namespace MesAdmin.Models
                 base.Add(
                     new CommonEquipmentParameter
                     {
-                        State = MesAdmin.Common.Common.EntityState.Unchanged,
+                        State = EntityState.Unchanged,
                         BizAreaCode = (string)u["BizAreaCode"],
                         EqpCode = (string)u["EqpCode"],
                         Seq = (string)u["Seq"],
@@ -119,9 +119,9 @@ namespace MesAdmin.Models
         public void Save()
         {
             IEnumerable<CommonEquipmentParameter> items = this.Items;
-            Insert(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Added));
-            Update(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Modified));
-            Delete(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Deleted));
+            Insert(items.Where(u => u.State == EntityState.Added));
+            Update(items.Where(u => u.State == EntityState.Modified));
+            Delete(items.Where(u => u.State == EntityState.Deleted));
         }
 
         public void Insert(IEnumerable<CommonEquipmentParameter> items)

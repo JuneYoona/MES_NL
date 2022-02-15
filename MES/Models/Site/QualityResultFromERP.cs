@@ -39,7 +39,7 @@ namespace MesAdmin.Models
                 base.Add(
                     new QualityResult
                     {
-                        State = MesAdmin.Common.Common.EntityState.Unchanged,
+                        State = EntityState.Unchanged,
                         QrNo = (string)u["QrNo"],
                         Order = int.Parse(u["Order"].ToString()),
                         QrType = (string)u["QrType"],
@@ -49,6 +49,7 @@ namespace MesAdmin.Models
                         DownRate = (string)u["DownRate"],
                         UpRate = (string)u["UpRate"],
                         InspectValue = (string)u["InspectValue"],
+                        InspectValue_BP = (string)u["InspectValue_BP"],
                         Unit = u["Unit"].ToString(),
                         Equipment = u["Equipment"].ToString(),
                         Memo = (string)u["Memo"],

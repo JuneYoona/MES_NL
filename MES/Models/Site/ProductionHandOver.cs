@@ -56,6 +56,11 @@ namespace MesAdmin.Models
             get { return GetProperty(() => BasicUnit); }
             set { SetProperty(() => BasicUnit, value); }
         }
+        public string QrState
+        {
+            get { return GetProperty(() => QrState); }
+            set { SetProperty(() => QrState, value); }
+        }
         public string BizAreaCode
         {
             get { return GetProperty(() => BizAreaCode); }
@@ -120,7 +125,11 @@ namespace MesAdmin.Models
             Database db = ProviderFactory.Instance;
             string sql;
 
-            sql = "SELECT A.*, B.ItemName, B.ItemSpec, B.BasicUnit FROM production_HandOver A (NOLOCK) INNER JOIN common_Item B (NOLOCK) ON A.ItemCode=B.ItemCode ";
+            sql = "SELECT A.*, B.ItemName, B.ItemSpec, B.BasicUnit ";
+            sql += ", QrState = CASE WHEN TransferFlag is null THEN '검사요청 누락' WHEN TransferFlag = 1 THEN '완료' ELSE '대기' END ";
+            sql += "FROM production_HandOver A (NOLOCK) ";
+            sql += "INNER JOIN common_Item B (NOLOCK) ON A.ItemCode=B.ItemCode ";
+            sql += "LEFT JOIN quality_Request (NOLOCK) C ON A.ProductOrderNo = C.ProductOrderNo ";
             sql += "WHERE HoNo = HoNo ";
             if (!string.IsNullOrEmpty(hoNo))
                 sql += "And HoNo = '" + hoNo + "' ";
@@ -149,6 +158,7 @@ namespace MesAdmin.Models
                         InsertName = (string)u["InsertName"],
                         InsertDate = (DateTime)u["InsertDate"],
                         Memo = u["Memo"].ToString(),
+                        QrState = u["QrState"].ToString(),
                     }
                 )
             );
@@ -159,8 +169,8 @@ namespace MesAdmin.Models
             string hoNo;
 
             IEnumerable<ProductionHandOver> items = this.Items;
-            hoNo = Insert(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Added));
-            Delete(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Deleted));
+            hoNo = Insert(items.Where(u => u.State == EntityState.Added));
+            Delete(items.Where(u => u.State == EntityState.Deleted));
 
             return hoNo;
         }

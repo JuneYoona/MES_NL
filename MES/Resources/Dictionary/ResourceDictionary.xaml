@@ -1,15 +1,14 @@
-﻿<ResourceDictionary 
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:MesAdmin.Common.Utils"
-    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
-    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
-    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-    xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys" 
-    xmlns:dxn="http://schemas.devexpress.com/winfx/2008/xaml/navbar"
-    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
-    xmlns:models="clr-namespace:MesAdmin.Models"
-    xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+                    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+                    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+                    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+                    xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
+                    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+                    xmlns:dxn="http://schemas.devexpress.com/winfx/2008/xaml/navbar"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:MesAdmin.Common.Utils"
+                    xmlns:models="clr-namespace:MesAdmin.Models">
     
     <local:MultiValueConverter x:Key="MultiValueConverter"/>
     <!--#region ScrollBarMode TouchOverlap-->
@@ -94,7 +93,7 @@
         <Image x:Name="Image" Height="16" Width="16" Source="{x:Null}"/>
         <DataTemplate.Triggers>
             <DataTrigger Binding="{Binding RowData.Row.IsAttached, Mode=OneWay}" Value="1">
-                <Setter TargetName="Image" Property="Source" Value="pack://application:,,,/DevExpress.Images.v21.1;component/Images/Mail/Attachment_16x16.png" />
+                <Setter TargetName="Image" Property="Source" Value="pack://application:,,,/DevExpress.Images.v21.2;component/Images/Mail/Attachment_16x16.png" />
             </DataTrigger>
         </DataTemplate.Triggers>
     </DataTemplate>
@@ -282,7 +281,7 @@
                         </VisualStateManager.VisualStateGroups>
                         <Border BorderBrush="#94ADCC" Height="23" BorderThickness="1" Background="{Binding Path=Background, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type dxe:TextEdit}}}"/>
                         <ContentPresenter />
-                        <Border x:Name="FocusElement" Height="23" BorderBrush="#007ACC" BorderThickness="1" Opacity="0" />
+                        <Border x:Name="FocusElement" Height="23" BorderBrush="#FF2B579A" BorderThickness="1" Opacity="0" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -306,7 +305,7 @@
                         </VisualStateManager.VisualStateGroups>
                         <Border BorderBrush="#94ADCC" Height="23" BorderThickness="1" Background="{Binding Path=Background, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type dxe:TextEdit}}}"/>
                         <ContentPresenter />
-                        <Border x:Name="FocusElement" Height="23" BorderBrush="#007ACC" BorderThickness="1" Opacity="0" />
+                        <Border x:Name="FocusElement" Height="23" BorderBrush="#FF2B579A" BorderThickness="1" Opacity="0" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -318,6 +317,18 @@
         </Style.Triggers>
     </Style>
 
+    <!--#region AxisXLabelTemplate-->
+    <DataTemplate x:Key="AxisXLabelTemplate">
+        <Border BorderThickness="1" CornerRadius="9" Opacity="1.0" Background="LightBlue">
+            <Label Content="{Binding Content}"
+                   Padding="5,1,5,1.5"
+                   Foreground="DarkSlateBlue"
+                   FontSize="12"
+                   Visibility="{DXBinding 'Content.Contains(`Collapsed`) ? `Collapsed` : `Visible`'}" />
+        </Border>
+    </DataTemplate>
+    <!--#endregion-->
+    
     <Style TargetType="dxe:TextEdit" BasedOn="{StaticResource BaseEditStyle}"/>
     <Style TargetType="dxe:ComboBoxEdit" BasedOn="{StaticResource BaseEditStyle}" />
     <Style TargetType="dxe:DateEdit" BasedOn="{StaticResource BaseEditStyle}"/>
@@ -325,7 +336,6 @@
     <Style TargetType="dxe:ButtonEdit" BasedOn="{StaticResource BaseEditStyle}"/>
     <Style TargetType="dxe:SpinEdit" BasedOn="{StaticResource BaseEditStyle}"/>
     <Style TargetType="dxe:PopupBaseEdit" BasedOn="{StaticResource BaseEditStyle}"/>
-    <Style TargetType="dxe:PasswordBoxEdit" BasedOn="{StaticResource BaseEditStyle}"/>
     <!--#endregion-->
 
     <!--#region MessageBoxService and min width-->
@@ -338,5 +348,169 @@
     <Style TargetType="{x:Type dxn:NavPanePopupWindowContent}">
         <Setter Property="Width" Value="200"/>
     </Style>
+    <!--#endregion-->
+    <!--#region search contorls-->
+    <local:CascadingWorkArea x:Key="CascadingWorkArea" />
+    <local:CascadingWarehouse x:Key="CascadingWarehouse" />
+    <local:CascadingItemAccount x:Key="CascadingItemAccount" />
+    <local:CascadingMoveType x:Key="CascadingMoveType" />
+    <DataTemplate x:Key="ItalicGray">
+        <TextBlock Text="{Binding}" FontStyle="Italic" Foreground="Gray" />
+    </DataTemplate>
+    <DataTemplate x:Key="LotNo">
+        <dxe:TextEdit x:Name="PART_Editor"
+            NullText="로트번호">
+            <dxmvvm:Interaction.Behaviors>
+                <dxmvvm:KeyToCommand KeyGesture="Enter"
+                    Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}" />
+            </dxmvvm:Interaction.Behaviors>
+        </dxe:TextEdit>
+    </DataTemplate>
+    <DataTemplate x:Key="SearchDate">
+        <dxe:DateEdit x:Name="PART_Editor">
+            <dxe:DateEdit.InputBindings>
+                <KeyBinding Key="Enter" Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}" />
+            </dxe:DateEdit.InputBindings>
+        </dxe:DateEdit>
+    </DataTemplate>
+    <DataTemplate x:Key="BizAreaCode">
+        <dxe:ComboBoxEdit x:Name="PART_Editor"
+            NullText="제조파트"
+            ItemsSource="{Binding DataContext.BizAreaCodeList, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}"
+            ValueMember="MinorCode"
+            DisplayMember="MinorName">
+            <dxmvvm:Interaction.Behaviors>
+                <dxmvvm:KeyToCommand KeyGesture="Enter"
+                    Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}" />
+            </dxmvvm:Interaction.Behaviors>
+        </dxe:ComboBoxEdit>
+    </DataTemplate>
+    <DataTemplate x:Key="WhCode">
+        <dxe:ComboBoxEdit x:Name="PART_Editor"
+            NullText="창고"
+            NullValueButtonPlacement="EditBox"
+            ItemsSource="{Binding DataContext.BizAreaCode, Converter={StaticResource CascadingWarehouse}, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}"
+            EditValue="{Binding DataContext.WhCode, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}"
+            ValueMember="MinorCode"
+            DisplayMember="MinorName">
+            <dxmvvm:Interaction.Behaviors>
+                <dxmvvm:KeyToCommand KeyGesture="Enter"
+                    Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}" />
+            </dxmvvm:Interaction.Behaviors>
+        </dxe:ComboBoxEdit>
+    </DataTemplate>
+    <DataTemplate x:Key="WaCode">
+        <dxe:ComboBoxEdit x:Name="PART_Editor"
+            NullText="공정"
+            NullValueButtonPlacement="EditBox"
+            ItemsSource="{Binding DataContext.BizAreaCode, Converter={StaticResource CascadingWorkArea}, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}"
+            EditValue="{Binding DataContext.WaCode, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}"
+            ValueMember="WaCode"
+            DisplayMember="WaName">
+            <dxmvvm:Interaction.Behaviors>
+                <dxmvvm:KeyToCommand KeyGesture="Enter"
+                    Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}" />
+            </dxmvvm:Interaction.Behaviors>
+        </dxe:ComboBoxEdit>
+    </DataTemplate>
+    <DataTemplate x:Key="WaCode2">
+        <dxe:ComboBoxEdit x:Name="PART_Editor"
+            NullText="공정"
+            Background="#F6EDCB"
+            ItemsSource="{Binding DataContext.BizAreaCode, Converter={StaticResource CascadingWorkArea}, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}"
+            EditValue="{Binding DataContext.WaCode, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}"
+            ValueMember="WaCode"
+            DisplayMember="WaName">
+            <dxmvvm:Interaction.Behaviors>
+                <dxmvvm:KeyToCommand KeyGesture="Enter"
+                    Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}" />
+            </dxmvvm:Interaction.Behaviors>
+        </dxe:ComboBoxEdit>
+    </DataTemplate>
+    <DataTemplate x:Key="BizCode">
+        <dxe:ComboBoxEdit x:Name="PART_Editor"
+            NullText="고객사"
+            NullValueButtonPlacement="EditBox"
+            ItemsSource="{Binding DataContext.BizCodeList, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}"
+            IsTextEditable="True"
+            ValueMember="BizCode"
+            DisplayMember="BizName"
+            AutoComplete="False"
+            FilterCondition="Contains"
+            ValidateOnTextInput="False"
+            IncrementalFiltering="True"
+            ImmediatePopup="True"
+            Background="White">
+            <dxe:ComboBoxEdit.InputBindings>
+                <KeyBinding Key="Enter" Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}" />
+            </dxe:ComboBoxEdit.InputBindings>
+        </dxe:ComboBoxEdit>
+    </DataTemplate>
+    <DataTemplate x:Key="ItemCode">
+        <dxe:ButtonEdit x:Name="PART_Editor"
+            Background="White"
+            NullText="품목코드">
+            <dxe:TextEdit.InputBindings>
+                <KeyBinding Key="Enter" Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}" />
+            </dxe:TextEdit.InputBindings>
+            <dxmvvm:Interaction.Behaviors>
+                <dxmvvm:EventToCommand EventName="DefaultButtonClick" Command="{Binding DataContext.ShowItemDialogCmd, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}" />
+            </dxmvvm:Interaction.Behaviors>
+        </dxe:ButtonEdit>
+    </DataTemplate>
+    <DataTemplate x:Key="SoType">
+        <dxe:ComboBoxEdit x:Name="PART_Editor"
+            NullText="수주형태"
+            ItemsSource="{Binding DataContext.SoTypeList, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}" 
+            NullValueButtonPlacement="EditBox"
+            ValueMember="SoType"
+            DisplayMember="SoTypeName">
+            <dxe:ComboBoxEdit.InputBindings>
+                <KeyBinding Key="Enter" Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}" />
+            </dxe:ComboBoxEdit.InputBindings>
+        </dxe:ComboBoxEdit>
+    </DataTemplate>
+    <DataTemplate x:Key="ItemAccount">
+        <dxe:ComboBoxEdit x:Name="PART_Editor"
+            NullText="품목계정"
+            NullValueButtonPlacement="EditBox"
+            ItemsSource="{Binding DataContext.BizAreaCode, Converter={StaticResource CascadingItemAccount}, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}"
+            EditValue="{Binding DataContext.ItemAccount, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}"
+            ValueMember="MinorCode"
+            DisplayMember="MinorName">
+            <dxmvvm:Interaction.Behaviors>
+                <dxmvvm:KeyToCommand KeyGesture="Enter"
+                    Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}" />
+            </dxmvvm:Interaction.Behaviors>
+        </dxe:ComboBoxEdit>
+    </DataTemplate>
+    <DataTemplate x:Key="TransType">
+        <dxe:ComboBoxEdit
+            NullText="수불구분"
+            ItemsSource="{Binding DataContext.TransTypeList, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}" 
+            EditValue="{Binding DataContext.TransType, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}"
+            NullValueButtonPlacement="EditBox"
+            ValueMember="MinorCode"
+            DisplayMember="MinorName">
+            <dxmvvm:Interaction.Behaviors>
+                <dxmvvm:KeyToCommand KeyGesture="Enter"
+                    Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}" />
+            </dxmvvm:Interaction.Behaviors>
+        </dxe:ComboBoxEdit>
+    </DataTemplate>
+    <DataTemplate x:Key="MoveType">
+        <dxe:ComboBoxEdit
+            NullText="수불유형"
+            ItemsSource="{Binding DataContext.TransType, Converter={StaticResource CascadingMoveType}, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}" 
+            EditValue="{Binding DataContext.MoveType, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}"
+            NullValueButtonPlacement="EditBox"
+            ValueMember="MinorCode"
+            DisplayMember="MinorName">
+            <dxmvvm:Interaction.Behaviors>
+                <dxmvvm:KeyToCommand KeyGesture="Enter"
+                    Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}" />
+            </dxmvvm:Interaction.Behaviors>
+        </dxe:ComboBoxEdit>
+    </DataTemplate>
     <!--#endregion-->
 </ResourceDictionary>

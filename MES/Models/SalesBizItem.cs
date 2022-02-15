@@ -95,7 +95,7 @@ namespace MesAdmin.Models
                 base.Add(
                     new SalesBizItem
                     {
-                        State = MesAdmin.Common.Common.EntityState.Unchanged,
+                        State = EntityState.Unchanged,
                         BizCode = (string)u["BizCode"],
                         ItemCode = (string)u["ItemCode"],
                         ItemName = (string)u["ItemName"],
@@ -122,9 +122,9 @@ namespace MesAdmin.Models
                 DbTransaction trans = conn.BeginTransaction();
                 try
                 {
-                    Insert(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Added), db, trans, dbCom);
-                    Update(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Modified), db, trans, dbCom);
-                    Delete(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Deleted), db, trans, dbCom);
+                    Insert(items.Where(u => u.State == EntityState.Added), db, trans, dbCom);
+                    Update(items.Where(u => u.State == EntityState.Modified), db, trans, dbCom);
+                    Delete(items.Where(u => u.State == EntityState.Deleted), db, trans, dbCom);
                     trans.Commit();
                 }
                 catch

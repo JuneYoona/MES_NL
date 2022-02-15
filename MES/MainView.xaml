@@ -1,5 +1,6 @@
 ﻿<UserControl    x:Class="MesAdmin.MainView"
                 xmlns="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
+                xmlns:ve="http://schemas.devexpress.com/winfx/2008/xaml/docking/visualelements"
                 xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
                 xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
                 xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
@@ -23,6 +24,7 @@
     </dxmvvm:Interaction.Behaviors>
     <UserControl.Resources>
         <local:NotVisibilityConverter x:Key="NotVisibilityConverter"/>
+        <!--#region left menu-->
         <DataTemplate x:Key="groupContentTemplate">
             <TreeView
                 ItemsSource="{Binding}"
@@ -42,7 +44,7 @@
                                 </MultiTrigger.Conditions>
                                 <MultiTrigger.Setters>
                                     <Setter Property="Foreground" Value="White" />
-                                    <Setter Property="Background" Value="#007ACC"/>
+                                    <Setter Property="Background" Value="#FF2B579A"/>
                                 </MultiTrigger.Setters>
                             </MultiTrigger>
                         </Style.Triggers>
@@ -60,9 +62,31 @@
                 </TreeView.Resources>
             </TreeView>
         </DataTemplate>
-        <DataTemplate x:Key="MyStatusBarContentTemplate">
-            <TextBlock Text="{Binding DBName}" />
-        </DataTemplate>
+        <!--#endregion-->
+        <!--#region show close button when hovering inactive tab header -->
+        <Style TargetType="ve:DocumentPaneItem">
+            <Setter Property="dxmvvm:Interaction.BehaviorsTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <ContentControl>
+                            <local:MouseOverBehavior/>
+                        </ContentControl>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="dxdo:DocumentPanel">
+            <Setter Property="ShowCloseButton" Value="False" />
+            <Style.Triggers>
+                <Trigger Property="IsSelectedItem" Value="True">
+                    <Setter Property="ShowCloseButton" Value="True" />
+                </Trigger>
+                <Trigger Property="local:MouseOverBehavior.IsMouseOver" Value="True">
+                    <Setter Property="ShowCloseButton" Value="True" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <!--#endregion-->
     </UserControl.Resources>
     <Grid>
         <dxb:BarManager dxb:BarManager.KeyGestureWorkingMode="AllKeyGestureFromRoot">
@@ -72,13 +96,20 @@
                         <dxr:RibbonPage Caption="Home">
                             <dxr:RibbonPageGroup>
                                 <dxb:BarButtonItem
-                                    Content="사용자  변경"
-                                    KeyGesture="CTRL+U" Glyph="{dx:DXImage Office2013/People/AssignToMe_32x32.png}" LargeGlyph="{dx:DXImage Office2013/People/AssignToMe_32x32.png}">
+                                    Content="사용자  전환"
+                                    KeyGesture="CTRL+U"
+                                    LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_User.svg}"
+                                    Glyph="{dx:DXImage SvgImages/Business Objects/BO_User.svg}">
                                     <dxmvvm:Interaction.Behaviors>
                                         <dxmvvm:ConfirmationBehavior Command="{Binding ReLoginCmd}"
                                             MessageText="재접속 하시겠습니까?" MessageIcon="Question" MessageButton="YesNo" />
                                     </dxmvvm:Interaction.Behaviors>
                                 </dxb:BarButtonItem>
+                                <dxb:BarButtonItem
+                                    Content="사용자  설정"
+                                    Command="{Binding ConfigUserCmd}"
+                                    Glyph="{dx:DXImage SvgImages/Business Objects/BO_MyDetails.svg}"
+                                    LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_MyDetails.svg}"/>
                                 <dxb:BarButtonItem 
                                     Content="프로그램 종료"
                                     KeyGesture="CTRL+E" LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Exit.svg}" Glyph="{dx:DXImage SvgImages/XAF/Action_Exit.svg}">
@@ -148,12 +179,12 @@
                                     </dxn:NavBarControl.View>
                                 </dxn:NavBarControl>
                             </dxdo:LayoutPanel>
-                            <dxdo:DocumentGroup x:Name="documentGroup" ClosingBehavior="ImmediatelyRemove" ClosePageButtonShowMode="InActiveTabPageAndTabControlHeader" TabContentCacheMode="CacheAllTabs" Opacity="{Binding Opacity}">
+                            <dxdo:DocumentGroup x:Name="documentGroup" ClosingBehavior="ImmediatelyRemove" ClosePageButtonShowMode="InAllTabPageHeaders" TabContentCacheMode="CacheTabsOnSelecting" Opacity="{Binding Opacity}">
                                 <dxmvvm:Interaction.Behaviors>
                                     <dx:SplashScreenManagerService SplashScreenType="custom:TabOpening"/>
                                     <dxdo:TabbedDocumentUIService x:Name="MainViewService">
                                         <dxmvvm:Interaction.Behaviors>
-                                            <dxmvvm:EventToCommand EventName="ActiveDocumentChanged" Command="{Binding ActiveDocumentChangedCmd}" />
+                                            <dxmvvm:EventToCommand EventName="ActiveDocumentChanged" Command="{Binding ActiveDocumentChangedCmd}" PassEventArgsToCommand="True"/>
                                         </dxmvvm:Interaction.Behaviors>
                                     </dxdo:TabbedDocumentUIService>
                                 </dxmvvm:Interaction.Behaviors>

@@ -40,7 +40,7 @@
                             </VisualStateManager.VisualStateGroups>
                             <Border BorderBrush="#94ADCC" Height="23" BorderThickness="1" Background="{Binding Path=Background, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type dxe:TextEdit}}}"/>
                             <ContentPresenter />
-                            <Border x:Name="FocusElement" BorderBrush="#007ACC" BorderThickness="1" Opacity="0" />
+                            <Border x:Name="FocusElement" BorderBrush="#FF2B579A" BorderThickness="1" Opacity="0" />
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>

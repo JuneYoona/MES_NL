@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Collections.ObjectModel;
 using System.Linq;
 using DevExpress.Mvvm;
@@ -132,10 +133,10 @@ namespace MesAdmin.ViewModels
         {
             SelectedMinorDetail.ToList().ForEach(u =>
             {
-                if (u.State == Common.Common.EntityState.Added)
+                if (u.State == EntityState.Added)
                     MinorDetailList.Remove(u);
                 else
-                    u.State = u.State == Common.Common.EntityState.Deleted ? Common.Common.EntityState.Unchanged : Common.Common.EntityState.Deleted;
+                    u.State = u.State == EntityState.Deleted ? EntityState.Unchanged : EntityState.Deleted;
             });
         }
 

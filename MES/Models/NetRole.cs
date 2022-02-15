@@ -46,7 +46,7 @@ namespace MesAdmin.Models
 
             IEnumerable<NetRole> items = ds.Tables[0].AsEnumerable().Select(u => new NetRole
             {
-                State = MesAdmin.Common.Common.EntityState.Unchanged,
+                State = EntityState.Unchanged,
                 RoleId = (Guid)u["RoleId"],
                 RoleName = (string)u["RoleName"],
                 Description = u["Description"].ToString(),

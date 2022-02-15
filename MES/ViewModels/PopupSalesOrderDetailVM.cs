@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Collections.ObjectModel;
 using System.Linq;
 using DevExpress.Mvvm;
@@ -146,7 +147,7 @@ namespace MesAdmin.ViewModels
             {
                 ConfirmItems.Add(new SalesOrderReqDetail
                 {
-                    State = Common.Common.EntityState.Added,
+                    State = EntityState.Added,
                     ShipTo = item.ShipTo,
                     ItemCode = item.ItemCode,
                     ItemName = item.ItemName,

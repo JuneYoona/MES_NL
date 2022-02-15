@@ -86,7 +86,7 @@ namespace MesAdmin.ViewModels
         public PopupStockMoveVM(string transType)
         {
             TransType = transType;
-            FromDate = DateTime.Now.AddMonths(-6);
+            FromDate = DateTime.Now.AddMonths(-1);
             ToDate = DateTime.Now;
 
             // default value binding

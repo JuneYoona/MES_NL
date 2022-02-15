@@ -2,6 +2,5 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
                     DeferedVisibility="True"
-                    Content="탭여는중...  "
-                    OverridesDefaultStyle="True"
-                    Height="105"/>
+                    Content="탭여는중..."
+                    OverridesDefaultStyle="False"/>

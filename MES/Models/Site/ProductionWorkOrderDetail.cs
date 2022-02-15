@@ -173,8 +173,8 @@ namespace MesAdmin.Models
                 DbTransaction trans = conn.BeginTransaction();
                 try
                 {
-                    Insert(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Added), db, trans, dbCom);
-                    Delete(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Deleted), db, trans, dbCom);
+                    Insert(items.Where(u => u.State == EntityState.Added), db, trans, dbCom);
+                    Delete(items.Where(u => u.State == EntityState.Deleted), db, trans, dbCom);
                     trans.Commit();
                 }
                 catch
@@ -191,7 +191,7 @@ namespace MesAdmin.Models
             {
                 dbCom = db.GetStoredProcCommand("usps_Production_WorkOrder_Detail");
                 dbCom.CommandType = CommandType.StoredProcedure;
-                db.AddInParameter(dbCom, "@State", DbType.String, MesAdmin.Common.Common.EntityState.Added);
+                db.AddInParameter(dbCom, "@State", DbType.String, EntityState.Added);
                 db.AddInParameter(dbCom, "@BizAreaCode", DbType.String, item.BizAreaCode);
                 db.AddInParameter(dbCom, "@OrderNo", DbType.String, item.OrderNo);
                 db.AddInParameter(dbCom, "@Seq", DbType.Int16, item.Seq);
@@ -217,7 +217,7 @@ namespace MesAdmin.Models
             {
                 dbCom = db.GetStoredProcCommand("usps_Production_WorkOrder_Detail");
                 dbCom.CommandType = CommandType.StoredProcedure;
-                db.AddInParameter(dbCom, "@State", DbType.String, MesAdmin.Common.Common.EntityState.Deleted);
+                db.AddInParameter(dbCom, "@State", DbType.String, EntityState.Deleted);
                 db.AddInParameter(dbCom, "@OrderNo", DbType.String, item.OrderNo);
                 db.AddInParameter(dbCom, "@Seq", DbType.Int16, item.Seq);
                 db.ExecuteNonQuery(dbCom, trans);

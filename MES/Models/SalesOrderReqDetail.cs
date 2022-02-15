@@ -291,8 +291,8 @@ namespace MesAdmin.Models
                 DbTransaction trans = conn.BeginTransaction();
                 try
                 {
-                    Insert(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Added), db, trans, dbCom);
-                    Delete(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Deleted), db, trans, dbCom);
+                    Insert(items.Where(u => u.State == EntityState.Added), db, trans, dbCom);
+                    Delete(items.Where(u => u.State == EntityState.Deleted), db, trans, dbCom);
                     trans.Commit();
                 }
                 catch

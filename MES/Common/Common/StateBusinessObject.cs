@@ -1,4 +1,4 @@
-﻿using MesAdmin.Common.Common;
+﻿using System.Data;
 
 namespace MesAdmin.Common.Common
 {

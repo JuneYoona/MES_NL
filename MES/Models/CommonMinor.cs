@@ -102,7 +102,7 @@ namespace MesAdmin.Models
                 base.Add(
                     new CommonMinor
                     {
-                        State = MesAdmin.Common.Common.EntityState.Unchanged,
+                        State = EntityState.Unchanged,
                         MinorCode = (string)u["MinorCode"],
                         MajorCode = (string)u["MajorCode"],
                         MinorName = (string)u["MinorName"],
@@ -122,9 +122,9 @@ namespace MesAdmin.Models
         public void Save()
         {
             IEnumerable<CommonMinor> items = this.Items;
-            Insert(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Added));
-            Update(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Modified));
-            Delete(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Deleted));
+            Insert(items.Where(u => u.State == EntityState.Added));
+            Update(items.Where(u => u.State == EntityState.Modified));
+            Delete(items.Where(u => u.State == EntityState.Deleted));
 
             // Global 기준정보를 다시 가져오기 위해 Instance 초기화
             GlobalCommonMinor.Instance = null;

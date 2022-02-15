@@ -60,14 +60,14 @@ namespace MesAdmin.ViewModels
         public void OnCellValueChanged()
         {
             if (SelectedItem == null) return;
-            if (SelectedItem.State == Common.Common.EntityState.Unchanged)
-                SelectedItem.State = Common.Common.EntityState.Modified;
+            if (SelectedItem.State == EntityState.Unchanged)
+                SelectedItem.State = EntityState.Modified;
         }
 
         public bool CanSave()
         {
             if (Collection == null) return false;
-            return Collection.Where(o => o.State == Common.Common.EntityState.Modified).Count() > 0;
+            return Collection.Where(o => o.State == EntityState.Modified).Count() > 0;
         }
         public Task OnSave()
         {

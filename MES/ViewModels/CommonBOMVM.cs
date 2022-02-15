@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Collections.ObjectModel;
 using System.Linq;
 using DevExpress.Mvvm;
@@ -139,7 +140,7 @@ namespace MesAdmin.ViewModels
 
             Collections.Add(new CommonBillOfMaterial
             {
-                State = Common.Common.EntityState.Added,
+                State = EntityState.Added,
                 PItemCode = FocusedItem.CItemCode,
                 KeyFieldName = new Random().Next().ToString(), // 임시
                 ParentFieldName = FocusedItem.KeyFieldName,
@@ -205,7 +206,8 @@ namespace MesAdmin.ViewModels
             }
             else
             {
-                int cnt = Collections.Where(u => u.CItemCode == item.ItemCode && u.RecursionLevel == FocusedItem.RecursionLevel).Count();
+                int cnt = Collections.Where(u => u.PItemCode == FocusedItem.PItemCode && u.CItemCode == item.ItemCode).Count();
+
                 if (cnt != 1)
                 {
                     MessageBoxService.ShowMessage("같은 품목이 존재합니다!", "Warning", MessageButton.OK, MessageIcon.Warning);
@@ -231,10 +233,10 @@ namespace MesAdmin.ViewModels
             SelectedItems.ToList().ForEach(u =>
             {
                 if (u.RecursionLevel == 0) return;
-                if (u.State == Common.Common.EntityState.Added)
+                if (u.State == EntityState.Added)
                     Collections.Remove(u);
                 else
-                    u.State = u.State == Common.Common.EntityState.Deleted ? Common.Common.EntityState.Unchanged : Common.Common.EntityState.Deleted;
+                    u.State = u.State == EntityState.Deleted ? EntityState.Unchanged : EntityState.Deleted;
             });
         }
 

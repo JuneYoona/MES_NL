@@ -28,6 +28,8 @@ namespace MesAdmin.Common.CustomControl
                 var cell = view.GetSelectedCells();
                 int y = cell[0].RowHandle;
                 int x = cell[0].Column.VisibleIndex;
+                int j = 0;
+                int i = 0;
 
                 Task.Factory.StartNew(() =>
                 {
@@ -35,6 +37,7 @@ namespace MesAdmin.Common.CustomControl
                     {
                         foreach (string row in rows)
                         {
+                            i++;
                             await Task.Delay(TimeSpan.FromMilliseconds(50));
                             string[] cols = row.Split('\t');
                             foreach (string col in cols)
@@ -49,6 +52,9 @@ namespace MesAdmin.Common.CustomControl
                                     grid.SetCellValue(y, grid.Columns[x].FieldName, col.Trim());
                                     view.HideEditor();
                                 }
+
+                                // last cell paste(posting to datasource) / grid의 마지막 행/열일경우
+                                if ((i == rows.Length || y + 1 == grid.VisibleRowCount) && ++j == cols.Length) view.Focus();
 
                                 x += 1;
                                 if (x >= view.VisibleColumns.Count) break;

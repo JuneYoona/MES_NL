@@ -23,7 +23,7 @@ namespace MesAdmin.ViewModels
         #endregion
 
         #region Public Properties
-        public object MainViewModel { get; set; }
+        public MainViewModel MainViewModel { get { return (MainViewModel)((ISupportParentViewModel)this).ParentViewModel; } }
         public DataTable Collections
         {
             get { return GetProperty(() => Collections); }
@@ -77,7 +77,11 @@ namespace MesAdmin.ViewModels
             get { return GetProperty(() => BizCode); }
             set { SetProperty(() => BizCode, value); }
         }
-        public IEnumerable<CommonBizPartner> BizPartnerList { get; set; }
+        public IEnumerable<CommonBizPartner> BizPartnerList
+        {
+            get { return GetProperty(() => BizPartnerList); }
+            set { SetProperty(() => BizPartnerList, value); }
+        }
         public string ItemCode
         {
             get { return GetProperty(() => ItemCode); }
@@ -127,18 +131,13 @@ namespace MesAdmin.ViewModels
         // 시간이 많이 걸리는 작업이어서 async binding
         private async void BindingBizPartnerList()
         {
-            var task = Task<IEnumerable<CommonBizPartner>>.Factory.StartNew(LoadingBizPartnerList);
+            var task = Task.Run(() => { return GlobalCommonBizPartner.Instance.Where(u => u.BizType == "C" || u.BizType == "CS"); });
             await task;
 
             if (task.IsCompleted)
             {
                 BizPartnerList = task.Result;
             }
-        }
-
-        private IEnumerable<CommonBizPartner> LoadingBizPartnerList()
-        {
-            return GlobalCommonBizPartner.Instance.Where(u => u.IsEnabled == true);
         }
 
         public bool CanSearch() { return true; }
@@ -196,15 +195,15 @@ namespace MesAdmin.ViewModels
 
             string[] pm = { (string)parameter.Item, qrNo, order };
             string documentId = qrNo + order;
-            IDocument document = FindDocument(documentId);
+            IDocument document = MainViewModel.FindDocument(documentId);
             if (document == null)
             {
-                ((MainViewModel)MainViewModel).TabLoadingOpen();
-                document = DocumentManagerService.CreateDocument(viewName, new DocumentParamter(EntityMessageType.Changed, pm, BizAreaCode, MainViewModel), this);
+                MainViewModel.TabLoadingOpen();
+                document = MainViewModel.CreateDocument(viewName, title, new DocumentParamter(EntityMessageType.Changed, pm, BizAreaCode, MainViewModel));
                 document.DestroyOnClose = true;
                 document.Id = documentId;
-                document.Title = title;
             }
+
             document.Show();
             SelectedItem = null;
         }
@@ -234,14 +233,6 @@ namespace MesAdmin.ViewModels
             );
         }
 
-        IDocument FindDocument(string documentId)
-        {
-            foreach (var doc in DocumentManagerService.Documents)
-                if (documentId.Equals(doc.Id))
-                    return doc;
-            return null;
-        }
-
         void OnMessage(string pm)
         {
             if (pm == "Refresh")
@@ -251,20 +242,14 @@ namespace MesAdmin.ViewModels
         protected override void OnParameterChanged(object parameter)
         {
             base.OnParameterChanged(parameter);
-            if (ViewModelBase.IsInDesignMode) return;
+            if (IsInDesignMode) return;
 
             // 거래처 검색 control, column binding(IQC만 사용, 출하로트는 FQC)
             Visibility = QrType == "IQC" ? "Visible" : "Hidden";
             VisibleBiz = QrType == "IQC" ? true : false;
             VisibleDn = QrType == "FQC" ? true : false;
 
-            DocumentParamter pm = parameter as DocumentParamter;
-            MainViewModel = pm.ParentViewmodel;
-
-            Task.Factory.StartNew(SearchCore).ContinueWith(task =>
-            {
-                ((MainViewModel)MainViewModel).TabLoadingClose();
-            });
+            Task.Run(SearchCore).ContinueWith(task => MainViewModel.TabLoadingClose());
         }
     }
 }

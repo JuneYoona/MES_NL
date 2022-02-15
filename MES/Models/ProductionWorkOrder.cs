@@ -123,7 +123,7 @@ namespace MesAdmin.Models
                 base.Add(
                     new ProductionWorkOrder
                     {
-                        State = MesAdmin.Common.Common.EntityState.Unchanged,
+                        State = EntityState.Unchanged,
                         BizAreaCode = (string)u["BizAreaCode"],
                         OrderNo = (string)u["OrderNo"],
                         OrderDate = (DateTime)u["OrderDate"],
@@ -147,9 +147,9 @@ namespace MesAdmin.Models
         public void Save()
         {
             IEnumerable<ProductionWorkOrder> items = this.Items;
-            Insert(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Added));
-            Update(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Modified));
-            Delete(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Deleted));
+            Insert(items.Where(u => u.State == EntityState.Added));
+            Update(items.Where(u => u.State == EntityState.Modified));
+            Delete(items.Where(u => u.State == EntityState.Deleted));
         }
 
         public void Insert(IEnumerable<ProductionWorkOrder> items)

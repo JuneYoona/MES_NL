@@ -21,7 +21,7 @@ namespace MesAdmin.ViewModels
         #endregion
 
         #region Public Properties
-        public object MainViewModel { get; set; }
+        public MainViewModel MainViewModel { get { return (MainViewModel)((ISupportParentViewModel)this).ParentViewModel; } }
         public DateTime StartDate
         {
             get { return GetProperty(() => StartDate); }
@@ -42,10 +42,10 @@ namespace MesAdmin.ViewModels
             get { return GetProperty(() => BizCode); }
             set { SetProperty(() => BizCode, value); }
         }
-        public IEnumerable<CommonBizPartner> BizPartnerList
+        public IEnumerable<CommonBizPartner> BizCodeList
         {
-            get { return GetProperty(() => BizPartnerList); }
-            set { SetProperty(() => BizPartnerList, value); }
+            get { return GetProperty(() => BizCodeList); }
+            set { SetProperty(() => BizCodeList, value); }
         }
         public IEnumerable<SalesOrderReqDetail> Collections
         {
@@ -71,7 +71,7 @@ namespace MesAdmin.ViewModels
 
         #region Commands
         public AsyncCommand SearchCmd { get; set; }
-        public ICommand ShowDialogCmd { get; set; }
+        public ICommand ShowItemDialogCmd { get; set; }
         public ICommand MouseDoubleClickCmd { get; set; }
         public ICommand MouseDownCmd { get; set; }
         #endregion
@@ -84,7 +84,7 @@ namespace MesAdmin.ViewModels
             EndDate = DateTime.Now.AddMonths(1);
 
             SearchCmd = new AsyncCommand(OnSearch);
-            ShowDialogCmd = new DelegateCommand(OnShowDialog);
+            ShowItemDialogCmd = new DelegateCommand(OnShowDialog);
             MouseDoubleClickCmd = new DelegateCommand(OnMouseDoubleClick);
             MouseDownCmd = new DelegateCommand(OnMouseDown);
 
@@ -99,7 +99,7 @@ namespace MesAdmin.ViewModels
 
             if (task.IsCompleted)
             {
-                BizPartnerList = task.Result;
+                BizCodeList = task.Result;
             }
         }
 
@@ -146,15 +146,15 @@ namespace MesAdmin.ViewModels
             if (SelectedItem == null) return;
 
             string documentId = SelectedItem.ReqNo;
-            IDocument document = FindDocument(documentId);
+            IDocument document = MainViewModel.FindDocument(documentId);
             if (document == null)
             {
-                ((MainViewModel)MainViewModel).TabLoadingOpen();
-                document = DocumentManagerService.CreateDocument("SalesOrderReqNLView", new DocumentParamter(EntityMessageType.Changed, SelectedItem, MainViewModel), this);
+                MainViewModel.TabLoadingOpen();
+                document = MainViewModel.CreateDocument("SalesOrderReqNLView", "출하요청 등록", new DocumentParamter(EntityMessageType.Changed, SelectedItem, MainViewModel));
                 document.DestroyOnClose = true;
                 document.Id = documentId;
-                document.Title = "출하요청 등록";
             }
+
             document.Show();
             SelectedItem = null;
         }
@@ -163,14 +163,6 @@ namespace MesAdmin.ViewModels
         {
             if (SelectedItem != null)
                 Details = new SalesOrderDlvyTable((string)SelectedItem.ReqNo, (int)SelectedItem.Seq).Collections;
-        }
-
-        IDocument FindDocument(string documentId)
-        {
-            foreach (var doc in DocumentManagerService.Documents)
-                if (documentId.Equals(doc.Id))
-                    return doc;
-            return null;
         }
 
         void OnMessage(string pm)
@@ -182,15 +174,9 @@ namespace MesAdmin.ViewModels
         protected override void OnParameterChanged(object parameter)
         {
             base.OnParameterChanged(parameter);
-            if (ViewModelBase.IsInDesignMode) return;
+            if (IsInDesignMode) return;
 
-            DocumentParamter pm = parameter as DocumentParamter;
-            MainViewModel = pm.ParentViewmodel;
-
-            Task.Factory.StartNew(SearchCore).ContinueWith(task =>
-            {
-                ((MainViewModel)MainViewModel).TabLoadingClose();
-            });
+            Task.Run(SearchCore).ContinueWith(task => MainViewModel.TabLoadingClose());
         }
     }
 }

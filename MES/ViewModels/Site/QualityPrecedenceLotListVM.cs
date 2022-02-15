@@ -22,7 +22,7 @@ namespace MesAdmin.ViewModels
         #endregion
 
         #region Public Properties
-        public object MainViewModel { get; set; }
+        public MainViewModel MainViewModel { get { return (MainViewModel)((ISupportParentViewModel)this).ParentViewModel; } }
         public DateTime StartDate
         {
             get { return GetProperty(() => StartDate); }
@@ -107,25 +107,17 @@ namespace MesAdmin.ViewModels
             if (SelectedItem == null) return;
 
             string documentId = (string)SelectedItem["QrNo"];
-            IDocument document = FindDocument(documentId);
+            IDocument document = MainViewModel.FindDocument(documentId);
             if (document == null)
             {
-                ((MainViewModel)MainViewModel).TabLoadingOpen();
-                document = DocumentManagerService.CreateDocument("QualityPrecedenceLotView", new DocumentParamter(EntityMessageType.Changed, (string)SelectedItem["QrNo"], MainViewModel), this);
+                MainViewModel.TabLoadingOpen();
+                document = MainViewModel.CreateDocument("QualityPrecedenceLotView", "선행로트 등록", new DocumentParamter(EntityMessageType.Changed, (string)SelectedItem["QrNo"], MainViewModel));
                 document.DestroyOnClose = true;
                 document.Id = documentId;
-                document.Title = "선행로트 등록";
             }
+
             document.Show();
             SelectedItem = null;
-        }
-
-        IDocument FindDocument(string documentId)
-        {
-            foreach (var doc in DocumentManagerService.Documents)
-                if (documentId.Equals(doc.Id))
-                    return doc;
-            return null;
         }
 
         public void OnShowDialog()
@@ -168,15 +160,9 @@ namespace MesAdmin.ViewModels
         protected override void OnParameterChanged(object parameter)
         {
             base.OnParameterChanged(parameter);
-            if (ViewModelBase.IsInDesignMode) return;
+            if (IsInDesignMode) return;
 
-            DocumentParamter pm = parameter as DocumentParamter;
-            MainViewModel = pm.ParentViewmodel;
-
-            Task.Factory.StartNew(SearchCore).ContinueWith(task =>
-            {
-                ((MainViewModel)MainViewModel).TabLoadingClose();
-            });
+            Task.Run(SearchCore).ContinueWith(task => MainViewModel.TabLoadingClose());
         }
     }
 }

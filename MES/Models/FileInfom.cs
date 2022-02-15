@@ -65,7 +65,7 @@ namespace MesAdmin.Models
                 string sql;
                 try
                 {
-                    foreach (var item in this.Items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Added))
+                    foreach (var item in this.Items.Where(u => u.State == EntityState.Added))
                     {
                         sql = "INSERT INTO common_AttachedFiles VALUES (@Id, @DocumentNo, @Seq, @FileName, @FileSize, @Contents, @InsertId, getdate())";
                         dbCom = db.GetSqlStringCommand(sql);

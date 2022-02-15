@@ -62,6 +62,7 @@ namespace MesAdmin.Common.CustomControl
             this.AllowMergedGrouping = true;
             this.MergedGroupingMode = MergedGroupingMode.CtrlKeyPressed;
             this.AllowCommitOnValidationAttributeError = true;
+            EnableImmediatePosting = true; //필드값이 바뀔경우 focus in 상태에서도 CellValueChang 이벤트 발생
 
             // gridcontrol optimizing(scroll)
             this.AllowCascadeUpdate = true;
@@ -94,9 +95,9 @@ namespace MesAdmin.Common.CustomControl
 
                 string average = list.Count() == 0 ? "0" : (list.Sum() / list.Count()).ToString("#,#.######");
                 string summary = list.Count() == 0 ? "0" : list.Sum().ToString("#,#.######");
-                string count = list.Count().ToString();
-                string max = list.Count() == 0 ? "0" : list.Max().ToString();
-                string min = list.Count() == 0 ? "0" : list.Min().ToString();
+                string count = list.Count().ToString("n0");
+                string max = list.Count() == 0 ? "0" : list.Max().ToString("#,#.######");
+                string min = list.Count() == 0 ? "0" : list.Min().ToString("#,#.######");
 
                 BarSummary.Content = "선택합계 : " + summary;
                 BarCount.Content = "선택개수 : " + count;

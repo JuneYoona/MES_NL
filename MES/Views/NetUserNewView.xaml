@@ -1,67 +1,70 @@
-﻿<UserControl x:Class="MesAdmin.Views.NetUserNewView"
-    xmlns="http://schemas.microsoft.com/netfx/2009/xaml/presentation" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
-    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
-    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
-    xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"             
-    xmlns:viewmodel="clr-namespace:MesAdmin.ViewModels"
-    xmlns:view="clr-namespace:MesAdmin.Views"             
-    xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
-    mc:Ignorable="d" 
-    d:DesignHeight="650"
-    d:DesignWidth="670">
+﻿<UserControl    x:Class="MesAdmin.Views.NetUserNewView"
+                xmlns="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
+                xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+                xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+                xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+                xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+                xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+                xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+                xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                xmlns:common="clr-namespace:MesAdmin.Common.Common"
+                xmlns:viewmodel="clr-namespace:MesAdmin.ViewModels"
+                xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
+                mc:Ignorable="d" 
+                d:DesignHeight="650"
+                d:DesignWidth="670">
     <UserControl.DataContext>
         <viewmodel:NetUserNewVM />
     </UserControl.DataContext>
 
     <UserControl.Resources>
-        <dxmvvm:ObjectToObjectConverter x:Key="EntityStateConverter">
-            <dxmvvm:MapItem Source="Added" Target="True"/>
-            <dxmvvm:MapItem Source="Deleted" Target="False"/>
-            <dxmvvm:MapItem Source="Unchanged" Target="False"/>
-            <dxmvvm:MapItem Source="Changed" Target="False"/>
-        </dxmvvm:ObjectToObjectConverter>
-        <dxmvvm:ObjectToObjectConverter x:Key="EntityMessageTypeConverter">
-            <dxmvvm:MapItem Source="Added" Target="True"/>
-            <dxmvvm:MapItem Source="Changed" Target="False"/>
-        </dxmvvm:ObjectToObjectConverter>
-        <DataTemplate x:Key="LookUpTemplate">
-            <dxg:LookUpEdit
-                Name="PART_Editor"
-                ItemsSource="{Binding View.DataContext.LueNetRoles}"
-                IsEnabled="{Binding RowData.Row.State, Converter={StaticResource EntityStateConverter}}"
-                ValueMember="RoleId"
-                DisplayMember="RoleName"
-                EditValue="{Binding RowData.Row.RoleId}"
-                ShowSizeGrip="False"
-                IsTextEditable="False"
-                AutoPopulateColumns="False"
-                ShowError="False" ShowErrorToolTip="False"
-                IsPopupAutoWidth="False">
-                <dxg:LookUpEdit.PopupContentTemplate>
-                    <ControlTemplate>
-                        <dxg:GridControl
-                            Name="PART_GridControl"
-                            Width="400" 
-                            ShowBorder="False" >
-                            <dxg:GridControl.View>
-                                <dxg:TableView 
-                                    ShowGroupPanel="False" 
-                                    ShowIndicator="False"
-                                    AutoWidth="True"/>
-                            </dxg:GridControl.View>
-                            <dxg:GridControl.Columns>
-                                <dxg:GridColumn FieldName="RoleName" Header="RoleName" />
-                                <dxg:GridColumn FieldName="Description" Header="Description"/>
-                            </dxg:GridControl.Columns>
-                        </dxg:GridControl>
-                    </ControlTemplate>
-                </dxg:LookUpEdit.PopupContentTemplate>
-            </dxg:LookUpEdit>
-        </DataTemplate>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicatorState.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <dxmvvm:ObjectToObjectConverter x:Key="EntityMessageTypeConverter">
+                <dxmvvm:MapItem Source="Added" Target="True"/>
+                <dxmvvm:MapItem Source="Changed" Target="False"/>
+            </dxmvvm:ObjectToObjectConverter>
+            <DataTemplate x:Key="LookUpTemplate">
+                <dxg:LookUpEdit
+                    Name="PART_Editor"
+                    ItemsSource="{Binding View.DataContext.LueNetRoles}"
+                    ValueMember="RoleId"
+                    DisplayMember="RoleName"
+                    EditValue="{Binding RowData.Row.RoleId, UpdateSourceTrigger=PropertyChanged}"
+                    ShowSizeGrip="False"
+                    IsTextEditable="False"
+                    AutoPopulateColumns="False"
+                    ShowError="False" ShowErrorToolTip="False"
+                    IsPopupAutoWidth="False">
+                    <dxg:LookUpEdit.PopupContentTemplate>
+                        <ControlTemplate>
+                            <dxg:GridControl
+                                Name="PART_GridControl"
+                                Width="400" 
+                                ShowBorder="False" >
+                                <dxg:GridControl.View>
+                                    <dxg:TableView 
+                                        ShowGroupPanel="False" 
+                                        ShowIndicator="False"
+                                        AutoWidth="True"/>
+                                </dxg:GridControl.View>
+                                <dxg:GridControl.Columns>
+                                    <dxg:GridColumn FieldName="RoleName" Header="RoleName" />
+                                    <dxg:GridColumn FieldName="Description" Header="Description"/>
+                                </dxg:GridControl.Columns>
+                            </dxg:GridControl>
+                        </ControlTemplate>
+                    </dxg:LookUpEdit.PopupContentTemplate>
+                </dxg:LookUpEdit>
+            </DataTemplate>
+        </ResourceDictionary>
     </UserControl.Resources>
-    
+
     <Grid>
         <DockPanel>
             <dxr:RibbonControl DockPanel.Dock="Top">
@@ -71,21 +74,32 @@
                             <dxb:BarButtonItem Content="저장" KeyGesture="CTRL+S" LargeGlyph="{dx:DXImage SvgImages/Save/Save.svg}">
                                 <dxmvvm:Interaction.Behaviors>
                                     <dxmvvm:ConfirmationBehavior Command="{Binding SaveCmd}" MessageIcon="Question" 
-                                        MessageText="저장하시겠습니까?" MessageButton="YesNo" />
+                                        MessageText="저장하시겠습니까?" MessageButton="YesNo"/>
                                 </dxmvvm:Interaction.Behaviors>
                             </dxb:BarButtonItem>
-                            <dxb:BarButtonItem Content="Role 추가" KeyGesture="CTRL+N" Command="{Binding AddRoleCmd}" LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/AddFile.svg}" />
-                            <dxb:BarButtonItem Content="Role 삭제" KeyGesture="CTRL+D" Command="{Binding DelRoleCmd}" LargeGlyph="{dx:DXImage SvgImages/Snap/SnapDeleteList.svg}" />
+                            <dxb:BarButtonItem
+                                IsEnabled="{Binding RoleEdit}"
+                                Content="Role 추가"
+                                KeyGesture="CTRL+N"
+                                Command="{Binding AddRoleCmd}"
+                                LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/AddFile.svg}" />
+                            <dxb:BarButtonItem
+                                IsEnabled="{Binding RoleEdit}"
+                                Content="Role 삭제"
+                                KeyGesture="CTRL+D"
+                                Command="{Binding DelRoleCmd}"
+                                LargeGlyph="{dx:DXImage SvgImages/Snap/SnapDeleteList.svg}" />
                         </dxr:RibbonPageGroup>
                     </dxr:RibbonPage>
                 </dxr:RibbonDefaultPageCategory>
             </dxr:RibbonControl>
-            <dxlc:FlowLayoutControl Orientation="Vertical" StretchContent="True">
+            <dxlc:FlowLayoutControl Orientation="Vertical" StretchContent="True" IsEnabled="{Binding IsEnabled}">
                 <dxlc:GroupBox Header="사용자 정보">
                     <Grid Style="{StaticResource SearchPanel}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="130" />
                             <ColumnDefinition Width="180" />
+                            <ColumnDefinition Width="280" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
@@ -108,7 +122,7 @@
                             <TextBlock>Email</TextBlock>
                         </Border>
                         <Border Grid.Row="4" Grid.Column="0">
-                            <TextBlock>작업장</TextBlock>
+                            <TextBlock>근무공정</TextBlock>
                         </Border>
                         <Border Grid.Row="5" Grid.Column="0">
                             <TextBlock>사용여부</TextBlock>
@@ -125,64 +139,109 @@
                         <dxe:TextEdit
                             Text="{Binding NetUserItem.Profile.KorName, UpdateSourceTrigger=PropertyChanged}"
                             Grid.Row="1"
-                            IsEnabled="{Binding IsEnabled}"
                             Background="#F6EDCB"
+                            Grid.Column="1"
                             VerticalAlignment="Bottom"
-                            Grid.Column="1" 
                             Margin="2 0 0 0" />
                         <dxe:PasswordBoxEdit
                             Text="{Binding NetUserItem.Password, UpdateSourceTrigger=PropertyChanged}" 
                             Grid.Row="2"
                             Background="#F6EDCB"
-                            IsEnabled="{Binding IsEnabled}"
                             Grid.Column="1"
                             VerticalAlignment="Bottom"
-                            Margin="2 0 0 0" />
+                            ShowError="False"
+                            Margin="2 0 0 0">
+                            <dxe:PasswordBoxEdit.Style>
+                                <Style TargetType="dxe:BaseEdit">
+                                    <Setter Property="Height" Value="23" />
+                                    <Setter Property="BorderThickness" Value="1" />
+                                    <Setter Property="BorderBrush" Value="#94ADCC" />
+                                    <Setter Property="Validation.ErrorTemplate">
+                                        <Setter.Value>
+                                            <ControlTemplate>
+                                                <Grid>
+                                                    <Border BorderBrush="#FFCB2E2E"
+                                                            BorderThickness="1"
+                                                            IsHitTestVisible="False"
+                                                            x:Name="errorBorder"/>
+                                                    <AdornedElementPlaceholder Name="adornedElementPlaceholder"/>
+                                                    <Popup x:Name="Popup"
+                                                           AllowsTransparency="True"
+                                                           HorizontalAlignment="Right"
+                                                           HorizontalOffset="5"
+                                                           VerticalOffset="0"
+                                                           PopupAnimation="Fade"
+                                                           Placement="Right"
+                                                           PlacementTarget="{Binding ElementName=errorBorder}"
+                                                           IsOpen="True">
+                                                        <Border Background="#FFCB2E2E" CornerRadius="4" Padding="4">
+                                                            <TextBlock HorizontalAlignment="Center" Foreground="White" Margin="2,0,2,0" Text="{Binding ErrorContent}" />
+                                                        </Border>
+                                                        <dxmvvm:Interaction.Behaviors>
+                                                            <dxmvvm:EventToCommand
+                                                                Command="{Binding ElementName=adornedElementPlaceholder, Path= AdornedElement.Parent.DataContext.OpenedCmd}"
+                                                                CommandParameter="{Binding ElementName=Popup}"
+                                                                PassEventArgsToCommand="True"
+                                                                EventName="Opened" />
+                                                        </dxmvvm:Interaction.Behaviors>
+                                                    </Popup>
+                                                </Grid>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </dxe:PasswordBoxEdit.Style>
+                        </dxe:PasswordBoxEdit>
                         <dxe:TextEdit
                             Text="{Binding NetUserItem.Email, UpdateSourceTrigger=PropertyChanged}" 
                             Grid.Row="3"
-                            Background="White"
-                            IsEnabled="{Binding IsEnabled}"
                             Grid.Column="1"
                             VerticalAlignment="Bottom"
                             Margin="2 0 0 0" />
                         <dxe:ComboBoxEdit
                             Grid.Column="1"
                             Grid.Row="4"
-                            Background="White"
-                            IsEnabled="{Binding IsEnabled}"
+                            Grid.ColumnSpan="2"
                             Margin="2 0 0 0"
                             VerticalAlignment="Bottom"
-                            ItemsSource="{Binding WAItems}" AllowDefaultButton="True"
-                            EditValue="{Binding SelectedWACode, UpdateSourceTrigger=PropertyChanged}"
+                            ItemsSource="{Binding WaCodes}" AllowDefaultButton="True"
+                            EditValue="{Binding SelectedWaCode, UpdateSourceTrigger=PropertyChanged}"
 						    DisplayMember="WaName"
-                            ValueMember="WaCode">
+                            ValueMember="WaCode"
+                            IncrementalFiltering="False">
                             <dxe:ComboBoxEdit.StyleSettings>
-                                <dxe:CheckedComboBoxStyleSettings />
+                                <dxe:CheckedTokenComboBoxStyleSettings ShowSelectAllItem="False" NewTokenPosition="None" />
                             </dxe:ComboBoxEdit.StyleSettings>
                         </dxe:ComboBoxEdit>
-                        <dxe:CheckEdit IsChecked="{Binding NetUserItem.IsApproved, UpdateSourceTrigger=PropertyChanged}"
-                            Grid.Row="5" Grid.Column="1" VerticalAlignment="Bottom" Margin="2 0 0 0" IsEnabled="{Binding IsEnabled}" />
+                        <dxe:CheckEdit
+                            IsChecked="{Binding NetUserItem.IsApproved, UpdateSourceTrigger=PropertyChanged}"
+                            Grid.Row="5"
+                            Grid.Column="1"
+                            VerticalAlignment="Bottom"
+                            Margin="2 0 0 0"
+                            IsEnabled="{Binding RoleEdit}" />
                     </Grid>
                 </dxlc:GroupBox>
                 <dxlc:GroupBox x:Name="RoleBox" Header="Role 정보" Height="300">
                     <dxg:GridControl
+                        common:GridRowIndicatorHelper.IsEnabled="True"
                         ItemsSource="{Binding NetUserItem.Roles}"
+                        SelectionMode="Cell"
                         SelectedItem="{Binding SelectedRole}">
                         <dxg:GridControl.View>
                             <dxg:TableView 
                                 ShowGroupPanel="False"
-                                AutoWidth="True"/>
+                                AutoWidth="True">
+                                <dxmvvm:Interaction.Behaviors>
+                                    <utils:RestrictEditingHelper>
+                                        <utils:RestrictEditingHelper.Conditions>
+                                            <utils:RestrictEditingCondition FieldName="RoleId" Expression="State != 'Added'"/>
+                                        </utils:RestrictEditingHelper.Conditions>
+                                    </utils:RestrictEditingHelper>
+                                </dxmvvm:Interaction.Behaviors>
+                            </dxg:TableView>
                         </dxg:GridControl.View>
                         <dxg:GridControl.Columns>
-                            <dxg:GridColumn 
-                                Header=" "
-                                FieldName="State"
-                                FixedWidth="True" 
-                                Width="20" 
-                                CellTemplate="{StaticResource StateTemplate}" 
-                                ReadOnly="True"
-                                AllowFocus="False" />
                             <dxg:GridColumn 
                                 FieldName="RoleId" 
                                 Header="Role 이름" 
@@ -190,9 +249,9 @@
                                 Width="150" 
                                 CellTemplate="{StaticResource LookUpTemplate}" />
                             <dxg:GridColumn
-                                FieldName="Description" 
+                                FieldName="Description"
                                 Header="Role 설명" 
-                                AllowEditing="False" 
+                                AllowEditing="False"
                                 AllowFocus="True" />
                         </dxg:GridControl.Columns>
                     </dxg:GridControl>
@@ -201,4 +260,3 @@
         </DockPanel>
     </Grid>
 </UserControl>
-

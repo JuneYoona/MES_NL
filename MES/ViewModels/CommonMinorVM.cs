@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Collections.ObjectModel;
 using System.Linq;
 using DevExpress.Mvvm;
@@ -36,6 +37,7 @@ namespace MesAdmin.ViewModels
             get { return GetProperty(() => SelectedMinor); }
             set { SetProperty(() => SelectedMinor, value); }
         }
+        public CommonMinorList SelectedItems { get; } = new CommonMinorList();
         #endregion
 
         #region Commands
@@ -85,13 +87,13 @@ namespace MesAdmin.ViewModels
 
         public void OnDelete()
         {
-            if (SelectedMinor == null) return;
-
-            if (SelectedMinor.State == EntityState.Added)
-                CollectionsMinor.Remove(SelectedMinor);
-            else
-                SelectedMinor.State =
-                    SelectedMinor.State == EntityState.Deleted ? EntityState.Unchanged : EntityState.Deleted;
+            SelectedItems.ToList().ForEach(u =>
+            {
+                if (u.State == EntityState.Added)
+                    CollectionsMinor.Remove(u);
+                else
+                    u.State = u.State == EntityState.Deleted ? EntityState.Unchanged : EntityState.Deleted;
+            });
         }
 
         public bool CanSave()

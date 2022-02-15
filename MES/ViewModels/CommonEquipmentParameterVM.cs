@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Linq;
 using DevExpress.Mvvm;
 using MesAdmin.Models;
@@ -121,9 +122,9 @@ namespace MesAdmin.ViewModels
         {
             bool ret = true;
             if (Collections == null) return false;
-            ret = Collections.Where(u => u.State == Common.Common.EntityState.Deleted || u.State == Common.Common.EntityState.Added || u.State == Common.Common.EntityState.Modified).Count() > 0;
+            ret = Collections.Where(u => u.State == EntityState.Deleted || u.State == EntityState.Added || u.State == EntityState.Modified).Count() > 0;
             // 필수 입력값 처리
-            foreach (CommonEquipmentParameter item in Collections.Where(u => u.State == Common.Common.EntityState.Added || u.State == Common.Common.EntityState.Modified))
+            foreach (CommonEquipmentParameter item in Collections.Where(u => u.State == EntityState.Added || u.State == EntityState.Modified))
             {
                 if (string.IsNullOrEmpty(item.Parameter) || item.Order == null)
                 {
@@ -165,7 +166,7 @@ namespace MesAdmin.ViewModels
         {
             Collections.Insert(Collections.Count, new CommonEquipmentParameter
             {
-                State = Common.Common.EntityState.Added,
+                State = EntityState.Added,
                 BizAreaCode = BizAreaCode,
                 EqpCode = Equipment.EqpCode,
                 Seq = SelectedType
@@ -177,10 +178,10 @@ namespace MesAdmin.ViewModels
         {
             SelectedItems.ToList().ForEach(u =>
             {
-                if (u.State == Common.Common.EntityState.Added)
+                if (u.State == EntityState.Added)
                     Collections.Remove(u);
                 else
-                    u.State = u.State == Common.Common.EntityState.Deleted ? Common.Common.EntityState.Unchanged : Common.Common.EntityState.Deleted;
+                    u.State = u.State == EntityState.Deleted ? EntityState.Unchanged : EntityState.Deleted;
             });
         }
 

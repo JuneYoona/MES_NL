@@ -152,7 +152,7 @@ namespace MesAdmin.Models
                 base.Add(
                     new QualityElementIVL
                     {
-                        State = MesAdmin.Common.Common.EntityState.Unchanged,
+                        State = EntityState.Unchanged,
                         QrNo = qrNo,
                         LumRef = (decimal)u["LumRef"],
                         LumLot = (decimal)u["LumLot"],
@@ -215,7 +215,7 @@ namespace MesAdmin.Models
         public void Save(ObservableCollection<RawResult> result)
         {
             var ivl = Items.FirstOrDefault();
-            if (ivl == null || ivl.State == MesAdmin.Common.Common.EntityState.Unchanged) return;
+            if (ivl == null || ivl.State == EntityState.Unchanged) return;
 
             Database db = ProviderFactory.Instance;
             using (DbConnection conn = db.CreateConnection())

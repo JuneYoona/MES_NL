@@ -142,7 +142,7 @@ namespace MesAdmin.Models
                 base.Add(
                     new ProductionEquipmentParameter
                     {
-                        State = MesAdmin.Common.Common.EntityState.Unchanged,
+                        State = EntityState.Unchanged,
                         ProductOrderNo = (string)u["ProductOrderNo"],
                         Seq = (string)u["Seq"],
                         EqpCode = (string)u["EqpCode"],

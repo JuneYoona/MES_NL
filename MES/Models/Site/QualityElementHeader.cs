@@ -230,7 +230,7 @@ namespace MesAdmin.Models
                 base.Add(
                     new QualityElementHeader
                     {
-                        State = MesAdmin.Common.Common.EntityState.Unchanged,
+                        State = EntityState.Unchanged,
                         QrNo = (string)u["QrNo"],
                         ProductOrderNo = (string)u["ProductOrderNo"],
                         ItemCode = (string)u["ItemCode"],
@@ -266,8 +266,8 @@ namespace MesAdmin.Models
                 DbTransaction trans = conn.BeginTransaction();
                 try
                 {
-                    //Insert(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Added), db, trans, dbCom);
-                    Delete(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Deleted), db, trans, dbCom);
+                    //Insert(items.Where(u => u.State == EntityState.Added), db, trans, dbCom);
+                    Delete(items.Where(u => u.State == EntityState.Deleted), db, trans, dbCom);
                     trans.Commit();
                 }
                 catch

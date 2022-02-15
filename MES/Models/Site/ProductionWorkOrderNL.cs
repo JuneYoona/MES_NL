@@ -135,7 +135,7 @@ namespace MesAdmin.Models
                 {
                     dbCom = db.GetStoredProcCommand("usp_Production_WorkOrder");
                     dbCom.CommandType = CommandType.StoredProcedure;
-                    db.AddInParameter(dbCom, "@State", DbType.String, MesAdmin.Common.Common.EntityState.Added);
+                    db.AddInParameter(dbCom, "@State", DbType.String, EntityState.Added);
                     db.AddInParameter(dbCom, "@OrderNo", DbType.String, OrderNo);
                     db.ExecuteNonQuery(dbCom);
                     trans.Commit();
@@ -160,7 +160,7 @@ namespace MesAdmin.Models
                 {
                     dbCom = db.GetStoredProcCommand("usp_Production_WorkOrder");
                     dbCom.CommandType = CommandType.StoredProcedure;
-                    db.AddInParameter(dbCom, "@State", DbType.String, MesAdmin.Common.Common.EntityState.Added);
+                    db.AddInParameter(dbCom, "@State", DbType.String, EntityState.Added);
                     db.AddInParameter(dbCom, "@BizAreaCode", DbType.String, bizAreaCode);
                     db.AddInParameter(dbCom, "@OrderDate", DbType.Date, OrderDate);
                     db.AddInParameter(dbCom, "@WaCode", DbType.String, WaCode);

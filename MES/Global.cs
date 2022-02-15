@@ -19,6 +19,7 @@ namespace MesAdmin
         private string userID;
         private string userName;
         private string position;
+        private List<string> roleName;
         private string bizAreaCode;
 
         private DSUser() { }
@@ -37,6 +38,7 @@ namespace MesAdmin
         public string UserID { get { return userID; } set { userID = value; } }
         public string UserName { get { return userName; } set { userName = value; } }
         public string Position { get { return position; } set { position = value; } }
+        public List<string> RoleName { get { return roleName; } set { roleName = value; } }
         public string BizAreaCode { get { return bizAreaCode; } set { bizAreaCode = value; } }
     }
 

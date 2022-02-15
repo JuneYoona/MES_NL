@@ -240,7 +240,7 @@ namespace MesAdmin.Models
                 (
                     new ProductionInputRecord
                     {
-                        State = MesAdmin.Common.Common.EntityState.Unchanged,
+                        State = EntityState.Unchanged,
                         BizAreaCode = (string)u["BizAreaCode"],
                         ProductOrderNo = (string)u["ProductOrderNo"],
                         OrderNo = (string)u["OrderNo"],
@@ -286,7 +286,7 @@ namespace MesAdmin.Models
         public void Save()
         {
             IEnumerable<ProductionInputRecord> items = this.Items;
-            Delete(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Deleted));
+            Delete(items.Where(u => u.State == EntityState.Deleted));
         }
 
         public void Delete(IEnumerable<ProductionInputRecord> items)

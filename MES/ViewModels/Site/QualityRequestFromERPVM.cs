@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Collections.ObjectModel;
 using System.Linq;
 using DevExpress.Mvvm;
@@ -187,8 +188,8 @@ namespace MesAdmin.ViewModels
         public void OnCellValueChanged()
         {
             if (SelectedItem == null) return;
-            if (SelectedItem.State == Common.Common.EntityState.Unchanged)
-                SelectedItem.State = Common.Common.EntityState.Modified;
+            if (SelectedItem.State == EntityState.Unchanged)
+                SelectedItem.State = EntityState.Modified;
         }
 
         public void OnDownload(FileInform pm)
@@ -235,7 +236,7 @@ namespace MesAdmin.ViewModels
 
                 AddedFiles.Add(new FileInform
                 {
-                    State = Common.Common.EntityState.Added,
+                    State = EntityState.Added,
                     Id = Guid.NewGuid(),
                     FileSize = Convert.ToInt32(file.Length),
                     FileName = file.Name,
@@ -348,9 +349,9 @@ namespace MesAdmin.ViewModels
         public void OnDel()
         {
             Collections.ToList().ForEach(item =>
-                    item.State = item.State == Common.Common.EntityState.Deleted ?
-                    Common.Common.EntityState.Unchanged :
-                    Common.Common.EntityState.Deleted
+                    item.State = item.State == EntityState.Deleted ?
+                    EntityState.Unchanged :
+                    EntityState.Deleted
             );
         }
 
@@ -378,7 +379,7 @@ namespace MesAdmin.ViewModels
                     {
                         Collections.Add(new QualityResult
                         {
-                            State = Common.Common.EntityState.Added,
+                            State = EntityState.Added,
                             QrNo = Header.QrNo,
                             Order = Header.ResultOrder,
                             QrType = item.QrType,
@@ -454,7 +455,7 @@ namespace MesAdmin.ViewModels
             {
                 Collections.Add(new QualityResult
                 {
-                    State = Common.Common.EntityState.Added,
+                    State = EntityState.Added,
                     QrNo = Header.QrNo,
                     Order = Header.ResultOrder,
                     QrType = item.QrType,
@@ -531,7 +532,7 @@ namespace MesAdmin.ViewModels
                     {
                         Collections.Add(new QualityResult
                         {
-                            State = Common.Common.EntityState.Added,
+                            State = EntityState.Added,
                             QrNo = Header.QrNo,
                             Order = Header.ResultOrder,
                             QrType = item.QrType,

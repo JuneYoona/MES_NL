@@ -94,7 +94,7 @@ namespace MesAdmin.Models
                 base.Add(
                     new CommonWorkAreaInfo
                     {
-                        State = MesAdmin.Common.Common.EntityState.Unchanged,
+                        State = EntityState.Unchanged,
                         BizAreaCode = (string)u["BizAreaCode"],
                         WaCode = (string)u["WaCode"],
                         WhCode = (string)u["WhCode"],
@@ -113,9 +113,9 @@ namespace MesAdmin.Models
         public void Save()
         {
             IEnumerable<CommonWorkAreaInfo> items = this.Items;
-            Insert(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Added));
-            Update(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Modified));
-            Delete(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Deleted));
+            Insert(items.Where(u => u.State == EntityState.Added));
+            Update(items.Where(u => u.State == EntityState.Modified));
+            Delete(items.Where(u => u.State == EntityState.Deleted));
 
             // Global 기준정보를 다시 가져오기 위해 Instance 초기화
             GlobalCommonWorkAreaInfo.Instance = null;

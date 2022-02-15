@@ -19,23 +19,21 @@ namespace MesAdmin.ViewModels
         #endregion
 
         #region Public Properties
-        public ObservableCollection<CommonMinor> ItemAccount { get; set; }
-        public CommonMinor SelectedItemAcct
+        public string ItemAccount
         {
-            get { return GetProperty(() => SelectedItemAcct); }
-            set { SetProperty(() => SelectedItemAcct, value); }
+            get { return GetProperty(() => ItemAccount); }
+            set { SetProperty(() => ItemAccount, value); }
         }
-        public IEnumerable<CommonMinor> MoveType { get; set; }
-        public CommonMinor SelectedMoveType
+        public string MoveType
         {
-            get { return GetProperty(() => SelectedMoveType); }
-            set { SetProperty(() => SelectedMoveType, value); }
+            get { return GetProperty(() => MoveType); }
+            set { SetProperty(() => MoveType, value); }
         }
-        public IEnumerable<CommonMinor> TransType { get; set; }
-        public CommonMinor SelectedTransType
+        public ObservableCollection<CommonMinor> TransTypeList { get; set; }
+        public string TransType
         {
-            get { return GetProperty(() => SelectedTransType); }
-            set { SetProperty(() => SelectedTransType, value); }
+            get { return GetProperty(() => TransType); }
+            set { SetProperty(() => TransType, value); }
         }
         public DateTime StartDate
         {
@@ -52,6 +50,11 @@ namespace MesAdmin.ViewModels
             get { return GetProperty(() => ItemCode); }
             set { SetProperty(() => ItemCode, value); }
         }
+        public string LotNo
+        {
+            get { return GetProperty(() => LotNo); }
+            set { SetProperty(() => LotNo, value); }
+        }
         public StockMovementDetailList Collections
         {
             get { return GetProperty(() => Collections); }
@@ -62,15 +65,15 @@ namespace MesAdmin.ViewModels
             get { return GetProperty(() => SelectedItems); }
             set { SetProperty(() => SelectedItems, value); }
         }
-        public IEnumerable<CommonMinor> BizAreaCode
+        public IEnumerable<CommonMinor> BizAreaCodeList
+        {
+            get { return GetProperty(() => BizAreaCodeList); }
+            set { SetProperty(() => BizAreaCodeList, value); }
+        }
+        public string BizAreaCode
         {
             get { return GetProperty(() => BizAreaCode); }
             set { SetProperty(() => BizAreaCode, value); }
-        }
-        public string EditBizAreaCode
-        {
-            get { return GetProperty(() => EditBizAreaCode); }
-            set { SetProperty(() => EditBizAreaCode, value); }
         }
         public bool IsBusy
         {
@@ -81,26 +84,24 @@ namespace MesAdmin.ViewModels
 
         #region Commands
         public AsyncCommand SearchCmd { get; set; }
-        public ICommand ShowDialogCmd { get; set; }
+        public ICommand ShowItemDialogCmd { get; set; }
         public ICommand<object> ToExcelCmd { get; set; }
         #endregion
 
         public ExceptionDetailsVM()
         {
-            BizAreaCode = GlobalCommonMinor.Instance.Where(u => u.MajorCode == "I0004");
+            BizAreaCodeList = GlobalCommonMinor.Instance.Where(u => u.MajorCode == "I0004");
             if (!string.IsNullOrEmpty(DSUser.Instance.BizAreaCode))
-                EditBizAreaCode = BizAreaCode.FirstOrDefault(u => u.MinorCode == DSUser.Instance.BizAreaCode).MinorCode;
+                BizAreaCode = DSUser.Instance.BizAreaCode;
 
             StartDate = DateTime.Now.AddMonths(-1);
             EndDate = DateTime.Now;
 
-            TransType = new CommonMinorList("I0002").Where(u => u.IsEnabled == true);
-            MoveType = new CommonMinorList("I0001").Where(u => u.IsEnabled == true);
-            ItemAccount = new CommonMinorList("P1001");
+            TransTypeList = new CommonMinorList("I0002");
 
             SearchCmd = new AsyncCommand(OnSearch, CanSearch);
             ToExcelCmd = new DelegateCommand<object>(base.OnToExcel);
-            ShowDialogCmd = new DelegateCommand(OnShowDialog);
+            ShowItemDialogCmd = new DelegateCommand(OnShowDialog);
         }
 
         public bool CanSearch()
@@ -119,10 +120,11 @@ namespace MesAdmin.ViewModels
                 startDate: StartDate,
                 endDate: EndDate,
                 itemCode: ItemCode,
-                itemAccount: SelectedItemAcct == null ? "" : SelectedItemAcct.MinorCode,
-                transType: SelectedTransType == null ? "" : SelectedTransType.MinorCode,
-                moveType: SelectedMoveType == null ? "" : SelectedMoveType.MinorCode,
-                bizAreaCode: EditBizAreaCode
+                itemAccount: ItemAccount,
+                transType: TransType,
+                moveType: MoveType,
+                bizAreaCode: BizAreaCode,
+                lotNo: LotNo
             );
             IsBusy = false;
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Collections.ObjectModel;
 using System.Linq;
 using DevExpress.Mvvm;
@@ -145,6 +146,7 @@ namespace MesAdmin.ViewModels
         public AsyncCommand<object> SaveCmd { get; set; }
         public ICommand CellValueChangedCmd { get; set; }
         public ICommand<HiddenEditorEvent> HiddenEditorCmd { get; set; }
+        public ICommand UpdateRawDataCmd { get; set; }
         #endregion
 
         public QualityRequestVM()
@@ -164,6 +166,7 @@ namespace MesAdmin.ViewModels
             CellValueChangedCmd = new DelegateCommand(OnCellValueChanged);
             HiddenEditorCmd = new DelegateCommand<HiddenEditorEvent>(OnHiddenEditor);
             PrintAnalysisLetterCmd = new DelegateCommand(OnPrintAnalysisLetter, CanPrintAnalysisLetter);
+            UpdateRawDataCmd = new DelegateCommand(() => { CanEdit = true; }, () => Header != null && Header.TransferFlag);
 
             AddedFiles = new FileInformList();
             DeletedFiles = new FileInformList();
@@ -187,8 +190,8 @@ namespace MesAdmin.ViewModels
         public void OnCellValueChanged()
         {
             if (SelectedItem == null) return;
-            if (SelectedItem.State == Common.Common.EntityState.Unchanged)
-                SelectedItem.State = Common.Common.EntityState.Modified;
+            if (SelectedItem.State == EntityState.Unchanged)
+                SelectedItem.State = EntityState.Modified;
         }
 
         public void OnDownload(FileInform pm)
@@ -235,7 +238,7 @@ namespace MesAdmin.ViewModels
 
                 AddedFiles.Add(new FileInform
                 {
-                    State = Common.Common.EntityState.Added,
+                    State = EntityState.Added,
                     Id = Guid.NewGuid(),
                     FileSize = Convert.ToInt32(file.Length),
                     FileName = file.Name,
@@ -308,12 +311,15 @@ namespace MesAdmin.ViewModels
                 string inspectorName = GetInspectorName(Header.InspectorId);
                 Collections.ToList().ForEach(u =>
                 {
+                    // 상단 데이터 변경을 위해 수정모드로 전환
+                    u.State = u.State == EntityState.Unchanged && !IsNew ? EntityState.Modified : u.State;
                     u.InspectDate = (DateTime)Header.InspectDate;
                     u.InspectorId = Header.InspectorId;
                     u.InspectorName = inspectorName;
                     u.Result = Header.Result;
                     u.Remark = Header.Memo;
                 });
+
                 Collections.Save();
                 Collections = new QualityResultList(Header.QrNo, Header.ResultOrder);
 
@@ -348,9 +354,9 @@ namespace MesAdmin.ViewModels
         public void OnDel()
         {
             Collections.ToList().ForEach(item =>
-                    item.State = item.State == Common.Common.EntityState.Deleted ?
-                    Common.Common.EntityState.Unchanged :
-                    Common.Common.EntityState.Deleted
+                    item.State = item.State == EntityState.Deleted ?
+                    EntityState.Unchanged :
+                    EntityState.Deleted
             );
         }
 
@@ -378,7 +384,7 @@ namespace MesAdmin.ViewModels
                     {
                         Collections.Add(new QualityResult
                         {
-                            State = Common.Common.EntityState.Added,
+                            State = EntityState.Added,
                             QrNo = Header.QrNo,
                             Order = Header.ResultOrder,
                             QrType = item.QrType,
@@ -454,7 +460,7 @@ namespace MesAdmin.ViewModels
             {
                 Collections.Add(new QualityResult
                 {
-                    State = Common.Common.EntityState.Added,
+                    State = EntityState.Added,
                     QrNo = Header.QrNo,
                     Order = Header.ResultOrder,
                     QrType = item.QrType,
@@ -518,7 +524,7 @@ namespace MesAdmin.ViewModels
                     {
                         Collections.Add(new QualityResult
                         {
-                            State = Common.Common.EntityState.Added,
+                            State = EntityState.Added,
                             QrNo = Header.QrNo,
                             Order = Header.ResultOrder,
                             QrType = item.QrType,
@@ -566,13 +572,9 @@ namespace MesAdmin.ViewModels
 
             try
             {
-                decimal down;
-                decimal up;
-                decimal value;
-
-                bool resDown = decimal.TryParse(grid.GetCellValue(pm.e.RowHandle, "DownRate").ToString(), out down);
-                bool resUp = decimal.TryParse(grid.GetCellValue(pm.e.RowHandle, "UpRate").ToString(), out up);
-                bool resValue = decimal.TryParse(pm.e.Value.ToString(), out value);
+                bool resDown = decimal.TryParse(grid.GetCellValue(pm.e.RowHandle, "DownRate").ToString(), out decimal down);
+                bool resUp = decimal.TryParse(grid.GetCellValue(pm.e.RowHandle, "UpRate").ToString(), out decimal up);
+                bool resValue = decimal.TryParse(pm.e.Value.ToString(), out decimal value);
 
                 if (resDown && resUp && resValue)
                 {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Linq;
 using DevExpress.Mvvm;
 using System.Windows.Input;
@@ -8,6 +9,8 @@ using System.Collections.ObjectModel;
 using MesAdmin.Common.Common;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Windows.Controls.Primitives;
+using System.Windows;
 
 namespace MesAdmin.ViewModels
 {
@@ -44,15 +47,20 @@ namespace MesAdmin.ViewModels
             get { return GetProperty(() => IsEnabled); }
             set { SetProperty(() => IsEnabled, value); }
         }
-        public CommonWorkAreaInfoList WAItems
+        public List<CommonWorkAreaInfo> WaCodes
         {
-            get { return GetProperty(() => WAItems); }
-            set { SetProperty(() => WAItems, value); }
+            get { return GetProperty(() => WaCodes); }
+            set { SetProperty(() => WaCodes, value); }
         }
-        public List<object> SelectedWACode
+        public List<object> SelectedWaCode
         {
-            get { return GetProperty(() => SelectedWACode); }
-            set { SetProperty(() => SelectedWACode, value); }
+            get { return GetProperty(() => SelectedWaCode); }
+            set { SetProperty(() => SelectedWaCode, value); }
+        }
+        public bool RoleEdit
+        {
+            get { return GetValue<bool>(); }
+            set { SetValue(value); }
         }
         #endregion
 
@@ -60,6 +68,7 @@ namespace MesAdmin.ViewModels
         public AsyncCommand SaveCmd { get; set; }
         public ICommand AddRoleCmd { get; set; }
         public ICommand DelRoleCmd { get; set; }
+        public ICommand<Popup> OpenedCmd { get; set; }
         #endregion
 
         public NetUserNewVM()
@@ -67,21 +76,20 @@ namespace MesAdmin.ViewModels
             SaveCmd = new AsyncCommand(OnSave, CanSave);
             AddRoleCmd = new DelegateCommand(OnAddRole);
             DelRoleCmd = new DelegateCommand(OnDelRole);
+            OpenedCmd = new DelegateCommand<Popup>(OnOpened);
 
             // LookUpEdit data source
             LueNetRoles = NetRoles.Select();
 
             // 공정정보 세팅
-            WAItems = new CommonWorkAreaInfoList("");
-            WAItems.Add(new CommonWorkAreaInfo { WaCode = "Sales", WaName = "Sales" });
-            WAItems.Add(new CommonWorkAreaInfo { WaCode = "IQC", WaName = "수입검사" });
-            WAItems.Add(new CommonWorkAreaInfo { WaCode = "LQC", WaName = "공정검사" });
-            WAItems.Add(new CommonWorkAreaInfo { WaCode = "FQC", WaName = "최종검사" });
-            WAItems.Add(new CommonWorkAreaInfo { WaCode = "OQC", WaName = "출하검사" });
-            WAItems.Add(new CommonWorkAreaInfo { WaCode = "PDABOX", WaName = "라벨검사(OLED)" });
-            WAItems.Add(new CommonWorkAreaInfo { WaCode = "PDABPDL", WaName = "라벨검사(BPDL)" });
-            WAItems.Add(new CommonWorkAreaInfo { WaCode = "QNReg", WaName = "선행로트등록자" });
-            WAItems.Add(new CommonWorkAreaInfo { WaCode = "QNRes", WaName = "선행로트검사자" });
+            WaCodes = new CommonWorkAreaInfoList("").Where(o => o.IsEnabled).ToList();
+            
+            // 추가작업자 및 검사자 세팅
+            var minors = GlobalCommonMinor.Instance.Where(o => o.MajorCode == "A0T01" && o.IsEnabled);
+            foreach (CommonMinor item in minors)
+            {
+                WaCodes.Add(new CommonWorkAreaInfo { WaCode = item.MinorCode, WaName = item.MinorName });
+            }
         }
 
         public void OnAddRole()
@@ -105,9 +113,8 @@ namespace MesAdmin.ViewModels
 
         bool CanSave() 
         {
-            NetUserItem.ValidateProperty(NetUserItem.UserName, "UserName");
             NetUserItem.ValidateProperty(NetUserItem.Password, "Password");
-            return NetUserItem.IsValid && !string.IsNullOrEmpty(NetUserItem.Profile.KorName);
+            return NetUserItem.IsValid && !string.IsNullOrEmpty(NetUserItem.UserName) && !string.IsNullOrEmpty(NetUserItem.Profile.KorName) && !string.IsNullOrEmpty(NetUserItem.Password);
         }
         public Task OnSave()
         {
@@ -118,10 +125,7 @@ namespace MesAdmin.ViewModels
             IsEnabled = false;
             System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.5));
 
-            if (SelectedWACode == null)
-                NetUserItem.Profile.WorkParts = "";
-            else
-                NetUserItem.Profile.WorkParts = string.Join(",", SelectedWACode);
+            NetUserItem.Profile.WorkParts = SelectedWaCode == null ? "" : string.Join(",", SelectedWaCode);
 
             DispatcherService.BeginInvoke(() =>
             {
@@ -196,6 +200,23 @@ namespace MesAdmin.ViewModels
             IsEnabled = true;
         }
 
+        // popup move with window
+        public void OnOpened(Popup sender)
+        {
+            Window win = Application.Current.MainWindow;
+            EventHandler handler = null;
+
+            win.LocationChanged += handler = (s, e) =>
+            {
+                if (sender.IsOpen)
+                {
+                    var mi = typeof(Popup).GetMethod("UpdatePosition", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                    mi.Invoke(sender, null);
+                }
+                else win.LocationChanged -= handler;
+            };
+        }
+
         protected override void OnParameterChanged(object parameter)
         {
             base.OnParameterChanged(parameter);
@@ -204,15 +225,23 @@ namespace MesAdmin.ViewModels
             DocumentParamter info = (DocumentParamter)Parameter;
             if (info == null) throw new InvalidOperationException();
 
+            RoleEdit = DSUser.Instance.RoleName.Contains("admin") ? true : false;
             Status = info.Type;
-            NetUserItem = NetUsers.Select(userName: (string)info.Item)
-                                  .FirstOrDefault() ?? new NetUser { Roles = new ObservableCollection<NetRole>(), Profile = new NetProfile(), IsApproved = true };
 
-            if (NetUserItem.Profile.WorkParts == null) return;
+            NetUserItem = NetUsers.Select(userName: (string)info.Item).FirstOrDefault() ??
+                new NetUser
+                {
+                    Roles = new ObservableCollection<NetRole>(),
+                    Profile = new NetProfile(),
+                    IsApproved = true
+                };
 
-            object[] userWorkPart = NetUserItem.Profile.WorkParts.Split(',');
-            SelectedWACode = new List<object>();
-            SelectedWACode = new List<Object>((IEnumerable<Object>)userWorkPart);
+            if (NetUserItem.Profile.WorkParts != null)
+            {
+                object[] userWorkPart = NetUserItem.Profile.WorkParts.Split(',');
+                SelectedWaCode = new List<object>();
+                SelectedWaCode = new List<object>(userWorkPart);
+            }
         }
 
         public string GetErrorMessage(MembershipCreateStatus status)

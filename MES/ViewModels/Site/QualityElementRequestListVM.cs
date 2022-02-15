@@ -21,7 +21,7 @@ namespace MesAdmin.ViewModels
         #endregion
 
         #region Public Properties
-        public object MainViewModel { get; set; }
+        public MainViewModel MainViewModel { get { return (MainViewModel)((ISupportParentViewModel)this).ParentViewModel; } }
         public QualityElementHeaderList Collections
         {
             get { return GetProperty(() => Collections); }
@@ -90,15 +90,15 @@ namespace MesAdmin.ViewModels
 
             string[] pm = { (string)parameter.Item };
             string documentId = Guid.NewGuid().ToString();
-            IDocument document = FindDocument(documentId);
+            IDocument document = MainViewModel.FindDocument(documentId);
             if (document == null)
             {
-                ((MainViewModel)MainViewModel).TabLoadingOpen();
-                document = DocumentManagerService.CreateDocument("QualityRequestElementView", new DocumentParamter(EntityMessageType.Added, pm, "BAC60", MainViewModel), this);
+                MainViewModel.TabLoadingOpen();
+                document = MainViewModel.CreateDocument("QualityRequestElementView", "소자검사등록", new DocumentParamter(EntityMessageType.Added, pm, "BAC60", MainViewModel));
                 document.DestroyOnClose = true;
                 document.Id = documentId;
-                document.Title = "소자검사등록";
             }
+
             document.Show();
             SelectedItem = null;
         }
@@ -108,16 +108,16 @@ namespace MesAdmin.ViewModels
         {
             SelectedItems.ToList().ForEach(u =>
             {
-                if (u.State == Common.Common.EntityState.Added)
+                if (u.State == EntityState.Added)
                     Collections.Remove(u);
                 else
-                    u.State = u.State == Common.Common.EntityState.Deleted ? Common.Common.EntityState.Unchanged : Common.Common.EntityState.Deleted;
+                    u.State = u.State == EntityState.Deleted ? EntityState.Unchanged : EntityState.Deleted;
             });
         }
 
         public bool CanSave()
         {
-            return Collections != null && Collections.Where(u => u.State == Common.Common.EntityState.Deleted).Count() > 0;
+            return Collections != null && Collections.Where(u => u.State == EntityState.Deleted).Count() > 0;
         }
         public Task OnSave()
         {
@@ -156,25 +156,17 @@ namespace MesAdmin.ViewModels
            
             string[] pm = { (string)parameter.Item, SelectedItem.QrNo };
             string documentId = SelectedItem.QrNo;
-            IDocument document = FindDocument(documentId);
+            IDocument document = MainViewModel.FindDocument(documentId);
             if (document == null)
             {
-                ((MainViewModel)MainViewModel).TabLoadingOpen();
-                document = DocumentManagerService.CreateDocument("QualityRequestElementView", new DocumentParamter(EntityMessageType.Changed, pm, "BAC60", MainViewModel), this);
+                MainViewModel.TabLoadingOpen();
+                document = MainViewModel.CreateDocument("QualityRequestElementView", "소자검사등록", new DocumentParamter(EntityMessageType.Changed, pm, "BAC60", MainViewModel));
                 document.DestroyOnClose = true;
                 document.Id = documentId;
-                document.Title = "소자검사등록";
             }
+
             document.Show();
             SelectedItem = null;
-        }
-
-        IDocument FindDocument(string documentId)
-        {
-            foreach (var doc in DocumentManagerService.Documents)
-                if (documentId.Equals(doc.Id))
-                    return doc;
-            return null;
         }
 
         void OnMessage(string pm)
@@ -186,15 +178,9 @@ namespace MesAdmin.ViewModels
         protected override void OnParameterChanged(object parameter)
         {
             base.OnParameterChanged(parameter);
-            if (ViewModelBase.IsInDesignMode) return;
+            if (IsInDesignMode) return;
 
-            DocumentParamter pm = parameter as DocumentParamter;
-            MainViewModel = pm.ParentViewmodel;
-
-            Task.Factory.StartNew(SearchCore).ContinueWith(task =>
-            {
-                ((MainViewModel)MainViewModel).TabLoadingClose();
-            });
+            Task.Run(SearchCore).ContinueWith(task => MainViewModel.TabLoadingClose());
         }
     }
 }

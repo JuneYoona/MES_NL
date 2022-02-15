@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Collections.ObjectModel;
 using System.Linq;
 using DevExpress.Mvvm;
@@ -275,7 +276,7 @@ namespace MesAdmin.ViewModels
                         Details.Insert(idx++,
                             new ProductionWorkOrderDetail
                             {
-                                State = Common.Common.EntityState.Added,
+                                State = EntityState.Added,
                                 BizAreaCode = item.BizAreaCode,
                                 ItemCode = item.ItemCode,
                                 ItemName = item.ItemName,

@@ -21,7 +21,7 @@ namespace MesAdmin.ViewModels
         #endregion
 
         #region Public Properties
-        public object MainViewModel { get; set; }
+        public MainViewModel MainViewModel { get; set; }
         public DataTable Collections
         {
             get { return GetProperty(() => Collections); }
@@ -150,25 +150,17 @@ namespace MesAdmin.ViewModels
 
             string[] pm = { (string)parameter.Item, (string)dr["검사요청번호"], dr["차수"].ToString() };
             string documentId = (string)dr["검사요청번호"] + dr["차수"].ToString();
-            IDocument document = FindDocument(documentId);
+            IDocument document = MainViewModel.FindDocument(documentId);
             if (document == null)
             {
-                ((MainViewModel)MainViewModel).TabLoadingOpen();
-                document = DocumentManagerService.CreateDocument(viewName, new DocumentParamter(EntityMessageType.Changed, pm, MainViewModel), this);
+                MainViewModel.TabLoadingOpen();
+                document = MainViewModel.CreateDocument(viewName, title, new DocumentParamter(EntityMessageType.Changed, pm, MainViewModel));
                 document.DestroyOnClose = true;
                 document.Id = documentId;
-                document.Title = title;
             }
+
             document.Show();
             SelectedItem = null;
-        }
-
-        IDocument FindDocument(string documentId)
-        {
-            foreach (var doc in DocumentManagerService.Documents)
-                if (documentId.Equals(doc.Id))
-                    return doc;
-            return null;
         }
 
         void OnMessage(string pm)
@@ -180,12 +172,11 @@ namespace MesAdmin.ViewModels
         protected override void OnParameterChanged(object parameter)
         {
             base.OnParameterChanged(parameter);
-            if (ViewModelBase.IsInDesignMode) return;
+            if (IsInDesignMode) return;
 
             DocumentParamter pm = parameter as DocumentParamter;
-            MainViewModel = pm.ParentViewmodel;
-
-            ((MainViewModel)pm.ParentViewmodel).TabLoadingClose();
+            MainViewModel = (MainViewModel)pm.ParentViewmodel;
+            MainViewModel.TabLoadingClose();
         }
 
         public void OnShowDialog()

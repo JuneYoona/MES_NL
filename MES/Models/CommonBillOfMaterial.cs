@@ -102,27 +102,44 @@ namespace MesAdmin.Models
             db.AddInParameter(dbCom, "@CheckDate", DbType.Date, checkDate);
             DataSet ds = db.ExecuteDataSet(dbCom);
 
+            int count = 0;
+            string pItemCode;
+            string parentFieldName;
+
             ds.Tables[0].AsEnumerable().ToList().ForEach(u =>
-                base.Add(
+            {
+                pItemCode = (string)u["PItemCode"];
+                parentFieldName = null;
+
+                foreach (var item in Items)
+                {
+                    if (pItemCode == item.CItemCode)
+                    {
+                        parentFieldName = item.KeyFieldName;
+                        break;
+                    }
+                }
+
+                Add(
                     new CommonBillOfMaterial
                     {
-                        State = MesAdmin.Common.Common.EntityState.Unchanged,
+                        State = EntityState.Unchanged,
                         PItemCode = (string)u["PItemCode"],
                         CItemSeq = int.Parse(u["CItemSeq"].ToString()),
                         CItemCode = (string)u["CItemCode"],
                         ItemName = (string)u["ItemName"],
-                        PPerQty = (Decimal)u["PPerQty"],
+                        PPerQty = (decimal)u["PPerQty"],
                         PUnit = (string)u["PUnit"],
-                        CPerQty = (Decimal)u["CPerQty"],
+                        CPerQty = (decimal)u["CPerQty"],
                         CUnit = (string)u["CUnit"],
                         StartDate = string.IsNullOrEmpty(u["StartDate"].ToString()) ? null : (DateTime?)u["StartDate"],
                         EndDate = string.IsNullOrEmpty(u["EndDate"].ToString()) ? null : (DateTime?)u["EndDate"],
                         RecursionLevel = (int)u["RecursionLevel"],
-                        KeyFieldName = (string)u["CItemCode"] + (string)u["PItemCode"] + u["RecursionLevel"].ToString(),
-                        ParentFieldName = (string)u["PItemCode"] + (string)u["PPItemCode"] + ((int)u["RecursionLevel"] - 1).ToString(),
+                        KeyFieldName = Convert.ToString(count++),
+                        ParentFieldName = parentFieldName,
                     }
-                )
-            );
+                );
+            });
         }
 
         public void Save()
@@ -135,9 +152,9 @@ namespace MesAdmin.Models
                 DbTransaction trans = conn.BeginTransaction();
                 try
                 {
-                    Insert(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Added), db, trans);
-                    Update(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Modified), db, trans);
-                    Delete(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Deleted), db, trans);
+                    Insert(items.Where(u => u.State == EntityState.Added), db, trans);
+                    Update(items.Where(u => u.State == EntityState.Modified), db, trans);
+                    Delete(items.Where(u => u.State == EntityState.Deleted), db, trans);
                     trans.Commit();
                 }
                 catch

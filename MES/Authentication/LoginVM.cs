@@ -174,12 +174,21 @@ namespace MesAdmin.Authentication
 
         public void CreateGlobalValue()
         {
-            ProfileBase profile = ProfileBase.Create(UserId);
-            
-            DSUser.Instance.UserID = UserId;
-            DSUser.Instance.UserName = profile.GetPropertyValue("KorName").ToString();
-            DSUser.Instance.BizAreaCode = EditBizArea;
             DBInfo.Instance.Name = SelectedDB;
+
+            // Role 및 사용자 이름 저장
+            NetUsers users = NetUsers.Select(UserId);
+            List<string> roleNames = new List<string>();
+
+            foreach (var role in users[0].Roles)
+            {
+                roleNames.Add(role.RoleName);
+            }
+
+            DSUser.Instance.UserID = UserId;
+            DSUser.Instance.BizAreaCode = EditBizArea;
+            DSUser.Instance.UserName = users[0].Profile.KorName;
+            DSUser.Instance.RoleName = roleNames;
 
             Properties.Settings.Default.UserId = IsChecked ? UserId : "";
             Properties.Settings.Default.DBName = SelectedDB;
@@ -189,6 +198,22 @@ namespace MesAdmin.Authentication
             // 재접속처리
             ProviderFactory.Instance = null;
             GlabalCommonLayout.Instance = null;
+
+            //ProfileBase profile = ProfileBase.Create(UserId);
+
+            //DSUser.Instance.UserID = UserId;
+            //DSUser.Instance.UserName = profile.GetPropertyValue("KorName").ToString();
+            //DSUser.Instance.BizAreaCode = EditBizArea;
+            //DBInfo.Instance.Name = SelectedDB;
+
+            //Properties.Settings.Default.UserId = IsChecked ? UserId : "";
+            //Properties.Settings.Default.DBName = SelectedDB;
+            //Properties.Settings.Default.BizAreaCode = EditBizArea;
+            //Properties.Settings.Default.Save();
+
+            //// 재접속처리
+            //ProviderFactory.Instance = null;
+            //GlabalCommonLayout.Instance = null;
         }
 
         private void UpdateApplication()

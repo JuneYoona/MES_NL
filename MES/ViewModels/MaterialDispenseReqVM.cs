@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Collections.ObjectModel;
 using System.Linq;
 using DevExpress.Mvvm;
@@ -106,7 +107,7 @@ namespace MesAdmin.ViewModels
             if (IsNew)
             {
                 // 필수 입력값 처리
-                foreach (MaterialDispenseDetail item in Details.Where(u => u.State == Common.Common.EntityState.Added))
+                foreach (MaterialDispenseDetail item in Details.Where(u => u.State == EntityState.Added))
                 {
                     if (string.IsNullOrEmpty(item.ItemCode) || item.ReqQty <= 0)
                     {
@@ -117,7 +118,7 @@ namespace MesAdmin.ViewModels
                 if (Details.Count == 0) return false;
             }
             else
-                ret = Details.Where(u => u.State == Common.Common.EntityState.Deleted).Count() > 0;
+                ret = Details.Where(u => u.State == EntityState.Deleted).Count() > 0;
 
             return ret;
         }
@@ -212,7 +213,7 @@ namespace MesAdmin.ViewModels
         {
             Details.Insert(Details.Count, new MaterialDispenseDetail
             {
-                State = Common.Common.EntityState.Added,
+                State = EntityState.Added,
                 InWhCode = Header.InWhCode
             });
         }
@@ -265,9 +266,9 @@ namespace MesAdmin.ViewModels
                 else // 수정모드
                 {
                     SelectedItems.ToList().ForEach(item =>
-                        item.State = item.State == Common.Common.EntityState.Deleted ?
-                        Common.Common.EntityState.Unchanged :
-                        Common.Common.EntityState.Deleted
+                        item.State = item.State == EntityState.Deleted ?
+                        EntityState.Unchanged :
+                        EntityState.Deleted
                     );
                 }
             }

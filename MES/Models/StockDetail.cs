@@ -6,11 +6,17 @@ using Microsoft.Practices.EnterpriseLibrary.Data;
 using System.Data;
 using System.Data.Common;
 using DevExpress.Mvvm;
+using System.Data.SqlClient;
 
 namespace MesAdmin.Models
 {
     public class StockDetail : ViewModelBase, IEquatable<StockDetail>
     {
+        public EntityState State
+        {
+            get { return GetProperty(() => State); }
+            set { SetProperty(() => State, value); }
+        }
         public string BizAreaCode
         {
             get { return GetProperty(() => BizAreaCode); }
@@ -159,6 +165,22 @@ namespace MesAdmin.Models
             ////Calculate the hash code for the pk.
             return hashBizAreaCode ^ hashItemCode ^ hashWhCode ^ hashWaCode ^ hashLotNo;
         }
+
+        public void Save(Database db, DbTransaction trans)
+        {
+            DbCommand dbCom = db.GetStoredProcCommand("usps_stock_detail_Update");
+            db.AddInParameter(dbCom, "@BizAreaCode", DbType.String, BizAreaCode);
+            db.AddInParameter(dbCom, "@ItemCode", DbType.String, ItemCode);
+            db.AddInParameter(dbCom, "@WhCode", DbType.String, WhCode);
+            db.AddInParameter(dbCom, "@WaCode", DbType.String, WaCode);
+            db.AddInParameter(dbCom, "@LotNo", DbType.String, LotNo);
+            db.AddInParameter(dbCom, "@Remark1", DbType.String, Remark4);
+            db.AddInParameter(dbCom, "@Remark2", DbType.String, Remark5);
+            db.AddInParameter(dbCom, "@Qty", DbType.Decimal, Qty);
+            db.AddInParameter(dbCom, "@BasicUnit", DbType.String, BasicUnit);
+            db.AddInParameter(dbCom, "@InsertId", DbType.String, DSUser.Instance.UserID);
+            db.ExecuteNonQuery(dbCom, trans);
+        }
     }
 
     public class StockDetailList : ObservableCollection<StockDetail>
@@ -196,6 +218,7 @@ namespace MesAdmin.Models
                 base.Add(
                     new StockDetail
                     {
+                        State = EntityState.Unchanged,
                         BizAreaCode = (string)u["BizAreaCode"],
                         ItemCode = (string)u["ItemCode"],
                         ItemAccount = (string)u["ItemAccount"],
@@ -218,6 +241,27 @@ namespace MesAdmin.Models
                     }
                 )
             );
+        }
+
+        public void Save()
+        {
+            Database db = ProviderFactory.Instance;
+            using (DbConnection conn = db.CreateConnection())
+            {
+                conn.Open();
+                DbTransaction trans = conn.BeginTransaction();
+                try
+                {
+                    foreach (var item in Items.Where(o => o.State != EntityState.Unchanged)) item.Save(db, trans);
+                    trans.Commit();
+                }
+                catch (Exception ex)
+                {
+                    trans.Rollback();
+                    string messasge = ex is SqlException sqlEx ? sqlEx.Errors[0].Message : ex.Message;
+                    throw new Exception(messasge);
+                }
+            }
         }
     }
 

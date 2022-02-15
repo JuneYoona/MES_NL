@@ -11,42 +11,21 @@ using System.Threading.Tasks;
 using MesAdmin.Common.Services;
 using DevExpress.Xpf.Core.Native;
 using DevExpress.Xpf.Core;
+using System.Deployment.Application;
+using DevExpress.Xpf.Docking;
+using System.Windows.Controls;
+using DevExpress.Xpf.Docking.Native;
 
 namespace MesAdmin
 {
     public class MainViewModel : ViewModelBase
     {
+        #region Services
         protected IDocumentManagerService DocumentManagerService { get { return GetService<IDocumentManagerService>("MainViewService"); } }
         protected virtual IMessageBoxService MessageBoxService { get { return null; } }
         IDispatcherService DispatcherService { get { return GetService<IDispatcherService>(); } }
         protected ISplashScreenManagerService SplashScreenManagerService { get { return GetService<ISplashScreenManagerService>(); } }
-
-        public IList<NetMenu> NaviItems
-        {
-            get { return GetProperty(() => NaviItems); }
-            set { SetProperty(() => NaviItems, value); }
-        }
-        public NetMenu SelectedGroup
-        {
-            get { return GetValue<NetMenu>(); }
-            set { SetValue(value, () => Properties.Settings.Default.ActiveGroup = value.MenuName); }
-        }
-        public string UpdaterText
-        {
-            get { return GetProperty(() => UpdaterText); }
-            set { SetProperty(() => UpdaterText, value); }
-        }
-        public SilentUpdater UpdateService { get; }
-
-        public static AsyncCommand<string> ShowDocumentCmd { get; set; }
-        public ICommand CloseCmd { get; set; }
-        public ICommand ExitCmd { get; set; }
-        public ICommand LoadCmd { get; set; }
-        public ICommand<GroupAddingEventArgs> GroupAddingCmd { get; set; }
-        public ICommand HelpCmd { get; set; }
-        public ICommand ReLoginCmd { get; set; }
-        public ICommand ActiveDocumentChangedCmd { get; set; }
-        public ICommand ReStartCmd { get; set; }
+        #endregion
 
         #region Public Properties
         public string DBName { get { return "Database : " + DBInfo.Instance.Name; } }
@@ -63,6 +42,35 @@ namespace MesAdmin
             get { return GetProperty(() => Opacity); }
             set { SetProperty(() => Opacity, value); }
         }
+        public IList<NetMenu> NaviItems
+        {
+            get { return GetProperty(() => NaviItems); }
+            set { SetProperty(() => NaviItems, value); }
+        }
+        public NetMenu SelectedGroup
+        {
+            get { return GetValue<NetMenu>(); }
+            set { SetValue(value, () => Properties.Settings.Default.ActiveGroup = value.MenuName); }
+        }
+        public string UpdaterText
+        {
+            get { return GetProperty(() => UpdaterText); }
+            set { SetProperty(() => UpdaterText, value); }
+        }
+        public SilentUpdater UpdateService { get; }
+        #endregion
+
+        #region Commands
+        public static AsyncCommand<string> ShowDocumentCmd { get; set; }
+        public ICommand CloseCmd { get; set; }
+        public ICommand ExitCmd { get; set; }
+        public ICommand LoadCmd { get; set; }
+        public ICommand<GroupAddingEventArgs> GroupAddingCmd { get; set; }
+        public ICommand HelpCmd { get; set; }
+        public ICommand ReLoginCmd { get; set; }
+        public ICommand ActiveDocumentChangedCmd { get; set; }
+        public ICommand ReStartCmd { get; set; }
+        public ICommand ConfigUserCmd { get; set; }
         #endregion
 
         public MainViewModel()
@@ -79,24 +87,23 @@ namespace MesAdmin
             ShowDocumentCmd = new AsyncCommand<string>(ShowDocument);
             CloseCmd = new DelegateCommand(OnClose);
             HelpCmd = new DelegateCommand(OnHelp);
-            ExitCmd = new DelegateCommand(OnExit);
+            ExitCmd = new DelegateCommand(() => Application.Current.MainWindow.Close());
             ReLoginCmd = new DelegateCommand(OnReLogin);
             GroupAddingCmd = new DelegateCommand<GroupAddingEventArgs>(OnGroupAdding);
-            ActiveDocumentChangedCmd = new DelegateCommand(OnActiveDocumentChanged);
+            ActiveDocumentChangedCmd = new DelegateCommand<ActiveDocumentChangedEventArgs>(OnActiveDocumentChanged);
             ReStartCmd = new DelegateCommand(() => Application.Current.ReStart());
+            ConfigUserCmd = new DelegateCommand(OnConfigUser);
 
-            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            System.Version version = assembly.GetName().Version;
-
-            if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
+            if (ApplicationDeployment.IsNetworkDeployed)
             {
-                 Ver = "Application Version : " + System.Deployment.Application.ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
+                Ver = "Application Version : ";
+                Ver += ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
             }
         }
 
         public void OnLoad()
         {
-            NaviItems = (new NetMenus()).GetUserMenus(DSUser.Instance.UserID);
+            NaviItems = new NetMenus().GetUserMenus(DSUser.Instance.UserID);
         }
 
         public void OnGroupAdding(GroupAddingEventArgs e)
@@ -113,6 +120,14 @@ namespace MesAdmin
                 e.Group.ImageSource = WpfSvgRenderer.CreateImageSource(DXImageHelper.GetImageUri(grp.ImageSourceUri));
 
             if (grp.MenuName == Properties.Settings.Default.ActiveGroup) SelectedGroup = grp;
+        }
+
+        public void OnConfigUser()
+        {
+            IDocument document = DocumentManagerService.CreateDocument("NetUserNewView", new DocumentParamter(DSUser.Instance.UserID), this);
+            document.DestroyOnClose = true;
+            document.Title = "사용자 설정";
+            document.Show();
         }
 
         public Task ShowDocument(string p)
@@ -146,26 +161,34 @@ namespace MesAdmin
             }));
         }
 
-        IDocument CreateDocument(string viewName, string title, DocumentParamter parameter)
+        public IDocument CreateDocument(string viewName, string title, DocumentParamter parameter)
         {
             var document = DocumentManagerService.CreateDocument(viewName, parameter, this);
             document.Title = title;
             document.DestroyOnClose = true;
+
+            // 사용자 컨트롤 로드가 완료되면 Loading Panel 닫기위해 ucLoaded = true 처리
+            var doc = document as DockingDocumentUIServiceBase<DocumentPanel, DocumentGroup>.Document;
+            ((UserControl)doc.DocumentPanel.Content).Loaded += (s, e) => ucLoaded = true;
+
             return document;
+        }
+
+        public IDocument FindDocument(string documentId)
+        {
+            foreach (var doc in DocumentManagerService.Documents)
+                if (documentId.Equals(doc.Id))
+                    return doc;
+            return null;
         }
 
         public void OnClose()
         {
             IDocument document = DocumentManagerService.ActiveDocument;
-            if (document != null)
-                document.Close();
+            if (document != null) document.Close();
 
-            TabLoadingClose();
-        }
-
-        public void OnExit()
-        {
-             System.Windows.Application.Current.MainWindow.Close();
+            Opacity = 1;
+            SplashScreenManagerService.Close();
         }
 
         public void OnHelp()
@@ -182,17 +205,14 @@ namespace MesAdmin
             mainWnd.Close();
         }
 
-        public void OnActiveDocumentChanged()
+        public void OnActiveDocumentChanged(ActiveDocumentChangedEventArgs e)
         {
-            try
+            if (DocumentManagerService.ActiveDocument != null)
             {
-                if (DocumentManagerService.ActiveDocument != null)
-                {
-                    var doc = DocumentManagerService.ActiveDocument as DevExpress.Xpf.Docking.Native.DockingDocumentUIServiceBase<DevExpress.Xpf.Docking.DocumentPanel, DevExpress.Xpf.Docking.DocumentGroup>.Document;
-                    ViewName = doc.DocumentType;
-                }
+                var doc = e.NewDocument as DockingDocumentUIServiceBase<DocumentPanel, DocumentGroup>.Document;
+                ViewName = doc.DocumentType;
             }
-            catch { TabLoadingClose(); }
+            else ViewName = string.Empty;
         }
 
         public void SilentUpdaterOnProgressChanged(object sender, UpdateProgressChangedEventArgs e)
@@ -200,14 +220,18 @@ namespace MesAdmin
             UpdaterText = e.StatusString;
         }
 
+        private bool ucLoaded;
         public void TabLoadingOpen()
         {
+            ucLoaded = false;
             Opacity = 0.55;
             SplashScreenManagerService.Show();
         }
 
-        public void TabLoadingClose()
+        public async void TabLoadingClose()
         {
+            await Task.Run(() => { while (!ucLoaded) { } }).ContinueWith(t => System.Threading.Thread.Sleep(200));
+
             Opacity = 1;
             SplashScreenManagerService.Close();
         }

@@ -7,13 +7,13 @@
                     ResizeMode="NoResize"
                     EnableAcrylic="True"
                     AcrylicColor="Lavender"
-                    Icon="{dx:DXImage SvgImages/Business Objects/BO_User.svg}" 
                     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
                     xmlns:local="clr-namespace:MesAdmin.Authentication" 
                     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
-                    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm">
+                    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+                    Icon="pack://application:,,,/MesNL;component/App.ico">
     <dx:ThemedWindow.Resources>
         <Style x:Key="EditorStyle" TargetType="dxe:BaseEdit">
             <Setter Property="Height" Value="23" />

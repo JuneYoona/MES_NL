@@ -206,8 +206,8 @@ namespace MesAdmin.Models
             string grNo;
 
             IEnumerable<PurcharseWarehousing> items = this.Items;
-            grNo = Insert(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Added));
-            Delete(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Deleted));
+            grNo = Insert(items.Where(u => u.State == EntityState.Added));
+            Delete(items.Where(u => u.State == EntityState.Deleted));
 
             return grNo;
         }

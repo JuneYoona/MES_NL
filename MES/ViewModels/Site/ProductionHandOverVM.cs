@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Collections.ObjectModel;
 using System.Linq;
 using DevExpress.Mvvm;
@@ -103,7 +104,7 @@ namespace MesAdmin.ViewModels
             if (IsNew)
             {
                 // 필수 입력값 처리
-                foreach (var item in Collections.Where(u => u.State == Common.Common.EntityState.Added))
+                foreach (var item in Collections.Where(u => u.State == EntityState.Added))
                 {
                     if (string.IsNullOrEmpty(item.LotNo))
                     {
@@ -114,14 +115,14 @@ namespace MesAdmin.ViewModels
                 if (Collections.Count == 0) return false;
             }
             else
-                ret = Collections.Where(u => u.State == Common.Common.EntityState.Deleted).Count() > 0;
+                ret = Collections.Where(u => u.State == EntityState.Deleted).Count() > 0;
 
             return ret;
         }
         public Task OnSave()
         {
             IsBusy = true;
-            return Task.Factory.StartNew(SaveCore);
+            return Task.Factory.StartNew(SaveCore).ContinueWith(t => IsBusy = false);
         }
         public void SaveCore()
         {
@@ -145,24 +146,22 @@ namespace MesAdmin.ViewModels
             }
             catch (Exception ex)
             {
-                if (IsNew)
-                    HoNo = "";
+                if (IsNew) HoNo = "";
                 DispatcherService.BeginInvoke(() => MessageBoxService.ShowMessage(ex.Message
                                                     , "Information"
                                                     , MessageButton.OK
                                                     , MessageIcon.Information));
             }
-            IsBusy = false;
         }
 
         public Task OnSearch()
         {
             IsBusy = true;
-            IsNew = false;
-            return Task.Factory.StartNew(SearchCore);
+            return Task.Factory.StartNew(SearchCore).ContinueWith(t => IsBusy = false);
         }
         public void SearchCore()
         {
+            IsNew = false;
             Collections = new ProductionHandOverList(hoNo: HoNo);
             SelectedItem = null;
 
@@ -173,7 +172,6 @@ namespace MesAdmin.ViewModels
                 Memo = item.Memo;
             }
 
-            IsBusy = false;
             if (Collections.Count == 0)
             {
                 DispatcherService.BeginInvoke(() => MessageBoxService.ShowMessage("출고내역 정보가 없습니다!"
@@ -216,14 +214,14 @@ namespace MesAdmin.ViewModels
                         Collections.Insert(idx++,
                             new ProductionHandOver
                             {
-                                State = Common.Common.EntityState.Added,
+                                State = EntityState.Added,
                                 ProductOrderNo = item.ProductOrderNo,
                                 ItemCode = item.ItemCode,
                                 ItemName = item.ItemName,
                                 ItemSpec = item.ItemSpec,
                                 BasicUnit = item.BasicUnit,
                                 LotNo = item.LotNo,
-                                Qty = item.Qty,
+                                Qty = item.Qty + item.QrQty,
                             }
                         );
                         // 추가된 재고들 선택된걸 보여주기위해
@@ -242,10 +240,10 @@ namespace MesAdmin.ViewModels
         {
             SelectedItems.ToList().ForEach(u =>
             {
-                if (u.State == Common.Common.EntityState.Added)
+                if (u.State == EntityState.Added)
                     Collections.Remove(u);
                 else
-                    u.State = u.State == Common.Common.EntityState.Deleted ? Common.Common.EntityState.Unchanged : Common.Common.EntityState.Deleted;
+                    u.State = u.State == EntityState.Deleted ? EntityState.Unchanged : EntityState.Deleted;
             });
         }
 

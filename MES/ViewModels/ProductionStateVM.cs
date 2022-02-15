@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Linq;
 using DevExpress.Mvvm;
 using System.Windows.Input;
@@ -42,25 +43,20 @@ namespace MesAdmin.ViewModels
             get { return GetProperty(() => EndDate); }
             set { SetProperty(() => EndDate, value); }
         }
-        public IEnumerable<CommonMinor> BizAreaCode
+        public IEnumerable<CommonMinor> BizAreaCodeList
+        {
+            get { return GetProperty(() => BizAreaCodeList); }
+            set { SetProperty(() => BizAreaCodeList, value); }
+        }
+        public string BizAreaCode
         {
             get { return GetProperty(() => BizAreaCode); }
             set { SetProperty(() => BizAreaCode, value); }
         }
-        public string EditBizAreaCode
-        {
-            get { return GetProperty(() => EditBizAreaCode); }
-            set { SetProperty(() => EditBizAreaCode, value); }
-        }
-        public IEnumerable<CommonWorkAreaInfo> WaCode
+        public string WaCode
         {
             get { return GetProperty(() => WaCode); }
             set { SetProperty(() => WaCode, value); }
-        }
-        public string EditWaCode
-        {
-            get { return GetProperty(() => EditWaCode); }
-            set { SetProperty(() => EditWaCode, value); }
         }
         public string LotNo
         {
@@ -86,16 +82,15 @@ namespace MesAdmin.ViewModels
         public ICommand DeleteCmd { get; set; }
         public ICommand SaveCmd { get; set; }
         public AsyncCommand SearchCmd { get; set; }
-        public ICommand EditValueChangedCmd { get; set; }
         public ICommand<object> ToExcelCmd { get; set; }
         public ICommand MouseDownCmd { get; set; }
         #endregion
 
         public ProductionStateVM()
         {
-            BizAreaCode = GlobalCommonMinor.Instance.Where(u => u.MajorCode == "I0004");
+            BizAreaCodeList = GlobalCommonMinor.Instance.Where(u => u.MajorCode == "I0004");
             if (!string.IsNullOrEmpty(DSUser.Instance.BizAreaCode))
-                EditBizAreaCode = BizAreaCode.FirstOrDefault(u => u.MinorCode == DSUser.Instance.BizAreaCode).MinorCode;
+                BizAreaCode = BizAreaCodeList.FirstOrDefault(u => u.MinorCode == DSUser.Instance.BizAreaCode).MinorCode;
 
             StartDate = DateTime.Now.AddMonths(-1);
             EndDate = DateTime.Now;
@@ -107,7 +102,6 @@ namespace MesAdmin.ViewModels
             SearchCmd = new AsyncCommand(OnSearch);
             DeleteCmd = new DelegateCommand(OnDelete);
             SaveCmd = new DelegateCommand(OnSave, CanSave);
-            EditValueChangedCmd = new DelegateCommand(OnEditValueChanged);
             MouseDownCmd = new DelegateCommand(OnMouseDown);
             ToExcelCmd = new DelegateCommand<object>(base.OnToExcel);
         }
@@ -125,7 +119,7 @@ namespace MesAdmin.ViewModels
         }
         public void SearchCore()
         {
-            Collections = new ProductionInputRecordList(StartDate, EndDate, bizAreaCode: EditBizAreaCode, waCode: EditWaCode, lotNo: LotNo, color: SelectedType);
+            Collections = new ProductionInputRecordList(StartDate, EndDate, bizAreaCode: BizAreaCode, waCode: WaCode, lotNo: LotNo, color: SelectedType);
             OutputRecords = null;
             IsBusy = false;
         }
@@ -154,12 +148,6 @@ namespace MesAdmin.ViewModels
             {
                 MessageBoxService.ShowMessage(ex.Message, "Information", MessageButton.OK, MessageIcon.Information);
             }
-        }
-
-        public void OnEditValueChanged()
-        {
-            WaCode = GlobalCommonWorkAreaInfo.Instance
-                    .Where(u => string.IsNullOrEmpty(EditBizAreaCode) ? true : u.BizAreaCode == EditBizAreaCode);
         }
 
         protected override void OnParameterChanged(object parameter)

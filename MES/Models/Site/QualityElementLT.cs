@@ -71,7 +71,7 @@ namespace MesAdmin.Models
                 base.Add(
                     new QualityElementLT
                     {
-                        State = MesAdmin.Common.Common.EntityState.Unchanged,
+                        State = EntityState.Unchanged,
                         QrNo = qrNo,
                         Const = (decimal)u["Const"],
                         RefHP = u["RefHP"].ToString() == "" ? (decimal?)null : Convert.ToDecimal(u["RefHP"]),
@@ -86,7 +86,7 @@ namespace MesAdmin.Models
         public void Save(ObservableCollection<RawResult> result)
         {
             var lt = Items.FirstOrDefault();
-            if (lt == null || lt.State == MesAdmin.Common.Common.EntityState.Unchanged) return;
+            if (lt == null || lt.State == EntityState.Unchanged) return;
 
             Database db = ProviderFactory.Instance;
             using (DbConnection conn = db.CreateConnection())

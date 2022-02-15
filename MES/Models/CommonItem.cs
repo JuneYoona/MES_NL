@@ -36,6 +36,11 @@ namespace MesAdmin.Models
             get { return GetProperty(() => ItemAccount); }
             set { SetProperty(() => ItemAccount, value); }
         }
+        public string ItemAccountName
+        {
+            get { return GetProperty(() => ItemAccountName); }
+            set { SetProperty(() => ItemAccountName, value); }
+        }
         [Required(ErrorMessage = "필수입력값 입니다.")]
         public string BasicUnit
         {
@@ -124,10 +129,10 @@ namespace MesAdmin.Models
                 {
                     switch (this.State)
                     {
-                        case MesAdmin.Common.Common.EntityState.Added:
+                        case EntityState.Added:
                             Insert(db, trans);
                             break;
-                        case MesAdmin.Common.Common.EntityState.Modified:
+                        case EntityState.Modified:
                             Update(db, trans);
                             break;
                     }
@@ -222,7 +227,7 @@ namespace MesAdmin.Models
                 DbTransaction trans = conn.BeginTransaction();
                 try
                 {
-                    Delete(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Deleted), db, trans);
+                    Delete(items.Where(u => u.State == EntityState.Deleted), db, trans);
                     trans.Commit();
                 }
                 catch
@@ -262,11 +267,7 @@ namespace MesAdmin.Models
         {
             base.Clear();
             Database db = ProviderFactory.Instance;
-
-            string str = "SELECT A.*, B.Ref01 FROM common_Item (NOLOCK) A INNER JOIN common_Minor (NOLOCK) B ON A.ItemAccount = B.MinorCode AND B.MajorCode = 'P1001' ";
-            str += "WHERE B.Ref01 = COALESCE(NULLIF(@BizAreaCode, ''), B.Ref01)";
-
-            DbCommand dbCom = db.GetSqlStringCommand(str);
+            DbCommand dbCom = db.GetStoredProcCommand("usp_common_ItemList");
             db.AddInParameter(dbCom, "@BizAreaCode", DbType.String, bizAreaCode);
             DataSet ds = db.ExecuteDataSet(dbCom);
 
@@ -274,11 +275,12 @@ namespace MesAdmin.Models
                 base.Add(
                     new CommonItem 
                     {
-                        State = MesAdmin.Common.Common.EntityState.Unchanged, 
+                        State = EntityState.Unchanged, 
                         ItemCode = (string)u["ItemCode"],
                         ItemName = (string)u["ItemName"],
                         ItemSpec = (string)u["ItemSpec"],
                         ItemAccount = (string)u["ItemAccount"],
+                        ItemAccountName = (string)u["ItemAccountName"],
                         BasicUnit = (string)u["BasicUnit"],
                         IQCFlag = (bool)u["IQCFlag"],
                         LQCFlag = (bool)u["LQCFlag"],

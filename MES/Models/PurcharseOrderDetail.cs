@@ -182,8 +182,8 @@ namespace MesAdmin.Models
         public void Save()
         {
             IEnumerable<PurcharseOrderDetail> items = this.Items;
-            Insert(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Added));
-            Delete(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Deleted));
+            Insert(items.Where(u => u.State == EntityState.Added));
+            Delete(items.Where(u => u.State == EntityState.Deleted));
         }
 
         public void Insert(IEnumerable<PurcharseOrderDetail> items)

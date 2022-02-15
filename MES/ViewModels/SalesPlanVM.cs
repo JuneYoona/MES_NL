@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Collections.ObjectModel;
 using System.Linq;
 using DevExpress.Mvvm;
@@ -118,10 +119,10 @@ namespace MesAdmin.ViewModels
             bool ret = true;
 
             if (Collections == null) return false;
-            ret = Collections.Where(u => u.State == Common.Common.EntityState.Deleted || u.State == Common.Common.EntityState.Added).Count() > 0;
+            ret = Collections.Where(u => u.State == EntityState.Deleted || u.State == EntityState.Added).Count() > 0;
 
             // 필수 입력값 처리
-            foreach (SalesPlan item in Collections.Where(u => u.State == Common.Common.EntityState.Added))
+            foreach (SalesPlan item in Collections.Where(u => u.State == EntityState.Added))
             {
                 if (string.IsNullOrEmpty(item.ItemCode) || string.IsNullOrEmpty(item.BizCode) || item.PlanMonth <= 0 || item.Qty <= 0 || item.Account <= 0)
                 {
@@ -180,7 +181,7 @@ namespace MesAdmin.ViewModels
             int idx = Collections.IndexOf(SelectedItem);
             Collections.Insert(idx + 1, new SalesPlan
             {
-                State = MesAdmin.Common.Common.EntityState.Added,
+                State = EntityState.Added,
                 PlanYear = int.Parse(PlanYear.ToString("yyyy")),
                 ApplyDate = DateTime.Now,
                 UpdateDate = DateTime.Now
@@ -192,10 +193,10 @@ namespace MesAdmin.ViewModels
         {
             SelectedItems.ToList().ForEach(u =>
             {
-                if (u.State == MesAdmin.Common.Common.EntityState.Added)
+                if (u.State == EntityState.Added)
                     Collections.Remove(u);
                 else
-                    u.State = u.State == MesAdmin.Common.Common.EntityState.Deleted ? MesAdmin.Common.Common.EntityState.Unchanged : MesAdmin.Common.Common.EntityState.Deleted;
+                    u.State = u.State == EntityState.Deleted ? EntityState.Unchanged : EntityState.Deleted;
             });
         }
 

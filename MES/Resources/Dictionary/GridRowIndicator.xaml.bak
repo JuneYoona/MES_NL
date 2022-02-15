@@ -2,11 +2,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
-	xmlns:dxgt="clr-namespace:DevExpress.Xpf.Grid.Themes;assembly=DevExpress.Xpf.Grid.v18.1"
+	xmlns:dxgt="clr-namespace:DevExpress.Xpf.Grid.Themes;assembly=DevExpress.Xpf.Grid.v21.1"
     xmlns:util="clr-namespace:MesAdmin.Common.Utils">
     <DataTemplate x:Key="{dxgt:RowIndicatorThemeKey ResourceKey=IconPresenterTemplate, IsThemeIndependent=True}">
         <DockPanel x:Name="root" Background="Transparent">
-            <TextBlock Margin="5 2 2 2" Text="{DXBinding Expr='RowHandle.Value >= 0 ? RowHandle.Value + 1 : null'}">
+            <TextBlock Margin="5 2 2 2" Text="{DXBinding Expr='RowHandle.Value &gt;= 0 ? RowHandle.Value + 1 : null'}">
                 <!--<TextBlock.Text>
                     <MultiBinding Mode="OneWay" Converter="{util:RowNumberConverter}">
                         <Binding Path="View.DataControl" />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Collections.ObjectModel;
 using System.Linq;
 using DevExpress.Mvvm;
@@ -175,10 +176,10 @@ namespace MesAdmin.ViewModels
         {
             SelectedItems.ToList().ForEach(u =>
             {
-                if (u.State == Common.Common.EntityState.Added)
+                if (u.State == EntityState.Added)
                     Details.Remove(u);
                 else
-                    u.State = u.State == Common.Common.EntityState.Deleted ? Common.Common.EntityState.Unchanged : Common.Common.EntityState.Deleted;
+                    u.State = u.State == EntityState.Deleted ? EntityState.Unchanged : EntityState.Deleted;
             });
         }
 
@@ -190,7 +191,7 @@ namespace MesAdmin.ViewModels
         {
             Details.Insert(Details.Count, new MaterialDispenseDetailSub
             {
-                State = Common.Common.EntityState.Added,
+                State = EntityState.Added,
                 MDNo = Header.MDNo,
                 Seq = Header.Seq,
                 DspDate = DspDate,
@@ -205,7 +206,7 @@ namespace MesAdmin.ViewModels
             if (IsNew)
             {
                 // 필수 입력값 처리
-                foreach (MaterialDispenseDetailSub item in Details.Where(u => u.State == Common.Common.EntityState.Added))
+                foreach (MaterialDispenseDetailSub item in Details.Where(u => u.State == EntityState.Added))
                 {
                     if (string.IsNullOrEmpty(item.ItemCode) || item.DspQty <= 0 || string.IsNullOrEmpty(item.LotNo))
                     {
@@ -216,7 +217,7 @@ namespace MesAdmin.ViewModels
                 if (Details.Count == 0) return false;
             }
             else
-                ret = Details.Where(u => u.State == Common.Common.EntityState.Deleted).Count() > 0;
+                ret = Details.Where(u => u.State == EntityState.Deleted).Count() > 0;
 
             return ret;
         }
@@ -279,7 +280,7 @@ namespace MesAdmin.ViewModels
                             Details.Insert(idx++,
                                 new MaterialDispenseDetailSub
                                 {
-                                    State = Common.Common.EntityState.Added,
+                                    State = EntityState.Added,
                                     BizAreaCode = item.BizAreaCode,
                                     ItemCode = item.ItemCode,
                                     ItemName = item.ItemName,

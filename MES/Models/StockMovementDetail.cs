@@ -72,6 +72,11 @@ namespace MesAdmin.Models
             get { return GetProperty(() => TransWhCode); }
             set { SetProperty(() => TransWhCode, value); }
         }
+        public string TransWhName
+        {
+            get { return GetValue<string>(); }
+            set { SetValue(value); }
+        }
         public string TransWaCode
         {
             get { return GetProperty(() => TransWaCode); }
@@ -127,6 +132,11 @@ namespace MesAdmin.Models
         {
             get { return GetProperty(() => WhCode); }
             set { SetProperty(() => WhCode, value); }
+        }
+        public string WhName
+        {
+            get { return GetValue<string>(); }
+            set { SetValue(value); }
         }
         public string WaCode
         {
@@ -187,11 +197,12 @@ namespace MesAdmin.Models
         private string transType;
         private string moveType;
         private string bizAreaCode;
+        private string lotNo;
 
         public StockMovementDetailList() {}
         public StockMovementDetailList(IEnumerable<StockMovementDetail> items) : base(items) {}
         public StockMovementDetailList(string documentNo = "", DateTime? startDate = null, DateTime? endDate = null,
-            string itemCode = "", string itemAccount = "", string transType = "", string moveType = "", string bizAreaCode = "")
+            string itemCode = "", string itemAccount = "", string transType = "", string moveType = "", string bizAreaCode = "", string lotNo = "")
         {
             this.documentNo = documentNo;
             this.startDate = startDate;
@@ -201,6 +212,7 @@ namespace MesAdmin.Models
             this.transType = transType;
             this.moveType = moveType;
             this.bizAreaCode = bizAreaCode;
+            this.lotNo = lotNo;
             InitializeList();
         }
 
@@ -208,8 +220,8 @@ namespace MesAdmin.Models
         {
             string documentNo = string.Empty;
             IEnumerable<StockMovementDetail> items = this.Items;
-            documentNo = Insert(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Added));
-            Delete(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Deleted));
+            documentNo = Insert(items.Where(u => u.State == EntityState.Added));
+            Delete(items.Where(u => u.State == EntityState.Deleted));
 
             return documentNo;
         }
@@ -302,6 +314,7 @@ namespace MesAdmin.Models
             db.AddInParameter(dbCom, "@MoveType", DbType.String, moveType);
             db.AddInParameter(dbCom, "@ItemCode", DbType.String, itemCode);
             db.AddInParameter(dbCom, "@ItemAccount", DbType.String, itemAccount);
+            db.AddInParameter(dbCom, "@LotNo", DbType.String, lotNo);
             db.AddInParameter(dbCom, "@StartDate", DbType.String, startDate.ToString());
             db.AddInParameter(dbCom, "@EndDate", DbType.String, endDate.ToString());
             DataSet ds = db.ExecuteDataSet(dbCom);
@@ -323,6 +336,7 @@ namespace MesAdmin.Models
                         Qty = (decimal)u["Qty"],
                         StockType = (string)u["StockType"],
                         WhCode = (string)u["WhCode"],
+                        WhName = u["WhName"].ToString(),
                         WaCode = (string)u["WaCode"],
                         BasicUnit = (string)u["BasicUnit"],
                         TransType = (string)u["TransType"],
@@ -336,6 +350,7 @@ namespace MesAdmin.Models
                         TransItemCode = u["TransItemCode"].ToString(),
                         TransLotNo = u["TransLotNo"].ToString(),
                         TransWhCode = u["TransWhCode"].ToString(),
+                        TransWhName = u["TransWhName"].ToString(),
                         TransWaCode = u["TransWaCode"].ToString(),
                         ProductOrderNo = u["ProductOrderNo"].ToString(),
                         UpdateId = (string)u["UpdateId"],

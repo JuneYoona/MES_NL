@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Collections.ObjectModel;
 using System.Linq;
 using DevExpress.Mvvm;
@@ -144,7 +145,7 @@ namespace MesAdmin.ViewModels
         {
             Details.Insert(Details.Count, new SalesOrderReqDetail
             {
-                State = Common.Common.EntityState.Added,
+                State = EntityState.Added,
                 CustItemCode = "",
                 UnitPrice = 0,
                 ExchangeRate = 1,

@@ -21,35 +21,25 @@ namespace MesAdmin.ViewModels
             get { return GetProperty(() => Collections); }
             set { SetProperty(() => Collections, value); }
         }
-        public IEnumerable<CommonMinor> BizAreaCode
+        public IEnumerable<CommonMinor> BizAreaCodeList
+        {
+            get { return GetProperty(() => BizAreaCodeList); }
+            set { SetProperty(() => BizAreaCodeList, value); }
+        }
+        public string BizAreaCode
         {
             get { return GetProperty(() => BizAreaCode); }
             set { SetProperty(() => BizAreaCode, value); }
         }
-        public IEnumerable<CommonMinor> WhCode
+        public string WhCode
         {
             get { return GetProperty(() => WhCode); }
             set { SetProperty(() => WhCode, value); }
         }
-        public string EditBizAreaCode
-        {
-            get { return GetProperty(() => EditBizAreaCode); }
-            set { SetProperty(() => EditBizAreaCode, value); }
-        }
-        public string EditWhCode
-        {
-            get { return GetProperty(() => EditWhCode); }
-            set { SetProperty(() => EditWhCode, value); }
-        }
-        public IEnumerable<CommonMinor> ItemAccount
+        public string ItemAccount
         {
             get { return GetProperty(() => ItemAccount); }
             set { SetProperty(() => ItemAccount, value); }
-        }
-        public string EditItemAcct
-        {
-            get { return GetProperty(() => EditItemAcct); }
-            set { SetProperty(() => EditItemAcct, value); }
         }
         public bool IsBusy
         {
@@ -61,18 +51,16 @@ namespace MesAdmin.ViewModels
         #region Commands
         public AsyncCommand SearchCmd { get; set; }
         public ICommand<object> ToExcelCmd { get; set; }
-        public ICommand EditValueChangedCmd { get; set; }
         #endregion
 
         public StockItemVM()
         {
-            BizAreaCode = GlobalCommonMinor.Instance.Where(u => u.MajorCode == "I0004");
+            BizAreaCodeList = GlobalCommonMinor.Instance.Where(u => u.MajorCode == "I0004");
             if (!string.IsNullOrEmpty(DSUser.Instance.BizAreaCode))
-                EditBizAreaCode = BizAreaCode.FirstOrDefault(u => u.MinorCode == DSUser.Instance.BizAreaCode).MinorCode;
+                BizAreaCode = BizAreaCodeList.FirstOrDefault(u => u.MinorCode == DSUser.Instance.BizAreaCode).MinorCode;
 
             SearchCmd = new AsyncCommand(OnSearch);
             ToExcelCmd = new DelegateCommand<object>(base.OnToExcel);
-            EditValueChangedCmd = new DelegateCommand(OnEditValueChanged);
         }
 
         public Task OnSearch()
@@ -82,23 +70,12 @@ namespace MesAdmin.ViewModels
         }
         public void SearchCore()
         {
-            string bizAreaCode = EditBizAreaCode;
-            string whCode = EditWhCode;
-            string itemAccount = EditItemAcct;
+            string bizAreaCode = BizAreaCode;
+            string whCode = WhCode;
+            string itemAccount = ItemAccount;
 
             Collections = new StockItemList(bizAreaCode, whCode, itemAccount);
             IsBusy = false;
-        }
-
-        public void OnEditValueChanged()
-        {
-            WhCode = GlobalCommonMinor.Instance
-                    .Where(u => u.MajorCode == "I0011")
-                    .Where(u => string.IsNullOrEmpty(EditBizAreaCode) ? true : u.Ref01 == EditBizAreaCode);
-
-            ItemAccount = GlobalCommonMinor.Instance
-                    .Where(u => u.MajorCode == "P1001")
-                    .Where(u => string.IsNullOrEmpty(EditBizAreaCode) ? true : u.Ref01 == EditBizAreaCode);
         }
 
         protected override void OnParameterChanged(object parameter)

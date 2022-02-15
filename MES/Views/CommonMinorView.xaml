@@ -110,6 +110,7 @@
                                     x:Name="MinorGrid"
                                     common:GridRowIndicatorHelper.IsEnabled="True"
                                     ItemsSource="{Binding CollectionsMinor}"
+                                    SelectedItems="{Binding SelectedItems, UpdateSourceTrigger=PropertyChanged}"
                                     SelectionMode="Cell"
                                     ShowBorder="False"
                                     ClipboardCopyMode="ExcludeHeader"

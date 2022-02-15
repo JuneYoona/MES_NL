@@ -20,14 +20,12 @@ namespace MesAdmin.Models
             get { return GetProperty(() => UserId); }
             set { SetProperty(() => UserId, value); }
         }
-        [Required(ErrorMessage = "사용자 ID를 입력하세요!")]
         public string UserName
         {
             get { return GetProperty(() => UserName); }
             set { SetProperty(() => UserName, value); }
         }
-        [Required(ErrorMessage = "Password를 입력하세요!")]
-        [MinLength(4, ErrorMessage = "Password는 4자리 이상이어야 합니다.")]
+        [RegularExpression(@"(?=.*\d)(?=.*[A-Za-z]).{6,}", ErrorMessage = "Password는 6자리 이상 숫자 영문 조합이어야 합니다.")]
         public string Password
         {
             get { return GetProperty(() => Password); }
@@ -84,7 +82,7 @@ namespace MesAdmin.Models
                                     RoleId = (Guid)r["RoleId"],
                                     RoleName = (string)r["RoleName"],
                                     Description = (string)r["Description"],
-                                    State = MesAdmin.Common.Common.EntityState.Unchanged
+                                    State = EntityState.Unchanged
                                 })
                 )
             });

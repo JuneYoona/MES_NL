@@ -1,25 +1,25 @@
 ﻿<UserControl x:Class="MesAdmin.Views.PopupStockMoveView"
-    xmlns="http://schemas.microsoft.com/netfx/2009/xaml/presentation" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
-    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
-    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
-    xmlns:viewmodel="clr-namespace:MesAdmin.ViewModels"
-    xmlns:view="clr-namespace:MesAdmin.Views"             
-    xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
-    xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
-    xmlns:common="clr-namespace:MesAdmin.Common.Common"
-    xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"             
-    mc:Ignorable="d" 
-    d:DesignHeight="400"
-    d:DesignWidth="670">
-
+             xmlns="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
+             xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:common="clr-namespace:MesAdmin.Common.Common"
+             xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
+             xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
+             mc:Ignorable="d" 
+             d:DesignHeight="400"
+             d:DesignWidth="670">
     <UserControl.Resources>
         <ResourceDictionary>
             <utils:MinorCodeConverter x:Key="MinorCodeConverter"/>
             <utils:WaCodeConverter x:Key="WaCodeConverter"/>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicatorState.xaml" />
+                <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicator.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -47,9 +47,9 @@
                 <ColumnDefinition Width="180" />
                 <ColumnDefinition Width="20" />
                 <ColumnDefinition Width="130" />
-                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="90" />
                 <ColumnDefinition Width="20" />
-                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="90" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -118,14 +118,12 @@
                 Grid.Row="1" 
                 Background="White"
                 Grid.Column="4" 
-                Grid.ColumnSpan="3" 
-                Width="180"
+                Grid.ColumnSpan="3"
                 ItemsSource="{Binding MoveType}" 
                 EditValue="{Binding EditMoveType, UpdateSourceTrigger=PropertyChanged}"
                 NullValueButtonPlacement="EditBox" 
                 DisplayMember="MinorName"
                 ValueMember="MinorCode" 
-                HorizontalAlignment="Left"
                 VerticalAlignment="Bottom"
                 Margin="2 0 0 0">
                 <dxe:ComboBoxEdit.InputBindings>
@@ -137,8 +135,7 @@
         <dxg:GridControl 
             Grid.Row="2"
             common:GridRowIndicatorHelper.IsEnabled="True"
-            ItemsSource="{Binding CollectionsHeader}" 
-            SelectedItem="{Binding SelectedHeader}"
+            ItemsSource="{Binding CollectionsHeader}"
             ClipboardCopyMode="ExcludeHeader"
             SelectionMode="Cell"
             ShowLoadingPanel="{Binding IsBusy}">
@@ -146,24 +143,17 @@
                 <dxmvvm:EventToCommand Command="{Binding ConfirmCmd}" EventName="MouseDoubleClick"/>
                 <dxmvvm:EventToCommand Command="{Binding MouseDownCmd}" EventName="SelectedItemChanged"/>
             </dxmvvm:Interaction.Behaviors>
-            <!--<dxg:GridControl.Resources>
-                <ControlTemplate x:Key="{dxgt:GridControlThemeKey IsThemeIndependent=true, ResourceKey=BorderTemplate}" TargetType="{x:Type ContentControl}">
-                    <Border BorderThickness="0 1 0 1" BorderBrush="#859EBF">
-                        <ContentPresenter />
-                    </Border>
-                </ControlTemplate>
-            </dxg:GridControl.Resources>-->
             <dxg:GridControl.View>
                 <custom:DSTableView 
                     ShowGroupPanel="False"
                     AllowEditing="False"
-                    VerticalScrollbarVisibility="Auto"
-                    AutoWidth="True"/>
+                    FocusedRow="{Binding SelectedHeader, UpdateSourceTrigger=PropertyChanged}"
+                    VerticalScrollbarVisibility="Auto"/>
             </dxg:GridControl.View>
             <dxg:GridControl.Columns>
-                <dxg:GridColumn FieldName="DocumentNo" Header="수불번호"/>
-                <dxg:GridColumn FieldName="DocumentDate" Header="수불일"/>
-                <dxg:GridColumn Header="수불유형">
+                <dxg:GridColumn FieldName="DocumentNo" Header="수불번호" Width="120"/>
+                <dxg:GridColumn FieldName="DocumentDate" Header="수불일" Width="90"/>
+                <dxg:GridColumn Header="수불유형" Width="150">
                     <dxg:GridColumn.Binding>
                         <MultiBinding Converter="{StaticResource MinorCodeConverter}">
                             <Binding Source="I0001" />
@@ -171,9 +161,9 @@
                         </MultiBinding>
                     </dxg:GridColumn.Binding>
                 </dxg:GridColumn>
-                <dxg:GridColumn FieldName="Memo" Header="비고"/>
+                <dxg:GridColumn FieldName="Memo" Header="비고" Width="300"/>
                 <dxg:GridColumn FieldName="UpdateId" Header="입력자ID"/>
-                <dxg:GridColumn FieldName="UpdateDate" Header="입력시간"/>
+                <dxg:GridColumn FieldName="UpdateDate" Header="입력시간" Width="90"/>
             </dxg:GridControl.Columns>
         </dxg:GridControl>
 
@@ -184,13 +174,6 @@
             SelectionMode="Cell"
             ClipboardCopyMode="ExcludeHeader"
             Margin="0 10 0 0">
-            <!--<dxg:GridControl.Resources>
-                <ControlTemplate x:Key="{dxgt:GridControlThemeKey IsThemeIndependent=true, ResourceKey=BorderTemplate}" TargetType="{x:Type ContentControl}">
-                    <Border BorderThickness="0 1 0 1" BorderBrush="#859EBF">
-                        <ContentPresenter />
-                    </Border>
-                </ControlTemplate>
-            </dxg:GridControl.Resources>-->
             <dxg:GridControl.View>
                 <custom:DSTableView 
                     ShowGroupPanel="False"
@@ -204,26 +187,12 @@
                 <dxg:GridColumn FieldName="LotNo" Header="로트번호"/>
                 <dxg:GridColumn FieldName="Qty" Header="수량"/>
                 <dxg:GridColumn FieldName="BasicUnit" Width="80" Header="단위"/>
-                <dxg:GridColumn MinWidth="150" Header="창고">
-                    <dxg:GridColumn.Binding>
-                        <MultiBinding Converter="{StaticResource MinorCodeConverter}">
-                            <Binding Source="I0011" />
-                            <Binding Path="Data.WhCode" />
-                        </MultiBinding>
-                    </dxg:GridColumn.Binding>
-                </dxg:GridColumn>
+                <dxg:GridColumn FieldName="WhName" MinWidth="150" Header="창고"/>
                 <dxg:GridColumn Binding="{Binding RowData.Row.WaCode, Converter={StaticResource WaCodeConverter}}" Width="80" Header="공정"/>
                 <dxg:GridColumn FieldName="DCFlag" Width="80" Header="증감구분"/>
                 <dxg:GridColumn FieldName="TransItemCode" Header="이동품목코드" ShowValidationAttributeErrors="False" />
                 <dxg:GridColumn FieldName="TransLotNo" Header="이동로트번호" ShowValidationAttributeErrors="False"/>
-                <dxg:GridColumn MinWidth="150" Header="이동창고" ShowValidationAttributeErrors="False">
-                    <dxg:GridColumn.Binding>
-                        <MultiBinding Converter="{StaticResource MinorCodeConverter}">
-                            <Binding Source="I0011" />
-                            <Binding Path="Data.TransWhCode" />
-                        </MultiBinding>
-                    </dxg:GridColumn.Binding>
-                </dxg:GridColumn>
+                <dxg:GridColumn FieldName="TransWhName" Header="이동창고" MinWidth="150" ShowValidationAttributeErrors="False" />
                 <dxg:GridColumn Binding="{Binding RowData.Row.TransWaCode, Converter={StaticResource WaCodeConverter}}" Width="80" Header="이동공정" ShowValidationAttributeErrors="False"/>
             </dxg:GridControl.Columns>
         </dxg:GridControl>

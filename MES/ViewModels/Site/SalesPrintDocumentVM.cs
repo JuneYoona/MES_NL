@@ -37,12 +37,12 @@ namespace MesAdmin.ViewModels
             get { return GetProperty(() => Details); }
             set { SetProperty(() => Details, value); }
         }
-        public IEnumerable<CommonBizPartner> BizPartnerList
+        public IEnumerable<CommonBizPartner> BizCodeList
         {
-            get { return GetProperty(() => BizPartnerList); }
-            set { SetProperty(() => BizPartnerList, value); }
+            get { return GetProperty(() => BizCodeList); }
+            set { SetProperty(() => BizCodeList, value); }
         }
-        public IEnumerable<SalesOrderTypeConfig> OrderType { get; set; }
+        public IEnumerable<SalesOrderTypeConfig> SoTypeList { get; set; }
         public bool IsBusy
         {
             get { return GetProperty(() => IsBusy); }
@@ -98,7 +98,8 @@ namespace MesAdmin.ViewModels
         public SalesPrintDocumentVM()
         {
             BindingBizPartnerList();
-            OrderType = (new SalesOrderTypeConfigList()).Where(u => u.IsEnabled == true); // 수주형태
+            // 수주형태
+            SoTypeList = new SalesOrderTypeConfigList().Where(u => u.IsEnabled == true);
 
             StartDate = DateTime.Now.AddMonths(-1);
             EndDate = DateTime.Now.AddMonths(1);
@@ -118,7 +119,7 @@ namespace MesAdmin.ViewModels
 
             if (task.IsCompleted)
             {
-                BizPartnerList = task.Result;
+                BizCodeList = task.Result;
             }
         }
 

@@ -45,12 +45,12 @@ namespace MesAdmin.ViewModels
             get { return GetProperty(() => SelectedDetail); }
             set { SetProperty(() => SelectedDetail, value); }
         }
-        public IEnumerable<CommonBizPartner> BizPartnerList
+        public IEnumerable<CommonBizPartner> BizCodeList
         {
-            get { return GetProperty(() => BizPartnerList); }
-            set { SetProperty(() => BizPartnerList, value); }
+            get { return GetProperty(() => BizCodeList); }
+            set { SetProperty(() => BizCodeList, value); }
         }
-        public IEnumerable<SalesOrderTypeConfig> OrderType { get; set; }
+        public IEnumerable<SalesOrderTypeConfig> SoTypeList { get; set; }
         public bool IsBusy
         {
             get { return GetProperty(() => IsBusy); }
@@ -91,7 +91,7 @@ namespace MesAdmin.ViewModels
 
         #region Commands
         public AsyncCommand SearchCmd { get; set; }
-        public ICommand ShowDialogCmd { get; set; }
+        public ICommand ShowItemDialogCmd { get; set; }
         public ICommand PrintCmd { get; set; }
         public AsyncCommand MouseDownCmd { get; set; }
         public DelegateCommand<object> DelCmd { get; set; }
@@ -105,12 +105,13 @@ namespace MesAdmin.ViewModels
         public SalesLabelPrintHistoryVM()
         {
             BindingBizPartnerList();
-            OrderType = (new SalesOrderTypeConfigList()).Where(u => u.IsEnabled == true); // 수주형태
+            // 수주형태
+            SoTypeList = new SalesOrderTypeConfigList().Where(u => u.IsEnabled == true);
 
             StartDate = DateTime.Now.AddMonths(-1);
             EndDate = DateTime.Now.AddMonths(1);
 
-            ShowDialogCmd = new DelegateCommand(OnShowDialog);
+            ShowItemDialogCmd = new DelegateCommand(OnShowDialog);
             PrintCmd = new DelegateCommand(OnPrint, CanPrint);
             SearchCmd = new AsyncCommand(OnSearch, CanSearch);
             MouseDownCmd = new AsyncCommand(OnMouseDown);
@@ -126,7 +127,7 @@ namespace MesAdmin.ViewModels
 
             if (task.IsCompleted)
             {
-                BizPartnerList = task.Result;
+                BizCodeList = task.Result;
             }
         }
 
@@ -180,14 +181,14 @@ namespace MesAdmin.ViewModels
         {
             Details.Where(u => u.LbNo == SelectedDetail.LbNo && u.PrintSeq == SelectedDetail.PrintSeq).ToList().ForEach(u =>
             {
-                    u.State = u.State == MesAdmin.Common.Common.EntityState.Deleted ? MesAdmin.Common.Common.EntityState.Unchanged : MesAdmin.Common.Common.EntityState.Deleted;
+                    u.State = u.State == EntityState.Deleted ? EntityState.Unchanged : EntityState.Deleted;
             });
         }
 
         public bool CanSave()
         {
             if (Details == null) return false;
-            return Details.Where(u => u.State == MesAdmin.Common.Common.EntityState.Deleted).Count() > 0;
+            return Details.Where(u => u.State == EntityState.Deleted).Count() > 0;
         }
         public Task OnSave()
         {

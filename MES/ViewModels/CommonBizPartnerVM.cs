@@ -89,7 +89,7 @@ namespace MesAdmin.ViewModels
         public bool CanSave()
         {
             if (Collections == null) return false;
-            return Collections.Where(r => r.State == MesAdmin.Common.Common.EntityState.Deleted).Count() > 0;
+            return Collections.Where(r => r.State == EntityState.Deleted).Count() > 0;
         }
         public void OnSave()
         {
@@ -124,9 +124,9 @@ namespace MesAdmin.ViewModels
             if (SelectedItem == null)
                 return;
 
-            SelectedItem.State = SelectedItem.State == MesAdmin.Common.Common.EntityState.Deleted ?
-                MesAdmin.Common.Common.EntityState.Unchanged :
-                MesAdmin.Common.Common.EntityState.Deleted;
+            SelectedItem.State = SelectedItem.State == EntityState.Deleted ?
+                EntityState.Unchanged :
+                EntityState.Deleted;
         }
 
         void OnMessage(EntityMessage<CommonBizPartner> message)

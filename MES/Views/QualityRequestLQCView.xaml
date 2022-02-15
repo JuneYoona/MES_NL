@@ -1,24 +1,23 @@
-﻿<UserControl x:Class="MesAdmin.Views.QualityRequestLQCView"
-    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"  
-    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-    xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
-    xmlns:ViewModels="clr-namespace:MesAdmin.ViewModels"
-    xmlns:models="clr-namespace:MesAdmin.Models"             
-    xmlns:local="clr-namespace:MesAdmin" 
-    xmlns:view="clr-namespace:MesAdmin.Views"
-    mc:Ignorable="d"
-    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
-    xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
-    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
-    xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
-    xmlns:common="clr-namespace:MesAdmin.Common.Common"
-    xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"             
-    d:DesignHeight="436" d:DesignWidth="800">
+﻿<UserControl    x:Class="MesAdmin.Views.QualityRequestLQCView"
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+                xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+                xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+                xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+                xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
+                xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+                xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                xmlns:common="clr-namespace:MesAdmin.Common.Common"
+                xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
+                xmlns:models="clr-namespace:MesAdmin.Models"
+                xmlns:ViewModels="clr-namespace:MesAdmin.ViewModels"
+                xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
+                xmlns:view="clr-namespace:MesAdmin.Views"
+                mc:Ignorable="d"
+                d:DesignHeight="436" d:DesignWidth="800">
     <UserControl.DataContext>
         <ViewModels:QualityRequestVM/>
     </UserControl.DataContext>
@@ -79,6 +78,15 @@
                                     </dxmvvm:Interaction.Behaviors>
                                 </dxb:BarButtonItem>
                                 <dxb:BarButtonItem Content="삭제" KeyGesture="CTRL+D" Command="{Binding DelCmd}" LargeGlyph="{dx:DXImage SvgImages/Snap/SnapDeleteList.svg}" />
+                                <dxb:BarButtonItem Content="재등록" KeyGesture="CTRL+U" LargeGlyph="{dx:DXImage SvgImages/Dashboards/GridResetColumnWidths.svg}">
+                                    <dxmvvm:Interaction.Behaviors>
+                                        <dxmvvm:ConfirmationBehavior 
+                                            Command="{Binding UpdateRawDataCmd}"
+                                            MessageText="수정모드로 전환됩니다."
+                                            MessageIcon="Question"
+                                            MessageButton="YesNo"/>
+                                    </dxmvvm:Interaction.Behaviors>
+                                </dxb:BarButtonItem>
                             </dxr:RibbonPageGroup>
                             <dxr:RibbonPageGroup Caption="재고처리 Task">
                                 <dxb:BarButtonItem Content="확정" LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_Validation.svg}">
@@ -342,9 +350,18 @@
                             AllowEditing="{Binding CanEdit}"
                             EnableImmediatePosting="True"
                             EnterMoveNextColumn="True"
+                            FocusedRow = "{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}"
                             MultiSelectMode="Cell"
                             EditorShowMode="MouseUpFocused"
                             AutoWidth="False">
+                            <dxmvvm:Interaction.Behaviors>
+                                <dxmvvm:EventToCommand EventName="CellValueChanged" Command="{Binding CellValueChangedCmd}" />
+                                <dxmvvm:EventToCommand EventName="HiddenEditor" Command="{Binding HiddenEditorCmd}">
+                                    <dxmvvm:EventToCommand.EventArgsConverter>
+                                        <utils:HiddenEditorEventArgsConverter />
+                                    </dxmvvm:EventToCommand.EventArgsConverter>
+                                </dxmvvm:EventToCommand>
+                            </dxmvvm:Interaction.Behaviors>
                         </dxg:TableView>
                     </dxg:GridControl.View>
                     <dxg:GridControl.Columns>

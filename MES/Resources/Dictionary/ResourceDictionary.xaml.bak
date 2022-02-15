@@ -6,7 +6,7 @@
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
     xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys" 
-    xmlns:dxeh="http://schemas.devexpress.com/winfx/2008/xaml/editors/internal"
+    xmlns:dxn="http://schemas.devexpress.com/winfx/2008/xaml/navbar"
     xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
     xmlns:models="clr-namespace:MesAdmin.Models"
     xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys">
@@ -94,7 +94,7 @@
         <Image x:Name="Image" Height="16" Width="16" Source="{x:Null}"/>
         <DataTemplate.Triggers>
             <DataTrigger Binding="{Binding RowData.Row.IsAttached, Mode=OneWay}" Value="1">
-                <Setter TargetName="Image" Property="Source" Value="pack://application:,,,/DevExpress.Images.v18.1;component/Images/Mail/Attachment_16x16.png" />
+                <Setter TargetName="Image" Property="Source" Value="pack://application:,,,/DevExpress.Images.v21.1;component/Images/Mail/Attachment_16x16.png" />
             </DataTrigger>
         </DataTemplate.Triggers>
     </DataTemplate>
@@ -186,8 +186,8 @@
                     AutoWidth="True"/>
             </dxg:GridControl.View>
             <dxg:GridControl.Columns>
-                <dxg:GridColumn FieldName="MinorCode" Header="코드"/>
-                <dxg:GridColumn FieldName="MinorName" Header="창고명"  />
+                <dxg:GridColumn FieldName="MinorCode" Header="코드" Width="100"/>
+                <dxg:GridColumn FieldName="MinorName" Header="창고명" Width="200"/>
             </dxg:GridControl.Columns>
         </dxg:GridControl>
     </ControlTemplate>
@@ -263,4 +263,79 @@
             </dxg:GridControl.Columns>
         </dxg:GridControl>
     </ControlTemplate>
+
+    <!--#region BaseEdit line color -->
+    <Style x:Key="BaseEditStyle" TargetType="dxe:BaseEdit">
+        <Setter Property="BorderTemplate">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ContentControl}">
+                    <Grid x:Name="Grid1" Background="#FFFFFFFF" MinWidth="0" MinHeight="0">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="InternalFocusStates">
+                                <VisualState x:Name="InternalFocused">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="FocusElement" Storyboard.TargetProperty="Opacity" Duration="0" To="1" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="InternalUnfocused" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Border BorderBrush="#94ADCC" Height="23" BorderThickness="1" Background="{Binding Path=Background, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type dxe:TextEdit}}}"/>
+                        <ContentPresenter />
+                        <Border x:Name="FocusElement" Height="23" BorderBrush="#FF2B579A" BorderThickness="1" Opacity="0" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="DocumentNoStyle" TargetType="dxe:BaseEdit">
+        <Setter Property="BorderTemplate">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ContentControl}">
+                    <Grid x:Name="Grid1" Background="#FFFFFFFF" MinWidth="0" MinHeight="0">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="InternalFocusStates">
+                                <VisualState x:Name="InternalFocused">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="FocusElement" Storyboard.TargetProperty="Opacity" Duration="0" To="1" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="InternalUnfocused" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Border BorderBrush="#94ADCC" Height="23" BorderThickness="1" Background="{Binding Path=Background, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type dxe:TextEdit}}}"/>
+                        <ContentPresenter />
+                        <Border x:Name="FocusElement" Height="23" BorderBrush="#FF2B579A" BorderThickness="1" Opacity="0" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsNew}" Value="False">
+                <Setter Property="Background" Value="#F3F6FB" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="dxe:TextEdit" BasedOn="{StaticResource BaseEditStyle}"/>
+    <Style TargetType="dxe:ComboBoxEdit" BasedOn="{StaticResource BaseEditStyle}" />
+    <Style TargetType="dxe:DateEdit" BasedOn="{StaticResource BaseEditStyle}"/>
+    <Style TargetType="dxg:LookUpEdit" BasedOn="{StaticResource BaseEditStyle}"/>
+    <Style TargetType="dxe:ButtonEdit" BasedOn="{StaticResource BaseEditStyle}"/>
+    <Style TargetType="dxe:SpinEdit" BasedOn="{StaticResource BaseEditStyle}"/>
+    <Style TargetType="dxe:PopupBaseEdit" BasedOn="{StaticResource BaseEditStyle}"/>
+    <!--#endregion-->
+
+    <!--#region MessageBoxService and min width-->
+    <dx:DXMessageBoxService x:Key="MessageBoxService" />
+    <Style TargetType="dx:ThemedMessageBoxWindow">
+        <Setter Property="MinWidth" Value="350"/>
+    </Style>
+    <!--#endregion-->
+    <!--#region Popup left menu width-->
+    <Style TargetType="{x:Type dxn:NavPanePopupWindowContent}">
+        <Setter Property="Width" Value="200"/>
+    </Style>
+    <!--#endregion-->
 </ResourceDictionary>

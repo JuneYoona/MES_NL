@@ -61,7 +61,7 @@ namespace MesAdmin.Models
                 base.Add(
                     new CommonMajor
                     {
-                        State = MesAdmin.Common.Common.EntityState.Unchanged,
+                        State = EntityState.Unchanged,
                         MajorCode = (string)u["MajorCode"],
                         MajorName = (string)u["MajorName"],
                         IsEnabled = (bool)u["IsEnabled"],
@@ -75,9 +75,9 @@ namespace MesAdmin.Models
         public void Save()
         {
             IEnumerable<CommonMajor> items = this.Items;
-            Insert(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Added));
-            Update(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Modified));
-            Delete(items.Where(u => u.State == MesAdmin.Common.Common.EntityState.Deleted));
+            Insert(items.Where(u => u.State == EntityState.Added));
+            Update(items.Where(u => u.State == EntityState.Modified));
+            Delete(items.Where(u => u.State == EntityState.Deleted));
         }
 
         public void Insert(IEnumerable<CommonMajor> items)

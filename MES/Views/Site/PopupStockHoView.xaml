@@ -107,8 +107,8 @@
                     <dxg:GridColumn FieldName="ItemSpec" Header="품목사양"/>
                     <dxg:GridColumn FieldName="LotNo" Header="Lot No."/>
                     <dxg:GridColumn FieldName="Qty" Width="80" Header="수량"/>
-                    <dxg:GridColumn FieldName="QrQty" Width="80" Header="검사중 수량"/>
-                    <dxg:GridColumn FieldName="PickingQty" Width="80" Header="예약 수량"/>
+                    <dxg:GridColumn FieldName="QrQty" Width="80" Header="검사중 수량" Visible="False"/>
+                    <dxg:GridColumn FieldName="PickingQty" Width="80" Header="예약 수량" Visible="False"/>
                     <dxg:GridColumn FieldName="BasicUnit" Width="50" Header="단위"/>
                     <dxg:GridColumn Binding="{Binding RowData.Row.WaCode, Converter={StaticResource WaCodeConverter}}" Width="80" Header="공정"/>
                 </dxg:GridControl.Columns>
