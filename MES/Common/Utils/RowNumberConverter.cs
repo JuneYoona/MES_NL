@@ -17,7 +17,7 @@ namespace MesAdmin.Common.Utils
 
         public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (values[0].GetType() == typeof(DSTreeListControl)) return string.Format("{0}", (int)values[1] + 1);
+            if (values[0].GetType() == typeof(DSTreeListControl) || values[0].GetType() == typeof(TreeListControl)) return string.Format("{0}", (int)values[1] + 1);
 
             var grid = (GridControl)values[0];
             var rowHandle = (int)values[1];

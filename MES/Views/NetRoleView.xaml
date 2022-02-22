@@ -1,25 +1,25 @@
 ﻿<UserControl x:Class="MesAdmin.Views.NetRoleView"
-    xmlns="http://schemas.microsoft.com/netfx/2009/xaml/presentation" 
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
-    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
-    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
-    xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
-    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
-    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
-    xmlns:viewmodel="clr-namespace:MesAdmin.ViewModels"
-    xmlns:view="clr-namespace:MesAdmin.Views"             
-    xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
-    xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
-    mc:Ignorable="d"
-    d:DesignHeight="650"
-    d:DesignWidth="670">
+             xmlns="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
+             xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:common="clr-namespace:MesAdmin.Common.Common"
+             xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
+             xmlns:viewmodel="clr-namespace:MesAdmin.ViewModels"
+             mc:Ignorable="d"
+             d:DesignHeight="650"
+             d:DesignWidth="670">
     <UserControl.DataContext>
         <viewmodel:NetRoleVM />
     </UserControl.DataContext>
+    <UserControl.Resources>
+        <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicatorState.xaml" />
+    </UserControl.Resources>
     <Grid>
         <DockPanel>
             <dxr:RibbonControl DockPanel.Dock="Top">
@@ -41,8 +41,7 @@
                     </dxr:RibbonPage>
                 </dxr:RibbonDefaultPageCategory>
             </dxr:RibbonControl>
-            <dxg:GridControl
-               
+            <custom:DSGridControl
                 Width="500"
                 Margin="12 12 4 12"
                 ItemsSource="{Binding Collections}">
@@ -65,21 +64,13 @@
                     </dxg:TableView>
                 </dxg:GridControl.View>
                 <dxg:GridControl.Columns>
-                    <dxg:GridColumn 
-                        Header=" "
-                        FieldName="State"
-                        FixedWidth="True" 
-                        Width="20" 
-                        CellTemplate="{StaticResource StateTemplate}" 
-                        ReadOnly="True"
-                        AllowFocus="False" />
                     <dxg:GridColumn FieldName="RoleName" Header="RoleName" />
                     <dxg:GridColumn FieldName="Description" Header="Description" />
                 </dxg:GridControl.Columns>
-            </dxg:GridControl>
+            </custom:DSGridControl>
 
             <dxg:TreeListControl
-               
+               common:GridRowTreeIndicatorHelper.IsEnabled="True"
                 Margin="0 12 12 12"
                 ItemsSource="{Binding Menus}">
                 <dxg:TreeListControl.Columns>

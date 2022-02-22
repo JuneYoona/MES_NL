@@ -94,7 +94,7 @@ namespace MesAdmin.ViewModels
             if (!string.IsNullOrEmpty(DSUser.Instance.BizAreaCode))
                 BizAreaCode = DSUser.Instance.BizAreaCode;
 
-            StartDate = DateTime.Now.AddMonths(-1);
+            StartDate = DateTime.Now;
             EndDate = DateTime.Now;
 
             TransTypeList = new CommonMinorList("I0002");
