@@ -305,7 +305,8 @@
                                             <dx:WaitIndicator DeferedVisibility="True" Content="데이터등록중..." Height="105" OverridesDefaultStyle="True" />
                                         </DataTemplate>
                                     </dx:LoadingDecorator.SplashScreenTemplate>
-                                    <custom:DSGridControl
+                                    <dxg:GridControl
+                                        common:GridRowIndicatorHelper.IsEnabled="True"
                                         ItemsSource="{Binding QualityElementIVLList, UpdateSourceTrigger=PropertyChanged}"
                                         TotalSummarySource="{Binding QualityElementIVLResult}"
                                         TotalSummaryGeneratorTemplate="{StaticResource ResultTemplate}"
@@ -365,7 +366,7 @@
                                                 <dxg:GridColumn FieldName="CIEy" Header="CIEy" HorizontalHeaderContentAlignment="Center" AllowSorting="False" AllowColumnFiltering="False" Width="80" />
                                             </dxg:GridControlBand>
                                         </dxg:GridControl.Bands>
-                                    </custom:DSGridControl>
+                                    </dxg:GridControl>
                                 </dx:LoadingDecorator>
                             </DockPanel>
                         </Grid>
