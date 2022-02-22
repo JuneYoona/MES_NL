@@ -8,7 +8,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:common="clr-namespace:MesAdmin.Common.Common"
              xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
              xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
              mc:Ignorable="d" 
@@ -132,9 +131,8 @@
             </dxe:ComboBoxEdit>
         </Grid>
 
-        <dxg:GridControl 
+        <custom:DSGridControl
             Grid.Row="2"
-            common:GridRowIndicatorHelper.IsEnabled="True"
             ItemsSource="{Binding CollectionsHeader}"
             ClipboardCopyMode="ExcludeHeader"
             SelectionMode="Cell"
@@ -165,11 +163,10 @@
                 <dxg:GridColumn FieldName="UpdateId" Header="입력자ID"/>
                 <dxg:GridColumn FieldName="UpdateDate" Header="입력시간" Width="90"/>
             </dxg:GridControl.Columns>
-        </dxg:GridControl>
+        </custom:DSGridControl>
 
-        <dxg:GridControl 
+        <custom:DSGridControl
             Grid.Row="3"
-            common:GridRowIndicatorHelper.IsEnabled="True"
             ItemsSource="{Binding CollectionsDetail}"
             SelectionMode="Cell"
             ClipboardCopyMode="ExcludeHeader"
@@ -195,6 +192,6 @@
                 <dxg:GridColumn FieldName="TransWhName" Header="이동창고" MinWidth="150" ShowValidationAttributeErrors="False" />
                 <dxg:GridColumn Binding="{Binding RowData.Row.TransWaCode, Converter={StaticResource WaCodeConverter}}" Width="80" Header="이동공정" ShowValidationAttributeErrors="False"/>
             </dxg:GridControl.Columns>
-        </dxg:GridControl>
+        </custom:DSGridControl>
     </Grid>
 </UserControl>

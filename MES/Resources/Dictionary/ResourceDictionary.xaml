@@ -173,13 +173,25 @@
     </DataTemplate>
     <!--#endregion-->
 
-    <Style TargetType="dxe:TextEdit" BasedOn="{StaticResource BaseEditStyle}"/>
-    <Style TargetType="dxe:ComboBoxEdit" BasedOn="{StaticResource BaseEditStyle}" />
+    <Style TargetType="dxe:TextEdit" BasedOn="{StaticResource BaseEditStyle}">
+        <Setter Property="ShowNullTextIfFocused" Value="True"/>
+    </Style>
+    <Style TargetType="dxe:ComboBoxEdit" BasedOn="{StaticResource BaseEditStyle}">
+        <Setter Property="ShowNullTextIfFocused" Value="True"/>
+    </Style>
     <Style TargetType="dxe:DateEdit" BasedOn="{StaticResource BaseEditStyle}"/>
-    <Style TargetType="dxg:LookUpEdit" BasedOn="{StaticResource BaseEditStyle}"/>
-    <Style TargetType="dxe:ButtonEdit" BasedOn="{StaticResource BaseEditStyle}"/>
-    <Style TargetType="dxe:SpinEdit" BasedOn="{StaticResource BaseEditStyle}"/>
-    <Style TargetType="dxe:PopupBaseEdit" BasedOn="{StaticResource BaseEditStyle}"/>
+    <Style TargetType="dxg:LookUpEdit" BasedOn="{StaticResource BaseEditStyle}">
+        <Setter Property="ShowNullTextIfFocused" Value="True"/>
+    </Style>
+    <Style TargetType="dxe:ButtonEdit" BasedOn="{StaticResource BaseEditStyle}">
+        <Setter Property="ShowNullTextIfFocused" Value="True"/>
+    </Style>
+    <Style TargetType="dxe:SpinEdit" BasedOn="{StaticResource BaseEditStyle}">
+        <Setter Property="ShowNullTextIfFocused" Value="True"/>
+    </Style>
+    <Style TargetType="dxe:PopupBaseEdit" BasedOn="{StaticResource BaseEditStyle}">
+        <Setter Property="ShowNullTextIfFocused" Value="True"/>
+    </Style>
     <!--#endregion-->
     <!--#region MessageBoxService and min width-->
     <dx:DXMessageBoxService x:Key="MessageBoxService" />

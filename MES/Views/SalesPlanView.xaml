@@ -179,7 +179,6 @@
             </dxr:RibbonControl>
 
             <custom:DSGridControl
-                common:GridRowIndicatorHelper.IsEnabled="True"
                 ItemsSource="{Binding Collections}"
                 SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}"
                 SelectedItems="{Binding SelectedItems, UpdateSourceTrigger=PropertyChanged}"

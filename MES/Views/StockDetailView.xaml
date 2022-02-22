@@ -91,7 +91,6 @@
             </dxr:RibbonControl>
 
             <custom:DSGridControl
-                common:GridRowIndicatorHelper.IsEnabled="True"
                 ItemsSource="{Binding Collections, UpdateSourceTrigger=PropertyChanged}"
                 ShowBorder="False"
                 SelectionMode="Cell"

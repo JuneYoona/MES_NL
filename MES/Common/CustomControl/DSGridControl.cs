@@ -1,8 +1,10 @@
-﻿using System;
-using System.Windows;
+﻿using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Grid;
-using DevExpress.Xpf.Core;
+using System;
+using System.Globalization;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media;
 
 namespace MesAdmin.Common.CustomControl
 {
@@ -10,10 +12,11 @@ namespace MesAdmin.Common.CustomControl
     {
         public DSGridControl()
         {
-            this.CreateDefaultView();
-            this.PastingFromClipboard += DSGridControl_PastingFromClipboard;
+            CreateDefaultView();
+            PastingFromClipboard += DSGridControl_PastingFromClipboard;
+            PropertyChanged += DSGridControl_PropertyChanged;
 
-           // this.Loaded += (o, s) => { ((TableView)this.View).BestFitColumns(); };
+            // this.Loaded += (o, s) => { ((TableView)this.View).BestFitColumns(); };
         }
 
         private void DSGridControl_PastingFromClipboard(object sender, PastingFromClipboardEventArgs e)
@@ -70,6 +73,41 @@ namespace MesAdmin.Common.CustomControl
             {
                 DXMessageBox.Show(this, ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.None, MessageBoxOptions.None, FloatingMode.Popup);
             }
+        }
+
+        private void DSGridControl_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            try
+            {
+                if (e.PropertyName == "VisibleRowCount")
+                {
+                    GridControl grid = (GridControl)sender;
+                    TableView view = grid.View as TableView;
+
+                    if (grid.VisibleRowCount == 0)
+                    {
+                        view.IndicatorWidth = 15;
+                        return;
+                    }
+
+                    double maxWidth = MeasureString(grid.VisibleRowCount.ToString()).Width;
+                    view.IndicatorWidth = maxWidth + 22;
+                }
+            }
+            catch { }
+        }
+
+        private Size MeasureString(string candidate)
+        {
+            var formattedText = new FormattedText(
+                candidate,
+                CultureInfo.CurrentUICulture,
+                FlowDirection.LeftToRight,
+                new Typeface(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal),
+                12,
+                Brushes.Black);
+
+            return new Size(formattedText.Width, formattedText.Height);
         }
     }
 

@@ -311,8 +311,7 @@
                         </dxg:GridControl.Columns>
                     </dxg:GridControl>
                 </Grid>
-                <custom:DSGridControl 
-                    common:GridRowIndicatorHelper.IsEnabled="True"
+                <custom:DSGridControl
                     ItemsSource="{Binding Collections}"
                     DockPanel.Dock="Top"
                     SelectedItems="{Binding SelectedItems, UpdateSourceTrigger=PropertyChanged}"

@@ -1,26 +1,24 @@
 ﻿<UserControl x:Class="MesAdmin.Views.ProductionOrderDlvyDetailsView"
-    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"  
-    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-    xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
-    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
-    xmlns:viewmodel="clr-namespace:MesAdmin.ViewModels"
-    xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
-    xmlns:common="clr-namespace:MesAdmin.Common.Common"             
-    xmlns:local="clr-namespace:MesAdmin"
-    mc:Ignorable="d"
-    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
-    xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
-    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-    xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
-    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
-    xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"             
-    d:DesignHeight="436" 
-    d:DesignWidth="800"
-    xmlns:view="clr-namespace:MesAdmin.Views">
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
+             xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
+             xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
+             xmlns:viewmodel="clr-namespace:MesAdmin.ViewModels"
+             xmlns:view="clr-namespace:MesAdmin.Views"
+             mc:Ignorable="d"
+             d:DesignHeight="436"
+             d:DesignWidth="800">
     <UserControl.DataContext>
         <viewmodel:ProductionOrderDlvyDetaisVM />
     </UserControl.DataContext>
@@ -152,8 +150,7 @@
                                         </Border>
                                     </DataTemplate>
                                 </dxlc:GroupBox.HeaderTemplate>
-                                <dxg:GridControl
-                                    common:GridRowIndicatorHelper.IsEnabled="True"
+                                <custom:DSGridControl
                                     ItemsSource="{Binding Collections}"
                                     ShowBorder="False"
                                     SelectionMode="Cell"
@@ -205,7 +202,7 @@
                                         <dxg:GridColumn FieldName="SoSeq" Header="수주순번" Width="60" />
                                         <dxg:GridColumn FieldName="Memo" Header="Memo" Width="120" />
                                     </dxg:GridControl.Columns>
-                                </dxg:GridControl>
+                                </custom:DSGridControl>
                             </dxlc:GroupBox>
                         </dxdo:LayoutPanel>
                         <dxdo:LayoutPanel HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" ItemHeight="230" AllowClose="False" AllowDrag="False" AllowFloat="False" AllowHide="False" ShowCaption="False" ShowBorder="False">
@@ -217,8 +214,7 @@
                                         </Border>
                                     </DataTemplate>
                                 </dxlc:GroupBox.HeaderTemplate>
-                                <dxg:GridControl
-                                    common:GridRowIndicatorHelper.IsEnabled="True"                         
+                                <custom:DSGridControl                       
                                     ItemsSource="{Binding Details}"
                                     ShowBorder="False"
                                     SelectionMode="Cell"
@@ -258,7 +254,7 @@
                                     <dxg:GridControl.TotalSummary>
                                         <dxg:GridSummaryItem FieldName="GI_QTY" SummaryType="Sum" DisplayFormat=" {0:n2}"/>
                                     </dxg:GridControl.TotalSummary>
-                                </dxg:GridControl>
+                                </custom:DSGridControl>
                             </dxlc:GroupBox>
                         </dxdo:LayoutPanel>
                     </dxdo:LayoutGroup>

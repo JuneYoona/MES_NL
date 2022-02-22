@@ -7,12 +7,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:common="clr-namespace:MesAdmin.Common.Common"
              xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
              xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
              xmlns:ViewModels="clr-namespace:MesAdmin.ViewModels"
              mc:Ignorable="d"       
-    d:DesignHeight="600" d:DesignWidth="600">
+             d:DesignHeight="600"
+             d:DesignWidth="600">
     <UserControl.DataContext>
         <ViewModels:StockItemVM/>
     </UserControl.DataContext>
@@ -59,8 +59,7 @@
                 </dxr:RibbonDefaultPageCategory>
             </dxr:RibbonControl>
 
-            <dxg:GridControl
-                common:GridRowIndicatorHelper.IsEnabled="True"
+            <custom:DSGridControl
                 ItemsSource="{Binding Collections, UpdateSourceTrigger=PropertyChanged}"
                 ShowBorder="False"
                 SelectionMode="Cell"
@@ -141,7 +140,7 @@
                     <dxg:GridSummaryItem FieldName="QrQty" SummaryType="Sum" DisplayFormat=" {0:n3}"/>
                     <dxg:GridSummaryItem FieldName="PickingQty" SummaryType="Sum" DisplayFormat=" {0:n3}"/>
                 </dxg:GridControl.GroupSummary>
-            </dxg:GridControl>
+            </custom:DSGridControl>
         </DockPanel>
     </Grid>
 </UserControl>

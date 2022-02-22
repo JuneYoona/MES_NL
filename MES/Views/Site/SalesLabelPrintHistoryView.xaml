@@ -12,7 +12,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:common="clr-namespace:MesAdmin.Common.Common"
              xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
              xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
              xmlns:viewmodel="clr-namespace:MesAdmin.ViewModels"
@@ -121,8 +120,7 @@
                                         </Border>
                                     </DataTemplate>
                                 </dxlc:GroupBox.HeaderTemplate>
-                                <dxg:GridControl
-                                    common:GridRowIndicatorHelper.IsEnabled="True"                         
+                                <custom:DSGridControl                        
                                     ItemsSource="{Binding Collections}"
                                     ShowBorder="False"
                                     SelectionMode="Cell"
@@ -180,7 +178,7 @@
                                         <dxg:GridColumn FieldName="SoSeq" Header="수주순번" Width="60" />
                                         <dxg:GridColumn FieldName="Memo" Header="Memo" Width="120" />
                                     </dxg:GridControl.Columns>
-                                </dxg:GridControl>
+                                </custom:DSGridControl>
                             </dxlc:GroupBox>
                         </dxdo:LayoutPanel>
                         <dxdo:LayoutPanel HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" ItemHeight="3*" AllowClose="False" AllowDrag="False" AllowFloat="False" AllowHide="False" ShowCaption="False" ShowBorder="False">
@@ -192,8 +190,7 @@
                                         </Border>
                                     </DataTemplate>
                                 </dxlc:GroupBox.HeaderTemplate>
-                                <dxg:GridControl
-                                    common:GridRowIndicatorHelper.IsEnabled="True"                         
+                                <custom:DSGridControl                     
                                     ItemsSource="{Binding Details}"
                                     SelectedItem="{Binding SelectedDetail, UpdateSourceTrigger=PropertyChanged}"
                                     ShowBorder="False"
@@ -244,7 +241,7 @@
                                     <dxg:GridControl.TotalSummary>
                                         <dxg:GridSummaryItem FieldName="Qty" SummaryType="Sum" DisplayFormat=" {0:n0}"/>
                                     </dxg:GridControl.TotalSummary>
-                                </dxg:GridControl>
+                                </custom:DSGridControl>
                             </dxlc:GroupBox>
                         </dxdo:LayoutPanel>
                     </dxdo:LayoutGroup>

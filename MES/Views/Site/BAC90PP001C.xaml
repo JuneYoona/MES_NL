@@ -10,7 +10,6 @@
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-              xmlns:common="clr-namespace:MesAdmin.Common.Common"
               xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
               xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
               xmlns:view="clr-namespace:MesAdmin.Views"
@@ -271,7 +270,6 @@
                         Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2"/>
                 </Grid>
                 <custom:DSGridControl
-                    common:GridRowIndicatorHelper.IsEnabled="True"
                     ItemsSource="{Binding Details}"
                     DockPanel.Dock="Top"
                     SelectedItems="{Binding SelectedItems, UpdateSourceTrigger=PropertyChanged}"

@@ -123,8 +123,7 @@
                                         </Border>
                                     </DataTemplate>
                                 </dxlc:GroupBox.HeaderTemplate>
-                                <dxg:GridControl
-                                    common:GridRowIndicatorHelper.IsEnabled="True"
+                                <custom:DSGridControl
                                     ItemsSource="{Binding Collections}"
                                     SelectionMode="Cell"
                                     ShowBorder="False"
@@ -213,7 +212,7 @@
                                         <dxg:GridSummaryItem FieldName="BadQty" SummaryType="Sum" DisplayFormat=" {0:N2}" />
                                         <dxg:GridSummaryItem FieldName="LossQty" SummaryType="Sum" DisplayFormat=" {0:N2}" />
                                     </dxg:GridControl.GroupSummary>
-                                </dxg:GridControl>
+                                </custom:DSGridControl>
                             </dxlc:GroupBox>
                         </dxdo:LayoutPanel>
                         <dxdo:LayoutPanel HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" ItemHeight="3*" AllowClose="False" AllowDrag="False" AllowFloat="False" AllowHide="False" ShowCaption="False" ShowBorder="False">
@@ -225,8 +224,7 @@
                                         </Border>
                                     </DataTemplate>
                                 </dxlc:GroupBox.HeaderTemplate>
-                                <dxg:GridControl
-                                    common:GridRowIndicatorHelper.IsEnabled="True"                         
+                                <custom:DSGridControl                        
                                     ItemsSource="{Binding OutputRecords}"
                                     ShowBorder="False"
                                     SelectionMode="Cell"
@@ -291,7 +289,7 @@
                                     <dxg:GridControl.GroupSummary>
                                         <dxg:GridSummaryItem FieldName="Qty" SummaryType="Sum" DisplayFormat="투입량 : {0:N3}" />
                                     </dxg:GridControl.GroupSummary>
-                                </dxg:GridControl>
+                                </custom:DSGridControl>
                             </dxlc:GroupBox>
                         </dxdo:LayoutPanel>
                     </dxdo:LayoutGroup>

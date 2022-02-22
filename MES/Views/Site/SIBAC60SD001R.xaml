@@ -107,8 +107,7 @@
                         </dxr:RibbonPage>
                     </dxr:RibbonDefaultPageCategory>
                 </dxr:RibbonControl>
-                <dxg:GridControl
-                    common:GridRowIndicatorHelper.IsEnabled="True"
+                <custom:DSGridControl
                     ItemsSource="{Binding Collections}"
                     ShowBorder="False"
                     ClipboardCopyMode="ExcludeHeader"
@@ -150,7 +149,7 @@
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
                     </dxg:GridControl.Columns>
-                </dxg:GridControl>
+                </custom:DSGridControl>
             </DockPanel>
         </dxb:BarManager>
     </Grid>

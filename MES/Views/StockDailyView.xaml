@@ -1,23 +1,21 @@
 ﻿<UserControl x:Class="MesAdmin.Views.StockDailyView"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
-    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
-    xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
-    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
-    xmlns:view="clr-namespace:MesAdmin.Views"             
-    xmlns:ViewModels="clr-namespace:MesAdmin.ViewModels"
-    xmlns:common="clr-namespace:MesAdmin.Common.Common"
-    xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"             
-    DataContext="{dxmvvm:ViewModelSource ViewModels:StockDailyVM}"             
-    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
-    xmlns:utils="clr-namespace:MesAdmin.Common.Utils"             
-    mc:Ignorable="d"       
-    d:DesignHeight="600" d:DesignWidth="600">
-
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
+             xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
+             xmlns:ViewModels="clr-namespace:MesAdmin.ViewModels"
+             DataContext="{dxmvvm:ViewModelSource ViewModels:StockDailyVM}"
+             mc:Ignorable="d"       
+             d:DesignHeight="600"
+             d:DesignWidth="600">
     <dxmvvm:Interaction.Behaviors>
         <dx:WindowedDocumentUIService YieldToParent="True"/>
     </dxmvvm:Interaction.Behaviors>
@@ -111,8 +109,7 @@
                 </dxr:RibbonDefaultPageCategory>
             </dxr:RibbonControl>
 
-            <dxg:GridControl
-                common:GridRowIndicatorHelper.IsEnabled="True"
+            <custom:DSGridControl
                 ItemsSource="{Binding Collections, UpdateSourceTrigger=PropertyChanged}"
                 ShowBorder="False"
                 SelectionMode="Cell"
@@ -179,7 +176,7 @@
                     <dxg:GridSummaryItem FieldName="Qty" SummaryType="Sum" DisplayFormat=" {0}"/>
                     <dxg:GridSummaryItem FieldName="QrQty" SummaryType="Sum" DisplayFormat=" {0}"/>
                 </dxg:GridControl.GroupSummary>
-            </dxg:GridControl>
+            </custom:DSGridControl>
         </DockPanel>
     </Grid>
 </UserControl>

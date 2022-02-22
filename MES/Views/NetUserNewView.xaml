@@ -10,9 +10,9 @@
                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                xmlns:common="clr-namespace:MesAdmin.Common.Common"
-                xmlns:viewmodel="clr-namespace:MesAdmin.ViewModels"
+                xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
                 xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
+                xmlns:viewmodel="clr-namespace:MesAdmin.ViewModels"
                 mc:Ignorable="d" 
                 d:DesignHeight="650"
                 d:DesignWidth="670">
@@ -223,8 +223,7 @@
                     </Grid>
                 </dxlc:GroupBox>
                 <dxlc:GroupBox x:Name="RoleBox" Header="Role 정보" Height="300">
-                    <dxg:GridControl
-                        common:GridRowIndicatorHelper.IsEnabled="True"
+                    <custom:DSGridControl
                         ItemsSource="{Binding NetUserItem.Roles}"
                         SelectionMode="Cell"
                         SelectedItem="{Binding SelectedRole}">
@@ -254,7 +253,7 @@
                                 AllowEditing="False"
                                 AllowFocus="True" />
                         </dxg:GridControl.Columns>
-                    </dxg:GridControl>
+                    </custom:DSGridControl>
                 </dxlc:GroupBox>
             </dxlc:FlowLayoutControl>
         </DockPanel>

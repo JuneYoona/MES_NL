@@ -114,9 +114,8 @@
                     </dxr:RibbonDefaultPageCategory>
                 </dxr:RibbonControl>
 
-                <dxg:GridControl
+                <custom:DSGridControl
                     x:Name="GridControl"
-                    common:GridRowIndicatorHelper.IsEnabled="True"
                     ItemsSource="{Binding Collections}"
                     ShowBorder="False"
                     SelectionMode="Cell"
@@ -176,7 +175,7 @@
                         <dxg:GridSummaryItem FieldName="NetAmt" SummaryType="Sum" DisplayFormat=" {0:N2}"/>
                         <dxg:GridSummaryItem FieldName="NetAmtLocal" SummaryType="Sum" DisplayFormat=" {0:N2}"/>
                     </dxg:GridControl.TotalSummary>
-                </dxg:GridControl>
+                </custom:DSGridControl>
             </DockPanel>
         </dxb:BarManager>
     </Grid>

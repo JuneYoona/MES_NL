@@ -1,17 +1,17 @@
-﻿<UserControl 
-    x:Class="MesAdmin.Views.PopupMajorCodeView"
-    xmlns="http://schemas.microsoft.com/netfx/2009/xaml/presentation" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
-    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
-    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
-    xmlns:viewmodel="clr-namespace:MesAdmin.ViewModels"
-    xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
-    xmlns:common="clr-namespace:MesAdmin.Common.Common"
-    mc:Ignorable="d" 
-    d:DesignHeight="400"
-    d:DesignWidth="670">
-
+﻿<UserControl x:Class="MesAdmin.Views.PopupMajorCodeView"
+             xmlns="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
+             xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
+             mc:Ignorable="d" 
+             d:DesignHeight="400"
+             d:DesignWidth="670">
     <dxmvvm:Interaction.Behaviors>
         <dxmvvm:CurrentWindowService Window="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
     </dxmvvm:Interaction.Behaviors>
@@ -66,8 +66,7 @@
                     </dxe:TextEdit.InputBindings>
                 </dxe:TextEdit>
             </Grid>
-            <dxg:GridControl
-                common:GridRowIndicatorHelper.IsEnabled="True"
+            <custom:DSGridControl
                 ItemsSource="{Binding Collections}"
                 SelectedItem="{Binding Path=SelectedItem}"
                 SelectionMode="Cell"
@@ -99,7 +98,7 @@
                     <dxg:GridColumn FieldName="ItemName" Header="품목명"/>
                     <dxg:GridColumn FieldName="ItemSpec" Header="품목사양"/>
                 </dxg:GridControl.Columns>
-            </dxg:GridControl>
+            </custom:DSGridControl>
         </DockPanel>
     </Grid>
 </UserControl>

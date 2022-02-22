@@ -9,7 +9,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:common="clr-namespace:MesAdmin.Common.Common"
+             xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
              xmlns:ViewModels="clr-namespace:MesAdmin.ViewModels"
              mc:Ignorable="d"
              d:DesignHeight="436" 
@@ -97,8 +97,7 @@
                     </dxr:RibbonDefaultPageCategory>
                 </dxr:RibbonControl>
 
-                <dxg:GridControl
-                    common:GridRowIndicatorHelper.IsEnabled="True"
+                <custom:DSGridControl
                     ItemsSource="{Binding Collections, UpdateSourceTrigger=PropertyChanged}"
                     ShowBorder="False"
                     SelectionMode="Cell"
@@ -144,7 +143,7 @@
                         <dxg:GridColumn Header="OQC" FieldName="OQCFlag" FixedWidth="True" Width="60" HorizontalHeaderContentAlignment="Center" />
                         <dxg:GridColumn Header="사용여부" FieldName="IsEnabled" FixedWidth="True" Width="60" HorizontalHeaderContentAlignment="Center" />
                     </dxg:GridControl.Columns>
-                </dxg:GridControl>
+                </custom:DSGridControl>
             </DockPanel>
         </dxb:BarManager>
     </Grid>

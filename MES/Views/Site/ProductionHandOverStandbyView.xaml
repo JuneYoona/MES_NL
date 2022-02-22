@@ -9,7 +9,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:common="clr-namespace:MesAdmin.Common.Common"
              xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
              xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
              xmlns:viewmodel="clr-namespace:MesAdmin.ViewModels"
@@ -107,8 +106,7 @@
                     </dxr:RibbonDefaultPageCategory>
                 </dxr:RibbonControl>
 
-                <dxg:GridControl
-                    common:GridRowIndicatorHelper.IsEnabled="True"
+                <custom:DSGridControl
                     ItemsSource="{Binding Collections}"
                     SelectedItems="{Binding SelectedItems, UpdateSourceTrigger=PropertyChanged}"
                     ShowBorder="False"
@@ -159,7 +157,7 @@
                     <dxg:GridControl.GroupSummary>
                         <dxg:GridSummaryItem FieldName="Qty" SummaryType="Sum" DisplayFormat=" {0:N2}"/>
                     </dxg:GridControl.GroupSummary>
-                </dxg:GridControl>
+                </custom:DSGridControl>
             </DockPanel>
         </dxb:BarManager>
     </Grid>

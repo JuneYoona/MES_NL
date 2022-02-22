@@ -136,8 +136,8 @@
                     </dxr:RibbonDefaultPageCategory>
                 </dxr:RibbonControl>
 
-                <dxg:GridControl x:Name="GridControl"
-                    common:GridRowIndicatorHelper.IsEnabled="True"                                 
+                <custom:DSGridControl
+                    x:Name="GridControl"
                     ItemsSource="{Binding Collections}"
                     ShowBorder="False"
                     ClipboardCopyMode="ExcludeHeader"
@@ -260,7 +260,7 @@
                     <dxg:GridControl.GroupSummary>
                         <dxg:GridSummaryItem FieldName="Qty" SummaryType="Sum" DisplayFormat=" {0}"/>
                     </dxg:GridControl.GroupSummary>
-                </dxg:GridControl>
+                </custom:DSGridControl>
             </DockPanel>
         </dxb:BarManager>
     </Grid>

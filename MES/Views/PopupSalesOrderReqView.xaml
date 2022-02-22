@@ -145,9 +145,8 @@
             </dxg:LookUpEdit>
         </Grid>
 
-        <dxg:GridControl 
+        <custom:DSGridControl
             Grid.Row="2"
-            common:GridRowIndicatorHelper.IsEnabled="True"
             ItemsSource="{Binding CollectionsHeader}" 
             SelectedItem="{Binding SelectedHeader}"
             ClipboardCopyMode="ExcludeHeader"
@@ -180,11 +179,10 @@
                 <dxg:GridColumn FieldName="UpdateId" Header="입력자Id" Width="80"/>
                 <dxg:GridColumn FieldName="UpdateDate" Header="입력일" Width="80"/>
             </dxg:GridControl.Columns>
-        </dxg:GridControl>
+        </custom:DSGridControl>
 
-        <dxg:GridControl 
+        <custom:DSGridControl
             Grid.Row="3"
-            common:GridRowIndicatorHelper.IsEnabled="True"
             ItemsSource="{Binding CollectionsDetail}"
             SelectionMode="Cell"
             ClipboardCopyMode="ExcludeHeader"
@@ -222,6 +220,6 @@
                 </dxg:GridColumn>
                 <dxg:GridColumn FieldName="Memo" Header="비고" MinWidth="250" />
             </dxg:GridControl.Columns>
-        </dxg:GridControl>
+        </custom:DSGridControl>
     </Grid>
 </UserControl>

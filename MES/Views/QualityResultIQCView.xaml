@@ -11,6 +11,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:common="clr-namespace:MesAdmin.Common.Common"
+             xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
              xmlns:view="clr-namespace:MesAdmin.Views"
              mc:Ignorable="d"
              d:DesignHeight="436"
@@ -157,8 +158,7 @@
                     </dxr:RibbonDefaultPageCategory>
                 </dxr:RibbonControl>
 
-                <dxg:GridControl x:Name="GridControl"
-                    common:GridRowIndicatorHelper.IsEnabled="True"                                 
+                <custom:DSGridControl x:Name="GridControl"                              
                     ItemsSource="{Binding Collections}"
                     ColumnsSource="{Binding Columns}"
                     ColumnGeneratorTemplateSelector="{StaticResource ColumnTemplateSelector}"           
@@ -184,7 +184,7 @@
                             ShowValidationAttributeErrors="False"
                             EnableImmediatePosting="True" />
                     </dxg:GridControl.View>
-                </dxg:GridControl>
+                </custom:DSGridControl>
             </DockPanel>
         </dxb:BarManager>
     </Grid>

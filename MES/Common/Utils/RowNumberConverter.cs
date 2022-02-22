@@ -1,7 +1,6 @@
-﻿using DevExpress.Data;
-using DevExpress.Xpf.Grid;
+﻿using DevExpress.Xpf.Grid;
+using MesAdmin.Common.CustomControl;
 using System;
-using System.Collections.Generic;
 using System.Windows.Data;
 using System.Windows.Markup;
 
@@ -18,6 +17,8 @@ namespace MesAdmin.Common.Utils
 
         public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
+            if (values[0].GetType() == typeof(DSTreeListControl)) return string.Format("{0}", (int)values[1] + 1);
+
             var grid = (GridControl)values[0];
             var rowHandle = (int)values[1];
 
@@ -33,13 +34,12 @@ namespace MesAdmin.Common.Utils
                         int childHandle = grid.GetChildRowHandle(parentHandle, i);
                         if (childHandle == rowHandle)
                         {
-                            ret = String.Format("{0}", i + 1);
+                            ret = string.Format("{0}", i + 1);
                             break;
                         }
                     }
                 }
-                else
-                    ret = String.Format("{0}", rowHandle + 1);
+                else ret = string.Format("{0}", rowHandle + 1);
             }
 
             return ret;

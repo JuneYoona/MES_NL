@@ -322,7 +322,6 @@
                     </dxg:GridControl>
                 </Grid>
                 <custom:DSGridControl
-                    common:GridRowIndicatorHelper.IsEnabled="True"
                     ItemsSource="{Binding Collections}"
                     DockPanel.Dock="Top"
                     SelectedItems="{Binding SelectedItems, UpdateSourceTrigger=PropertyChanged}"

@@ -9,7 +9,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:common="clr-namespace:MesAdmin.Common.Common"
              xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
              xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
              xmlns:ViewModels="clr-namespace:MesAdmin.ViewModels"
@@ -127,7 +126,6 @@
                 </dxr:RibbonControl>
 
                 <custom:DSGridControl
-                    common:GridRowIndicatorHelper.IsEnabled="True"
                     ItemsSource="{Binding Collections, UpdateSourceTrigger=PropertyChanged}"
                     ShowBorder="False"
                     SelectionMode="Cell"
