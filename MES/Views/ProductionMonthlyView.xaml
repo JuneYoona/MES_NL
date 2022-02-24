@@ -17,15 +17,6 @@
              d:DesignHeight="436"
              d:DesignWidth="800"
              DataContext="{dxmvvm:ViewModelSource viewmodel:ProductionMonthlyVM}">
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <utils:MinorCodeConverter x:Key="MinorCodeConverter"/>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicatorState.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <dxmvvm:Interaction.Behaviors>
         <dx:DialogService Name="ItemView" DialogWindowStartupLocation="CenterOwner">
             <dx:DialogService.ViewTemplate>
@@ -119,6 +110,7 @@
                     ItemsSource="{Binding Collections, UpdateSourceTrigger=PropertyChanged}"
                     ShowBorder="False"
                     ClipboardCopyMode="ExcludeHeader"
+                    RowIndicatorNumberOnly="True"
                     ShowLoadingPanel="{Binding IsBusy, Mode=TwoWay}"
                     EnableSmartColumnsGeneration="True">
                     <dxg:GridControl.View>

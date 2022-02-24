@@ -14,7 +14,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:common="clr-namespace:MesAdmin.Common.Common"
              xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
-             xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
              xmlns:viewmodel="clr-namespace:MesAdmin.ViewModels"
              xmlns:view="clr-namespace:MesAdmin.Views"
              mc:Ignorable="d"
@@ -23,18 +22,6 @@
     <UserControl.DataContext>
         <viewmodel:SalesPrintDocumentVM />
     </UserControl.DataContext>
-
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <utils:MinorCodeConverter x:Key="MinorCodeConverter"/>
-            <utils:BizCodeConverter x:Key="BizCodeConverter"/>
-            <utils:SoTypeCodeConverter x:Key="SoTypeCodeConverter"/>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicator.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <dxmvvm:Interaction.Behaviors>
         <dx:DialogService Name="ItemView" DialogWindowStartupLocation="CenterOwner">
             <dx:DialogService.ViewTemplate>
@@ -131,6 +118,7 @@
                                     ItemsSource="{Binding Collections}"
                                     ShowBorder="False"
                                     SelectionMode="Cell"
+                                    RowIndicatorNumberOnly="True"
                                     ClipboardCopyMode="ExcludeHeader"
                                     AllowInitiallyFocusedRow="False"
                                     ShowLoadingPanel="{Binding IsBusy, Mode=TwoWay}"
@@ -191,6 +179,7 @@
                                     ItemsSource="{Binding Details}"
                                     ShowBorder="False"
                                     SelectionMode="Cell"
+                                    RowIndicatorNumberOnly="True"
                                     ClipboardCopyMode="ExcludeHeader"
                                     ShowLoadingPanel="{Binding DetailBusy, Mode=TwoWay}"                         
                                     EnableSmartColumnsGeneration="True">

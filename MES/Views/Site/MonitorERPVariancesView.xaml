@@ -16,15 +16,6 @@
     <UserControl.DataContext>
         <viewmodel:MonitorERPVM />
     </UserControl.DataContext>
-
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicatorState.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <Grid>
         <dxb:BarManager>
             <DockPanel>
@@ -62,6 +53,7 @@
                     ItemsSource="{Binding StockList}"
                     ShowBorder="False"
                     ClipboardCopyMode="ExcludeHeader"
+                    RowIndicatorNumberOnly="True"
                     ShowLoadingPanel="{Binding IsBusyB, Mode=TwoWay}"
                     EnableSmartColumnsGeneration="True">
                     <dxg:GridControl.View>

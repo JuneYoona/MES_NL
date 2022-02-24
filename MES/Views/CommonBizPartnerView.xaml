@@ -10,21 +10,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
-             xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
              xmlns:ViewModels="clr-namespace:MesAdmin.ViewModels"
              mc:Ignorable="d"
              d:DesignHeight="436" 
              d:DesignWidth="800"
              DataContext="{dxmvvm:ViewModelSource ViewModels:CommonBizPartnerVM}">
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <utils:MinorCodeConverter x:Key="MinorCodeConverter"/>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicatorState.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-    
     <Grid>
         <dxb:BarManager>
             <DockPanel>

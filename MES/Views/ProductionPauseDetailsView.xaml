@@ -16,36 +16,31 @@
                 d:DesignHeight="436"
                 d:DesignWidth="800">
     <UserControl.Resources>
-        <ResourceDictionary>
-            <common:ColumnTemplateSelector x:Key="ColumnTemplateSelector"/>
-            <DataTemplate x:Key="DefaultColumnTemplate">
-                <ContentControl>
-                    <dxg:GridColumn AllowBestFit="True" FieldName="{Binding Path=(dxci:DependencyObjectExtensions.DataContext).FieldName, RelativeSource={RelativeSource Self}}"
-                                Header="{Binding Path=(dxci:DependencyObjectExtensions.DataContext).Header, RelativeSource={RelativeSource Self}}"
-                                Width="{Binding Path=(dxci:DependencyObjectExtensions.DataContext).Width, RelativeSource={RelativeSource Self}}" />
-                </ContentControl>
-            </DataTemplate>
-            <DataTemplate x:Key="DateTimeColumnTemplate">
-                <ContentControl>
-                    <dxg:GridColumn AllowBestFit="True" FieldName="{Binding Path=(dxci:DependencyObjectExtensions.DataContext).FieldName, RelativeSource={RelativeSource Self}}"
-                                Header="{Binding Path=(dxci:DependencyObjectExtensions.DataContext).Header, RelativeSource={RelativeSource Self}}"
-                                Width="{Binding Path=(dxci:DependencyObjectExtensions.DataContext).Width, RelativeSource={RelativeSource Self}}">
-                        <dxg:GridColumn.EditSettings>
-                            <dxe:DateEditSettings Mask="yyyy-MM-dd HH:mm" MaskType="DateTime" MaskUseAsDisplayFormat="True" />
-                        </dxg:GridColumn.EditSettings>
-                    </dxg:GridColumn>
-                </ContentControl>
-            </DataTemplate>
-            <DataTemplate x:Key="ImageColumnTemplate">
-                <ContentControl>
-                    <dxg:GridColumn Width="21" Header=" " FieldName="{Binding Path=(dxci:DependencyObjectExtensions.DataContext).FieldName, RelativeSource={RelativeSource Self}}"
-                                CellTemplate="{StaticResource AttachedTemplate}"/>
-                </ContentControl>
-            </DataTemplate>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicatorState.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        <common:ColumnTemplateSelector x:Key="ColumnTemplateSelector"/>
+        <DataTemplate x:Key="DefaultColumnTemplate">
+            <ContentControl>
+                <dxg:GridColumn AllowBestFit="True" FieldName="{Binding Path=(dxci:DependencyObjectExtensions.DataContext).FieldName, RelativeSource={RelativeSource Self}}"
+                            Header="{Binding Path=(dxci:DependencyObjectExtensions.DataContext).Header, RelativeSource={RelativeSource Self}}"
+                            Width="{Binding Path=(dxci:DependencyObjectExtensions.DataContext).Width, RelativeSource={RelativeSource Self}}" />
+            </ContentControl>
+        </DataTemplate>
+        <DataTemplate x:Key="DateTimeColumnTemplate">
+            <ContentControl>
+                <dxg:GridColumn AllowBestFit="True" FieldName="{Binding Path=(dxci:DependencyObjectExtensions.DataContext).FieldName, RelativeSource={RelativeSource Self}}"
+                            Header="{Binding Path=(dxci:DependencyObjectExtensions.DataContext).Header, RelativeSource={RelativeSource Self}}"
+                            Width="{Binding Path=(dxci:DependencyObjectExtensions.DataContext).Width, RelativeSource={RelativeSource Self}}">
+                    <dxg:GridColumn.EditSettings>
+                        <dxe:DateEditSettings Mask="yyyy-MM-dd HH:mm" MaskType="DateTime" MaskUseAsDisplayFormat="True" />
+                    </dxg:GridColumn.EditSettings>
+                </dxg:GridColumn>
+            </ContentControl>
+        </DataTemplate>
+        <DataTemplate x:Key="ImageColumnTemplate">
+            <ContentControl>
+                <dxg:GridColumn Width="21" Header=" " FieldName="{Binding Path=(dxci:DependencyObjectExtensions.DataContext).FieldName, RelativeSource={RelativeSource Self}}"
+                            CellTemplate="{StaticResource AttachedTemplate}"/>
+            </ContentControl>
+        </DataTemplate>
     </UserControl.Resources>
 
     <Grid>
@@ -121,12 +116,14 @@
                     </dxr:RibbonDefaultPageCategory>
                 </dxr:RibbonControl>
 
-                <custom:DSGridControl x:Name="GridControl"
+                <custom:DSGridControl
+                    x:Name="GridControl"
                     ItemsSource="{Binding Collections}"
                     ColumnsSource="{Binding Columns}"
                     ColumnGeneratorTemplateSelector="{StaticResource ColumnTemplateSelector}"
                     ShowBorder="False"
                     ClipboardCopyMode="ExcludeHeader"
+                    RowIndicatorNumberOnly="True"                  
                     ShowLoadingPanel="{Binding IsBusy, Mode=TwoWay}"
                     EnableSmartColumnsGeneration="True">
                     <dxg:GridControl.View>

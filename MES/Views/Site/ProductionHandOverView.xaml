@@ -36,22 +36,17 @@
     </dxmvvm:Interaction.Behaviors>
 
     <UserControl.Resources>
-        <ResourceDictionary>
-            <DataTemplate x:Key="ProductOrderNo">
-                <dxe:ButtonEdit 
-                    Name="PART_Editor"
-                    EditValue="{Binding RowData.Row.ProductOrderNo, UpdateSourceTrigger=PropertyChanged}"
-                    IsTextEditable="True" 
-                    IsReadOnly="{DXBinding !View.DataContext.IsNew}">
-                    <dxmvvm:Interaction.Behaviors>
-                        <dxmvvm:EventToCommand EventName="DefaultButtonClick" Command="{Binding View.DataContext.ShowDialogCmd}" />
-                    </dxmvvm:Interaction.Behaviors>
-                </dxe:ButtonEdit>
-            </DataTemplate>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicatorState.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        <DataTemplate x:Key="ProductOrderNo">
+            <dxe:ButtonEdit 
+                Name="PART_Editor"
+                EditValue="{Binding RowData.Row.ProductOrderNo, UpdateSourceTrigger=PropertyChanged}"
+                IsTextEditable="True" 
+                IsReadOnly="{DXBinding !View.DataContext.IsNew}">
+                <dxmvvm:Interaction.Behaviors>
+                    <dxmvvm:EventToCommand EventName="DefaultButtonClick" Command="{Binding View.DataContext.ShowDialogCmd}" />
+                </dxmvvm:Interaction.Behaviors>
+            </dxe:ButtonEdit>
+        </DataTemplate>
     </UserControl.Resources>
 
     <Grid>

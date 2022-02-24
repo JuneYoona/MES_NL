@@ -19,18 +19,6 @@
     <UserControl.DataContext>
         <viewmodel:ProductionHandOverStandbyVM />
     </UserControl.DataContext>
-
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <utils:WaCodeConverter x:Key="WaCodeConverter"/>
-            <utils:MinorCodeConverter x:Key="MinorCodeConverter"/>
-            <utils:BizCodeConverter x:Key="BizCodeConverter"/>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicator.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <dxmvvm:Interaction.Behaviors>
         <dx:DialogService Name="ItemView" DialogWindowStartupLocation="CenterOwner">
             <dx:DialogService.ViewTemplate>
@@ -111,6 +99,7 @@
                     SelectedItems="{Binding SelectedItems, UpdateSourceTrigger=PropertyChanged}"
                     ShowBorder="False"
                     ClipboardCopyMode="ExcludeHeader"
+                    RowIndicatorNumberOnly="True"
                     ShowLoadingPanel="{Binding IsBusy, Mode=TwoWay}"
                     EnableSmartColumnsGeneration="True">
                     <dxg:GridControl.View>

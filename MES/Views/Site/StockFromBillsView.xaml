@@ -34,17 +34,6 @@
             </dx:DialogService.DialogStyle>
         </dx:DialogService>
     </dxmvvm:Interaction.Behaviors>
-
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <utils:MinorCodeConverter x:Key="MinorCodeConverter"/>
-            <utils:WaCodeConverter x:Key="WaCodeConverter"/>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicatorState.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <Grid>
         <DockPanel>
             <dxr:RibbonControl DockPanel.Dock="Top">

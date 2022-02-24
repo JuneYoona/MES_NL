@@ -21,22 +21,17 @@
     <UserControl.DataContext>
         <ViewModels:QualityRequestElementVM/>
     </UserControl.DataContext>
-    
+
     <UserControl.Resources>
-        <ResourceDictionary>
-            <DataTemplate x:Key="ResultTemplate">
-                <ContentControl>
-                    <dxg:GridSummaryItem FieldName="{Binding Path=(dxi:DependencyObjectExtensions.DataContext).FieldName, RelativeSource={RelativeSource Self}}"
-                            SummaryType="{Binding Path=(dxi:DependencyObjectExtensions.DataContext).Type, RelativeSource={RelativeSource Self}}"/>
-                </ContentControl>
-            </DataTemplate>
-            <common:CellTemplateSelector x:Key="cellTemplateSelector" />
-            <dxmvvm:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-            <dxmvvm:BooleanNegationConverter x:Key="BooleanNegationConverter"/>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicatorState.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        <DataTemplate x:Key="ResultTemplate">
+            <ContentControl>
+                <dxg:GridSummaryItem FieldName="{Binding Path=(dxi:DependencyObjectExtensions.DataContext).FieldName, RelativeSource={RelativeSource Self}}"
+                        SummaryType="{Binding Path=(dxi:DependencyObjectExtensions.DataContext).Type, RelativeSource={RelativeSource Self}}"/>
+            </ContentControl>
+        </DataTemplate>
+        <common:CellTemplateSelector x:Key="cellTemplateSelector" />
+        <dxmvvm:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <dxmvvm:BooleanNegationConverter x:Key="BooleanNegationConverter"/>
     </UserControl.Resources>
 
     <dxmvvm:Interaction.Behaviors>
@@ -315,6 +310,9 @@
                                         ShowBorder="True"
                                         ClipboardCopyMode="ExcludeHeader"
                                         EnableSmartColumnsGeneration="True">
+                                        <dxg:GridControl.Resources>
+                                            <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicatorState.xaml" />
+                                        </dxg:GridControl.Resources>
                                         <dxg:GridControl.View>
                                             <dxg:TableView
                                                 AllowPerPixelScrolling="True" 
@@ -400,7 +398,8 @@
                                             <dx:WaitIndicator DeferedVisibility="True" Content="데이터등록중..." Height="105" OverridesDefaultStyle="True" />
                                         </DataTemplate>
                                     </dx:LoadingDecorator.SplashScreenTemplate>
-                                    <custom:DSGridControl
+                                    <dxg:GridControl
+                                        common:GridRowIndicatorHelper.IsEnabled="True"
                                         ItemsSource="{Binding QualityElementLTList}"
                                         TotalSummarySource="{Binding QualityElementLTResult}"
                                         TotalSummaryGeneratorTemplate="{StaticResource ResultTemplate}"
@@ -409,6 +408,9 @@
                                         ShowBorder="True"
                                         ClipboardCopyMode="ExcludeHeader"
                                         EnableSmartColumnsGeneration="True">
+                                        <dxg:GridControl.Resources>
+                                            <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicatorState.xaml" />
+                                        </dxg:GridControl.Resources>
                                         <dxg:GridControl.View>
                                             <dxg:TableView
                                                 AllowPerPixelScrolling="True" 
@@ -445,7 +447,7 @@
                                                 <dxg:GridColumn FieldName="Ref" Header="sample-1" Width="150" HorizontalHeaderContentAlignment="Center" AllowSorting="False" AllowColumnFiltering="False" />
                                             </dxg:GridControlBand>
                                         </dxg:GridControl.Bands>
-                                    </custom:DSGridControl>
+                                    </dxg:GridControl>
                                 </dx:LoadingDecorator>
                             </DockPanel>
                         </Grid>

@@ -50,30 +50,22 @@
     </dxmvvm:Interaction.Behaviors>
 
     <UserControl.Resources>
-        <ResourceDictionary>
-            <dxmvvm:BooleanNegationConverter x:Key="BooleanNegationConverter"/>
-            <utils:CascadingEquipment x:Key="CascadingEquipment"/>
-            <utils:CascadingItemCode x:Key="CascadingItemCode"/>
-            <utils:MinorCodeConverter x:Key="MinorCodeConverter"/>
-            <utils:WaCodeConverter x:Key="WaCodeConverter"/>
-            <DataTemplate x:Key="EqpCode">
-                <dxg:LookUpEdit
-                    Name="PART_Editor"
-                    ItemsSource="{Binding RowData.Row.WaCode, Converter={StaticResource CascadingEquipment}}"
-                    ValueMember="EqpCode"
-                    DisplayMember="EqpName"
-                    EditValue="{Binding RowData.Row.EqpCode}"
-                    ShowSizeGrip="False"
-                    IsTextEditable="False"
-                    AutoPopulateColumns="False"
-                    InvalidValueBehavior="AllowLeaveEditor"
-                    IsPopupAutoWidth="False"
-                    PopupContentTemplate="{StaticResource EqpCodeTemplate}"/>
-            </DataTemplate>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicatorState.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        <dxmvvm:BooleanNegationConverter x:Key="BooleanNegationConverter"/>
+        <utils:CascadingEquipment x:Key="CascadingEquipment"/>
+        <DataTemplate x:Key="EqpCode">
+            <dxg:LookUpEdit
+                Name="PART_Editor"
+                ItemsSource="{Binding RowData.Row.WaCode, Converter={StaticResource CascadingEquipment}}"
+                ValueMember="EqpCode"
+                DisplayMember="EqpName"
+                EditValue="{Binding RowData.Row.EqpCode}"
+                ShowSizeGrip="False"
+                IsTextEditable="False"
+                AutoPopulateColumns="False"
+                InvalidValueBehavior="AllowLeaveEditor"
+                IsPopupAutoWidth="False"
+                PopupContentTemplate="{StaticResource EqpCodeTemplate}"/>
+        </DataTemplate>
     </UserControl.Resources>
 
     <Grid>

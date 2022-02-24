@@ -385,6 +385,13 @@
         </dxe:ComboBoxEdit>
     </DataTemplate>
     <!--#endregion-->
+    <!--#region Cascading and Converter-->
+    <local:CascadingItemCode x:Key="CascadingItemCode"/>
+    <local:MinorCodeConverter x:Key="MinorCodeConverter"/>
+    <local:WaCodeConverter x:Key="WaCodeConverter"/>
+    <local:BizCodeConverter x:Key="BizCodeConverter"/>
+    <local:SoTypeCodeConverter x:Key="SoTypeCodeConverter"/>
+    <!--#endregion-->
     
     <DataTemplate x:Key="AltItemCode">
         <dxe:ButtonEdit

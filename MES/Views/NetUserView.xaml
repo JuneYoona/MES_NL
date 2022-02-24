@@ -16,12 +16,7 @@
              d:DesignWidth="800"
              DataContext="{dxmvvm:ViewModelSource ViewModels:NetUserVM}">
     <UserControl.Resources>
-        <ResourceDictionary>
-            <ViewModels:TestConverter x:Key="TestConverter"/>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicatorState.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        <ViewModels:TestConverter x:Key="TestConverter"/>
     </UserControl.Resources>
 
     <Grid>

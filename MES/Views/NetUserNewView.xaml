@@ -21,48 +21,43 @@
     </UserControl.DataContext>
 
     <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicatorState.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-            <dxmvvm:ObjectToObjectConverter x:Key="EntityMessageTypeConverter">
+        <dxmvvm:ObjectToObjectConverter x:Key="EntityMessageTypeConverter">
                 <dxmvvm:MapItem Source="Added" Target="True"/>
                 <dxmvvm:MapItem Source="Changed" Target="False"/>
             </dxmvvm:ObjectToObjectConverter>
-            <DataTemplate x:Key="LookUpTemplate">
-                <dxg:LookUpEdit
-                    Name="PART_Editor"
-                    ItemsSource="{Binding View.DataContext.LueNetRoles}"
-                    ValueMember="RoleId"
-                    DisplayMember="RoleName"
-                    EditValue="{Binding RowData.Row.RoleId, UpdateSourceTrigger=PropertyChanged}"
-                    ShowSizeGrip="False"
-                    IsTextEditable="False"
-                    AutoPopulateColumns="False"
-                    ShowError="False" ShowErrorToolTip="False"
-                    IsPopupAutoWidth="False">
-                    <dxg:LookUpEdit.PopupContentTemplate>
-                        <ControlTemplate>
-                            <dxg:GridControl
-                                Name="PART_GridControl"
-                                Width="400" 
-                                ShowBorder="False" >
-                                <dxg:GridControl.View>
-                                    <dxg:TableView 
-                                        ShowGroupPanel="False" 
-                                        ShowIndicator="False"
-                                        AutoWidth="True"/>
-                                </dxg:GridControl.View>
-                                <dxg:GridControl.Columns>
-                                    <dxg:GridColumn FieldName="RoleName" Header="RoleName" />
-                                    <dxg:GridColumn FieldName="Description" Header="Description"/>
-                                </dxg:GridControl.Columns>
-                            </dxg:GridControl>
-                        </ControlTemplate>
-                    </dxg:LookUpEdit.PopupContentTemplate>
-                </dxg:LookUpEdit>
-            </DataTemplate>
-        </ResourceDictionary>
+        <DataTemplate x:Key="LookUpTemplate">
+            <dxg:LookUpEdit
+                Name="PART_Editor"
+                ItemsSource="{Binding View.DataContext.LueNetRoles}"
+                ValueMember="RoleId"
+                DisplayMember="RoleName"
+                EditValue="{Binding RowData.Row.RoleId, UpdateSourceTrigger=PropertyChanged}"
+                ShowSizeGrip="False"
+                IsTextEditable="False"
+                AutoPopulateColumns="False"
+                ShowError="False" ShowErrorToolTip="False"
+                IsPopupAutoWidth="False">
+                <dxg:LookUpEdit.PopupContentTemplate>
+                    <ControlTemplate>
+                        <dxg:GridControl
+                            Name="PART_GridControl"
+                            Width="400" 
+                            ShowBorder="False" >
+                            <dxg:GridControl.View>
+                                <dxg:TableView 
+                                    ShowGroupPanel="False" 
+                                    ShowIndicator="False"
+                                    AutoWidth="True"/>
+                            </dxg:GridControl.View>
+                            <dxg:GridControl.Columns>
+                                <dxg:GridColumn FieldName="RoleName" Header="RoleName" />
+                                <dxg:GridColumn FieldName="Description" Header="Description"/>
+                            </dxg:GridControl.Columns>
+                        </dxg:GridControl>
+                    </ControlTemplate>
+                </dxg:LookUpEdit.PopupContentTemplate>
+            </dxg:LookUpEdit>
+        </DataTemplate>
     </UserControl.Resources>
 
     <Grid>

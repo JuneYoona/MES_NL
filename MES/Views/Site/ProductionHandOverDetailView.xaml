@@ -10,7 +10,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
-             xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
              xmlns:viewmodel="clr-namespace:MesAdmin.ViewModels"
              xmlns:view="clr-namespace:MesAdmin.Views"
              mc:Ignorable="d"
@@ -19,17 +18,6 @@
     <UserControl.DataContext>
         <viewmodel:ProductionHandOverDetailVM />
     </UserControl.DataContext>
-
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <utils:MinorCodeConverter x:Key="MinorCodeConverter"/>
-            <utils:BizCodeConverter x:Key="BizCodeConverter"/>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicatorState.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <dxmvvm:Interaction.Behaviors>
         <dx:DialogService Name="ItemView" DialogWindowStartupLocation="CenterOwner">
             <dx:DialogService.ViewTemplate>

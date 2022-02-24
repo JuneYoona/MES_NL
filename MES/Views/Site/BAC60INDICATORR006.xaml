@@ -15,14 +15,6 @@
                 mc:Ignorable="d"
                 d:DesignHeight="436"
                 d:DesignWidth="800">
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicator.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <Grid>
         <dxb:BarManager>
             <DockPanel>
@@ -69,8 +61,7 @@
                                                     </StackPanel>
                                                 </StackPanel>
                                                 <StackPanel Orientation="Vertical" Margin="5 0 0 0">
-                                                    <dxe:ComboBoxEdit 
-                                                       
+                                                    <dxe:ComboBoxEdit                                                       
                                                         Width="180"
                                                         Background="#F6EDCB"
                                                         ItemsSource="{Binding DataContext.WaCollection, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}"
@@ -104,6 +95,7 @@
                                     SelectionMode="Cell"
                                     ShowLoadingPanel="{Binding IsBusy, Mode=TwoWay}"
                                     ClipboardCopyMode="ExcludeHeader"
+                                    RowIndicatorNumberOnly="True"
                                     EnableSmartColumnsGeneration="True">
                                     <dxg:GridControl.View>
                                         <custom:DSTableView

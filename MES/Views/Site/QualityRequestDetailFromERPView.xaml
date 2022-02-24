@@ -17,13 +17,6 @@
     <UserControl.DataContext>
         <ViewModels:QualityRequestDetailFromERPVM />
     </UserControl.DataContext>
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicator.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
 
     <Grid>
         <dxb:BarManager>
@@ -90,6 +83,7 @@
                     ItemsSource="{Binding Collections}"       
                     ShowBorder="False"
                     ClipboardCopyMode="ExcludeHeader"
+                    RowIndicatorNumberOnly="True"
                     ShowLoadingPanel="{Binding IsBusy, Mode=TwoWay}"
                     EnableSmartColumnsGeneration="True">
                     <dxmvvm:Interaction.Behaviors>

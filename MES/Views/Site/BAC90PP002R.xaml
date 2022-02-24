@@ -18,14 +18,7 @@
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="1200">
     <UserControl.Resources>
-        <ResourceDictionary>
-            <utils:WaCodeConverter x:Key="WaCodeConverter"/>
-            <utils:EqpCodeConverter x:Key="EqpCodeConverter"/>
-            <utils:MinorCodeConverter x:Key="MinorCodeConverter"/>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicatorState.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        <utils:EqpCodeConverter x:Key="EqpCodeConverter"/>
     </UserControl.Resources>
     <Grid>
         <DockPanel>

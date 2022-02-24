@@ -20,52 +20,45 @@
     </UserControl.DataContext>
 
     <UserControl.Resources>
-        <ResourceDictionary>
-            <utils:CascadingEquipment x:Key="CascadingEquipment"/>
-            <utils:MinorCodeConverter x:Key="MinorCodeConverter"/>
-            <utils:WaCodeConverter x:Key="WaCodeConverter"/>
-            <DataTemplate x:Key="WaCode">
-                <dxg:LookUpEdit
-                    ItemsSource="{Binding View.DataContext.WaCollections}"
-                    EditValue="{Binding RowData.Row.WaCode}"
-                    Name="PART_Editor"
-                    ValueMember="WaCode"
-                    DisplayMember="WaName"
-                    ShowSizeGrip="False"
-                    IsTextEditable="False"
-                    AutoPopulateColumns="False"
-                    InvalidValueBehavior="AllowLeaveEditor"
-                    IsPopupAutoWidth="False"
-                    PopupContentTemplate="{StaticResource WaCodeTemplate}"/>
-            </DataTemplate>
-            <DataTemplate x:Key="EqpCode">
-                <dxg:LookUpEdit
-                    Name="PART_Editor"
-                    ItemsSource="{Binding RowData.Row.WaCode, Converter={StaticResource CascadingEquipment}}"
-                    ValueMember="EqpCode"
-                    DisplayMember="EqpName"
-                    EditValue="{Binding RowData.Row.EqpCode}"
-                    ShowSizeGrip="False"
-                    IsTextEditable="False"
-                    AutoPopulateColumns="False"
-                    InvalidValueBehavior="AllowLeaveEditor"
-                    IsPopupAutoWidth="False"
-                    PopupContentTemplate="{StaticResource EqpCodeTemplate}"/>
-            </DataTemplate>
-            <DataTemplate x:Key="ItemCode">
-                <dxe:ButtonEdit 
-                    Name="PART_Editor"
-                    EditValue="{Binding RowData.Row.ItemCode}"
-                    IsReadOnly="{DXBinding !View.DataContext.IsNew}">
-                    <dxmvvm:Interaction.Behaviors>
-                        <dxmvvm:EventToCommand EventName="DefaultButtonClick" Command="{Binding View.DataContext.ShowDialogCmd}" />
-                    </dxmvvm:Interaction.Behaviors>
-                </dxe:ButtonEdit>
-            </DataTemplate>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicatorState.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        <utils:CascadingEquipment x:Key="CascadingEquipment"/>
+        <DataTemplate x:Key="WaCode">
+            <dxg:LookUpEdit
+                ItemsSource="{Binding View.DataContext.WaCollections}"
+                EditValue="{Binding RowData.Row.WaCode}"
+                Name="PART_Editor"
+                ValueMember="WaCode"
+                DisplayMember="WaName"
+                ShowSizeGrip="False"
+                IsTextEditable="False"
+                AutoPopulateColumns="False"
+                InvalidValueBehavior="AllowLeaveEditor"
+                IsPopupAutoWidth="False"
+                PopupContentTemplate="{StaticResource WaCodeTemplate}"/>
+        </DataTemplate>
+        <DataTemplate x:Key="EqpCode">
+            <dxg:LookUpEdit
+                Name="PART_Editor"
+                ItemsSource="{Binding RowData.Row.WaCode, Converter={StaticResource CascadingEquipment}}"
+                ValueMember="EqpCode"
+                DisplayMember="EqpName"
+                EditValue="{Binding RowData.Row.EqpCode}"
+                ShowSizeGrip="False"
+                IsTextEditable="False"
+                AutoPopulateColumns="False"
+                InvalidValueBehavior="AllowLeaveEditor"
+                IsPopupAutoWidth="False"
+                PopupContentTemplate="{StaticResource EqpCodeTemplate}"/>
+        </DataTemplate>
+        <DataTemplate x:Key="ItemCode">
+            <dxe:ButtonEdit 
+                Name="PART_Editor"
+                EditValue="{Binding RowData.Row.ItemCode}"
+                IsReadOnly="{DXBinding !View.DataContext.IsNew}">
+                <dxmvvm:Interaction.Behaviors>
+                    <dxmvvm:EventToCommand EventName="DefaultButtonClick" Command="{Binding View.DataContext.ShowDialogCmd}" />
+                </dxmvvm:Interaction.Behaviors>
+            </dxe:ButtonEdit>
+        </DataTemplate>
     </UserControl.Resources>
 
     <dxmvvm:Interaction.Behaviors>

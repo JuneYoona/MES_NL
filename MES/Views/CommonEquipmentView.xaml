@@ -17,11 +17,8 @@
              d:DesignWidth="800"
              DataContext="{dxmvvm:ViewModelSource Type=ViewModels:CommonEquipmentVM}">
     <UserControl.Resources>
-        <ResourceDictionary>
-            <utils:MinorCodeConverter x:Key="MinorCodeConverter"/>
-            <utils:WaCodeConverter x:Key="WaCodeConverter"/>
-            <DataTemplate x:Key="WaCode">
-                <dxg:LookUpEdit
+        <DataTemplate x:Key="WaCode">
+            <dxg:LookUpEdit
                 Name="PART_Editor"
                 ItemsSource="{Binding View.DataContext.WaCode}"
                 ValueMember="WaCode"
@@ -34,22 +31,18 @@
                 InvalidValueBehavior="AllowLeaveEditor"
                 IsPopupAutoWidth="False"
                 PopupContentTemplate="{StaticResource WaCodeTemplate}" />
-            </DataTemplate>
-            <DataTemplate x:Key="PauseGroup">
-                <dxe:ComboBoxEdit
-                Name="PART_Editor"
-                ItemsSource="{Binding View.DataContext.PauseGroup}"
-                ValueMember="GroupName"
-                DisplayMember="GroupName"
-                EditValue="{Binding RowData.Row.PauseGroup, UpdateSourceTrigger=PropertyChanged}"
-                ShowSizeGrip="False"
-                IsTextEditable="True" 
-                NullValueButtonPlacement="EditBox" />
-            </DataTemplate>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicatorState.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        </DataTemplate>
+        <DataTemplate x:Key="PauseGroup">
+            <dxe:ComboBoxEdit
+            Name="PART_Editor"
+            ItemsSource="{Binding View.DataContext.PauseGroup}"
+            ValueMember="GroupName"
+            DisplayMember="GroupName"
+            EditValue="{Binding RowData.Row.PauseGroup, UpdateSourceTrigger=PropertyChanged}"
+            ShowSizeGrip="False"
+            IsTextEditable="True" 
+            NullValueButtonPlacement="EditBox" />
+        </DataTemplate>
     </UserControl.Resources>
 
     <Grid>

@@ -18,22 +18,17 @@
                d:DesignHeight="600" d:DesignWidth="600"
                DataContext="{dxmvvm:ViewModelSource Type=ViewModels:CommonBOMVM}">
     <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicatorState.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-            <DataTemplate x:Key="ItemCode">
-                <dxe:ButtonEdit 
-                    Name="PART_Editor"
-                    EditValue="{Binding RowData.Row.CItemCode}"
-                    IsTextEditable="False"
-                    IsReadOnly="{DXBinding !View.DataContext.IsNew}">
-                    <dxmvvm:Interaction.Behaviors>
-                        <dxmvvm:EventToCommand EventName="DefaultButtonClick" Command="{Binding View.DataContext.ShowDialogCmd}" />
-                    </dxmvvm:Interaction.Behaviors>
-                </dxe:ButtonEdit>
-            </DataTemplate>
-        </ResourceDictionary>
+        <DataTemplate x:Key="ItemCode">
+            <dxe:ButtonEdit 
+                Name="PART_Editor"
+                EditValue="{Binding RowData.Row.CItemCode}"
+                IsTextEditable="False"
+                IsReadOnly="{DXBinding !View.DataContext.IsNew}">
+                <dxmvvm:Interaction.Behaviors>
+                    <dxmvvm:EventToCommand EventName="DefaultButtonClick" Command="{Binding View.DataContext.ShowDialogCmd}" />
+                </dxmvvm:Interaction.Behaviors>
+            </dxe:ButtonEdit>
+        </DataTemplate>
     </UserControl.Resources>
     <dxmvvm:Interaction.Behaviors>
         <dx:DialogService DialogWindowStartupLocation="CenterOwner">

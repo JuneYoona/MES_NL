@@ -21,25 +21,20 @@
     </UserControl.DataContext>
 
     <UserControl.Resources>
-        <ResourceDictionary>
-            <common:ColumnTemplateSelector x:Key="ColumnTemplateSelector"/>
-            <DataTemplate x:Key="DefaultColumnTemplate">
-                <ContentControl>
-                    <dxg:GridColumn AllowBestFit="True" FieldName="{Binding Path=(dxci:DependencyObjectExtensions.DataContext).FieldName, RelativeSource={RelativeSource Self}}"
-                                Header="{Binding Path=(dxci:DependencyObjectExtensions.DataContext).Header, RelativeSource={RelativeSource Self}}"
-                                Width="{Binding Path=(dxci:DependencyObjectExtensions.DataContext).Width, RelativeSource={RelativeSource Self}}" />
-                </ContentControl>
-            </DataTemplate>
-            <DataTemplate x:Key="ImageColumnTemplate">
-                <ContentControl>
-                    <dxg:GridColumn Width="21" Header=" " FieldName="{Binding Path=(dxci:DependencyObjectExtensions.DataContext).FieldName, RelativeSource={RelativeSource Self}}"
-                                CellTemplate="{StaticResource AttachedTemplate}"/>
-                </ContentControl>
-            </DataTemplate>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicatorState.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        <common:ColumnTemplateSelector x:Key="ColumnTemplateSelector"/>
+        <DataTemplate x:Key="DefaultColumnTemplate">
+            <ContentControl>
+                <dxg:GridColumn AllowBestFit="True" FieldName="{Binding Path=(dxci:DependencyObjectExtensions.DataContext).FieldName, RelativeSource={RelativeSource Self}}"
+                            Header="{Binding Path=(dxci:DependencyObjectExtensions.DataContext).Header, RelativeSource={RelativeSource Self}}"
+                            Width="{Binding Path=(dxci:DependencyObjectExtensions.DataContext).Width, RelativeSource={RelativeSource Self}}" />
+            </ContentControl>
+        </DataTemplate>
+        <DataTemplate x:Key="ImageColumnTemplate">
+            <ContentControl>
+                <dxg:GridColumn Width="21" Header=" " FieldName="{Binding Path=(dxci:DependencyObjectExtensions.DataContext).FieldName, RelativeSource={RelativeSource Self}}"
+                            CellTemplate="{StaticResource AttachedTemplate}"/>
+            </ContentControl>
+        </DataTemplate>
     </UserControl.Resources>
 
     <Grid>
@@ -122,6 +117,7 @@
                     ColumnGeneratorTemplateSelector="{StaticResource ColumnTemplateSelector}"           
                     ShowBorder="False"
                     ClipboardCopyMode="ExcludeHeader"
+                    RowIndicatorNumberOnly="True"
                     ShowLoadingPanel="{Binding IsBusy, Mode=TwoWay}"
                     EnableSmartColumnsGeneration="True">
                     <dxmvvm:Interaction.Behaviors>

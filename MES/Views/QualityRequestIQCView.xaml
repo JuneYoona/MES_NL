@@ -23,13 +23,7 @@
         <ViewModels:QualityRequestVM/>
     </UserControl.DataContext>
     <UserControl.Resources>
-        <ResourceDictionary>
-            <utils:BizCodeConverter x:Key="BizCodeConverter"/>
-            <common:CellTemplateSelector x:Key="cellTemplateSelector" />
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicatorState.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        <common:CellTemplateSelector x:Key="cellTemplateSelector" />
     </UserControl.Resources>
     <dxmvvm:Interaction.Behaviors>
         <dxmvvm:OpenFileDialogService Title="{Binding Title}" 

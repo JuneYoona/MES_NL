@@ -18,16 +18,8 @@
              d:DesignWidth="800"
              DataContext="{dxmvvm:ViewModelSource viewmodel:ExceptionDetailsVM}">
     <UserControl.Resources>
-        <ResourceDictionary>
-            <utils:MinorCodeConverter x:Key="MinorCodeConverter"/>
-            <utils:WaCodeConverter x:Key="WaCodeConverter"/>
-            <utils:StockTypeConverter x:Key="StockTypeConverter"/>
-            <utils:DebitCreditConverter x:Key="DebitCreditConverter"/>
-            <utils:BizCodeConverter x:Key="BizCodeConverter"/>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicator.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        <utils:StockTypeConverter x:Key="StockTypeConverter"/>
+        <utils:DebitCreditConverter x:Key="DebitCreditConverter"/>
     </UserControl.Resources>
 
     <dxmvvm:Interaction.Behaviors>
@@ -141,6 +133,7 @@
                     ItemsSource="{Binding Collections}"
                     ShowBorder="False"
                     ClipboardCopyMode="ExcludeHeader"
+                    RowIndicatorNumberOnly="True"
                     ShowLoadingPanel="{Binding IsBusy, Mode=TwoWay}"
                     EnableSmartColumnsGeneration="True">
                     <dxmvvm:Interaction.Behaviors>

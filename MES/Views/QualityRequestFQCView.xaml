@@ -23,12 +23,7 @@
     </UserControl.DataContext>
 
     <UserControl.Resources>
-        <ResourceDictionary>
-            <common:CellTemplateSelector x:Key="cellTemplateSelector" />
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicatorState.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        <common:CellTemplateSelector x:Key="cellTemplateSelector" />
     </UserControl.Resources>
 
     <dxmvvm:Interaction.Behaviors>

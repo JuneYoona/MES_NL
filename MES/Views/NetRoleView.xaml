@@ -17,9 +17,6 @@
     <UserControl.DataContext>
         <viewmodel:NetRoleVM />
     </UserControl.DataContext>
-    <UserControl.Resources>
-        <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicatorState.xaml" />
-    </UserControl.Resources>
     <Grid>
         <DockPanel>
             <dxr:RibbonControl DockPanel.Dock="Top">
@@ -69,9 +66,10 @@
                 </dxg:GridControl.Columns>
             </custom:DSGridControl>
 
-            <dxg:TreeListControl
-               common:GridRowTreeIndicatorHelper.IsEnabled="True"
+            <custom:DSTreeListControl
+                common:GridRowTreeIndicatorHelper.IsEnabled="True"
                 Margin="0 12 12 12"
+                RowIndicatorNumberOnly="True"
                 ItemsSource="{Binding Menus}">
                 <dxg:TreeListControl.Columns>
                     <dxg:TreeListColumn FieldName="MenuName" Header="MenuName" />
@@ -88,8 +86,7 @@
                             CheckBoxFieldName="IsChecked"
                             ParentFieldName="PMenuId" />
                 </dxg:TreeListControl.View>
-            </dxg:TreeListControl>
+            </custom:DSTreeListControl>
         </DockPanel>
     </Grid>
 </UserControl>
-

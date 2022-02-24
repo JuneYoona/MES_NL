@@ -50,7 +50,6 @@
         </dx:DialogService>
     </dxmvvm:Interaction.Behaviors>
     <UserControl.Resources>
-        <utils:MinorCodeConverter x:Key="MinorCodeConverter"/>
         <DataTemplate x:Key="WhCode">
             <dxg:LookUpEdit
                 Name="PART_Editor"

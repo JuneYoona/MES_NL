@@ -10,13 +10,27 @@ namespace MesAdmin.Common.CustomControl
 {
     public class DSGridControl : GridControl
     {
+        public bool RowIndicatorNumberOnly { get; set; }
+
         public DSGridControl()
         {
             CreateDefaultView();
             PastingFromClipboard += DSGridControl_PastingFromClipboard;
             PropertyChanged += DSGridControl_PropertyChanged;
 
-            // this.Loaded += (o, s) => { ((TableView)this.View).BestFitColumns(); };
+            #region indicator에 선택적으로 row number 및 state image 넣기
+            Initialized += (s, e) =>
+            {
+                var rd = new ResourceDictionary();
+                string uri = string.Empty;
+
+                if (RowIndicatorNumberOnly) uri = "pack://application:,,,/Resources/Dictionary/GridRowIndicator.xaml";
+                else uri = "pack://application:,,,/Resources/Dictionary/GridRowIndicatorState.xaml";
+
+                rd.Source = new Uri(uri);
+                Resources.MergedDictionaries.Add(rd);
+            };
+            #endregion
         }
 
         private void DSGridControl_PastingFromClipboard(object sender, PastingFromClipboardEventArgs e)
@@ -113,10 +127,26 @@ namespace MesAdmin.Common.CustomControl
 
     public class DSTreeListControl : TreeListControl
     {
+        public bool RowIndicatorNumberOnly { get; set; }
+
         public DSTreeListControl()
         {
-            this.CreateDefaultView();
-            this.PastingFromClipboard += DSGridControl_PastingFromClipboard;
+            CreateDefaultView();
+            PastingFromClipboard += DSGridControl_PastingFromClipboard;
+
+            #region indicator에 선택적으로 row number 및 state image 넣기
+            Initialized += (s, e) =>
+            {
+                var rd = new ResourceDictionary();
+                string uri = string.Empty;
+
+                if (RowIndicatorNumberOnly) uri = "pack://application:,,,/Resources/Dictionary/GridRowIndicator.xaml";
+                else uri = "pack://application:,,,/Resources/Dictionary/GridRowIndicatorState.xaml";
+
+                rd.Source = new Uri(uri);
+                Resources.MergedDictionaries.Add(rd);
+            };
+            #endregion
         }
 
         private void DSGridControl_PastingFromClipboard(object sender, PastingFromClipboardEventArgs e)

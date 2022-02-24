@@ -63,38 +63,32 @@
     </dxmvvm:Interaction.Behaviors>
 
     <UserControl.Resources>
-        <ResourceDictionary>
-            <dxmvvm:BooleanNegationConverter x:Key="BooleanNegationConverter"/>
-            <utils:MinorCodeConverter x:Key="MinorCodeConverter"/>
-            <DataTemplate x:Key="ItemCode">
-                <dxe:ButtonEdit 
-                    Name="PART_Editor"
-                    EditValue="{Binding RowData.Row.ItemCode, UpdateSourceTrigger=PropertyChanged}"
-                    IsTextEditable="True" 
-                    IsReadOnly="{DXBinding !View.DataContext.IsNew}">
-                    <dxmvvm:Interaction.Behaviors>
-                        <dxmvvm:EventToCommand EventName="DefaultButtonClick" Command="{Binding View.DataContext.ShowStockCmd}" />
-                    </dxmvvm:Interaction.Behaviors>
-                </dxe:ButtonEdit>
-            </DataTemplate>
-            <DataTemplate x:Key="WhCode">
-                <dxg:LookUpEdit
-                    Name="PART_Editor"
-                    ItemsSource="{Binding View.DataContext.WhCode}"
-                    ValueMember="MinorCode"
-                    DisplayMember="MinorName"
-                    EditValue="{Binding RowData.Row.WhCode, UpdateSourceTrigger=PropertyChanged}"
-                    ShowSizeGrip="False"
-                    IsTextEditable="True"
-                    AutoPopulateColumns="False"
-                    InvalidValueBehavior="AllowLeaveEditor"
-                    IsPopupAutoWidth="False"
-                    PopupContentTemplate="{StaticResource WhCodeTemplate}" />
-            </DataTemplate>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicatorState.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        <dxmvvm:BooleanNegationConverter x:Key="BooleanNegationConverter"/>
+        <DataTemplate x:Key="ItemCode">
+            <dxe:ButtonEdit 
+                Name="PART_Editor"
+                EditValue="{Binding RowData.Row.ItemCode, UpdateSourceTrigger=PropertyChanged}"
+                IsTextEditable="True" 
+                IsReadOnly="{DXBinding !View.DataContext.IsNew}">
+                <dxmvvm:Interaction.Behaviors>
+                    <dxmvvm:EventToCommand EventName="DefaultButtonClick" Command="{Binding View.DataContext.ShowStockCmd}" />
+                </dxmvvm:Interaction.Behaviors>
+            </dxe:ButtonEdit>
+        </DataTemplate>
+        <DataTemplate x:Key="WhCode">
+            <dxg:LookUpEdit
+                Name="PART_Editor"
+                ItemsSource="{Binding View.DataContext.WhCode}"
+                ValueMember="MinorCode"
+                DisplayMember="MinorName"
+                EditValue="{Binding RowData.Row.WhCode, UpdateSourceTrigger=PropertyChanged}"
+                ShowSizeGrip="False"
+                IsTextEditable="True"
+                AutoPopulateColumns="False"
+                InvalidValueBehavior="AllowLeaveEditor"
+                IsPopupAutoWidth="False"
+                PopupContentTemplate="{StaticResource WhCodeTemplate}" />
+        </DataTemplate>
     </UserControl.Resources>
 
     <Grid>

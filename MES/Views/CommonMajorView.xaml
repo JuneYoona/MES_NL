@@ -16,14 +16,6 @@
              d:DesignHeight="436" 
              d:DesignWidth="800"
              DataContext="{dxmvvm:ViewModelSource Type=ViewModels:CommonMajorVM}">
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicatorState.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-    
     <Grid>
         <dxb:BarManager>
             <DockPanel>

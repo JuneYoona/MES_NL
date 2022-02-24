@@ -64,7 +64,6 @@
     </dxmvvm:Interaction.Behaviors>
     <UserControl.Resources>
         <dxmvvm:BooleanNegationConverter x:Key="BooleanNegationConverter"/>
-        <utils:MinorCodeConverter x:Key="MinorCodeConverter"/>
         <DataTemplate x:Key="ItemCode">
             <dxe:ButtonEdit 
                 Name="PART_Editor"
