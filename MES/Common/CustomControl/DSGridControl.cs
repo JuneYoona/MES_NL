@@ -24,8 +24,8 @@ namespace MesAdmin.Common.CustomControl
                 var rd = new ResourceDictionary();
                 string uri = string.Empty;
 
-                if (RowIndicatorNumberOnly) uri = "pack://application:,,,/Resources/Dictionary/GridRowIndicator.xaml";
-                else uri = "pack://application:,,,/Resources/Dictionary/GridRowIndicatorState.xaml";
+                if (RowIndicatorNumberOnly) uri = "pack://application:,,,/MesNL;component/Resources/Dictionary/GridRowIndicator.xaml";
+                else uri = "pack://application:,,,/MesNL;component/Resources/Dictionary/GridRowIndicatorState.xaml";
 
                 rd.Source = new Uri(uri);
                 Resources.MergedDictionaries.Add(rd);
