@@ -197,7 +197,7 @@ namespace MesAdmin.Authentication
 
             // 재접속처리
             ProviderFactory.Instance = null;
-            GlabalCommonLayout.Instance = null;
+            GlobalCommonLayout.Instance = null;
 
             //ProfileBase profile = ProfileBase.Create(UserId);
 

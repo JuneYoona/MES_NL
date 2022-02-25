@@ -15,6 +15,7 @@
              xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
              xmlns:viewmodel="clr-namespace:MesAdmin.ViewModels"
              xmlns:view="clr-namespace:MesAdmin.Views"
+             xmlns:common="clr-namespace:MesAdmin.Common.Common"
              mc:Ignorable="d"
              d:DesignHeight="436"
              d:DesignWidth="800">
@@ -91,11 +92,36 @@
                             EditTemplate="{StaticResource WaCode}" />
                     </dxr:RibbonPageGroup>
                     <!--#endregion-->
-                </dxr:RibbonPage>
-            </dxr:RibbonDefaultPageCategory>
+                    <!--#region  Layout-->
+                    <dxr:RibbonPageGroup Caption="사용자정의 Layout">
+                        <dxb:BarButtonItem Content="컬럼정의" LargeGlyph="{dx:DXImage SvgImages/Snap/ModifyTableStyle.svg}">
+                            <dxmvvm:Interaction.Behaviors>
+                                <dxmvvm:ConfirmationBehavior 
+                                    Command="{Binding SaveLayoutCmd, ElementName=SerializeHelper}"
+                                    MessageText="현재설정으로 저장하시겠습니까?"
+                                    MessageIcon="Question"
+                                    MessageButton="YesNo" />
+                            </dxmvvm:Interaction.Behaviors>
+                        </dxb:BarButtonItem>
+                        <dxb:BarButtonItem Content="기본컬럼" LargeGlyph="{dx:DXImage SvgImages/Dashboards/Grid.svg}">
+                            <dxmvvm:Interaction.Behaviors>
+                                <dxmvvm:ConfirmationBehavior 
+                                    Command="{Binding RestoreLayoutCmd, ElementName=SerializeHelper}"
+                                    MessageText="기본설정으로 초기화됩니다."
+                                    MessageIcon="Question"
+                                    MessageButton="YesNo" />
+                            </dxmvvm:Interaction.Behaviors>
+                        </dxb:BarButtonItem>
+                    </dxr:RibbonPageGroup>
+                    <!--#endregion-->
+                    </dxr:RibbonPage>
+                </dxr:RibbonDefaultPageCategory>
             </dxr:RibbonControl>
 
-            <dxdo:DockLayoutManager>
+            <dxdo:DockLayoutManager dx:DXSerializer.SerializationID="dockManagerID" dx:WorkspaceManager.IsEnabled="True">
+                <dxmvvm:Interaction.Behaviors>
+                    <common:DockLayoutSaveCommand x:Name="SerializeHelper" ViewName="ProductionWorkOrderDetailView"/>
+                </dxmvvm:Interaction.Behaviors>
                 <dxdo:DockLayoutManager.LayoutRoot>
                     <dxdo:LayoutGroup Orientation="Vertical" Margin="0">
                         <dxdo:LayoutPanel HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" ItemHeight="7*" AllowClose="False" AllowDrag="False" AllowFloat="False" AllowHide="False" ShowCaption="False" ShowBorder="False">
@@ -107,7 +133,8 @@
                                         </Border>
                                     </DataTemplate>
                                 </dxlc:GroupBox.HeaderTemplate>
-                                <custom:DSGridControl                       
+                                <custom:DSGridControl
+                                    dx:DXSerializer.SerializationID="grid1"
                                     ItemsSource="{Binding Collections}"
                                     SelectedItems="{Binding SelectedItems, UpdateSourceTrigger=PropertyChanged}"
                                     ShowBorder="False"
@@ -165,7 +192,8 @@
                                         </Border>
                                     </DataTemplate>
                                 </dxlc:GroupBox.HeaderTemplate>
-                                <custom:DSGridControl                       
+                                <custom:DSGridControl
+                                    dx:DXSerializer.SerializationID="grid2"
                                     ItemsSource="{Binding Details}"
                                     ShowBorder="False"
                                     SelectionMode="Cell"

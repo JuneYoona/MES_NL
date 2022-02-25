@@ -225,7 +225,7 @@ namespace MesAdmin.Models
         }
     }
 
-    public class GlabalCommonLayout
+    public class GlobalCommonLayout
     {
         private static DataTable m_instance;
 
@@ -237,6 +237,30 @@ namespace MesAdmin.Models
                 {
                     Database db = ProviderFactory.Instance;
                     string sql = "SELECT ViewName, Layout FROM common_gridLayout (NOLOCK) WHERE UserId = @UserID";
+
+                    DbCommand dbCom = db.GetSqlStringCommand(sql);
+                    db.AddInParameter(dbCom, "@UserID", DbType.String, DSUser.Instance.UserID);
+                    DataSet ds = db.ExecuteDataSet(dbCom);
+                    m_instance = ds.Tables[0];
+                }
+                return m_instance;
+            }
+            set { m_instance = value; }
+        }
+    }
+
+    public class GlobalCommonDockLayout
+    {
+        private static DataTable m_instance;
+
+        public static DataTable Instance
+        {
+            get
+            {
+                if (m_instance == null)
+                {
+                    Database db = ProviderFactory.Instance;
+                    string sql = "SELECT ViewName, Layout FROM common_dockLayout (NOLOCK) WHERE UserId = @UserID";
 
                     DbCommand dbCom = db.GetSqlStringCommand(sql);
                     db.AddInParameter(dbCom, "@UserID", DbType.String, DSUser.Instance.UserID);

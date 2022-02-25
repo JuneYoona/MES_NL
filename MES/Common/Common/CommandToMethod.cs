@@ -62,7 +62,7 @@ namespace MesAdmin.Common.Common
                         db.AddInParameter(dbCom, "@Layout", DbType.String, layout);
                         db.ExecuteNonQuery(dbCom, trans);
                         trans.Commit();
-                        GlabalCommonLayout.Instance = null;
+                        GlobalCommonLayout.Instance = null;
                     }
                 }
             }
@@ -90,7 +90,7 @@ namespace MesAdmin.Common.Common
 
         protected bool RestoreCommandCanExecute()
         {
-            var rows = GlabalCommonLayout.Instance.AsEnumerable().Where(o => o.Field<string>("ViewName") == ViewName);
+            var rows = GlobalCommonLayout.Instance.AsEnumerable().Where(o => o.Field<string>("ViewName") == ViewName);
             return rows.Count() > 0;
         }
         protected void RestoreCommandExecute()
@@ -104,7 +104,7 @@ namespace MesAdmin.Common.Common
                 db.AddInParameter(dbCom, "@UserID", DbType.String, DSUser.Instance.UserID);
                 db.AddInParameter(dbCom, "@ViewName", DbType.String, ViewName);
                 db.ExecuteNonQuery(dbCom);
-                GlabalCommonLayout.Instance = null;
+                GlobalCommonLayout.Instance = null;
 
                 LayoutStream.Seek(0, SeekOrigin.Begin);
                 AssociatedObject.RestoreLayoutFromStream(LayoutStream);
@@ -128,7 +128,7 @@ namespace MesAdmin.Common.Common
             LayoutStream = new MemoryStream();
             AssociatedObject.SaveLayoutToStream(LayoutStream);
 
-            var rows = GlabalCommonLayout.Instance.AsEnumerable().Where(o => o.Field<string>("ViewName") == ViewName);
+            var rows = GlobalCommonLayout.Instance.AsEnumerable().Where(o => o.Field<string>("ViewName") == ViewName);
             if (rows.Count() == 0) return;
 
             using (MemoryStream str = new MemoryStream(Encoding.UTF8.GetBytes(rows.FirstOrDefault().Field<string>("Layout"))))
