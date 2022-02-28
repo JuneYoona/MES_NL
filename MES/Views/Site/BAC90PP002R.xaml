@@ -83,7 +83,7 @@
                             <dxb:BarButtonItem Content="컬럼정의" LargeGlyph="{dx:DXImage SvgImages/Snap/ModifyTableStyle.svg}">
                                 <dxmvvm:Interaction.Behaviors>
                                     <dxmvvm:ConfirmationBehavior 
-                                        Command="{Binding SaveCommand, ElementName=SerializeHelper}"
+                                        Command="{Binding SaveLayoutCmd, ElementName=SerializeHelper}"
                                         MessageText="현재설정으로 저장하시겠습니까?"
                                         MessageIcon="Question"
                                         MessageButton="YesNo" />
@@ -92,7 +92,7 @@
                             <dxb:BarButtonItem Content="기본컬럼" LargeGlyph="{dx:DXImage SvgImages/Dashboards/Grid.svg}">
                                 <dxmvvm:Interaction.Behaviors>
                                     <dxmvvm:ConfirmationBehavior 
-                                        Command="{Binding RestoreCommand, ElementName=SerializeHelper}"
+                                        Command="{Binding RestoreLayoutCmd, ElementName=SerializeHelper}"
                                         MessageText="기본설정으로 초기화됩니다."
                                         MessageIcon="Question"
                                         MessageButton="YesNo" />
@@ -133,7 +133,7 @@
                                     </dxg:GridControl.Resources>
                                     <dxmvvm:Interaction.Behaviors>
                                         <dxmvvm:EventToCommand Command="{Binding MouseDownCmd}" EventName="SelectedItemChanged"/>
-                                        <common:CommandToMethod x:Name="SerializeHelper" ViewName="BAC90PP002R"/>
+                                        <common:GridLayoutSaveCommand x:Name="SerializeHelper" ViewName="BAC90PP002R"/>
                                     </dxmvvm:Interaction.Behaviors>
                                     <dxg:GridControl.View>
                                         <custom:DSTableView

@@ -220,7 +220,7 @@
     </ApplicationDefinition>
     <Compile Include="Common\Common\CellTemplateSelector.cs" />
     <Compile Include="Common\Common\ColumnTemplateSelector.cs" />
-    <Compile Include="Common\Common\CommandToMethod.cs" />
+    <Compile Include="Common\Common\GridLayoutSaveCommand.cs" />
     <Compile Include="Common\Common\DockLayoutSaveCommand.cs" />
     <Compile Include="Common\Common\DocumentParamter.cs" />
     <Compile Include="Common\Common\ExportViewModelBase.cs" />

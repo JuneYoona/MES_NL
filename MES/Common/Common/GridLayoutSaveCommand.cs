@@ -14,32 +14,67 @@ using System.Linq;
 
 namespace MesAdmin.Common.Common
 {
-    public class CommandToMethod : Behavior<GridControl>
+    public class GridLayoutSaveCommand : Behavior<GridControl>
     {
+        #region Public Properties
         public string ViewName { get; set; }
-        public string DefaultLayout { get; set; }
         public Stream LayoutStream { get; set; }
+        #endregion
 
-        #region SaveCommand
-        protected DelegateCommand saveCommand;
-        public DelegateCommand SaveCommand
+        #region Commands
+        protected DelegateCommand saveLayoutCmd;
+        public DelegateCommand SaveLayoutCmd
         {
             get
             {
-                if (saveCommand == null)
+                if (saveLayoutCmd == null)
                 {
-                    saveCommand = new DelegateCommand(SaveCommandExecute, SaveCommandCanExecute);
+                    saveLayoutCmd = new DelegateCommand(OnSaveLayout);
                 }
 
-                return this.saveCommand;
+                return saveLayoutCmd;
+            }
+        }
+        protected DelegateCommand restoreLayoutCmd;
+        public DelegateCommand RestoreLayoutCmd
+        {
+            get
+            {
+                if (restoreLayoutCmd == null)
+                {
+                    restoreLayoutCmd = new DelegateCommand(OnRestoreLayout, CanRestoreLayout);
+                }
+
+                return restoreLayoutCmd;
+            }
+        }
+        #endregion
+
+        private const string layoutType = "grid";
+
+        protected override void OnAttached()
+        {
+            base.OnAttached();
+            AssociatedObject.Loaded += OnAssociatedObjectLoaded;
+        }
+
+        protected void OnAssociatedObjectLoaded(object sender, RoutedEventArgs e)
+        {
+            // default layout 을 항상 갱신(최신상태 유지용)
+            LayoutStream = new MemoryStream();
+            AssociatedObject.SaveLayoutToStream(LayoutStream);
+
+            var rows = GlobalCommonLayout.Instance.AsEnumerable().Where(o => o.Field<string>("ViewName") == ViewName && o.Field<string>("LayoutType") == layoutType);
+            if (rows.Count() == 0) return;
+
+            using (MemoryStream str = new MemoryStream(Encoding.UTF8.GetBytes(rows.FirstOrDefault().Field<string>("Layout"))))
+            {
+                AssociatedObject.AutoExpandAllGroups = true;
+                AssociatedObject.RestoreLayoutFromStream(str);
             }
         }
 
-        protected bool SaveCommandCanExecute()
-        {
-            return true;
-        }
-        protected void SaveCommandExecute()
+        protected void OnSaveLayout()
         {
             try
             {
@@ -60,6 +95,7 @@ namespace MesAdmin.Common.Common
                         db.AddInParameter(dbCom, "@ViewName", DbType.String, ViewName);
                         db.AddInParameter(dbCom, "@InsertId", DbType.String, DSUser.Instance.UserID);
                         db.AddInParameter(dbCom, "@Layout", DbType.String, layout);
+                        db.AddInParameter(dbCom, "@LayoutType", DbType.String, layoutType);
                         db.ExecuteNonQuery(dbCom, trans);
                         trans.Commit();
                         GlobalCommonLayout.Instance = null;
@@ -71,38 +107,23 @@ namespace MesAdmin.Common.Common
                 DXMessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        #endregion
 
-        #region RestoreCommand
-        protected DelegateCommand restoreCommand;
-        public DelegateCommand RestoreCommand
+        protected bool CanRestoreLayout()
         {
-            get
-            {
-                if (restoreCommand == null)
-                {
-                    restoreCommand = new DelegateCommand(RestoreCommandExecute, RestoreCommandCanExecute);
-                }
-
-                return restoreCommand;
-            }
-        }
-
-        protected bool RestoreCommandCanExecute()
-        {
-            var rows = GlobalCommonLayout.Instance.AsEnumerable().Where(o => o.Field<string>("ViewName") == ViewName);
+            var rows = GlobalCommonLayout.Instance.AsEnumerable().Where(o => o.Field<string>("ViewName") == ViewName && o.Field<string>("LayoutType") == layoutType);
             return rows.Count() > 0;
         }
-        protected void RestoreCommandExecute()
+        protected void OnRestoreLayout()
         {
             try
             {
                 Database db = ProviderFactory.Instance;
-                string sql = "DELETE common_gridLayout WHERE UserId = @UserID AND ViewName = @ViewName";
+                string sql = "DELETE common_gridLayout WHERE UserId = @UserID AND ViewName = @ViewName AND LayoutType = @LayoutType";
 
                 DbCommand dbCom = db.GetSqlStringCommand(sql);
                 db.AddInParameter(dbCom, "@UserID", DbType.String, DSUser.Instance.UserID);
                 db.AddInParameter(dbCom, "@ViewName", DbType.String, ViewName);
+                db.AddInParameter(dbCom, "@LayoutType", DbType.String, layoutType);
                 db.ExecuteNonQuery(dbCom);
                 GlobalCommonLayout.Instance = null;
 
@@ -112,29 +133,6 @@ namespace MesAdmin.Common.Common
             catch (Exception ex)
             {
                 DXMessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-        #endregion RestoreCommand
-
-        protected override void OnAttached()
-        {
-            base.OnAttached();
-            AssociatedObject.Loaded += OnAssociatedObjectLoaded;
-        }
-
-        protected void OnAssociatedObjectLoaded(object sender, RoutedEventArgs e)
-        {
-            // default layout 을 항상 갱신(최신상태 유지용)
-            LayoutStream = new MemoryStream();
-            AssociatedObject.SaveLayoutToStream(LayoutStream);
-
-            var rows = GlobalCommonLayout.Instance.AsEnumerable().Where(o => o.Field<string>("ViewName") == ViewName);
-            if (rows.Count() == 0) return;
-
-            using (MemoryStream str = new MemoryStream(Encoding.UTF8.GetBytes(rows.FirstOrDefault().Field<string>("Layout"))))
-            {
-                ((GridControl)AssociatedObject).AutoExpandAllGroups = true;
-                AssociatedObject.RestoreLayoutFromStream(str);
             }
         }
     }

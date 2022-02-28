@@ -51,6 +51,8 @@ namespace MesAdmin.Common.Common
         }
         #endregion
 
+        private const string layoutType = "dock";
+
         protected override void OnAttached()
         {
             base.OnAttached();
@@ -66,7 +68,7 @@ namespace MesAdmin.Common.Common
             workspaceManager.CaptureWorkspace("Layout");
             workspaceManager.SaveWorkspace("Layout", LayoutStream);
 
-            var rows = GlobalCommonDockLayout.Instance.AsEnumerable().Where(o => o.Field<string>("ViewName") == ViewName);
+            var rows = GlobalCommonLayout.Instance.AsEnumerable().Where(o => o.Field<string>("ViewName") == ViewName && o.Field<string>("LayoutType") == layoutType);
             if (rows.Count() == 0) return;
 
             using (MemoryStream str = new MemoryStream(Encoding.UTF8.GetBytes(rows.FirstOrDefault().Field<string>("Layout"))))
@@ -97,13 +99,14 @@ namespace MesAdmin.Common.Common
                         DbTransaction trans = conn.BeginTransaction();
                         DbCommand dbCom = null;
 
-                        dbCom = db.GetStoredProcCommand("usp_common_dockLayout");
+                        dbCom = db.GetStoredProcCommand("usp_common_gridLayout");
                         db.AddInParameter(dbCom, "@ViewName", DbType.String, ViewName);
                         db.AddInParameter(dbCom, "@InsertId", DbType.String, DSUser.Instance.UserID);
                         db.AddInParameter(dbCom, "@Layout", DbType.String, layout);
+                        db.AddInParameter(dbCom, "@LayoutType", DbType.String, layoutType);
                         db.ExecuteNonQuery(dbCom, trans);
                         trans.Commit();
-                        GlobalCommonDockLayout.Instance = null;
+                        GlobalCommonLayout.Instance = null;
                     }
                 }
             }
@@ -115,7 +118,7 @@ namespace MesAdmin.Common.Common
 
         protected bool CanRestoreLayout()
         {
-            var rows = GlobalCommonDockLayout.Instance.AsEnumerable().Where(o => o.Field<string>("ViewName") == ViewName);
+            var rows = GlobalCommonLayout.Instance.AsEnumerable().Where(o => o.Field<string>("ViewName") == ViewName && o.Field<string>("LayoutType") == layoutType);
             return rows.Count() > 0;
         }
         protected void OnRestoreLayout()
@@ -123,13 +126,14 @@ namespace MesAdmin.Common.Common
             try
             {
                 Database db = ProviderFactory.Instance;
-                string sql = "DELETE common_dockLayout WHERE UserId = @UserID AND ViewName = @ViewName";
+                string sql = "DELETE common_gridLayout WHERE UserId = @UserID AND ViewName = @ViewName AND LayoutType = @LayoutType";
 
                 DbCommand dbCom = db.GetSqlStringCommand(sql);
                 db.AddInParameter(dbCom, "@UserID", DbType.String, DSUser.Instance.UserID);
                 db.AddInParameter(dbCom, "@ViewName", DbType.String, ViewName);
+                db.AddInParameter(dbCom, "@LayoutType", DbType.String, layoutType);
                 db.ExecuteNonQuery(dbCom);
-                GlobalCommonDockLayout.Instance = null;
+                GlobalCommonLayout.Instance = null;
 
                 LayoutStream.Seek(0, SeekOrigin.Begin);
                 IWorkspaceManager workspaceManager = WorkspaceManager.GetWorkspaceManager(AssociatedObject);
