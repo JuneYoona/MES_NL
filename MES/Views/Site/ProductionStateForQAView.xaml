@@ -21,11 +21,6 @@
     <UserControl.DataContext>
         <ViewModels:ProductionStateForQAVM/>
     </UserControl.DataContext>
-
-    <UserControl.Resources>
-        <utils:EqpCodeConverter x:Key="EqpCodeConverter"/>
-    </UserControl.Resources>
-
     <Grid>
         <DockPanel>
             <dxr:RibbonControl DockPanel.Dock="Top">

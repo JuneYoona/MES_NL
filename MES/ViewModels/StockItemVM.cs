@@ -29,7 +29,7 @@ namespace MesAdmin.ViewModels
         public string BizAreaCode
         {
             get { return GetProperty(() => BizAreaCode); }
-            set { SetProperty(() => BizAreaCode, value); }
+            set { SetProperty(() => BizAreaCode, value, () => { WhCode = ""; ItemAccount = ""; }); }
         }
         public string WhCode
         {

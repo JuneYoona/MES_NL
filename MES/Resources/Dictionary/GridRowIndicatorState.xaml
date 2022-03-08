@@ -52,17 +52,17 @@
             <DataTrigger Binding="{Binding Row.State, Mode=OneWay}" Value="Deleted">
                 <Setter TargetName="iconPresenter" Property="Visibility" Value="Collapsed" />
                 <Setter TargetName="Image" Property="Visibility" Value="Visible" />
-                <Setter TargetName="Image" Property="Source" Value="/Resources/Images/Red pin.png" />
+                <Setter TargetName="Image" Property="Source" Value="pack://application:,,,/MesNL;component/Resources/Images/Red pin.png" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Row.State, Mode=OneWay}" Value="Added">
                 <Setter TargetName="iconPresenter" Property="Visibility" Value="Collapsed" />
                 <Setter TargetName="Image" Property="Visibility" Value="Visible" />
-                <Setter TargetName="Image" Property="Source" Value="/Resources/Images/Blue pin.png" />
+                <Setter TargetName="Image" Property="Source" Value="pack://application:,,,/MesNL;component/Resources/Images/Blue pin.png" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Row.State, Mode=OneWay}" Value="Modified">
                 <Setter TargetName="iconPresenter" Property="Visibility" Value="Collapsed" />
                 <Setter TargetName="Image" Property="Visibility" Value="Visible" />
-                <Setter TargetName="Image" Property="Source" Value="/Resources/Images/Yellow pin.png" />
+                <Setter TargetName="Image" Property="Source" Value="pack://application:,,,/MesNL;component/Resources/Images/Yellow pin.png" />
             </DataTrigger>
         </DataTemplate.Triggers>
     </DataTemplate>

@@ -20,7 +20,6 @@
     </UserControl.DataContext>
 
     <UserControl.Resources>
-        <utils:CascadingEquipment x:Key="CascadingEquipment"/>
         <DataTemplate x:Key="WaCode">
             <dxg:LookUpEdit
                 ItemsSource="{Binding View.DataContext.WaCollections}"

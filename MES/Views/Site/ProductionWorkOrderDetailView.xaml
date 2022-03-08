@@ -22,11 +22,6 @@
     <UserControl.DataContext>
         <viewmodel:ProductionWorkOrderDetailVM />
     </UserControl.DataContext>
-
-    <UserControl.Resources>
-        <utils:EqpCodeConverter x:Key="EqpCodeConverter"/>
-    </UserControl.Resources>
-
     <dxmvvm:Interaction.Behaviors>
         <dx:DialogService Name="ItemView" DialogWindowStartupLocation="CenterOwner">
             <dx:DialogService.ViewTemplate>

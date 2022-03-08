@@ -300,7 +300,7 @@
                                             <dx:WaitIndicator DeferedVisibility="True" Content="데이터등록중..." Height="105" OverridesDefaultStyle="True" />
                                         </DataTemplate>
                                     </dx:LoadingDecorator.SplashScreenTemplate>
-                                    <dxg:GridControl
+                                    <custom:DSGridControl
                                         common:GridRowIndicatorHelper.IsEnabled="True"
                                         ItemsSource="{Binding QualityElementIVLList, UpdateSourceTrigger=PropertyChanged}"
                                         TotalSummarySource="{Binding QualityElementIVLResult}"
@@ -310,11 +310,9 @@
                                         ShowBorder="True"
                                         ClipboardCopyMode="ExcludeHeader"
                                         EnableSmartColumnsGeneration="True">
-                                        <dxg:GridControl.Resources>
-                                            <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicatorState.xaml" />
-                                        </dxg:GridControl.Resources>
                                         <dxg:GridControl.View>
                                             <dxg:TableView
+                                                PasteMode="Append"
                                                 AllowPerPixelScrolling="True" 
                                                 ShowTotalSummary="True"
                                                 IsTotalSummaryMenuEnabled="False"
@@ -364,7 +362,7 @@
                                                 <dxg:GridColumn FieldName="CIEy" Header="CIEy" HorizontalHeaderContentAlignment="Center" AllowSorting="False" AllowColumnFiltering="False" Width="80" />
                                             </dxg:GridControlBand>
                                         </dxg:GridControl.Bands>
-                                    </dxg:GridControl>
+                                    </custom:DSGridControl>
                                 </dx:LoadingDecorator>
                             </DockPanel>
                         </Grid>
@@ -398,7 +396,7 @@
                                             <dx:WaitIndicator DeferedVisibility="True" Content="데이터등록중..." Height="105" OverridesDefaultStyle="True" />
                                         </DataTemplate>
                                     </dx:LoadingDecorator.SplashScreenTemplate>
-                                    <dxg:GridControl
+                                    <custom:DSGridControl
                                         common:GridRowIndicatorHelper.IsEnabled="True"
                                         ItemsSource="{Binding QualityElementLTList}"
                                         TotalSummarySource="{Binding QualityElementLTResult}"
@@ -408,11 +406,9 @@
                                         ShowBorder="True"
                                         ClipboardCopyMode="ExcludeHeader"
                                         EnableSmartColumnsGeneration="True">
-                                        <dxg:GridControl.Resources>
-                                            <ResourceDictionary Source="/Resources/Dictionary/GridRowIndicatorState.xaml" />
-                                        </dxg:GridControl.Resources>
                                         <dxg:GridControl.View>
                                             <dxg:TableView
+                                                PasteMode="Append"
                                                 AllowPerPixelScrolling="True" 
                                                 ShowTotalSummary="True"
                                                 IsTotalSummaryMenuEnabled="False"
@@ -447,7 +443,7 @@
                                                 <dxg:GridColumn FieldName="Ref" Header="sample-1" Width="150" HorizontalHeaderContentAlignment="Center" AllowSorting="False" AllowColumnFiltering="False" />
                                             </dxg:GridControlBand>
                                         </dxg:GridControl.Bands>
-                                    </dxg:GridControl>
+                                    </custom:DSGridControl>
                                 </dx:LoadingDecorator>
                             </DockPanel>
                         </Grid>

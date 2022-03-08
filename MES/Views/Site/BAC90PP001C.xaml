@@ -33,7 +33,6 @@
 
     <UserControl.Resources>
         <dxmvvm:BooleanNegationConverter x:Key="BooleanNegationConverter"/>
-        <utils:CascadingEquipment x:Key="CascadingEquipment"/>
         <DataTemplate x:Key="ItemCode">
             <dxe:ButtonEdit 
                 Name="PART_Editor"

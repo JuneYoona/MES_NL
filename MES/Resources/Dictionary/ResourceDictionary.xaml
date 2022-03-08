@@ -205,10 +205,6 @@
     </Style>
     <!--#endregion-->
     <!--#region search contorls-->
-    <local:CascadingWorkArea x:Key="CascadingWorkArea" />
-    <local:CascadingWarehouse x:Key="CascadingWarehouse" />
-    <local:CascadingItemAccount x:Key="CascadingItemAccount" />
-    <local:CascadingMoveType x:Key="CascadingMoveType" />
     <DataTemplate x:Key="ItalicGray">
         <TextBlock Text="{Binding}" FontStyle="Italic" Foreground="Gray" />
     </DataTemplate>
@@ -245,7 +241,6 @@
             NullText="창고"
             NullValueButtonPlacement="EditBox"
             ItemsSource="{Binding DataContext.BizAreaCode, Converter={StaticResource CascadingWarehouse}, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}"
-            EditValue="{Binding DataContext.WhCode, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}"
             ValueMember="MinorCode"
             DisplayMember="MinorName">
             <dxmvvm:Interaction.Behaviors>
@@ -259,7 +254,6 @@
             NullText="공정"
             NullValueButtonPlacement="EditBox"
             ItemsSource="{Binding DataContext.BizAreaCode, Converter={StaticResource CascadingWorkArea}, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}"
-            EditValue="{Binding DataContext.WaCode, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}"
             ValueMember="WaCode"
             DisplayMember="WaName">
             <dxmvvm:Interaction.Behaviors>
@@ -273,7 +267,6 @@
             NullText="공정"
             Background="#F6EDCB"
             ItemsSource="{Binding DataContext.BizAreaCode, Converter={StaticResource CascadingWorkArea}, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}"
-            EditValue="{Binding DataContext.WaCode, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}"
             ValueMember="WaCode"
             DisplayMember="WaName">
             <dxmvvm:Interaction.Behaviors>
@@ -347,7 +340,6 @@
             NullText="품목계정"
             NullValueButtonPlacement="EditBox"
             ItemsSource="{Binding DataContext.BizAreaCode, Converter={StaticResource CascadingItemAccount}, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}"
-            EditValue="{Binding DataContext.ItemAccount, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}"
             ValueMember="MinorCode"
             DisplayMember="MinorName">
             <dxmvvm:Interaction.Behaviors>
@@ -359,8 +351,7 @@
     <DataTemplate x:Key="TransType">
         <dxe:ComboBoxEdit
             NullText="수불구분"
-            ItemsSource="{Binding DataContext.TransTypeList, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}" 
-            EditValue="{Binding DataContext.TransType, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}"
+            ItemsSource="{Binding DataContext.TransTypeList, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}"
             NullValueButtonPlacement="EditBox"
             ValueMember="MinorCode"
             DisplayMember="MinorName">
@@ -373,8 +364,7 @@
     <DataTemplate x:Key="MoveType">
         <dxe:ComboBoxEdit
             NullText="수불유형"
-            ItemsSource="{Binding DataContext.TransType, Converter={StaticResource CascadingMoveType}, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}" 
-            EditValue="{Binding DataContext.MoveType, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}"
+            ItemsSource="{Binding DataContext.TransType, Converter={StaticResource CascadingMoveType}, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}"
             NullValueButtonPlacement="EditBox"
             ValueMember="MinorCode"
             DisplayMember="MinorName">
@@ -391,6 +381,12 @@
     <local:WaCodeConverter x:Key="WaCodeConverter"/>
     <local:BizCodeConverter x:Key="BizCodeConverter"/>
     <local:SoTypeCodeConverter x:Key="SoTypeCodeConverter"/>
+    <local:CascadingWorkArea x:Key="CascadingWorkArea" />
+    <local:CascadingWarehouse x:Key="CascadingWarehouse"/>
+    <local:CascadingItemAccount x:Key="CascadingItemAccount"/>
+    <local:CascadingMoveType x:Key="CascadingMoveType"/>
+    <local:EqpCodeConverter x:Key="EqpCodeConverter"/>
+    <local:CascadingEquipment x:Key="CascadingEquipment"/>
     <!--#endregion-->
     
     <DataTemplate x:Key="AltItemCode">
@@ -509,8 +505,7 @@
             <models:ItemInfo Text="Fail" Value="Fail"/>
             <models:ItemInfo Text="N/A" Value="N/A"/>
         </dxe:ComboBoxEdit>
-    </DataTemplate>
-    
+    </DataTemplate>    
     
     <Style TargetType="dxe:TextEdit" x:Key="NumericStyle">
         <Setter Property="MaskType" Value="Numeric"  />

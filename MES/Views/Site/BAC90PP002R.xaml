@@ -17,9 +17,6 @@
              xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="1200">
-    <UserControl.Resources>
-        <utils:EqpCodeConverter x:Key="EqpCodeConverter"/>
-    </UserControl.Resources>
     <Grid>
         <DockPanel>
             <dxr:RibbonControl DockPanel.Dock="Top">

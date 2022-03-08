@@ -33,7 +33,7 @@ namespace MesAdmin.ViewModels
         public string TransType
         {
             get { return GetProperty(() => TransType); }
-            set { SetProperty(() => TransType, value); }
+            set { SetProperty(() => TransType, value, () => MoveType = ""); }
         }
         public DateTime StartDate
         {
@@ -73,7 +73,7 @@ namespace MesAdmin.ViewModels
         public string BizAreaCode
         {
             get { return GetProperty(() => BizAreaCode); }
-            set { SetProperty(() => BizAreaCode, value); }
+            set { SetProperty(() => BizAreaCode, value, () => ItemAccount = ""); }
         }
         public bool IsBusy
         {

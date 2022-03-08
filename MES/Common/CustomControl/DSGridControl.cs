@@ -35,9 +35,10 @@ namespace MesAdmin.Common.CustomControl
 
         private void DSGridControl_PastingFromClipboard(object sender, PastingFromClipboardEventArgs e)
         {
-            e.Handled = true;
             GridControl grid = sender as GridControl;
             TableView view = grid.View as TableView;
+            if (view.PasteMode == DevExpress.Export.PasteMode.Append) return;
+            e.Handled = true;
 
             string[] rows = Clipboard.GetText().Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
             try
