@@ -37,34 +37,42 @@
                                 <dxb:BarButtonItem Content="삭제" KeyGesture="CTRL+D" Command="{Binding DeleteCmd}" LargeGlyph="{dx:DXImage SvgImages/Snap/SnapDeleteList.svg}" />
                             </dxr:RibbonPageGroup>
                             <dxr:RibbonPageGroup Caption="Find">
-                                <dxb:BarStaticItem>
-                                    <dxb:BarStaticItem.ContentTemplate>
+                                <dxb:BarEditItem
+                                    EditValue="{Binding MajorCode, UpdateSourceTrigger=PropertyChanged}"
+                                    EditWidth="180"
+                                    Margin="0 5 0 0">
+                                    <dxb:BarEditItem.EditTemplate>
                                         <DataTemplate>
-                                            <StackPanel Orientation="Vertical">
-                                                <dxe:TextEdit
-                                                    Width="200" 
-                                                    Margin="2 5 2 0"
-                                                    Background="White"
-                                                    NullText="Major 코드"
-                                                    Text="{Binding DataContext.MajorCode, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}">
-                                                    <dxe:TextEdit.InputBindings>
-                                                        <KeyBinding Key="Enter" Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}" />
-                                                    </dxe:TextEdit.InputBindings>
-                                                </dxe:TextEdit>
-                                                <dxe:TextEdit
-                                                    Width="200" 
-                                                    Margin="2"
-                                                    NullText="Major 코드명"
-                                                    Background="White"
-                                                    Text="{Binding DataContext.MajorName, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}">
-                                                    <dxe:TextEdit.InputBindings>
-                                                        <KeyBinding Key="Enter" Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}" />
-                                                    </dxe:TextEdit.InputBindings>
-                                                </dxe:TextEdit>
-                                            </StackPanel>
+                                            <dxe:TextEdit
+                                                x:Name="PART_Editor"
+                                                NullText="Major 코드">
+                                                <dxmvvm:Interaction.Behaviors>
+                                                    <dxmvvm:KeyToCommand
+                                                        KeyGesture="Enter"
+                                                        Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}" />
+                                                </dxmvvm:Interaction.Behaviors>
+                                            </dxe:TextEdit>
                                         </DataTemplate>
-                                    </dxb:BarStaticItem.ContentTemplate>
-                                </dxb:BarStaticItem>
+                                    </dxb:BarEditItem.EditTemplate>
+                                </dxb:BarEditItem>
+                                <dxb:BarEditItem
+                                    EditValue="{Binding MajorName, UpdateSourceTrigger=PropertyChanged}"
+                                    EditWidth="180"
+                                    Margin="0 2 0 0">
+                                    <dxb:BarEditItem.EditTemplate>
+                                        <DataTemplate>
+                                            <dxe:TextEdit
+                                                x:Name="PART_Editor"
+                                                NullText="Major 코드명">
+                                                <dxmvvm:Interaction.Behaviors>
+                                                    <dxmvvm:KeyToCommand
+                                                        KeyGesture="Enter"
+                                                        Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}" />
+                                                </dxmvvm:Interaction.Behaviors>
+                                            </dxe:TextEdit>
+                                        </DataTemplate>
+                                    </dxb:BarEditItem.EditTemplate>
+                                </dxb:BarEditItem>
                             </dxr:RibbonPageGroup>
                         </dxr:RibbonPage>
                     </dxr:RibbonDefaultPageCategory>

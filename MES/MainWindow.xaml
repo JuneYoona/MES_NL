@@ -11,7 +11,7 @@
                     xmlns:local="clr-namespace:MesAdmin"
                     xmlns:common="clr-namespace:MesAdmin.Common.Common"
                     TitleAlignment="Left"
-                    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm">
+                    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" xmlns:view="clr-namespace:MesAdmin.Views">
     <dx:ThemedWindow.HeaderItems>
         <dx:HeaderItemControl Content="도움말">
             <dxmvvm:Interaction.Behaviors>

@@ -15,6 +15,14 @@ namespace MesAdmin
         {
             // DispatcherService globally
             ServiceContainer.Default.RegisterService("DispatcherService", new DispatcherService());
+            // Download excel globally
+            ServiceContainer.Default.RegisterService("SaveFileDialogServiceXlsx", new SaveFileDialogService
+            {
+                RestorePreviouslySelectedDirectory = true,
+                DefaultExt = ".xlsx",
+                Filter = "Excel (.xlsx)|*.xlsx",
+                FilterIndex = 1
+            });
         }
 
         protected override void OnStartup(StartupEventArgs e)

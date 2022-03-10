@@ -10,14 +10,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:common="clr-namespace:MesAdmin.Common.Common"
              xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
-             xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
              xmlns:viewmodel="clr-namespace:MesAdmin.ViewModels"
              xmlns:view="clr-namespace:MesAdmin.Views"
              mc:Ignorable="d"
              d:DesignHeight="436"
              d:DesignWidth="800"
              DataContext="{dxmvvm:ViewModelSource viewmodel:ExceptionDetailsVM}">
-    <dxmvvm:Interaction.Behaviors>
+    <!--<dxmvvm:Interaction.Behaviors>
         <dx:DialogService Name="ItemView" DialogWindowStartupLocation="CenterOwner">
             <dx:DialogService.ViewTemplate>
                 <DataTemplate>
@@ -31,7 +30,7 @@
                 </Style>
             </dx:DialogService.DialogStyle>
         </dx:DialogService>
-    </dxmvvm:Interaction.Behaviors>
+    </dxmvvm:Interaction.Behaviors>-->
     
     <Grid>
         <dxb:BarManager>

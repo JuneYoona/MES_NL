@@ -1,26 +1,40 @@
-﻿<UserControl    x:Class="MesAdmin.MainView"
-                xmlns="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
-                xmlns:ve="http://schemas.devexpress.com/winfx/2008/xaml/docking/visualelements"
-                xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
-                xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-                xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
-                xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
-                xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
-                xmlns:dxn="http://schemas.devexpress.com/winfx/2008/xaml/navbar"
-                xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
-                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                xmlns:common="clr-namespace:MesAdmin.Common.Common"
-                xmlns:local="clr-namespace:MesAdmin.Common.Utils"
-                xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
-                xmlns:org="clr-namespace:MesAdmin.Models"
-                mc:Ignorable="d"
-                d:DesignHeight="644"
-                d:DesignWidth="929"
-                x:Name="UCMainView">
+﻿<UserControl x:Class="MesAdmin.MainView"
+             xmlns="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
+             xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
+             xmlns:ve="http://schemas.devexpress.com/winfx/2008/xaml/docking/visualelements"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns:dxn="http://schemas.devexpress.com/winfx/2008/xaml/navbar"
+             xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:common="clr-namespace:MesAdmin.Common.Common"
+             xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
+             xmlns:local="clr-namespace:MesAdmin.Common.Utils"
+             xmlns:org="clr-namespace:MesAdmin.Models"
+             xmlns:view="clr-namespace:MesAdmin.Views"
+             mc:Ignorable="d"
+             d:DesignHeight="644"
+             d:DesignWidth="929"
+             x:Name="UCMainView">
     <dxmvvm:Interaction.Behaviors>
         <dxmvvm:EventToCommand EventName="Loaded" Command="{Binding LoadCmd}" />
+        <dx:DialogService Name="ItemView" DialogWindowStartupLocation="CenterOwner">
+            <dx:DialogService.ViewTemplate>
+                <DataTemplate>
+                    <view:PopupItemView/>
+                </DataTemplate>
+            </dx:DialogService.ViewTemplate>
+            <dx:DialogService.DialogStyle>
+                <Style TargetType="dx:DXDialogWindow">
+                    <Setter Property="Width" Value="680"/>
+                    <Setter Property="Height" Value="550"/>
+                </Style>
+            </dx:DialogService.DialogStyle>
+        </dx:DialogService>
     </dxmvvm:Interaction.Behaviors>
     <UserControl.Resources>
         <local:NotVisibilityConverter x:Key="NotVisibilityConverter"/>

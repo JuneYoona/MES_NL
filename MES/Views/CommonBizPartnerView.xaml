@@ -37,41 +37,48 @@
                                 <dxb:BarButtonItem Content="검색" KeyGesture="F5" Command="{Binding SearchCmd}" LargeGlyph="{dx:DXImage SvgImages/Spreadsheet/Zoom.svg}" />
                             </dxr:RibbonPageGroup>
                             <dxr:RibbonPageGroup Caption="Find">
-                                <dxb:BarStaticItem>
-                                    <dxb:BarStaticItem.ContentTemplate>
+                                <dxb:BarEditItem
+                                    EditValue="{Binding BizName, UpdateSourceTrigger=PropertyChanged}"
+                                    EditWidth="200"
+                                    Margin="0 5 0 0">
+                                    <dxb:BarEditItem.EditTemplate>
                                         <DataTemplate>
-                                            <StackPanel Orientation="Vertical" Margin="0 5 0 0">
+                                            <dxe:TextEdit
+                                                x:Name="PART_Editor"
+                                                NullText="거래처명">
                                                 <dxmvvm:Interaction.Behaviors>
-                                                    <dxmvvm:KeyToCommand KeyGesture="F5" Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}"/>
+                                                    <dxmvvm:KeyToCommand
+                                                        KeyGesture="Enter"
+                                                        Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}" />
                                                 </dxmvvm:Interaction.Behaviors>
-                                                <dxe:TextEdit
-                                                    Width="200"
-                                                    Background="White"
-                                                    NullText="거래처명"
-                                                    Text="{Binding DataContext.BizName, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}">
-                                                    <dxe:TextEdit.InputBindings>
-                                                        <KeyBinding Key="Enter" Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}" />
-                                                    </dxe:TextEdit.InputBindings>
-                                                </dxe:TextEdit>
-                                                <dxe:ComboBoxEdit 
-                                                    Width="200" 
-                                                    Margin="0 2 0 0"
-                                                    IsTextEditable="False"
-                                                    Background="White"
-                                                    NullText="거래처 구분"
-                                                    NullValueButtonPlacement="EditBox"
-                                                    ItemsSource="{Binding DataContext.BizTypeCollections, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}"
-                                                    EditValue="{Binding DataContext.BizType, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}"
-                                                    DisplayMember="MinorName"
-                                                    ValueMember="MinorCode">
-                                                    <dxe:TextEdit.InputBindings>
-                                                        <KeyBinding Key="Enter" Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}" />
-                                                    </dxe:TextEdit.InputBindings>
-                                                </dxe:ComboBoxEdit>
-                                            </StackPanel>
+                                            </dxe:TextEdit>
                                         </DataTemplate>
-                                    </dxb:BarStaticItem.ContentTemplate>
-                                </dxb:BarStaticItem>
+                                    </dxb:BarEditItem.EditTemplate>
+                                </dxb:BarEditItem>
+                                <dxb:BarEditItem
+                                    EditValue="{Binding BizType, UpdateSourceTrigger=PropertyChanged}"
+                                    EditWidth="200"
+                                    Margin="0 2 0 0">
+                                    <dxb:BarEditItem.EditTemplate>
+                                        <DataTemplate>
+                                            <dxe:ComboBoxEdit 
+                                                x:Name="PART_Editor"
+                                                IsTextEditable="False"
+                                                NullText="거래처 구분"
+                                                NullValueButtonPlacement="EditBox"
+                                                ItemsSource="{Binding DataContext.BizTypeCollections, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}"
+                                                EditValue="{Binding DataContext.BizType, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}"
+                                                DisplayMember="MinorName"
+                                                ValueMember="MinorCode">
+                                                <dxmvvm:Interaction.Behaviors>
+                                                    <dxmvvm:KeyToCommand
+                                                        KeyGesture="Enter"
+                                                        Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}" />
+                                                </dxmvvm:Interaction.Behaviors>
+                                            </dxe:ComboBoxEdit>
+                                        </DataTemplate>
+                                    </dxb:BarEditItem.EditTemplate>
+                                </dxb:BarEditItem>
                             </dxr:RibbonPageGroup>
                             <dxr:RibbonPageGroup Caption="ERP Sync Task">
                                 <dxb:BarButtonItem Content="ERP 동기화" KeyGesture="CTRL+Y" Command="{Binding SyncErpCmd}" LargeGlyph="{dx:DXImage SvgImages/Dashboards/ConvertTo.svg}" />

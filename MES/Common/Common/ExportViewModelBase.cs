@@ -1,9 +1,8 @@
-﻿using System;
-using System.IO;
-using DevExpress.XtraPrinting;
+﻿using DevExpress.Mvvm;
 using DevExpress.Xpf.Grid;
-using DevExpress.Mvvm;
-using System.Diagnostics;
+using DevExpress.XtraPrinting;
+using System;
+using System.Windows;
 
 namespace MesAdmin.Common.Common
 {
@@ -11,40 +10,38 @@ namespace MesAdmin.Common.Common
     {
         #region Services
         IMessageBoxService MessageBoxService { get { return GetService<IMessageBoxService>(); } }
+        ISaveFileDialogService SaveFileDialogService { get { return GetService<ISaveFileDialogService>("SaveFileDialogServiceXlsx"); } }
         #endregion
 
         public void OnToExcel(object sender)
         {
             TableView view = sender as TableView;
             view.PrintAutoWidth = false;
+            view.PrintCellStyle = (Style)Application.Current.FindResource("PrintCellStyle");
+
 
             XlsxExportOptionsEx exportOption = new XlsxExportOptionsEx
             {
-                TextExportMode = TextExportMode.Text,
+                TextExportMode = TextExportMode.Value,
                 ExportHyperlinks = false,
-                ExportType = DevExpress.Export.ExportType.WYSIWYG
+                AllowSortingAndFiltering = DevExpress.Utils.DefaultBoolean.False,
+                ExportType = DevExpress.Export.ExportType.WYSIWYG,
             };
 
             Random rnd = new Random();
-            string tempFileName = Path.Combine(Path.GetTempPath(), rnd.Next() + ".xlsx");
+            SaveFileDialogService.DefaultFileName = rnd.Next() + ".xlsx";
 
-            try
+            if (SaveFileDialogService.ShowDialog())
             {
-                view.ExportToXlsx(tempFileName, exportOption);
-                var process = new Process();
-                process.StartInfo = new ProcessStartInfo(tempFileName);
-                process.EnableRaisingEvents = true;
-
-                process.Exited += delegate
+                try
                 {
-                    if (File.Exists(tempFileName))
-                        File.Delete(tempFileName);
-                };
-                process.Start();
-            }
-            catch (Exception ex)
-            {
-                MessageBoxService.ShowMessage(ex.Message, "Information", MessageButton.OK, MessageIcon.Information);
+                    view.ExportToXlsx(SaveFileDialogService.GetFullFileName(), exportOption);
+                    System.Diagnostics.Process.Start(SaveFileDialogService.GetFullFileName());
+                }
+                catch (Exception ex)
+                {
+                    MessageBoxService.ShowMessage(ex.Message, "Information", MessageButton.OK, MessageIcon.Information);
+                }
             }
         }
     }

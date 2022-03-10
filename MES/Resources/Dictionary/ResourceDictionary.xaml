@@ -523,4 +523,9 @@
         </dxg:GridControl>
     </ControlTemplate>
     <!--#endregion-->
+    <!--#region excel export cell style / call ExportViewModelBase-->
+    <Style x:Key="PrintCellStyle" TargetType="dxe:BaseEdit" BasedOn="{StaticResource {dxgt:TableViewThemeKey ResourceKey=DefaultPrintCellStyle}}">
+        <!--<Setter Property="FontSize" Value="30"/>-->
+    </Style>
+    <!--#endregion-->
 </ResourceDictionary>
