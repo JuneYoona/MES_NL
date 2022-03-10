@@ -9,14 +9,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
-             xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
              mc:Ignorable="d" 
              d:DesignHeight="400"
              d:DesignWidth="670">
     <dxmvvm:Interaction.Behaviors>
         <dxmvvm:CurrentWindowService Window="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
     </dxmvvm:Interaction.Behaviors>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="24"/>

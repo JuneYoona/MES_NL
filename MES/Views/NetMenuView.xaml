@@ -1,26 +1,22 @@
 ﻿<UserControl x:Class="MesAdmin.Views.NetMenuView"
-    xmlns="http://schemas.microsoft.com/netfx/2009/xaml/presentation" 
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
-    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
-    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
-    xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
-    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
-    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
-    xmlns:viewmodel="clr-namespace:MesAdmin.ViewModels"
-    xmlns:view="clr-namespace:MesAdmin.Views"             
-    xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
-    xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
-    mc:Ignorable="d"
-    d:DesignHeight="650"
-    d:DesignWidth="670">
+             xmlns="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
+             xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewmodel="clr-namespace:MesAdmin.ViewModels"
+             mc:Ignorable="d"
+             d:DesignHeight="650"
+             d:DesignWidth="670">
     <UserControl.DataContext>
         <viewmodel:NetMenuVM />
     </UserControl.DataContext>
-
     <UserControl.Resources>
         <Style x:Key="borderTmp" TargetType="{x:Type dxe:TextEdit}">
             <Setter Property="Background" Value="White" />

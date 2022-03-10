@@ -19,7 +19,6 @@
     <UserControl.DataContext>
         <ViewModels:MaterialDispenseVM/>
     </UserControl.DataContext>
-
     <dxmvvm:Interaction.Behaviors>
         <dx:DialogService Name="StockView" DialogWindowStartupLocation="CenterOwner">
             <dx:DialogService.ViewTemplate>

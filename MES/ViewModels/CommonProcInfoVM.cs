@@ -38,10 +38,10 @@ namespace MesAdmin.ViewModels
             get { return GetProperty(() => WhCode); }
             set { SetProperty(() => WhCode, value); }
         }
-        public CommonMinor EditBizAreaCode
+        public string BizAreaCode
         {
-            get { return GetProperty(() => EditBizAreaCode); }
-            set { SetProperty(() => EditBizAreaCode, value); }
+            get { return GetProperty(() => BizAreaCode); }
+            set { SetProperty(() => BizAreaCode, value); }
         }
         public bool IsBusy
         {
@@ -69,7 +69,8 @@ namespace MesAdmin.ViewModels
             SaveCmd = new DelegateCommand(OnSave, CanSave);
             CellValueChangedCmd = new DelegateCommand(OnCellValueChanged);
 
-            EditBizAreaCode = BizAreaCodeList.FirstOrDefault(u => u.MinorCode == DSUser.Instance.BizAreaCode);
+            if (!string.IsNullOrEmpty(DSUser.Instance.BizAreaCode))
+                BizAreaCode = BizAreaCodeList.FirstOrDefault(u => u.MinorCode == DSUser.Instance.BizAreaCode).MinorCode;
         }
 
         public bool CanSave()
@@ -120,7 +121,7 @@ namespace MesAdmin.ViewModels
         }
         public void SearchCore()
         {
-            string bizAreaCode = EditBizAreaCode == null ? "" : EditBizAreaCode.MinorCode;
+            string bizAreaCode = BizAreaCode;
             Collections = new CommonWorkAreaInfoList(bizAreaCode);
 
             // Global 기준정보를 다시 가져오기 위해 Instance 초기화
@@ -132,7 +133,7 @@ namespace MesAdmin.ViewModels
         {
             CommonWorkAreaInfo proc = new CommonWorkAreaInfo
             {
-                BizAreaCode = EditBizAreaCode.MinorCode,
+                BizAreaCode = BizAreaCode,
                 UpdateDate = DateTime.Now,
                 State = EntityState.Added,
                 IsEnabled = true

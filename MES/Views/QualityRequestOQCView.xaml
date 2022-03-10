@@ -21,7 +21,6 @@
     <UserControl.DataContext>
         <ViewModels:QualityRequestVM/>
     </UserControl.DataContext>
-
     <UserControl.Resources>
         <common:CellTemplateSelector x:Key="cellTemplateSelector" />
     </UserControl.Resources>

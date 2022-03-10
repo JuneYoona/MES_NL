@@ -1,26 +1,23 @@
-﻿<UserControl 
-    x:Class="MesAdmin.Views.SalesPlanView"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
-    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
-    xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
-    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
-    xmlns:view="clr-namespace:MesAdmin.Views"             
-    xmlns:ViewModels="clr-namespace:MesAdmin.ViewModels"
-    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"             
-    mc:Ignorable="d"
-    xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
-    xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
-    xmlns:common="clr-namespace:MesAdmin.Common.Common"
-    d:DesignHeight="600" d:DesignWidth="600">
+﻿<UserControl x:Class="MesAdmin.Views.SalesPlanView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
+             xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
+             xmlns:ViewModels="clr-namespace:MesAdmin.ViewModels"
+             xmlns:view="clr-namespace:MesAdmin.Views"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="600">
     <UserControl.DataContext>
         <ViewModels:SalesPlanVM/>
     </UserControl.DataContext>
-
     <UserControl.Resources>
         <DataTemplate x:Key="PlanMonth">
             <dxe:SpinEdit

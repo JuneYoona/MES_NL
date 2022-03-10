@@ -37,30 +37,11 @@
                             <dxb:BarButtonItem Content="검색" KeyGesture="F5" Command="{Binding SearchCmd}" LargeGlyph="{dx:DXImage SvgImages/Spreadsheet/Zoom.svg}" />
                         </dxr:RibbonPageGroup>
                         <dxr:RibbonPageGroup Caption="Find">
-                            <dxb:BarStaticItem>
-                                <dxb:BarStaticItem.ContentTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Vertical">
-                                            <dxmvvm:Interaction.Behaviors>
-                                                <dxmvvm:KeyToCommand KeyGesture="F5" Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}"/>
-                                            </dxmvvm:Interaction.Behaviors>
-                                            <dxe:ComboBoxEdit
-                                                Width="200"
-                                                Margin="5"
-                                                Background="White"
-                                                NullText="공장정보"
-                                                NullValueButtonPlacement="EditBox"
-                                                ItemsSource="{Binding DataContext.BizAreaCodeList, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}"
-                                                EditValue="{Binding DataContext.EditBizAreaCode, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}"
-                                                DisplayMember="MinorName">
-                                                <dxe:ComboBoxEdit.InputBindings>
-                                                    <KeyBinding Key="Enter" Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}" />
-                                                </dxe:ComboBoxEdit.InputBindings>
-                                            </dxe:ComboBoxEdit>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </dxb:BarStaticItem.ContentTemplate>
-                            </dxb:BarStaticItem>
+                            <dxb:BarEditItem
+                                EditValue="{Binding BizAreaCode, UpdateSourceTrigger=PropertyChanged}"
+                                EditWidth="200"
+                                Margin="0 5 0 0"
+                                EditTemplate="{StaticResource BizAreaCode}" />
                         </dxr:RibbonPageGroup>
                     </dxr:RibbonPage>
                 </dxr:RibbonDefaultPageCategory>

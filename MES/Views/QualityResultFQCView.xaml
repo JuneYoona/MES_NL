@@ -20,7 +20,6 @@
     <UserControl.DataContext>
         <ViewModels:QualityResultVM />
     </UserControl.DataContext>
-
     <UserControl.Resources>
         <common:ColumnTemplateSelector x:Key="ColumnTemplateSelector"/>
         <DataTemplate x:Key="DefaultColumnTemplate">

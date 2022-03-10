@@ -18,7 +18,6 @@
     <UserControl.Resources>
         <ViewModels:TestConverter x:Key="TestConverter"/>
     </UserControl.Resources>
-
     <Grid>
         <dxb:BarManager>
             <DockPanel>

@@ -9,7 +9,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              x:Class="MesAdmin.Views.QualityResultIMRView"
              mc:Ignorable="d"
-             d:DesignHeight="600" d:DesignWidth="1100">
+             d:DesignHeight="600"
+             d:DesignWidth="1100">
     <Grid>
         <DockPanel>
             <dxb:ToolBarControl ShowDragWidget="False" BarItemDisplayMode="ContentAndGlyph" AllowQuickCustomization="False" DockPanel.Dock="Top">

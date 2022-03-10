@@ -12,7 +12,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:common="clr-namespace:MesAdmin.Common.Common"
              xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
-             xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
              xmlns:models="clr-namespace:MesAdmin.Models"
              xmlns:ViewModels="clr-namespace:MesAdmin.ViewModels"
              xmlns:view="clr-namespace:MesAdmin.Views"

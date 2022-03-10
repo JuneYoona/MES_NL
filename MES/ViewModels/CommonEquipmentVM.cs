@@ -39,10 +39,10 @@ namespace MesAdmin.ViewModels
             get { return GetProperty(() => BizAreaCodeList); }
             set { SetProperty(() => BizAreaCodeList, value); }
         }
-        public string EditBizAreaCode
+        public string BizAreaCode
         {
-            get { return GetProperty(() => EditBizAreaCode); }
-            set { SetProperty(() => EditBizAreaCode, value); }
+            get { return GetProperty(() => BizAreaCode); }
+            set { SetProperty(() => BizAreaCode, value); }
         }
         public string EqpCode
         {
@@ -75,7 +75,7 @@ namespace MesAdmin.ViewModels
         {
             BizAreaCodeList = GlobalCommonMinor.Instance.Where(u => u.MajorCode == "I0004");
             if (!string.IsNullOrEmpty(DSUser.Instance.BizAreaCode))
-                EditBizAreaCode = BizAreaCodeList.FirstOrDefault(u => u.MinorCode == DSUser.Instance.BizAreaCode).MinorCode;
+                BizAreaCode = BizAreaCodeList.FirstOrDefault(u => u.MinorCode == DSUser.Instance.BizAreaCode).MinorCode;
 
             WaCode = new CommonWorkAreaInfoList();
 
@@ -98,7 +98,7 @@ namespace MesAdmin.ViewModels
             CommonEquipment item = new CommonEquipment
             {
                 State = EntityState.Added,
-                BizAreaCode = EditBizAreaCode,
+                BizAreaCode = BizAreaCode,
                 UpdateDate = DateTime.Now,
                 EqpState = "W",
                 IsMonitor = false,
@@ -143,7 +143,7 @@ namespace MesAdmin.ViewModels
         }
         public void SearchCore()
         {
-            string bizAreaCode = EditBizAreaCode;
+            string bizAreaCode = BizAreaCode;
             string eqpCode = EqpCode;
             string eqpName = EqpName;
 

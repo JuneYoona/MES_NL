@@ -9,10 +9,40 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:MesAdmin.Common.Utils"
                     xmlns:models="clr-namespace:MesAdmin.Models">
+    <!--#region Cascading and Converter-->
     <local:MultiValueConverter x:Key="MultiValueConverter"/>
-    <!--#region ScrollBarMode TouchOverlap-->
+    <local:CascadingItemCode x:Key="CascadingItemCode"/>
+    <local:MinorCodeConverter x:Key="MinorCodeConverter"/>
+    <local:WaCodeConverter x:Key="WaCodeConverter"/>
+    <local:BizCodeConverter x:Key="BizCodeConverter"/>
+    <local:SoTypeCodeConverter x:Key="SoTypeCodeConverter"/>
+    <local:CascadingWorkArea x:Key="CascadingWorkArea" />
+    <local:CascadingWarehouse x:Key="CascadingWarehouse"/>
+    <local:CascadingItemAccount x:Key="CascadingItemAccount"/>
+    <local:CascadingMoveType x:Key="CascadingMoveType"/>
+    <local:EqpCodeConverter x:Key="EqpCodeConverter"/>
+    <local:CascadingEquipment x:Key="CascadingEquipment"/>
+    <local:StockTypeConverter x:Key="StockTypeConverter"/>
+    <local:DebitCreditConverter x:Key="DebitCreditConverter"/>
+    <!--#endregion-->
+    <!--#region Style-->
     <Style TargetType="Grid">
         <Setter Property="dx:ScrollBarExtensions.ScrollBarMode" Value="TouchOverlap"/>
+    </Style>
+    <Style x:Key="AddedTemplate" TargetType="dxg:LightweightCellEditor" BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=SelectionState}" Value="Focused">
+                <Setter Property="Background" Value="#FCF1C2" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding RowData.Row.State}" Value="Added">
+                <Setter Property="Background" Value="White" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    <Style TargetType="dxe:TextEdit" x:Key="NumericStyle">
+        <Setter Property="MaskType" Value="Numeric"  />
+        <Setter Property="Mask" Value="n2"  />
+        <Setter Property="MaskUseAsDisplayFormat" Value="True"  />
     </Style>
     <!--#endregion-->
     <!--#region search panel style-->
@@ -72,22 +102,6 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    <!--#endregion-->
-    <!--#region StateTemplate-->
-    <DataTemplate x:Key="StateTemplate">
-        <Image x:Name="Image" Height="14" Width="13" Source="{x:Null}"/>
-        <DataTemplate.Triggers>
-            <DataTrigger Binding="{Binding RowData.Row.State, Mode=OneWay}" Value="Deleted">
-                <Setter TargetName="Image" Property="Source" Value="/Resources/Images/Red pin.png" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding RowData.Row.State, Mode=OneWay}" Value="Added">
-                <Setter TargetName="Image" Property="Source" Value="/Resources/Images/Blue pin.png" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding RowData.Row.State, Mode=OneWay}" Value="Modified">
-                <Setter TargetName="Image" Property="Source" Value="/Resources/Images/Yellow pin.png" />
-            </DataTrigger>
-        </DataTemplate.Triggers>
-    </DataTemplate>
     <!--#endregion-->
     <!--#region file attached Template-->
     <DataTemplate x:Key="AttachedTemplate">
@@ -312,8 +326,8 @@
         </dxe:ComboBoxEdit>
     </DataTemplate>
     <DataTemplate x:Key="ItemCode">
-        <dxe:ButtonEdit x:Name="PART_Editor"
-            Background="White"
+        <dxe:ButtonEdit
+            x:Name="PART_Editor"
             NullText="품목코드">
             <dxe:TextEdit.InputBindings>
                 <KeyBinding Key="Enter" Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}" />
@@ -322,6 +336,15 @@
                 <dxmvvm:EventToCommand EventName="DefaultButtonClick" Command="{Binding DataContext.ShowItemDialogCmd, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}" />
             </dxmvvm:Interaction.Behaviors>
         </dxe:ButtonEdit>
+    </DataTemplate>
+    <DataTemplate x:Key="ItemName">
+        <dxe:TextEdit
+            x:Name="PART_Editor"
+            NullText="품목명">
+            <dxmvvm:Interaction.Behaviors>
+                <dxmvvm:KeyToCommand KeyGesture="Enter" Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}" />
+            </dxmvvm:Interaction.Behaviors>
+        </dxe:TextEdit>
     </DataTemplate>
     <DataTemplate x:Key="SoType">
         <dxe:ComboBoxEdit x:Name="PART_Editor"
@@ -375,20 +398,7 @@
         </dxe:ComboBoxEdit>
     </DataTemplate>
     <!--#endregion-->
-    <!--#region Cascading and Converter-->
-    <local:CascadingItemCode x:Key="CascadingItemCode"/>
-    <local:MinorCodeConverter x:Key="MinorCodeConverter"/>
-    <local:WaCodeConverter x:Key="WaCodeConverter"/>
-    <local:BizCodeConverter x:Key="BizCodeConverter"/>
-    <local:SoTypeCodeConverter x:Key="SoTypeCodeConverter"/>
-    <local:CascadingWorkArea x:Key="CascadingWorkArea" />
-    <local:CascadingWarehouse x:Key="CascadingWarehouse"/>
-    <local:CascadingItemAccount x:Key="CascadingItemAccount"/>
-    <local:CascadingMoveType x:Key="CascadingMoveType"/>
-    <local:EqpCodeConverter x:Key="EqpCodeConverter"/>
-    <local:CascadingEquipment x:Key="CascadingEquipment"/>
-    <!--#endregion-->
-    
+    <!--#region DataTemplate-->
     <DataTemplate x:Key="AltItemCode">
         <dxe:ButtonEdit
             Name="PART_Editor"
@@ -399,17 +409,15 @@
             </dxmvvm:Interaction.Behaviors>
         </dxe:ButtonEdit>
     </DataTemplate>
-
-    <Style x:Key="AddedTemplate" TargetType="dxg:LightweightCellEditor" BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}">
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding Path=SelectionState}" Value="Focused">
-                <Setter Property="Background" Value="#FCF1C2" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding RowData.Row.State}" Value="Added">
-                <Setter Property="Background" Value="White" />
-            </DataTrigger>
-        </Style.Triggers>
-    </Style>
+    <DataTemplate x:Key="PassFailTemplate">
+        <dxe:ComboBoxEdit Name="PART_Editor" DisplayMember="Text" ValueMember="Value">
+            <models:ItemInfo Text="Pass" Value="Pass"/>
+            <models:ItemInfo Text="Fail" Value="Fail"/>
+            <models:ItemInfo Text="N/A" Value="N/A"/>
+        </dxe:ComboBoxEdit>
+    </DataTemplate>    
+    <!--#endregion-->
+    <!--#region ControlTemplate contorls-->
     <!--WaCode ControlTemplate -->
     <ControlTemplate x:Key="WaCodeTemplate">
         <dxg:GridControl
@@ -453,7 +461,7 @@
             ShowBorder="False" >
             <dxg:GridControl.View>
                 <dxg:TableView 
-                    ShowGroupPanel="False" 
+                    ShowGroupPanel="False"
                     ShowIndicator="False"
                     AutoWidth="True"/>
             </dxg:GridControl.View>
@@ -499,20 +507,6 @@
         </dxg:GridControl>
     </ControlTemplate>
     
-    <DataTemplate x:Key="PassFailTemplate">
-        <dxe:ComboBoxEdit Name="PART_Editor" DisplayMember="Text" ValueMember="Value">
-            <models:ItemInfo Text="Pass" Value="Pass"/>
-            <models:ItemInfo Text="Fail" Value="Fail"/>
-            <models:ItemInfo Text="N/A" Value="N/A"/>
-        </dxe:ComboBoxEdit>
-    </DataTemplate>    
-    
-    <Style TargetType="dxe:TextEdit" x:Key="NumericStyle">
-        <Setter Property="MaskType" Value="Numeric"  />
-        <Setter Property="Mask" Value="n2"  />
-        <Setter Property="MaskUseAsDisplayFormat" Value="True"  />
-    </Style>
-
     <ControlTemplate x:Key="SearchBizTemplate">
         <dxg:GridControl x:Name="PART_GridControl"
             ShowBorder="False">
@@ -528,4 +522,5 @@
             </dxg:GridControl.Columns>
         </dxg:GridControl>
     </ControlTemplate>
+    <!--#endregion-->
 </ResourceDictionary>

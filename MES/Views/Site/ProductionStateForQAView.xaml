@@ -14,10 +14,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:common="clr-namespace:MesAdmin.Common.Common"
              xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
-             xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
              xmlns:ViewModels="clr-namespace:MesAdmin.ViewModels"
              mc:Ignorable="d"
-             d:DesignHeight="600" d:DesignWidth="1000">
+             d:DesignHeight="600"
+             d:DesignWidth="1000">
     <UserControl.DataContext>
         <ViewModels:ProductionStateForQAVM/>
     </UserControl.DataContext>

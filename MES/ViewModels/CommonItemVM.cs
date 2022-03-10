@@ -30,15 +30,15 @@ namespace MesAdmin.ViewModels
             get { return GetProperty(() => SelectedItem); }
             set { SetProperty(() => SelectedItem, value); }
         }
-        public IEnumerable<CommonMinor> BizAreaCode
+        public IEnumerable<CommonMinor> BizAreaCodeList
+        {
+            get { return GetProperty(() => BizAreaCodeList); }
+            set { SetProperty(() => BizAreaCodeList, value); }
+        }
+        public string BizAreaCode
         {
             get { return GetProperty(() => BizAreaCode); }
             set { SetProperty(() => BizAreaCode, value); }
-        }
-        public string EditBizAreaCode
-        {
-            get { return GetProperty(() => EditBizAreaCode); }
-            set { SetProperty(() => EditBizAreaCode, value); }
         }
         public string ItemCode
         {
@@ -70,9 +70,9 @@ namespace MesAdmin.ViewModels
         {
             Messenger.Default.Register<EntityMessage<CommonItem>>(this, OnMessage);
 
-            BizAreaCode = GlobalCommonMinor.Instance.Where(u => u.MajorCode == "I0004");
+            BizAreaCodeList = GlobalCommonMinor.Instance.Where(u => u.MajorCode == "I0004");
             if (!string.IsNullOrEmpty(DSUser.Instance.BizAreaCode))
-                EditBizAreaCode = BizAreaCode.FirstOrDefault(u => u.MinorCode == DSUser.Instance.BizAreaCode).MinorCode;
+                BizAreaCode = BizAreaCodeList.FirstOrDefault(u => u.MinorCode == DSUser.Instance.BizAreaCode).MinorCode;
 
             NewCmd = new DelegateCommand(OnNew);
             EditCmd = new DelegateCommand(OnEdit);
@@ -162,7 +162,7 @@ namespace MesAdmin.ViewModels
 
             Collections = new CommonItemList
             (
-                new CommonItemList(EditBizAreaCode)
+                new CommonItemList(BizAreaCode)
                             .Where(p =>
                                 string.IsNullOrEmpty(itemCode) ? true : p.ItemCode.ToUpper().Contains(itemCode.ToUpper()))
                             .Where(p =>

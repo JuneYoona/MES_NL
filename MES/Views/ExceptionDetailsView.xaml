@@ -17,11 +17,6 @@
              d:DesignHeight="436"
              d:DesignWidth="800"
              DataContext="{dxmvvm:ViewModelSource viewmodel:ExceptionDetailsVM}">
-    <UserControl.Resources>
-        <utils:StockTypeConverter x:Key="StockTypeConverter"/>
-        <utils:DebitCreditConverter x:Key="DebitCreditConverter"/>
-    </UserControl.Resources>
-
     <dxmvvm:Interaction.Behaviors>
         <dx:DialogService Name="ItemView" DialogWindowStartupLocation="CenterOwner">
             <dx:DialogService.ViewTemplate>

@@ -17,7 +17,6 @@
     <UserControl.DataContext>
         <viewmodel:SalesOrderDetailsVM />
     </UserControl.DataContext>
-
     <dxmvvm:Interaction.Behaviors>
         <dx:DialogService Name="ItemView" DialogWindowStartupLocation="CenterOwner">
             <dx:DialogService.ViewTemplate>

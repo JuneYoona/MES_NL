@@ -14,9 +14,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:common="clr-namespace:MesAdmin.Common.Common"
              xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
-             xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
              mc:Ignorable="d"
-             d:DesignHeight="600" d:DesignWidth="1200">
+             d:DesignHeight="600"
+             d:DesignWidth="1200">
     <Grid>
         <DockPanel>
             <dxr:RibbonControl DockPanel.Dock="Top">

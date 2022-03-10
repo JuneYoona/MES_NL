@@ -18,7 +18,6 @@
     <UserControl.DataContext>
         <ViewModels:StockFromBillsVM/>
     </UserControl.DataContext>
-
     <dxmvvm:Interaction.Behaviors>
         <dx:DialogService DialogWindowStartupLocation="CenterOwner">
             <dx:DialogService.ViewTemplate>

@@ -18,7 +18,6 @@
     <UserControl.DataContext>
         <ViewModels:QualityPrecedenceLotVM/>
     </UserControl.DataContext>
-
     <UserControl.Resources>
         <dxmvvm:BooleanNegationConverter x:Key="BooleanNegationConverter"/>
     </UserControl.Resources>

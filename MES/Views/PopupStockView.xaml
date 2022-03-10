@@ -16,7 +16,6 @@
     <dxmvvm:Interaction.Behaviors>
         <dxmvvm:CurrentWindowService Window="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
     </dxmvvm:Interaction.Behaviors>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />

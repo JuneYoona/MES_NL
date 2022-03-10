@@ -19,7 +19,6 @@
     <UserControl.DataContext>
         <ViewModels:MaterialDispenseReqVM/>
     </UserControl.DataContext>
-
     <dxmvvm:Interaction.Behaviors>
         <dx:DialogService Name="PopupItemView" DialogWindowStartupLocation="CenterOwner">
             <dx:DialogService.ViewTemplate>

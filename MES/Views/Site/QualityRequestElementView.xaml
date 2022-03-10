@@ -21,7 +21,6 @@
     <UserControl.DataContext>
         <ViewModels:QualityRequestElementVM/>
     </UserControl.DataContext>
-
     <UserControl.Resources>
         <DataTemplate x:Key="ResultTemplate">
             <ContentControl>

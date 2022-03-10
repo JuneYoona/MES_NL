@@ -1,24 +1,21 @@
-﻿<UserControl 
-    x:Class="MesAdmin.Views.CommonItemNewView"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-    mc:Ignorable="d"
-    xmlns:dxt="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys"
-    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
-    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
-    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
-    d:DesignHeight="600" d:DesignWidth="900"
-    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
-    xmlns:ViewModels="clr-namespace:MesAdmin.ViewModels"
-    xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
-    xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
-    xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
-    xmlns:view="clr-namespace:MesAdmin.Views"
-    DataContext="{dxmvvm:ViewModelSource Type=ViewModels:CommonItemNewVM}">
-
+﻿<UserControl x:Class="MesAdmin.Views.CommonItemNewView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
+             xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
+             xmlns:ViewModels="clr-namespace:MesAdmin.ViewModels"
+             xmlns:view="clr-namespace:MesAdmin.Views"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="900"
+             DataContext="{dxmvvm:ViewModelSource Type=ViewModels:CommonItemNewVM}">
     <UserControl.Resources>
         <dxmvvm:ObjectToObjectConverter x:Key="EntityStateConverter">
             <dxmvvm:MapItem Source="Added" Target="True"/>
