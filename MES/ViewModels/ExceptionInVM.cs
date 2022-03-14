@@ -19,7 +19,7 @@ namespace MesAdmin.ViewModels
     public class ExceptionInVM : ViewModelBase
     {
         #region Services
-        IDialogService PopupItemView { get { return GetService<IDialogService>("PopupItemView"); } }
+        IDialogService PopupItemView { get { return GetService<IDialogService>("ItemView"); } }
         IDialogService PopupStockMoveView { get { return GetService<IDialogService>("StockMoveView"); } }
         IMessageBoxService MessageBoxService { get { return GetService<IMessageBoxService>(); } }
         IDispatcherService DispatcherService { get { return GetService<IDispatcherService>(); } }

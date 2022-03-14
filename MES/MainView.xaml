@@ -22,7 +22,8 @@
              x:Name="UCMainView">
     <dxmvvm:Interaction.Behaviors>
         <dxmvvm:EventToCommand EventName="Loaded" Command="{Binding LoadCmd}" />
-        <dx:DialogService Name="ItemView" DialogWindowStartupLocation="CenterOwner">
+        <!--#region global DialogService-->
+        <dx:DialogService x:Name="ItemView" DialogWindowStartupLocation="CenterOwner">
             <dx:DialogService.ViewTemplate>
                 <DataTemplate>
                     <view:PopupItemView/>
@@ -35,6 +36,7 @@
                 </Style>
             </dx:DialogService.DialogStyle>
         </dx:DialogService>
+        <!--#endregion-->
     </dxmvvm:Interaction.Behaviors>
     <UserControl.Resources>
         <local:NotVisibilityConverter x:Key="NotVisibilityConverter"/>

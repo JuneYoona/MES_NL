@@ -11,29 +11,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
              xmlns:viewmodel="clr-namespace:MesAdmin.ViewModels"
-             xmlns:view="clr-namespace:MesAdmin.Views"
              mc:Ignorable="d"
              d:DesignHeight="436"
              d:DesignWidth="800">
     <UserControl.DataContext>
         <viewmodel:MaterialDispenseReqDetailVM />
     </UserControl.DataContext>
-    <dxmvvm:Interaction.Behaviors>
-        <dx:DialogService Name="ItemView" DialogWindowStartupLocation="CenterOwner">
-            <dx:DialogService.ViewTemplate>
-                <DataTemplate>
-                    <view:PopupItemView/>
-                </DataTemplate>
-            </dx:DialogService.ViewTemplate>
-            <dx:DialogService.DialogStyle>
-                <Style TargetType="dx:DXDialogWindow">
-                    <Setter Property="Width" Value="680"/>
-                    <Setter Property="Height" Value="550"/>
-                </Style>
-            </dx:DialogService.DialogStyle>
-        </dx:DialogService>
-    </dxmvvm:Interaction.Behaviors>
-
     <Grid>
         <dxb:BarManager>
             <DockPanel>
