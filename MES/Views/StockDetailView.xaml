@@ -157,7 +157,7 @@
                     <dxg:GridColumn Binding="{Binding RowData.Row.WaCode, Converter={StaticResource WaCodeConverter}}" Header="공정" Width="80"/>
                     <dxg:GridColumn FieldName="Remark6" Header="TSC PIG(%)" Width="80" />
                     <dxg:GridColumn FieldName="Remark7" Header="TSC Total(%)" Width="80" />
-                    <dxg:GridColumn FieldName="ExpDate" Header="유효기간" Width="80" />
+                    <dxg:GridColumn FieldName="ExpDate" Header="유효기간" Width="90" AllowEditing="True"/>
                 </dxg:GridControl.Columns>
                 <dxg:GridControl.TotalSummary>
                     <dxg:GridSummaryItem FieldName="Qty" SummaryType="Sum" DisplayFormat=" {0:n4}"/>

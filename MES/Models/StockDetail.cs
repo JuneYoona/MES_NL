@@ -178,6 +178,7 @@ namespace MesAdmin.Models
             db.AddInParameter(dbCom, "@Remark2", DbType.String, Remark5);
             db.AddInParameter(dbCom, "@Qty", DbType.Decimal, Qty);
             db.AddInParameter(dbCom, "@BasicUnit", DbType.String, BasicUnit);
+            db.AddInParameter(dbCom, "@ExpDate", DbType.Date, ExpDate);
             db.AddInParameter(dbCom, "@InsertId", DbType.String, DSUser.Instance.UserID);
             db.ExecuteNonQuery(dbCom, trans);
         }
