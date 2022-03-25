@@ -259,8 +259,8 @@ namespace MesAdmin.Models
                 catch (Exception ex)
                 {
                     trans.Rollback();
-                    string messasge = ex is SqlException sqlEx ? sqlEx.Errors[0].Message : ex.Message;
-                    throw new Exception(messasge);
+                    string message = ex is SqlException sqlEx ? sqlEx.Errors[0].Message : ex.Message;
+                    throw new Exception(message);
                 }
             }
         }
