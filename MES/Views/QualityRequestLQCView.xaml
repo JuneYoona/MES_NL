@@ -50,7 +50,7 @@
         <dxb:BarManager>
             <DockPanel>
                 <dxr:RibbonControl DockPanel.Dock="Top">
-                    <dxr:RibbonDefaultPageCategory Caption="defaultCategory">
+                    <dxr:RibbonDefaultPageCategory Caption="defaultCategory" IsEnabled="{Binding QualityRole}">
                         <dxr:RibbonPage Caption="Home">
                             <dxr:RibbonPageGroup Caption="품질검사등록 Task">
                                 <dxb:BarButtonItem Content="신규" KeyGesture="CTRL+R" LargeGlyph="{dx:DXImage SvgImages/Actions/New.svg}">

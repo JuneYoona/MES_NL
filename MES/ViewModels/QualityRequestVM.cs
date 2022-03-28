@@ -115,6 +115,7 @@ namespace MesAdmin.ViewModels
             get { return GetProperty(() => SelectedItem); }
             set { SetProperty(() => SelectedItem, value); }
         }
+        public bool QualityRole { get { return DSUser.Instance.RoleName.Contains("Quality"); } }
         public bool CanEdit
         {
             get { return GetProperty(() => CanEdit); }
