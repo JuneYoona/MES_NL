@@ -118,7 +118,8 @@
                         <TextBlock>계획량</TextBlock>
                     </Border>
                     <Border Grid.Row="6" Grid.Column="0">
-                        <TextBlock Text="{Binding Title}"></TextBlock>
+                        <!--<TextBlock Text="{Binding Title}"></TextBlock>-->
+                        <TextBlock Text="{DXBinding 'Header.WaCode == `WE60` ? `확정 로트번호` : `로트번호 헤더`'}"></TextBlock>
                     </Border>
                     <Border Grid.Row="7" Grid.Column="0">
                         <TextBlock>비고</TextBlock>
@@ -158,11 +159,7 @@
                         AutoPopulateColumns="False"
                         InvalidValueBehavior="AllowLeaveEditor"
                         IsPopupAutoWidth="False"
-                        PopupContentTemplate="{StaticResource WaCodeTemplate}">
-                        <dxmvvm:Interaction.Behaviors>
-                            <dxmvvm:EventToCommand Command="{Binding WaCodeChangedCmd}" EventName="EditValueChanged" />
-                        </dxmvvm:Interaction.Behaviors>
-                    </dxg:LookUpEdit>
+                        PopupContentTemplate="{StaticResource WaCodeTemplate}" />
                     <!--<dxe:ButtonEdit
                         Grid.Row="2"
                         Grid.Column="1"

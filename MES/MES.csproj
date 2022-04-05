@@ -252,6 +252,7 @@
     <Compile Include="Common\Utils\CascadingMoveType.cs" />
     <Compile Include="Common\Utils\CascadingWarehouse.cs" />
     <Compile Include="Common\Utils\CascadingWorkArea.cs" />
+    <Compile Include="Common\Utils\CascadingWorkAreaFromWhCode.cs" />
     <Compile Include="Common\Utils\CellValueChangedEventArgsConverter.cs" />
     <Compile Include="Common\Utils\DebitCreditConverter.cs" />
     <Compile Include="Common\Utils\HiddenTreeListEditorEventArgsConverter.cs" />

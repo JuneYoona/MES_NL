@@ -52,6 +52,11 @@ namespace MesAdmin.Models
             get { return GetProperty(() => BizAreaCode); }
             set { SetProperty(() => BizAreaCode, value); }
         }
+        public string ProcureType
+        {
+            get { return GetProperty(() => ProcureType); }
+            set { SetProperty(() => ProcureType, value); }
+        }
         public string InWhCode
         {
             get { return GetProperty(() => InWhCode); }
@@ -61,6 +66,11 @@ namespace MesAdmin.Models
         {
             get { return GetProperty(() => OutWhCode); }
             set { SetProperty(() => OutWhCode, value); }
+        }
+        public string InWaCode
+        {
+            get { return GetProperty(() => InWaCode); }
+            set { SetProperty(() => InWaCode, value); }
         }
         public bool IQCFlag
         {
@@ -176,6 +186,7 @@ namespace MesAdmin.Models
                 + "ItemName = @ItemName"
                 + ", ItemSpec = @ItemSpec"
                 + ", ItemAccount = @ItemAccount"
+                + ", ProcureType = @ProcureType"
                 + ", BasicUnit = @BasicUnit"
                 + ", IsEnabled = @IsEnabled"
                 + ", IQCFlag = @IQCFlag"
@@ -184,6 +195,7 @@ namespace MesAdmin.Models
                 + ", OQCFlag = @OQCFlag"
                 + ", InWhCode = @InWhCode"
                 + ", OutWhCode = @OutWhCode"
+                + ", InWaCode = @InWaCode"
                 + ", UpdateId = @UpdateId"
                 + ", UpdateDate = getdate() "
                 + "WHERE ItemCode = @ItemCode";
@@ -191,6 +203,7 @@ namespace MesAdmin.Models
             db.AddInParameter(dbCom, "@ItemName", DbType.String, ItemName);
             db.AddInParameter(dbCom, "@ItemSpec", DbType.String, ItemSpec);
             db.AddInParameter(dbCom, "@ItemAccount", DbType.String, ItemAccount);
+            db.AddInParameter(dbCom, "@ProcureType", DbType.String, ProcureType);
             db.AddInParameter(dbCom, "@BasicUnit", DbType.String, BasicUnit);
             db.AddInParameter(dbCom, "@IsEnabled", DbType.Boolean, IsEnabled);
             db.AddInParameter(dbCom, "@IQCFlag", DbType.Boolean, IQCFlag);
@@ -199,6 +212,7 @@ namespace MesAdmin.Models
             db.AddInParameter(dbCom, "@OQCFlag", DbType.Boolean, OQCFlag);
             db.AddInParameter(dbCom, "@InWhcode", DbType.String, InWhCode);
             db.AddInParameter(dbCom, "@OutWhcode", DbType.String, OutWhCode);
+            db.AddInParameter(dbCom, "@InWaCode", DbType.String, InWaCode);
             db.AddInParameter(dbCom, "@UpdateId", DbType.String, DSUser.Instance.UserID);
             db.AddInParameter(dbCom, "@ItemCode", DbType.String, ItemCode);
             db.ExecuteNonQuery(dbCom, trans);
@@ -281,6 +295,7 @@ namespace MesAdmin.Models
                         ItemSpec = (string)u["ItemSpec"],
                         ItemAccount = (string)u["ItemAccount"],
                         ItemAccountName = (string)u["ItemAccountName"],
+                        ProcureType = u["ProcureType"].ToString(),
                         BasicUnit = (string)u["BasicUnit"],
                         IQCFlag = (bool)u["IQCFlag"],
                         LQCFlag = (bool)u["LQCFlag"],
@@ -289,6 +304,7 @@ namespace MesAdmin.Models
                         IsEnabled = (bool)u["IsEnabled"],
                         InWhCode = u["InWhCode"].ToString(),
                         OutWhCode = u["OutWhCode"].ToString(),
+                        InWaCode = u["InWaCode"].ToString(),
                         UpdateId = (string)u["UpdateId"],
                         UpdateDate = (DateTime)u["UpdateDate"],
                         BizAreaCode = (string)u["Ref01"]

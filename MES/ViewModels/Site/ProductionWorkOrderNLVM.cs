@@ -90,7 +90,6 @@ namespace MesAdmin.ViewModels
         public ICommand AddCmd { get; set; }
         public AsyncCommand SaveCmd { get; set; }
         public AsyncCommand SearchCmd { get; set; }
-        public ICommand WaCodeChangedCmd { get; set; }
         #endregion
 
         public ProductionWorkOrderNLVM()
@@ -109,7 +108,6 @@ namespace MesAdmin.ViewModels
             ShowStockCmd = new DelegateCommand(OnShowStock);
             NewCmd = new DelegateCommand(OnNew);
             CellValueChangedCmd = new DelegateCommand<CellValueChangedEvent>(OnCellValueChanged);
-            WaCodeChangedCmd = new DelegateCommand(OnWaCodeChanged);
 
             SelectedItems = new ObservableCollection<ProductionWorkOrderDetail>();
             SelectedItems.CollectionChanged += SelectedItems_CollectionChanged;
@@ -118,11 +116,6 @@ namespace MesAdmin.ViewModels
         private void SelectedItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             DelCmd.RaiseCanExecuteChanged();
-        }
-
-        public void OnWaCodeChanged()
-        {
-            Title = Header.WaCode == "WE60" ? "확정 로트번호" : "로트번호 헤더";
         }
 
         public bool CanSave()
