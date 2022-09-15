@@ -85,6 +85,7 @@
                             <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
                         <Border Grid.Row="0" Grid.Column="0">
                             <TextBlock>품목코드</TextBlock>
@@ -217,32 +218,47 @@
                             Grid.Column="4"
                             Margin="2 0 0 0"
                             VerticalAlignment="Bottom" />
-                        <Border Grid.Row="6" Grid.Column="0">
+                        <Border Grid.Row="5" Grid.Column="0">
+                            <TextBlock>합성품/Recyle</TextBlock>
+                        </Border>
+                        <dxe:ComboBoxEdit
+                            EditValue="{Binding SelectedItem.Remark1, UpdateSourceTrigger=PropertyChanged}"
+                            DisplayMember="WaName"
+                            ValueMember="WaCode"
+                            NullValueButtonPlacement="EditBox"
+                            Grid.Row="5"
+                            Grid.Column="1"
+                            Margin="2 0 0 0"
+                            VerticalAlignment="Bottom">
+                            <dxe:ComboBoxEditItem>Y</dxe:ComboBoxEditItem>
+                            <dxe:ComboBoxEditItem>N</dxe:ComboBoxEditItem>
+                        </dxe:ComboBoxEdit>
+                        <Border Grid.Row="7" Grid.Column="0">
                             <TextBlock>수입검사</TextBlock>
                         </Border>
                         <dxe:CheckEdit IsChecked="{Binding SelectedItem.IQCFlag, UpdateSourceTrigger=PropertyChanged}"
-                                Grid.Row="6" Grid.Column="1" VerticalAlignment="Bottom" Margin="2 0 0 0" />
-                        <Border Grid.Row="7" Grid.Column="0">
+                                Grid.Row="7" Grid.Column="1" VerticalAlignment="Bottom" Margin="2 0 0 0" />
+                        <Border Grid.Row="8" Grid.Column="0">
                             <TextBlock>공정검사</TextBlock>
                         </Border>
                         <dxe:CheckEdit IsChecked="{Binding SelectedItem.LQCFlag, UpdateSourceTrigger=PropertyChanged}"
-                                Grid.Row="7" Grid.Column="1" VerticalAlignment="Bottom" Margin="2 0 0 0" />
-                        <Border Grid.Row="8" Grid.Column="0">
+                                Grid.Row="8" Grid.Column="1" VerticalAlignment="Bottom" Margin="2 0 0 0" />
+                        <Border Grid.Row="9" Grid.Column="0">
                             <TextBlock>최종검사</TextBlock>
                         </Border>
                         <dxe:CheckEdit IsChecked="{Binding SelectedItem.FQCFlag, UpdateSourceTrigger=PropertyChanged}"
-                                Grid.Row="8" Grid.Column="1" VerticalAlignment="Bottom" Margin="2 0 0 0" />
-                        <Border Grid.Row="9" Grid.Column="0">
+                                Grid.Row="9" Grid.Column="1" VerticalAlignment="Bottom" Margin="2 0 0 0" />
+                        <Border Grid.Row="10" Grid.Column="0">
                             <TextBlock>포장검사</TextBlock>
                         </Border>
                         <dxe:CheckEdit IsChecked="{Binding SelectedItem.OQCFlag, UpdateSourceTrigger=PropertyChanged}"
-                                Grid.Row="9" Grid.Column="1" VerticalAlignment="Bottom" Margin="2 0 0 0" />
+                                Grid.Row="10" Grid.Column="1" VerticalAlignment="Bottom" Margin="2 0 0 0" />
 
-                        <Border Grid.Row="11" Grid.Column="0">
+                        <Border Grid.Row="12" Grid.Column="0">
                             <TextBlock>사용여부</TextBlock>
                         </Border>
                         <dxe:CheckEdit IsChecked="{Binding SelectedItem.IsEnabled, UpdateSourceTrigger=PropertyChanged}"
-                                Grid.Row="11" Grid.Column="1" VerticalAlignment="Bottom" Margin="2 0 0 0" />
+                                Grid.Row="12" Grid.Column="1" VerticalAlignment="Bottom" Margin="2 0 0 0" />
                     </Grid>
                 </ScrollViewer>
             </dx:DXTabItem >

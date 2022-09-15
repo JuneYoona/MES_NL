@@ -25,7 +25,7 @@ namespace MesAdmin.Models
             get { return GetProperty(() => UserName); }
             set { SetProperty(() => UserName, value); }
         }
-        [RegularExpression(@"(?=.*\d)(?=.*[A-Za-z]).{6,}", ErrorMessage = "Password는 6자리 이상 숫자 영문 조합이어야 합니다.")]
+        [RegularExpression(@"(?=.*\d)(?=.*[A-Za-z]).{8,}", ErrorMessage = "Password는 8자리 이상 숫자, 영문조합이어야 합니다.")]
         public string Password
         {
             get { return GetProperty(() => Password); }

@@ -132,6 +132,18 @@ namespace MesAdmin.Models
             set { SetProperty(() => Remark7, value); }
 
         }
+        public string WE10LotNo
+        {
+            get { return GetProperty(() => WE10LotNo); }
+            set { SetProperty(() => WE10LotNo, value); }
+
+        }
+        public string ProcureType
+        {
+            get { return GetProperty(() => ProcureType); }
+            set { SetProperty(() => ProcureType, value); }
+
+        }
         public DateTime? ExpDate
         {
             get { return GetProperty(() => ExpDate); }
@@ -238,6 +250,7 @@ namespace MesAdmin.Models
                         Remark5 = u["Remark5"].ToString(),
                         Remark6 = u["PIG"].ToString(),
                         Remark7 = u["TSC"].ToString(),
+                        WE10LotNo = u["WE10LotNo"].ToString(),
                         ExpDate = u["ExpDate"] == DBNull.Value ? null : (DateTime?)u["ExpDate"],
                     }
                 )

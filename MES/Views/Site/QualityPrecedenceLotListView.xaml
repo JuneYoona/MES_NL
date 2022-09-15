@@ -171,6 +171,7 @@
                         <dxg:GridColumn Binding="{Binding RowData.Row.BizCode, Converter={StaticResource BizCodeConverter}}" Header="납품처" Width="200"/>
                         <dxg:GridColumn FieldName="ReqDate" Header="출하요청일" Width="90" />
                         <dxg:GridColumn FieldName="LotNoWE10" Header="합성로트" Width="120" />
+                        <dxg:GridColumn FieldName="LotNoWE10Cnt" Header="합성로트 순번" Width="120" />
                         <dxg:GridColumn FieldName="LotNo" Header="Lot No." Width="120" />
                         <dxg:GridColumn FieldName="ItemCode" Header="품목코드" Width="100" />
                         <dxg:GridColumn FieldName="ItemName" Header="품목명" Width="120" />

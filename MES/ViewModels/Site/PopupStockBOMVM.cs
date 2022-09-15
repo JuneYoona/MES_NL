@@ -130,16 +130,16 @@ namespace MesAdmin.ViewModels
         public Task OnSearch()
         {
             IsBusy = true;
-            return Task.Factory.StartNew(SearchCore);
+            return Task.Factory.StartNew(SearchCore).ContinueWith(t => IsBusy = false);
         }
         public void SearchCore()
         {
+            if (string.IsNullOrEmpty(PrntItemCode)) return;
+
             Collections = new StockDetailBOMList(PrntItemCode);
 
             if (ExceptStocks.Count() != 0)
                 Collections = Collections.Except(ExceptStocks);
-
-            IsBusy = false;
         }
 
         protected void OnConfirm()

@@ -51,11 +51,7 @@ namespace MesAdmin.ViewModels
             get { return GetProperty(() => Details); }
             set { SetProperty(() => Details, value); }
         }
-        public ObservableCollection<ProductionWorkOrder> SelectedItems
-        {
-            get { return GetProperty(() => SelectedItems); }
-            set { SetProperty(() => SelectedItems, value); }
-        }
+        public ObservableCollection<ProductionWorkOrder> SelectedItems { get; } = new ObservableCollection<ProductionWorkOrder>();
         public ProductionWorkOrder SelectedItem
         {
             get { return GetProperty(() => SelectedItem); }
@@ -81,6 +77,11 @@ namespace MesAdmin.ViewModels
         {
             get { return GetProperty(() => Remark2); }
             set { SetProperty(() => Remark2, value); }
+        }
+        public string Remark3
+        {
+            get { return GetProperty(() => Remark3); }
+            set { SetProperty(() => Remark3, value); }
         }
         public string BasicUnit
         {
@@ -128,12 +129,11 @@ namespace MesAdmin.ViewModels
         public ICommand AddCmd { get; set; }
         public AsyncCommand SaveCmd { get; set; }
         public AsyncCommand SearchCmd { get; set; }
-        public ICommand WaCodeChangedCmd { get; set; }
         #endregion
 
         public ProductionWorkOrderNLMVM()
         {
-            Title = "로트번호 헤더";
+            WaCode = "WE30";
 
             // 품목정보
             Task.Factory.StartNew(() => GlobalCommonItem.Instance).ContinueWith(task => { Items = task.Result; });
@@ -149,20 +149,6 @@ namespace MesAdmin.ViewModels
             ShowStockCmd = new DelegateCommand(OnShowStock);
             SaveCmd = new AsyncCommand(OnSave, CanSave);
             NewCmd = new DelegateCommand(OnNew);
-            WaCodeChangedCmd = new DelegateCommand(OnWaCodeChanged);
-
-            SelectedItems = new ObservableCollection<ProductionWorkOrder>();
-            SelectedItems.CollectionChanged += SelectedItems_CollectionChanged;
-        }
-
-        private void SelectedItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            DelCmd.RaiseCanExecuteChanged();
-        }
-
-        public void OnWaCodeChanged()
-        {
-            Title = WaCode == "WE60" ? "확정 로트번호" : "로트번호 헤더";
         }
 
         public bool CanSave()
@@ -195,8 +181,8 @@ namespace MesAdmin.ViewModels
         {
             try
             {
-                if (string.IsNullOrEmpty(Remark2))
-                    throw new Exception("로트번호 헤더가 비어 있습니다.");
+                if (string.IsNullOrEmpty(Remark2) || string.IsNullOrEmpty(Remark3))
+                    throw new Exception("로트번호 헤더와 순번은 필수 입력값입니다!");
 
                 if (WaCode == "WE30")
                 {
@@ -223,7 +209,8 @@ namespace MesAdmin.ViewModels
                         ItemCode = order.ItemCode,
                         OrderQty = order.BasicUnit == "kg" ? order.OrderQty * 1000 : order.OrderQty,
                         Remark = order.Remark,
-                        Remark2 = Remark2
+                        Remark2 = Remark2,
+                        Remark3 = Remark3
                     };
 
                     item.Save("BAC60");
@@ -327,7 +314,8 @@ namespace MesAdmin.ViewModels
             IsNew = true;
             ItemCode = "";
             ItemName = "";
-            WaCode = null;
+            Remark2 = "";
+            Remark3 = "";
             LotQty = 0;
             Header = new ProductionWorkOrderDetail();
             OrderDate = DateTime.Now;
@@ -365,38 +353,10 @@ namespace MesAdmin.ViewModels
             );
             try
             {
-                // 공정별 전공정 로트 채우기
-                foreach (StockDetail item in vmItem.ConfirmItems)
+                if (vmItem.ConfirmItem != null)
                 {
-                    if (WaCode == "WE20") // 재결정
-                    {
-                        if (item.ItemAccount == "29" && item.ItemCode.Substring(0, 3) != "SER") // LD12MH131A1 왼쪽 9자리
-                            Remark2 = item.LotNo.Substring(0, 9);
-                    }
-
-                    if (WaCode == "WE30") // 정제
-                    {
-                        if (item.ItemAccount == "29" && item.ItemCode.Substring(0, 3) != "SER") // 반제품이고 외주가공품이 아닌품목
-                            Remark2 = item.LotNo;
-                    }
-
-                    if (WaCode == "WE40") // 분쇄/과립
-                    {
-                        if (item.ItemAccount == "29") // 합성로트
-                            Remark2 = item.LotNo.Substring(2, 7);
-                    }
-
-                    if (WaCode == "WE50") // 성형
-                    {
-                        if (item.ItemAccount == "29") // 합성로트
-                            Remark2 = item.LotNo.Substring(0, 7);
-                    }
-
-                    if (WaCode == "WE60") // 포장
-                    {
-                        if (item.ItemAccount == "29") // 오른쪽 11자리(제품로트)
-                            Remark2 = item.LotNo.Substring(item.LotNo.Length - 11);
-                    }
+                    Remark2 = vmItem.ConfirmItem.LotNo;
+                    Remark3 = Commonsp.GetLotCountWE30(ItemCode, vmItem.ConfirmItem.ItemCode, vmItem.ConfirmItem.LotNo, WaCode);
                 }
             }
             catch
@@ -441,7 +401,7 @@ namespace MesAdmin.ViewModels
         protected override void OnParameterChanged(object parameter)
         {
             base.OnParameterChanged(parameter);
-            if (ViewModelBase.IsInDesignMode) return;
+            if (IsInDesignMode) return;
 
             DocumentParamter pm = parameter as DocumentParamter;
             ((MainViewModel)pm.ParentViewmodel).TabLoadingClose();

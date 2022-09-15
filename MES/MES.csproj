@@ -20,7 +20,7 @@
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
     <TargetFrameworkProfile />
-    <PublishUrl>\\192.168.100.24\download\NL_MES\</PublishUrl>
+    <PublishUrl>\\192.168.100.26\download\NL_MES\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -37,7 +37,7 @@
     <SuiteName>MES-NL</SuiteName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>default.htm</WebPage>
-    <ApplicationRevision>9</ApplicationRevision>
+    <ApplicationRevision>35</ApplicationRevision>
     <ApplicationVersion>21.2.3.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -89,6 +89,9 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DemoMes">
+      <HintPath>..\..\DemoMes\bin\Release\DemoMes.exe</HintPath>
+    </Reference>
     <Reference Include="DevExpress.CodeParser.v21.2, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Data.v21.2, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -110,57 +113,94 @@
     <Reference Include="DevExpress.RichEdit.v21.2.Export, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.DataVisualization.v21.2.Core, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Spreadsheet.v21.2.Core, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Utils.v21.2, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Xpf.Charts.v21.2, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Data.Desktop.v21.2, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
+    <Reference Include="DevExpress.Charts.v21.2.Core, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.PivotGrid.v21.2.Core, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Sparkline.v21.2.Core, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Charts.v21.2, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\DevExpress 21.2\Components\Bin\Framework\DevExpress.Xpf.Charts.v21.2.dll</HintPath>
+    </Reference>
     <Reference Include="DevExpress.Xpf.Core.v21.2, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\DevExpress 21.2\Components\Bin\Framework\DevExpress.Xpf.Core.v21.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Xpf.Docking.v21.2, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\DevExpress 21.2\Components\Bin\Framework\DevExpress.Xpf.Docking.v21.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Xpf.DocumentViewer.v21.2.Core, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\DevExpress 21.2\Components\Bin\Framework\DevExpress.Xpf.DocumentViewer.v21.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Xpf.Grid.v21.2, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\DevExpress 21.2\Components\Bin\Framework\DevExpress.Xpf.Grid.v21.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Xpf.Grid.v21.2.Core, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Grid.v21.2.Core, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\DevExpress 21.2\Components\Bin\Framework\DevExpress.Xpf.Grid.v21.2.Core.dll</HintPath>
+    </Reference>
     <Reference Include="DevExpress.Xpf.Layout.v21.2.Core, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\DevExpress 21.2\Components\Bin\Framework\DevExpress.Xpf.Layout.v21.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Xpf.LayoutControl.v21.2, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\DevExpress 21.2\Components\Bin\Framework\DevExpress.Xpf.LayoutControl.v21.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Xpf.NavBar.v21.2, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\DevExpress 21.2\Components\Bin\Framework\DevExpress.Xpf.NavBar.v21.2.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.Xpf.Office.v21.2, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\DevExpress 21.2\Components\Bin\Framework\DevExpress.Xpf.Office.v21.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.PivotGrid.v21.2, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Xpf.Printing.v21.2, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\DevExpress 21.2\Components\Bin\Framework\DevExpress.Xpf.Printing.v21.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Xpf.Ribbon.v21.2, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\DevExpress 21.2\Components\Bin\Framework\DevExpress.Xpf.Ribbon.v21.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Xpf.Themes.VS2017Light.v21.2, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Xpf.Themes.VS2019Light.v21.2, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Xpo.v21.2, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Charts.v21.2.Core, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.XtraCharts.v21.2, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.PivotGrid.v21.2.Core, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Sparkline.v21.2.Core, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Themes.VS2017Light.v21.2, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\DevExpress 21.2\Components\Bin\Framework\DevExpress.Xpf.Themes.VS2017Light.v21.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.VS2019Light.v21.2, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\DevExpress 21.2\Components\Bin\Framework\DevExpress.Xpf.Themes.VS2019Light.v21.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpo.v21.2, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\DevExpress 21.2\Components\Bin\Framework\DevExpress.Xpo.v21.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v21.2, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\DevExpress 21.2\Components\Bin\Framework\DevExpress.XtraCharts.v21.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v21.2, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\DevExpress 21.2\Components\Bin\Framework\DevExpress.XtraEditors.v21.2.dll</HintPath>
+    </Reference>
     <Reference Include="DevExpress.XtraGauges.v21.2.Core, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraPrinting.v21.2, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.XtraReports.v21.2, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraReports.v21.2, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\DevExpress 21.2\Components\Bin\Framework\DevExpress.XtraReports.v21.2.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Office.Interop.Excel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>False</EmbedInteropTypes>
       <HintPath>..\..\..\Assembly\Microsoft.Office.Interop.Excel.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common">
       <HintPath>..\..\..\Assembly\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data">
@@ -218,6 +258,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Authentication\PasswordChangeView.xaml.cs">
+      <DependentUpon>PasswordChangeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Authentication\PasswordChangeVM.cs" />
     <Compile Include="Common\Common\CellTemplateSelector.cs" />
     <Compile Include="Common\Common\ColumnTemplateSelector.cs" />
     <Compile Include="Common\Common\GridLayoutSaveCommand.cs" />
@@ -253,6 +297,7 @@
     <Compile Include="Common\Utils\CascadingWarehouse.cs" />
     <Compile Include="Common\Utils\CascadingWorkArea.cs" />
     <Compile Include="Common\Utils\CascadingWorkAreaFromWhCode.cs" />
+    <Compile Include="Common\Utils\CellMergeEventArgsConverter.cs" />
     <Compile Include="Common\Utils\CellValueChangedEventArgsConverter.cs" />
     <Compile Include="Common\Utils\DebitCreditConverter.cs" />
     <Compile Include="Common\Utils\HiddenTreeListEditorEventArgsConverter.cs" />
@@ -268,8 +313,32 @@
     <Compile Include="Common\Utils\RestrictEditingHelper.cs" />
     <Compile Include="Common\Utils\SoTypeCodeConverter.cs" />
     <Compile Include="Common\Utils\WaCodeConverter.cs" />
+    <Compile Include="Common\Utils\WhCodeConverter.cs" />
+    <Compile Include="Models\BAC60PRODUCTION002.cs" />
+    <Compile Include="Models\Site\BAC60PRODUCTION001.cs" />
     <Compile Include="Models\CommonEquipmentParameter.cs" />
     <Compile Include="Models\Commonsp.cs" />
+    <Compile Include="Reports\MaterialBPDL.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\MaterialBPDL.Designer.cs">
+      <DependentUpon>MaterialBPDL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\MaterialBPDLBarCode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\MaterialBPDLBarCode.Designer.cs">
+      <DependentUpon>MaterialBPDLBarCode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\MaterialOLED.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\MaterialOLED.Designer.cs">
+      <DependentUpon>MaterialOLED.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\Site\BAC60PRODUCTION003C.cs" />
+    <Compile Include="ViewModels\Site\BAC60PRODUCTION002R.cs" />
+    <Compile Include="ViewModels\Site\BAC60PRODUCTION001R.cs" />
     <Compile Include="ViewModels\Site\SIBAC60SD001R.cs" />
     <Compile Include="Models\Site\CommonYieldWE10PerItem.cs" />
     <Compile Include="Models\ProductionEquipmentParameter.cs" />
@@ -525,6 +594,15 @@
     <Compile Include="ViewModels\Site\StockDetailPE10VM.cs" />
     <Compile Include="ViewModels\StockItemVM.cs" />
     <Compile Include="ViewModels\StockMoveReportVM.cs" />
+    <Compile Include="Views\Site\BAC60PRODUCTION003C.xaml.cs">
+      <DependentUpon>BAC60PRODUCTION003C.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Site\BAC60PRODUCTION002R.xaml.cs">
+      <DependentUpon>BAC60PRODUCTION002R.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Site\BAC60PRODUCTION001R.xaml.cs">
+      <DependentUpon>BAC60PRODUCTION001R.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Site\SIBAC60SD001R.xaml.cs">
       <DependentUpon>SIBAC60SD001R.xaml</DependentUpon>
     </Compile>
@@ -886,6 +964,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Authentication\PasswordChangeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Common\CustomControl\CalendarYears.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -942,6 +1024,18 @@
     <Page Include="Resources\Dictionary\ResourceDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Site\BAC60PRODUCTION003C.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Site\BAC60PRODUCTION002R.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Site\BAC60PRODUCTION001R.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Site\SIBAC60SD001R.xaml">
       <SubType>Designer</SubType>
@@ -1470,6 +1564,12 @@
     <EmbeddedResource Include="Reports\LotHistory.resx">
       <DependentUpon>LotHistory.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\MaterialBPDL.resx">
+      <DependentUpon>MaterialBPDL.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\MaterialBPDLBarCode.resx">
+      <DependentUpon>MaterialBPDLBarCode.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\MaterialDispense.resx">
       <DependentUpon>MaterialDispense.cs</DependentUpon>
     </EmbeddedResource>
@@ -1478,6 +1578,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\MaterialDispenseDetailsBAC90.resx">
       <DependentUpon>MaterialDispenseDetailsBAC90.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\MaterialOLED.resx">
+      <DependentUpon>MaterialOLED.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\MaterialReturn.resx">
       <DependentUpon>MaterialReturn.cs</DependentUpon>
@@ -1533,6 +1636,26 @@
     <Resource Include="Resources\Images\Yellow pin.png" />
   </ItemGroup>
   <ItemGroup>
+    <PublishFile Include="DemoMes">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="DemoMes.pdb">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Exclude</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
     <PublishFile Include="DevExpress.Charts.v21.2.Core">
       <Visible>False</Visible>
       <Group>
@@ -1833,6 +1956,26 @@
       <IncludeHash>True</IncludeHash>
       <FileType>Assembly</FileType>
     </PublishFile>
+    <PublishFile Include="DevExpress.Xpf.Office.v21.2">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Exclude</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="DevExpress.Xpf.PivotGrid.v21.2">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
     <PublishFile Include="DevExpress.Xpf.Printing.v21.2">
       <Visible>False</Visible>
       <Group>
@@ -1899,7 +2042,7 @@
       </Group>
       <TargetPath>
       </TargetPath>
-      <PublishState>Exclude</PublishState>
+      <PublishState>Include</PublishState>
       <IncludeHash>True</IncludeHash>
       <FileType>Assembly</FileType>
     </PublishFile>

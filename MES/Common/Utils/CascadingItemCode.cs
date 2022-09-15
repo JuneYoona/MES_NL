@@ -13,7 +13,7 @@ namespace MesAdmin.Common.Utils
             string waCode = value as string;
             if (waCode == "") return string.Empty;
 
-            return new CommonItemList().Where(o => o.InWaCode == waCode);
+            return new CommonItemList().Where(o => o.InWaCode == waCode && o.IsEnabled == true);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

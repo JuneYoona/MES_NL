@@ -165,14 +165,7 @@
                 <dxg:GridColumn FieldName="Qty" Header="수량" Width="90" EditSettings="{StaticResource NumericEditor}"/>
                 <dxg:GridColumn FieldName="BasicUnit" Header="단위" Width="80" />
                 <dxg:GridColumn Binding="{Binding RowData.Row.SoType, Converter={StaticResource SoTypeCodeConverter}}" Width="100" Header="수주형태" />
-                <dxg:GridColumn Width="150" Header="출고창고" FieldName="WhCode">
-                    <dxg:GridColumn.Binding>
-                        <MultiBinding Converter="{StaticResource MinorCodeConverter}">
-                            <Binding Path="View.DataContext.MajorCode" />
-                            <Binding Path="Data.WhCode" />
-                        </MultiBinding>
-                    </dxg:GridColumn.Binding>
-                </dxg:GridColumn>
+                <dxg:GridColumn Width="150" Binding="{Binding RowData.Row.WhCode, Converter={StaticResource WhCodeConverter}}" Header="출고창고" />
                 <dxg:GridColumn FieldName="SoNo" Header="수주번호" Width="100" />
                 <dxg:GridColumn FieldName="SoSeq" Header="수주순번" Width="60" />
                 <dxg:GridColumn FieldName="Memo" Header="Memo" Width="120" />
@@ -190,7 +183,7 @@
             EnableSmartColumnsGeneration="True">
             <dxg:GridControl.Resources>
                 <ControlTemplate x:Key="{dxgt:GridControlThemeKey IsThemeIndependent=true, ResourceKey=BorderTemplate}" TargetType="{x:Type ContentControl}">
-                    <Border BorderThickness="0 1 0 0" BorderBrush="#859EBF">
+                    <Border BorderThickness="0 1 0 0" BorderBrush="#CCCEDB">
                         <ContentPresenter />
                     </Border>
                 </ControlTemplate>

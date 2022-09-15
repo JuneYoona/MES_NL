@@ -118,14 +118,7 @@
                         <dxg:GridColumn FieldName="ItemSpec" Header="품목사양" Width="140" />
                         <dxg:GridColumn FieldName="BasicUnit" Header="단위" Width="80" />
                         <dxg:GridColumn FieldName="ReqQty" Header="요청수량" Width="100" EditSettings="{StaticResource NumericEditor3}"/>
-                        <dxg:GridColumn Width="150" Header="입고창고" FieldName="InWhCode">
-                            <dxg:GridColumn.Binding>
-                                <MultiBinding Converter="{StaticResource MinorCodeConverter}">
-                                    <Binding Source="I0011" />
-                                    <Binding Path="Data.InWhCode" />
-                                </MultiBinding>
-                            </dxg:GridColumn.Binding>
-                        </dxg:GridColumn>
+                        <dxg:GridColumn Width="150" Binding="{Binding RowData.Row.InWhCode, Converter={StaticResource WhCodeConverter}}" Header="입고창고" />
                         <dxg:GridColumn FieldName="PostFlag" Header="승인" Width="60" />
                         <dxg:GridColumn FieldName="Memo" Header="Memo" Width="120" />
                         <dxg:GridColumn FieldName="UpdateId" Header="입력자 Id" MinWidth="80" />

@@ -13,6 +13,16 @@
                  xmlns:common="clr-namespace:MesAdmin.Common.Common"
                  TitleAlignment="Left">
     <dx:ThemedWindow.HeaderItems>
+        <dx:SimpleButton
+            Content="Demo"
+            Glyph="{dx:DXImage SvgImages/XAF/ActionContainerBarItem.svg}"
+            Height="25"
+            Margin="0 0 5 0"
+            Visibility="{DXBinding 'DemoVisible == true ? `Visible` : `Collapsed`'}">
+            <dxmvvm:Interaction.Behaviors>
+                <dxmvvm:EventToCommand EventName="Click" Command="{Binding ExeDemoCmd}" />
+            </dxmvvm:Interaction.Behaviors>
+        </dx:SimpleButton>
         <dx:HeaderItemControl Content="도움말">
             <dxmvvm:Interaction.Behaviors>
                 <dxmvvm:EventToCommand EventName="Click" Command="{Binding HelpCmd}" />

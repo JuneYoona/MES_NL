@@ -13,6 +13,7 @@
     <local:MultiValueConverter x:Key="MultiValueConverter"/>
     <local:CascadingItemCode x:Key="CascadingItemCode"/>
     <local:MinorCodeConverter x:Key="MinorCodeConverter"/>
+    <local:WhCodeConverter x:Key="WhCodeConverter"/>
     <local:WaCodeConverter x:Key="WaCodeConverter"/>
     <local:BizCodeConverter x:Key="BizCodeConverter"/>
     <local:SoTypeCodeConverter x:Key="SoTypeCodeConverter"/>
@@ -114,12 +115,12 @@
     </DataTemplate>
     <!--#endregion-->
     <!--#region numeric mask 0~4-->
-    <dxe:TextEditSettings x:Key="NumericEditor0" MaskType="Numeric" Mask="n0" MaskUseAsDisplayFormat="True" />
-    <dxe:TextEditSettings x:Key="NumericEditor" MaskType="Numeric" Mask="n2" MaskUseAsDisplayFormat="True" />
-    <dxe:TextEditSettings x:Key="NumericEditor1" MaskType="Numeric" Mask="n1" MaskUseAsDisplayFormat="True" />
-    <dxe:TextEditSettings x:Key="NumericEditor2" MaskType="Numeric" Mask="n2" MaskUseAsDisplayFormat="True" />
-    <dxe:TextEditSettings x:Key="NumericEditor3" MaskType="Numeric" Mask="n3" MaskUseAsDisplayFormat="True" />
-    <dxe:TextEditSettings x:Key="NumericEditor4" MaskType="Numeric" Mask="n4" MaskUseAsDisplayFormat="True" />
+    <dxe:TextEditSettings x:Key="NumericEditor0" MaskType="Numeric" Mask="n0" MaskUseAsDisplayFormat="True" DisplayFormat="n0" />
+    <dxe:TextEditSettings x:Key="NumericEditor" MaskType="Numeric" Mask="n2" MaskUseAsDisplayFormat="True" DisplayFormat="n2" />
+    <dxe:TextEditSettings x:Key="NumericEditor1" MaskType="Numeric" Mask="n1" MaskUseAsDisplayFormat="True" DisplayFormat="n1" />
+    <dxe:TextEditSettings x:Key="NumericEditor2" MaskType="Numeric" Mask="n2" MaskUseAsDisplayFormat="True" DisplayFormat="n2" />
+    <dxe:TextEditSettings x:Key="NumericEditor3" MaskType="Numeric" Mask="n3" MaskUseAsDisplayFormat="True" DisplayFormat="n3" />
+    <dxe:TextEditSettings x:Key="NumericEditor4" MaskType="Numeric" Mask="n4" MaskUseAsDisplayFormat="True" DisplayFormat="n4" />
     <!--#endregion-->
     <!--#region BaseEdit line color -->
     <Style x:Key="BaseEditStyle" TargetType="dxe:BaseEdit">

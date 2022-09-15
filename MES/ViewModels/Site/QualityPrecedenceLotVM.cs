@@ -99,7 +99,7 @@ namespace MesAdmin.ViewModels
 
         public bool CanSave()
         {
-            return Header != null && Header.ReqDate != null && Header.LotNo != "" && Header.Qty != null && Header.LotNoWE10 != "" && Header.RegId != null;
+            return Header != null && Header.ReqDate != null && Header.LotNo != "" && Header.Qty != null && Header.LotNoWE10 != "" && Header.LotNoWE10Cnt != "" && Header.RegId != null;
         }
         public Task OnSave()
         {
@@ -205,7 +205,9 @@ namespace MesAdmin.ViewModels
                     Header.ItemCode = vmItem.ConfirmItem.ItemCode;
                     Header.ItemName = vmItem.ConfirmItem.ItemName;
                     Header.LotNo = vmItem.ConfirmItem.LotNo;
-                    Header.GetLotNoWE10();
+                    //Header.GetLotNoWE10();
+                    Header.LotNoWE10 = vmItem.ConfirmItem.Remark4;
+                    Header.LotNoWE10Cnt = vmItem.ConfirmItem.Remark5;
                     Header.BasicUnit = vmItem.ConfirmItem.BasicUnit;
                 }
             }

@@ -88,6 +88,7 @@
                                 <RowDefinition/>
                                 <RowDefinition/>
                                 <RowDefinition/>
+                                <RowDefinition/>
                             </Grid.RowDefinitions>
                             <Border Grid.Row="0" Grid.Column="0">
                                 <TextBlock>등록번호</TextBlock>
@@ -108,12 +109,15 @@
                                 <TextBlock>수량</TextBlock>
                             </Border>
                             <Border Grid.Row="6" Grid.Column="0">
-                                <TextBlock>합성로트번호</TextBlock>
+                                <TextBlock>합성로트 번호</TextBlock>
                             </Border>
                             <Border Grid.Row="7" Grid.Column="0">
-                                <TextBlock>등록자</TextBlock>
+                                <TextBlock>합성로트 순번</TextBlock>
                             </Border>
                             <Border Grid.Row="8" Grid.Column="0">
+                                <TextBlock>등록자</TextBlock>
+                            </Border>
+                            <Border Grid.Row="9" Grid.Column="0">
                                 <TextBlock>비고</TextBlock>
                             </Border>
 
@@ -204,7 +208,7 @@
                                 Text="{Binding Header.BasicUnit}"
                                 Grid.Row="5"
                                 Grid.Column="2"
-                                Margin="2 0 0 0" 
+                                Margin="2 0 0 0"
                                 VerticalAlignment="Bottom"
                                 Background="#F3F6FB"
                                 IsReadOnly="True" />
@@ -215,12 +219,21 @@
                                 Background="#F6EDCB"
                                 Grid.Row="6"
                                 Grid.Column="1"/>
+                            <dxe:TextEdit
+                                Text="{Binding Header.LotNoWE10Cnt, UpdateSourceTrigger=PropertyChanged}"
+                                VerticalAlignment="Bottom"
+                                Margin="2 0 0 0"
+                                Background="#F6EDCB"
+                                Grid.Row="7"
+                                MaskType="RegEx"
+                                Mask="\d{6}"
+                                Grid.Column="1"/>
                             <dxg:LookUpEdit
                                 ItemsSource="{Binding RegList}"
                                 DisplayMember="WorkerName"
                                 ValueMember="WorkerId"
                                 EditValue="{Binding Header.RegId, UpdateSourceTrigger=PropertyChanged}"
-                                Grid.Row="7"
+                                Grid.Row="8"
                                 Grid.Column="1"
                                 ShowSizeGrip="False"
                                 Margin="2 0 0 0"
@@ -254,7 +267,7 @@
                                 VerticalAlignment="Bottom"
                                 Margin="2 0 0 0"
                                 Background="White"
-                                Grid.Row="8"
+                                Grid.Row="9"
                                 Grid.Column="1"
                                 Grid.ColumnSpan="2"/>
                         </Grid>

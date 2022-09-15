@@ -101,6 +101,11 @@ namespace MesAdmin.Models
             get { return GetProperty(() => Memo); }
             set { SetProperty(() => Memo, value); }
         }
+        public string Remark1
+        {
+            get { return GetProperty(() => Remark1); }
+            set { SetProperty(() => Remark1, value); }
+        }
         public string UpdateId
         {
             get { return GetProperty(() => UpdateId); }
@@ -191,6 +196,7 @@ namespace MesAdmin.Models
                         Memo = u["Memo"].ToString(),
                         TSC = u["TSC"].ToString(),
                         PIG = u["PIG"].ToString(),
+                        Remark1 = u["Remark1"].ToString(),
                         ExpDate = u["ExpDate"] == DBNull.Value ? (DateTime?)null : (DateTime)u["ExpDate"],
                         UpdateId = (string)u["UpdateId"],
                         UpdateDate = (DateTime)u["UpdateDate"]

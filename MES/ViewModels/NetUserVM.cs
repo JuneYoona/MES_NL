@@ -61,7 +61,7 @@ namespace MesAdmin.ViewModels
         {
             Messenger.Default.Register<EntityMessage<NetUser>>(this, OnMessage);
 
-            EditCmd = new DelegateCommand(OnEdit);
+            EditCmd = new DelegateCommand(OnEdit, () => SelectedItem != null);
             NewCmd = new DelegateCommand(OnNew);
             DeleteCmd = new DelegateCommand(OnDelete);
             SaveCmd = new DelegateCommand(OnSave, CanSave);

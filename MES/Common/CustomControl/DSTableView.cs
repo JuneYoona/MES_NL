@@ -58,11 +58,12 @@ namespace MesAdmin.Common.CustomControl
 
         public DSTableView()
         {
-            this.ShowGridMenu += DSTableView_ShowGridMenu;
-            this.AllowMergedGrouping = true;
-            this.MergedGroupingMode = MergedGroupingMode.CtrlKeyPressed;
-            this.AllowCommitOnValidationAttributeError = true;
+            ShowGridMenu += DSTableView_ShowGridMenu;
+            AllowMergedGrouping = true;
+            MergedGroupingMode = MergedGroupingMode.Always;
+            AllowCommitOnValidationAttributeError = true;
             EnableImmediatePosting = true; //필드값이 바뀔경우 focus in 상태에서도 CellValueChang 이벤트 발생
+            ShowEmptyText = true;
 
             // gridcontrol optimizing(scroll)
             this.AllowCascadeUpdate = true;
@@ -111,7 +112,7 @@ namespace MesAdmin.Common.CustomControl
                 e.Customizations.Add(BarMin);
                 e.Customizations.Add(BarMax);
             }
-            catch{ }
+            catch { }
         }
     }
 }

@@ -100,5 +100,64 @@ namespace MesAdmin.Models
 
             return ds.Tables[0];
         }
+
+        public static string GetLotCountWE30(string pItemCode, string itemCode, string lotNo, string waCode)
+        {
+            Database db = ProviderFactory.Instance;
+            using (DbConnection conn = db.CreateConnection())
+            {
+                conn.Open();
+                DbTransaction trans = conn.BeginTransaction();
+                DbCommand dbCom = null;
+                try
+                {
+                    dbCom = db.GetStoredProcCommand("usp_getLotCountWE30");
+                    dbCom.CommandType = CommandType.StoredProcedure;
+                    db.AddInParameter(dbCom, "@PItemCode", DbType.String, pItemCode);
+                    db.AddInParameter(dbCom, "@ItemCode", DbType.String, itemCode);
+                    db.AddInParameter(dbCom, "@LotNo", DbType.String, lotNo);
+                    db.AddInParameter(dbCom, "@WaCode", DbType.String, waCode);
+                    db.AddOutParameter(dbCom, "@LotCnt", DbType.String, 50);
+                    db.ExecuteNonQuery(dbCom, trans);
+                    string lotCnt = db.GetParameterValue(dbCom, "@LotCnt").ToString();
+                    trans.Commit();
+
+                    return lotCnt;
+                }
+                catch
+                {
+                    trans.Rollback();
+                    throw;
+                }
+            }
+        }
+
+        public static DataTable BAC60PRODUCTION001B(DateTime date, string itemCode)
+        {
+            Database db = ProviderFactory.Instance;
+            DbCommand dbCom = db.GetStoredProcCommand("BAC60PRODUCTION001B");
+            db.AddInParameter(dbCom, "@Date", DbType.Date, date);
+            db.AddInParameter(dbCom, "@ItemCode", DbType.String, itemCode);
+            DataSet ds = db.ExecuteDataSet(dbCom);
+
+            return ds.Tables[0].Rows.Count == 0 ? null : ds.Tables[0];
+        }
+
+        public static void BAC60PRODUCTION003C(DateTime sourceDate, DateTime targetDate)
+        {
+            try
+            {
+                Database db = ProviderFactory.Instance;
+                DbCommand dbCom = db.GetStoredProcCommand("BAC60PRODUCTION003C");
+                db.AddInParameter(dbCom, "@SourceDate", DbType.Date, sourceDate);
+                db.AddInParameter(dbCom, "@TargetDate", DbType.Date, targetDate);
+                db.AddInParameter(dbCom, "@InsertId", DbType.String, DSUser.Instance.UserID);
+                db.ExecuteNonQuery(dbCom);
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

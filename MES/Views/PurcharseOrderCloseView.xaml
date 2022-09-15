@@ -155,7 +155,7 @@
                         <dxg:GridColumn FieldName="GrQty" Header="입고수량" Width="100" ReadOnly="True" />
                         <dxg:GridColumn FieldName="PoBasicUnit" Header="단위" Width="80" ReadOnly="True" />
                         <dxg:GridColumn FieldName="DlvyDate" Header="납기일" Width="90" ReadOnly="True" />
-                        <dxg:GridColumn Binding="{Binding RowData.Row.WhCode, Converter={StaticResource MinorCodeConverter}}" Width="150" Header="입고창고" ReadOnly="True"/>
+                        <dxg:GridColumn Width="150" Binding="{Binding RowData.Row.WhCode, Converter={StaticResource WhCodeConverter}}" Header="입고창고" ReadOnly="True" />
                     </dxg:GridControl.Columns>
                 </dxg:GridControl>
             </DockPanel>

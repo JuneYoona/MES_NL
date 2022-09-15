@@ -1,16 +1,17 @@
-﻿using System.Windows;
-using DevExpress.Mvvm;
-using System.Windows.Input;
-using System.Web.Security;
-using System.Threading.Tasks;
+﻿using DevExpress.Mvvm;
+using MesAdmin.Common.Services;
+using MesAdmin.Models;
 using Microsoft.Practices.EnterpriseLibrary.Data;
-using System.Data.Common;
 using System;
 using System.Collections.Generic;
-using System.Web.Profile;
-using MesAdmin.Models;
-using MesAdmin.Common.Services;
+using System.Data.Common;
 using System.Deployment.Application;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web.Security;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace MesAdmin.Authentication
 {
@@ -36,12 +37,12 @@ namespace MesAdmin.Authentication
             get { return GetProperty(() => SelectedDB); }
             set { SetProperty(() => SelectedDB, value); }
         }
-        public List<DBName> DBNameCollections
+        public IEnumerable<CommonMinor> DBNameCollections
         {
             get { return GetProperty(() => DBNameCollections); }
             set { SetProperty(() => DBNameCollections, value); }
         }
-        public List<BizArea> BizAreaCollections
+        public IEnumerable<CommonMinor> BizAreaCollections
         {
             get { return GetProperty(() => BizAreaCollections); }
             set { SetProperty(() => BizAreaCollections, value); }
@@ -81,7 +82,11 @@ namespace MesAdmin.Authentication
             get { return GetProperty(() => UpdaterPercentage); }
             set { SetProperty(() => UpdaterPercentage, value); }
         }
-        public SilentUpdater UpdateService { get; }
+        public bool PasswordFocus
+        {
+            get { return GetProperty(() => PasswordFocus); }
+            set { SetProperty(() => PasswordFocus, value); }
+        }
         #endregion
 
         #region Commands
@@ -92,31 +97,32 @@ namespace MesAdmin.Authentication
         public LoginVM()
         {
             LoginCmd = new AsyncCommand(OnLogin, CanLogin);
-            CancelCmd = new DelegateCommand(OnCancel);
+            CancelCmd = new DelegateCommand(() => Application.Current.MainWindow.Close());
 
             IsChecked = string.IsNullOrEmpty(Properties.Settings.Default.UserId) ? false : true;
             UserId = Properties.Settings.Default.UserId;
-            
-            DBNameCollections = new List<DBName> { new DBName { Name = "DSNL_MES" }, new DBName { Name = "DSNL_TEST" } };
-            if (Properties.Settings.Default.DBName != "")
-                SelectedDB = Properties.Settings.Default.DBName;
-            else
-                SelectedDB = "DSNL_MES";
 
-            BizAreaCollections = new List<BizArea>
+            #region 사업부 및 database 정보
+            DBInfo.Instance.Name = "DSNL_MES";
+
+            Task.Run(() =>
             {
-                new BizArea { Code = "BAC60", Name = "OLED" },
-                new BizArea { Code = "BAC90", Name = "BPDL" },
-            };
-            if (Properties.Settings.Default.BizAreaCode == "")
-                EditBizArea = "BAC60";
-            else
+                BizAreaCollections = new CommonMinorList(majorCode: "I0004").Where(o => o.IsEnabled == true);
+                DBNameCollections = new CommonMinorList(majorCode: "C1X01").Where(o => o.IsEnabled == true);
+            }).ContinueWith(t =>
+            {
                 EditBizArea = Properties.Settings.Default.BizAreaCode;
+                SelectedDB = Properties.Settings.Default.DBName;
+            });
+            #endregion
+
+            // after loading target control
+            Dispatcher.CurrentDispatcher.BeginInvoke(new Action(() => PasswordFocus = !string.IsNullOrEmpty(UserId) ? true : false), DispatcherPriority.Render);
 
             if (!IsInDesignMode) UpdateApplication();
         }
 
-        public bool CanLogin() { return !string.IsNullOrEmpty(UserId) && !string.IsNullOrEmpty(Password) && !string.IsNullOrEmpty(SelectedDB); }
+        public bool CanLogin() { return !string.IsNullOrEmpty(UserId) && !string.IsNullOrEmpty(Password) && !string.IsNullOrEmpty(SelectedDB) && !string.IsNullOrEmpty(EditBizArea); }
         public Task OnLogin() 
         {
             return Task.Factory.StartNew(LoginCore);
@@ -127,14 +133,33 @@ namespace MesAdmin.Authentication
 
             if (Membership.ValidateUser(UserId, Password) == true)
             {
+                #region Password 만료일 check
+                MembershipUser user = Membership.GetUser(UserId);
+                DateTime lastPasswordChangedDate = user.LastPasswordChangedDate;
+                double diffDay = (DateTime.Now - lastPasswordChangedDate).TotalDays;
+                #endregion
+
                 DispatcherService.BeginInvoke(() =>
                 {
                     Window loginWnd = Application.Current.MainWindow;
-                    MainWindow mainWnd = new MainWindow();
-                    Application.Current.MainWindow = mainWnd;
+                    Window activeWnd = null;
+
+                    if (diffDay > 90)
+                    {
+                        activeWnd = new PasswordChangeView();
+                        var vm = activeWnd.DataContext as PasswordChangeVM;
+                        vm.User = user;
+                        vm.Password = Password;
+                    }
+                    else
+                    {
+                        activeWnd = new MainWindow();
+                    }
+
+                    Application.Current.MainWindow = activeWnd;
 
                     loginWnd.Close();
-                    mainWnd.Show();
+                    activeWnd.Show();
                 });
 
                 CreateGlobalValue();
@@ -144,11 +169,6 @@ namespace MesAdmin.Authentication
                 IsEnabled = true;
                 Message = "ID 와 Password를 확인하세요!";
             }
-        }
-
-        public void OnCancel()
-        {
-            Application.Current.MainWindow.Close();
         }
 
         public bool TryOpenConnection()
@@ -197,8 +217,9 @@ namespace MesAdmin.Authentication
 
             // 재접속처리
             ProviderFactory.Instance = null;
-            GlobalCommonLayout.Instance = null;
-
+            GlobalCommonItem.Instance = null;
+            GlobalCommonBizPartner.Instance = null;
+            GlobalCommonMinor.Instance = null;
             //ProfileBase profile = ProfileBase.Create(UserId);
 
             //DSUser.Instance.UserID = UserId;
@@ -225,7 +246,6 @@ namespace MesAdmin.Authentication
                     ApplicationDeployment ad = ApplicationDeployment.CurrentDeployment;
                     ad.CheckForUpdateCompleted += new CheckForUpdateCompletedEventHandler(CheckForUpdateCompleted);
                     ad.CheckForUpdateAsync();
-
                 }
             }
             catch { }
@@ -259,16 +279,5 @@ namespace MesAdmin.Authentication
 
             ad.UpdateAsync();
         }
-    }
-
-    public class DBName
-    {
-        public string Name { get; set; }
-    }
-
-    public class BizArea
-    {
-        public string Code { get; set; }
-        public string Name { get; set; }
     }
 }

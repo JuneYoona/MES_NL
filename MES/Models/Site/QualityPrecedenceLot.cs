@@ -42,6 +42,11 @@ namespace MesAdmin.Models
             get { return GetProperty(() => LotNoWE10); }
             set { SetProperty(() => LotNoWE10, value); }
         }
+        public string LotNoWE10Cnt
+        {
+            get { return GetProperty(() => LotNoWE10Cnt); }
+            set { SetProperty(() => LotNoWE10Cnt, value); }
+        }
         public string LotNo
         {
             get { return GetProperty(() => LotNo); }
@@ -133,6 +138,7 @@ namespace MesAdmin.Models
                 ItemName = (string)u["ItemName"];
                 ItemSpec = (string)u["ItemSpec"];
                 LotNoWE10 = (string)u["LotNoWE10"];
+                LotNoWE10Cnt = u["LotNoWE10Cnt"].ToString();
                 LotNo = (string)u["LotNo"];
                 Qty = (decimal?)u["Qty"];
                 BasicUnit = (string)u["BasicUnit"];
@@ -178,6 +184,7 @@ namespace MesAdmin.Models
                     db.AddInParameter(dbCom, "@LotNo", DbType.String, LotNo);
                     db.AddInParameter(dbCom, "@Qty", DbType.Decimal, Qty);
                     db.AddInParameter(dbCom, "@LotNoWE10", DbType.String, LotNoWE10);
+                    db.AddInParameter(dbCom, "@LotNoWE10Cnt", DbType.String, LotNoWE10Cnt);
                     db.AddInParameter(dbCom, "@ReqDate", DbType.Date, ReqDate);
                     db.AddInParameter(dbCom, "@RegId", DbType.String, RegId);
                     db.AddInParameter(dbCom, "@RegName", DbType.String, GetInspectorName(RegId));

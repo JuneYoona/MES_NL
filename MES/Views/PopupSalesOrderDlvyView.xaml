@@ -243,14 +243,7 @@
                 <dxg:GridColumn FieldName="Qty" Header="수량" Width="100" EditSettings="{StaticResource NumericEditor}"/>
                 <dxg:GridColumn FieldName="BasicUnit" Header="단위" FixedWidth="True" Width="80" />
                 <dxg:GridColumn FieldName="LotNo" Header="생산로트" Width="100" />
-                <dxg:GridColumn MinWidth="150" Header="출고창고">
-                    <dxg:GridColumn.Binding>
-                        <MultiBinding Converter="{StaticResource MinorCodeConverter}">
-                            <Binding Source="I0011" />
-                            <Binding Path="Data.WhCode" />
-                        </MultiBinding>
-                    </dxg:GridColumn.Binding>
-                </dxg:GridColumn>
+                <dxg:GridColumn Width="150" Binding="{Binding RowData.Row.WhCode, Converter={StaticResource WhCodeConverter}}" Header="출고창고" />
                 <dxg:GridColumn FieldName="ReqNo" Header="출하요청번호" Width="100" />
                 <dxg:GridColumn FieldName="ReqSeq" Header="출하요청순번" Width="100" />
                 <dxg:GridColumn FieldName="Memo" Header="비고" Width="200"/>

@@ -151,6 +151,7 @@ namespace MesAdmin.ViewModels
 
         public Task OnMouseDown()
         {
+            SelectedDetail = null;
             return Task.Factory.StartNew(MouseDownCore);
         }
         public void MouseDownCore()
@@ -179,7 +180,7 @@ namespace MesAdmin.ViewModels
         bool CanDel(object obj) { return SelectedDetail != null; }
         public void Delete(object obj)
         {
-            Details.Where(u => u.LbNo == SelectedDetail.LbNo && u.PrintSeq == SelectedDetail.PrintSeq).ToList().ForEach(u =>
+            Details.Where(u => SelectedDetail.LotNo == u.LotNo).ToList().ForEach(u =>
             {
                     u.State = u.State == EntityState.Deleted ? EntityState.Unchanged : EntityState.Deleted;
             });

@@ -45,6 +45,7 @@ namespace MesAdmin.Models
                         BadQty = (decimal)u["BadQty"],
                         PickingQty = (decimal)u["PickingQty"],
                         BasicUnit = (string)u["BasicUnit"],
+                        ProcureType = (string)u["ProcureType"],
                         Remark4 = u["TSC"].ToString(),
                         Remark5 = u["PIG"].ToString(),
                         Remark6 = u["ExpDate"].ToString(),

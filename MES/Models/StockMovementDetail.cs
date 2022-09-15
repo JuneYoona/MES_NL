@@ -315,8 +315,8 @@ namespace MesAdmin.Models
             db.AddInParameter(dbCom, "@ItemCode", DbType.String, itemCode);
             db.AddInParameter(dbCom, "@ItemAccount", DbType.String, itemAccount);
             db.AddInParameter(dbCom, "@LotNo", DbType.String, lotNo);
-            db.AddInParameter(dbCom, "@StartDate", DbType.String, startDate.ToString());
-            db.AddInParameter(dbCom, "@EndDate", DbType.String, endDate.ToString());
+            db.AddInParameter(dbCom, "@StartDate", DbType.Date, startDate.HasValue ? startDate.Value : (DateTime?)null);
+            db.AddInParameter(dbCom, "@EndDate", DbType.Date, endDate.HasValue ? endDate.Value : (DateTime?)null);
             DataSet ds = db.ExecuteDataSet(dbCom);
 
             ds.Tables[0].AsEnumerable().ToList().ForEach(u =>

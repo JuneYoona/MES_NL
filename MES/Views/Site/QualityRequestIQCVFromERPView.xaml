@@ -326,7 +326,7 @@
                     EnableSmartColumnsGeneration="True">
                     <dxg:GridControl.Resources>
                         <ControlTemplate x:Key="{dxgt:GridControlThemeKey IsThemeIndependent=true, ResourceKey=BorderTemplate}" TargetType="{x:Type ContentControl}">
-                            <Border BorderThickness="0 1 0 0" BorderBrush="#859EBF">
+                            <Border BorderThickness="0 1 0 0" BorderBrush="#CCCEDB">
                                 <ContentPresenter />
                             </Border>
                         </ControlTemplate>

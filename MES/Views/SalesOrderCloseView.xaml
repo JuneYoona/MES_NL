@@ -161,7 +161,7 @@
                         <dxg:GridColumn FieldName="ReqQty" Header="출하요청수량" Width="100" ReadOnly="True" EditSettings="{StaticResource NumericEditor}"/>
                         <dxg:GridColumn FieldName="BasicUnit" Header="단위" Width="80" ReadOnly="True" />
                         <dxg:GridColumn Binding="{Binding RowData.Row.SoType, Converter={StaticResource SoTypeCodeConverter}}" Width="100" Header="수주형태" />
-                        <dxg:GridColumn Binding="{Binding RowData.Row.WhCode, Converter={StaticResource MinorCodeConverter}}" Width="150" Header="출고창고" ReadOnly="True" />
+                        <dxg:GridColumn Binding="{Binding RowData.Row.WhCode, Converter={StaticResource WhCodeConverter}}" Width="150" Header="출고창고" ReadOnly="True" />
                         <dxg:GridColumn FieldName="UpdateId" Header="입력자 Id" MinWidth="80" ReadOnly="True" />
                         <dxg:GridColumn FieldName="UpdateDate" Header="입력시간" MinWidth="120" ReadOnly="True" >
                             <dxg:GridColumn.EditSettings>

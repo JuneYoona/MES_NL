@@ -181,14 +181,7 @@
                 <dxg:GridColumn FieldName="Qty" Header="로트수량"/>
                 <dxg:GridColumn FieldName="BasicUnit" Width="80" Header="단위"/>
                 <dxg:GridColumn Binding="{Binding RowData.Row.BizCode, Converter={StaticResource BizCodeConverter}}" Header="공급처"/>
-                <dxg:GridColumn MinWidth="150" Header="입고창고">
-                    <dxg:GridColumn.Binding>
-                        <MultiBinding Converter="{StaticResource MinorCodeConverter}">
-                            <Binding Source="I0011" />
-                            <Binding Path="Data.WhCode" />
-                        </MultiBinding>
-                    </dxg:GridColumn.Binding>
-                </dxg:GridColumn>
+                <dxg:GridColumn Width="150" Binding="{Binding RowData.Row.WhCode, Converter={StaticResource WhCodeConverter}}" Header="입고창고" />
             </dxg:GridControl.Columns>
         </custom:DSGridControl>
     </Grid>

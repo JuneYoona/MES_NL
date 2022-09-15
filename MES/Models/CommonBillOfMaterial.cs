@@ -31,12 +31,17 @@ namespace MesAdmin.Models
             get { return GetProperty(() => ItemName); }
             set { SetProperty(() => ItemName, value); }
         }
+        public string ItemSpec
+        {
+            get { return GetProperty(() => ItemSpec); }
+            set { SetProperty(() => ItemSpec, value); }
+        }
         public string PUnit
         {
             get { return GetProperty(() => PUnit); }
             set { SetProperty(() => PUnit, value); }
         }
-        public Decimal PPerQty
+        public decimal PPerQty
         {
             get { return GetProperty(() => PPerQty); }
             set { SetProperty(() => PPerQty, value); }
@@ -46,7 +51,7 @@ namespace MesAdmin.Models
             get { return GetProperty(() => CUnit); }
             set { SetProperty(() => CUnit, value); }
         }
-        public Decimal CPerQty
+        public decimal CPerQty
         {
             get { return GetProperty(() => CPerQty); }
             set { SetProperty(() => CPerQty, value); }
@@ -82,12 +87,15 @@ namespace MesAdmin.Models
     {
         private string itemCode;
         private DateTime checkDate;
+        private string direction;
 
         public CommonBillOfMaterialList() { }
-        public CommonBillOfMaterialList(string itemCode, DateTime checkDate)
+        public CommonBillOfMaterialList(string itemCode, DateTime checkDate, string direction)
         {
             this.itemCode = itemCode;
             this.checkDate = checkDate;
+            this.direction = direction;
+
             InitializeList();
         }
 
@@ -96,7 +104,7 @@ namespace MesAdmin.Models
             base.Clear();
 
             Database db = ProviderFactory.Instance;
-            DbCommand dbCom = db.GetStoredProcCommand("usp_GetBillOfMaterial");
+            DbCommand dbCom = db.GetStoredProcCommand(direction == "forward" ? "usp_GetBillOfMaterial" : "usp_GetBillOfMaterial_Reverse");
             dbCom.CommandType = CommandType.StoredProcedure;
             db.AddInParameter(dbCom, "@StartItemCode", DbType.String, itemCode);
             db.AddInParameter(dbCom, "@CheckDate", DbType.Date, checkDate);
@@ -128,6 +136,7 @@ namespace MesAdmin.Models
                         CItemSeq = int.Parse(u["CItemSeq"].ToString()),
                         CItemCode = (string)u["CItemCode"],
                         ItemName = (string)u["ItemName"],
+                        ItemSpec = u["ItemSpec"].ToString(),
                         PPerQty = (decimal)u["PPerQty"],
                         PUnit = (string)u["PUnit"],
                         CPerQty = (decimal)u["CPerQty"],
@@ -167,11 +176,9 @@ namespace MesAdmin.Models
 
         public void Insert(IEnumerable<CommonBillOfMaterial> items, Database db, DbTransaction trans)
         {
-            DbCommand dbCom = null;
-
             foreach (CommonBillOfMaterial item in items)
             {
-                dbCom = db.GetStoredProcCommand("usp_common_BillOfMaterial");
+                DbCommand dbCom = db.GetStoredProcCommand("usp_common_BillOfMaterial");
                 dbCom.CommandType = CommandType.StoredProcedure;
                 db.AddInParameter(dbCom, "@PItemCode", DbType.String, item.PItemCode);
                 db.AddInParameter(dbCom, "@CItemCode", DbType.String, item.CItemCode);
@@ -189,13 +196,11 @@ namespace MesAdmin.Models
         public void Update(IEnumerable<CommonBillOfMaterial> items, Database db, DbTransaction trans)
         {
             string str;
-            DbCommand dbCom = null;
-
             foreach (CommonBillOfMaterial item in items)
             {
                 str = "UPDATE common_BillOfMaterial SET StartDate = @StartDate, EndDate = @EndDate, PPerQty = @PPerQty, CPerQty = @CPerQty, UpdateId = @UpdateId, UpdateDate = getdate() ";
                 str += "WHERE PItemCode = @PItemCode AND CItemCode = @CItemCode AND CItemSeq = @CItemSeq";
-                dbCom = db.GetSqlStringCommand(str);
+                DbCommand dbCom = db.GetSqlStringCommand(str);
                 db.AddInParameter(dbCom, "@PItemCode", DbType.String, item.PItemCode);
                 db.AddInParameter(dbCom, "@CItemCode", DbType.String, item.CItemCode);
                 db.AddInParameter(dbCom, "@CItemSeq", DbType.Int16, item.CItemSeq);
@@ -211,12 +216,10 @@ namespace MesAdmin.Models
         public void Delete(IEnumerable<CommonBillOfMaterial> items, Database db, DbTransaction trans)
         {
             string str;
-            DbCommand dbCom = null;
-
             foreach (CommonBillOfMaterial item in items)
             {
                 str = string.Format("DELETE common_BillOfMaterial WHERE PItemCode = @PItemCode AND CItemCode = @CItemCode AND CItemSeq = @CItemSeq");
-                dbCom = db.GetSqlStringCommand(str);
+                DbCommand dbCom = db.GetSqlStringCommand(str);
                 db.AddInParameter(dbCom, "@PItemCode", DbType.String, item.PItemCode);
                 db.AddInParameter(dbCom, "@CItemCode", DbType.String, item.CItemCode);
                 db.AddInParameter(dbCom, "@CItemSeq", DbType.Int16, item.CItemSeq);

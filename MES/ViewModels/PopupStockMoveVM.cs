@@ -39,7 +39,7 @@ namespace MesAdmin.ViewModels
             get { return GetProperty(() => ConfirmHeader); }
             set { SetProperty(() => ConfirmHeader, value); }
         }
-        public StockMovementDetailList CollectionsDetail
+        public IEnumerable<StockMovementDetail> CollectionsDetail
         {
             get { return GetProperty(() => CollectionsDetail); }
             set { SetProperty(() => CollectionsDetail, value); }
@@ -79,7 +79,7 @@ namespace MesAdmin.ViewModels
         protected UICommand ConfirmUICmd { get; private set; }
         protected UICommand CancelUICmd { get; private set; }
         public ICommand ConfirmCmd { get; set; }
-        public ICommand MouseDownCmd { get; set; }
+        public AsyncCommand MouseDownCmd { get; set; }
         #endregion
 
         public PopupStockMoveVM() : this("") { }
@@ -115,7 +115,7 @@ namespace MesAdmin.ViewModels
             // command
             SearchCmd = new AsyncCommand(OnSearch);
             ConfirmCmd = new DelegateCommand(OnConfirm);
-            MouseDownCmd = new DelegateCommand(OnMouseDown);
+            MouseDownCmd = new AsyncCommand(OnMouseDown);
 
             OnSearch();
         }
@@ -140,10 +140,16 @@ namespace MesAdmin.ViewModels
             IsBusy = false;
         }
 
-        public void OnMouseDown()
+        public Task OnMouseDown()
         {
-            if (SelectedHeader != null)
-                CollectionsDetail = new StockMovementDetailList ( documentNo : SelectedHeader.DocumentNo );
+            return Task.Run(() =>
+            {
+                if (SelectedHeader != null)
+                {
+                    CollectionsDetail = new StockMovementDetailList(documentNo: SelectedHeader.DocumentNo, startDate: SelectedHeader.DocumentDate, endDate: SelectedHeader.DocumentDate, transType: TransType)
+                    .Where(o => o.DCFlag == "C"); ;
+                }
+            });
         }
 
         public void OnConfirm()

@@ -59,7 +59,6 @@
             this.xrTableCell14 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell15 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell16 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.xrTableCell17 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrLabel8 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel1 = new DevExpress.XtraReports.UI.XRLabel();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
@@ -69,7 +68,6 @@
             this.xrLabel9 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel10 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel11 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLabel12 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel20 = new DevExpress.XtraReports.UI.XRLabel();
             this.sqlDataSource1 = new DevExpress.DataAccess.Sql.SqlDataSource(this.components);
             this.ReqNo = new DevExpress.XtraReports.Parameters.Parameter();
@@ -255,8 +253,7 @@
             this.xrTableCell13,
             this.xrTableCell14,
             this.xrTableCell15,
-            this.xrTableCell16,
-            this.xrTableCell17});
+            this.xrTableCell16});
             this.xrTableRow2.Name = "xrTableRow2";
             this.xrTableRow2.Weight = 1D;
             // 
@@ -287,20 +284,14 @@
             // xrTableCell15
             // 
             this.xrTableCell15.Name = "xrTableCell15";
-            this.xrTableCell15.Text = "출하량";
-            this.xrTableCell15.Weight = 0.69318237998268828D;
+            this.xrTableCell15.Text = "출하량(kg)";
+            this.xrTableCell15.Weight = 1.0426145064359544D;
             // 
             // xrTableCell16
             // 
             this.xrTableCell16.Name = "xrTableCell16";
             this.xrTableCell16.Text = "QR코드 체계";
-            this.xrTableCell16.Weight = 3.113636631294125D;
-            // 
-            // xrTableCell17
-            // 
-            this.xrTableCell17.Name = "xrTableCell17";
-            this.xrTableCell17.Text = "비고";
-            this.xrTableCell17.Weight = 1.7727256974592955D;
+            this.xrTableCell16.Weight = 4.536930521358868D;
             // 
             // xrLabel8
             // 
@@ -335,7 +326,6 @@
             this.xrLabel9,
             this.xrLabel10,
             this.xrLabel11,
-            this.xrLabel12,
             this.xrLabel20});
             this.Detail.HeightF = 50F;
             this.Detail.KeepTogether = true;
@@ -422,15 +412,14 @@
             this.xrLabel10.Font = new System.Drawing.Font("맑은 고딕", 9.75F);
             this.xrLabel10.LocationFloat = new DevExpress.Utils.PointFloat(418.0555F, 0F);
             this.xrLabel10.Name = "xrLabel10";
-            this.xrLabel10.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel10.SizeF = new System.Drawing.SizeF(84.72235F, 50F);
+            this.xrLabel10.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 10, 0, 0, 100F);
+            this.xrLabel10.SizeF = new System.Drawing.SizeF(127.4307F, 50F);
             this.xrLabel10.StylePriority.UseBorders = false;
             this.xrLabel10.StylePriority.UseFont = false;
             this.xrLabel10.StylePriority.UsePadding = false;
             this.xrLabel10.StylePriority.UseTextAlignment = false;
             this.xrLabel10.Text = "xrLabel10";
-            this.xrLabel10.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
-            this.xrLabel10.TextFormatString = "{0:0.0 kg}";
+            this.xrLabel10.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
             // 
             // xrLabel11
             // 
@@ -438,10 +427,10 @@
             this.xrLabel11.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[MinCode]")});
             this.xrLabel11.Font = new System.Drawing.Font("맑은 고딕", 8F);
-            this.xrLabel11.LocationFloat = new DevExpress.Utils.PointFloat(502.7779F, 0F);
+            this.xrLabel11.LocationFloat = new DevExpress.Utils.PointFloat(545.4863F, 0F);
             this.xrLabel11.Name = "xrLabel11";
-            this.xrLabel11.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 2, 0, 0, 100F);
-            this.xrLabel11.SizeF = new System.Drawing.SizeF(380.5555F, 25F);
+            this.xrLabel11.Padding = new DevExpress.XtraPrinting.PaddingInfo(10, 2, 0, 0, 100F);
+            this.xrLabel11.SizeF = new System.Drawing.SizeF(554.5137F, 25F);
             this.xrLabel11.StylePriority.UseBorders = false;
             this.xrLabel11.StylePriority.UseFont = false;
             this.xrLabel11.StylePriority.UsePadding = false;
@@ -450,30 +439,16 @@
             this.xrLabel11.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             this.xrLabel11.WordWrap = false;
             // 
-            // xrLabel12
-            // 
-            this.xrLabel12.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
-            this.xrLabel12.Font = new System.Drawing.Font("맑은 고딕", 9.75F);
-            this.xrLabel12.LocationFloat = new DevExpress.Utils.PointFloat(883.3334F, 0F);
-            this.xrLabel12.Name = "xrLabel12";
-            this.xrLabel12.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel12.SizeF = new System.Drawing.SizeF(216.6665F, 49.99999F);
-            this.xrLabel12.StylePriority.UseBorders = false;
-            this.xrLabel12.StylePriority.UseFont = false;
-            this.xrLabel12.StylePriority.UsePadding = false;
-            this.xrLabel12.StylePriority.UseTextAlignment = false;
-            this.xrLabel12.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
-            // 
             // xrLabel20
             // 
             this.xrLabel20.Borders = ((DevExpress.XtraPrinting.BorderSide)((DevExpress.XtraPrinting.BorderSide.Right | DevExpress.XtraPrinting.BorderSide.Bottom)));
             this.xrLabel20.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[MaxCode]")});
             this.xrLabel20.Font = new System.Drawing.Font("맑은 고딕", 8F);
-            this.xrLabel20.LocationFloat = new DevExpress.Utils.PointFloat(502.7779F, 25F);
+            this.xrLabel20.LocationFloat = new DevExpress.Utils.PointFloat(545.4863F, 25F);
             this.xrLabel20.Name = "xrLabel20";
-            this.xrLabel20.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 2, 0, 0, 100F);
-            this.xrLabel20.SizeF = new System.Drawing.SizeF(380.5555F, 25F);
+            this.xrLabel20.Padding = new DevExpress.XtraPrinting.PaddingInfo(10, 2, 0, 0, 100F);
+            this.xrLabel20.SizeF = new System.Drawing.SizeF(554.5137F, 25F);
             this.xrLabel20.StylePriority.UseBorders = false;
             this.xrLabel20.StylePriority.UseFont = false;
             this.xrLabel20.StylePriority.UsePadding = false;
@@ -490,7 +465,8 @@
             queryParameter1.Name = "@ReqNo";
             queryParameter1.Type = typeof(DevExpress.DataAccess.Expression);
             queryParameter1.Value = new DevExpress.DataAccess.Expression("[Parameters.ReqNo]", typeof(string));
-            storedProcQuery1.Parameters.Add(queryParameter1);
+            storedProcQuery1.Parameters.AddRange(new DevExpress.DataAccess.Sql.QueryParameter[] {
+            queryParameter1});
             storedProcQuery1.StoredProcName = "usps_salesCheckList";
             this.sqlDataSource1.Queries.AddRange(new DevExpress.DataAccess.Sql.SqlQuery[] {
             storedProcQuery1});
@@ -523,7 +499,7 @@
             this.ReqNo});
             this.ShowPrintMarginsWarning = false;
             this.ShowPrintStatusDialog = false;
-            this.Version = "17.2";
+            this.Version = "21.2";
             ((System.ComponentModel.ISupportInitialize)(this.xrTable4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
@@ -560,7 +536,6 @@
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell14;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell15;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell16;
-        private DevExpress.XtraReports.UI.XRTableCell xrTableCell17;
         private DevExpress.DataAccess.Sql.SqlDataSource sqlDataSource1;
         private DevExpress.XtraReports.Parameters.Parameter ReqNo;
         private DevExpress.XtraReports.UI.XRLabel xrLabel2;
@@ -570,7 +545,6 @@
         private DevExpress.XtraReports.UI.XRLabel xrLabel9;
         private DevExpress.XtraReports.UI.XRLabel xrLabel10;
         private DevExpress.XtraReports.UI.XRLabel xrLabel11;
-        private DevExpress.XtraReports.UI.XRLabel xrLabel12;
         private DevExpress.XtraReports.UI.XRLabel xrLabel20;
     }
 }

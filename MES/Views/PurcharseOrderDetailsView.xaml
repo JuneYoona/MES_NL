@@ -144,7 +144,7 @@
                         <dxg:GridColumn FieldName="GrQty" Header="입고수량" Width="100" />
                         <dxg:GridColumn FieldName="PoBasicUnit" Header="단위" Width="80" />
                         <dxg:GridColumn FieldName="DlvyDate" Header="납기일" Width="90" />
-                        <dxg:GridColumn Binding="{Binding RowData.Row.WhCode, Converter={StaticResource MinorCodeConverter}}" Width="150" Header="입고창고" />
+                        <dxg:GridColumn Width="150" Binding="{Binding RowData.Row.WhCode, Converter={StaticResource WhCodeConverter}}" Header="입고창고" />
                         <dxg:GridColumn FieldName="CloseFlag" Header="마감" Width="60" />
                         <dxg:GridColumn FieldName="UpdateId" Header="입력자 Id" MinWidth="80" />
                         <dxg:GridColumn FieldName="UpdateDate" Header="입력시간" MinWidth="120">

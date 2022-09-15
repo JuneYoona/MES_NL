@@ -56,6 +56,11 @@ namespace MesAdmin.Models
             get { return GetProperty(() => Remark2); }
             set { SetProperty(() => Remark2, value); }
         }
+        public string Remark3
+        {
+            get { return GetProperty(() => Remark3); }
+            set { SetProperty(() => Remark3, value); }
+        }
         public string ItemName
         {
             get { return GetProperty(() => ItemName); }
@@ -115,6 +120,7 @@ namespace MesAdmin.Models
                 OrderQty = (decimal)u["OrderQty"];
                 Remark = u["Remark"].ToString();
                 Remark2 = u["Remark2"].ToString();
+                Remark3 = u["Remark3"].ToString();
                 IsEnd = Convert.ToChar(u["IsEnd"]);
                 TSC = u["TSC"] == DBNull.Value ? (decimal?)null : (decimal)u["TSC"];
                 LotNo = u["LotNo"].ToString();
@@ -169,6 +175,7 @@ namespace MesAdmin.Models
                     db.AddInParameter(dbCom, "@OrderQty", DbType.Decimal, OrderQty);
                     db.AddInParameter(dbCom, "@Remark", DbType.String, Remark);
                     db.AddInParameter(dbCom, "@Remark2", DbType.String, Remark2 != null ? Remark2.Trim().ToUpper() : "");
+                    db.AddInParameter(dbCom, "@Remark3", DbType.String, Remark3 != null ? Remark3.Trim() : "");
                     db.AddInParameter(dbCom, "@TSC", DbType.Decimal, TSC);
                     db.AddInParameter(dbCom, "@LotNo", DbType.String, LotNo);
                     db.AddInParameter(dbCom, "@InsertId", DbType.String, DSUser.Instance.UserID);

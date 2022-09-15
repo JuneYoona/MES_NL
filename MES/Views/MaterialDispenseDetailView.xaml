@@ -131,14 +131,7 @@
                                         <dxg:GridColumn FieldName="ItemSpec" Header="품목사양" Width="140" />
                                         <dxg:GridColumn FieldName="BasicUnit" Header="단위" Width="80" />
                                         <dxg:GridColumn FieldName="ReqQty" Header="요청수량" Width="100" EditSettings="{StaticResource NumericEditor3}"/>
-                                        <dxg:GridColumn Width="150" Header="입고창고" FieldName="InWhCode">
-                                            <dxg:GridColumn.Binding>
-                                                <MultiBinding Converter="{StaticResource MinorCodeConverter}">
-                                                    <Binding Source="I0011" />
-                                                    <Binding Path="Data.InWhCode" />
-                                                </MultiBinding>
-                                            </dxg:GridColumn.Binding>
-                                        </dxg:GridColumn>
+                                        <dxg:GridColumn Width="150" Binding="{Binding RowData.Row.InWhCode, Converter={StaticResource WhCodeConverter}}" Header="입고창고" />
                                         <dxg:GridColumn FieldName="Memo" Header="Memo" Width="120" />
                                         <dxg:GridColumn FieldName="UpdateId" Header="입력자 Id" MinWidth="80" />
                                         <dxg:GridColumn FieldName="UpdateDate" Header="입력일" MinWidth="100" />
@@ -183,24 +176,11 @@
                                         <dxg:GridColumn FieldName="ItemName" Header="품목명" Width="150" />
                                         <dxg:GridColumn FieldName="ItemSpec" Header="품목사양" Width="150" />
                                         <dxg:GridColumn Header="Lot No." FieldName="LotNo" Width="120" />
+                                        <dxg:GridColumn Header="순번" FieldName="Remark1" Width="80" />
                                         <dxg:GridColumn FieldName="DspQty" Header="수량" Width="120" EditSettings="{StaticResource NumericEditor3}" />
                                         <dxg:GridColumn FieldName="BasicUnit" Header="단위" FixedWidth="True" Width="80" />
-                                        <dxg:GridColumn Width="150" Header="출고창고" FieldName="OutWhCode">
-                                            <dxg:GridColumn.Binding>
-                                                <MultiBinding Converter="{StaticResource MinorCodeConverter}">
-                                                    <Binding Source="I0011" />
-                                                    <Binding Path="Data.OutWhCode" />
-                                                </MultiBinding>
-                                            </dxg:GridColumn.Binding>
-                                        </dxg:GridColumn>
-                                        <dxg:GridColumn Width="150" Header="입고창고" FieldName="InWhCode">
-                                            <dxg:GridColumn.Binding>
-                                                <MultiBinding Converter="{StaticResource MinorCodeConverter}">
-                                                    <Binding Source="I0011" />
-                                                    <Binding Path="Data.InWhCode" />
-                                                </MultiBinding>
-                                            </dxg:GridColumn.Binding>
-                                        </dxg:GridColumn>
+                                        <dxg:GridColumn Width="150" Binding="{Binding RowData.Row.OutWhCode, Converter={StaticResource WhCodeConverter}}" Header="출고창고" />
+                                        <dxg:GridColumn Width="150" Binding="{Binding RowData.Row.InWhCode, Converter={StaticResource WhCodeConverter}}" Header="입고창고" />
                                         <dxg:GridColumn FieldName="Memo" Header="메모" Width="200" />
                                         <dxg:GridColumn FieldName="TSC" Header="TSC(%)" Width="80" />
                                         <dxg:GridColumn FieldName="PIG" Header="PIG(%)" Width="80" />

@@ -79,6 +79,11 @@ namespace MesAdmin.ViewModels
             set { SetProperty(() => WaCode, value); }
         }
         public CommonItemList Items { get; set; }
+        public string BizAreaCode
+        {
+            get { return GetProperty(() => BizAreaCode); }
+            set { SetProperty(() => BizAreaCode, value); }
+        }
         public bool IsBusy
         {
             get { return GetProperty(() => IsBusy); }
@@ -158,7 +163,7 @@ namespace MesAdmin.ViewModels
                 }
             }
 
-            Collections = new StockMovementDetailList(documentNo: DocumentNo);
+            Collections = new StockMovementDetailList(documentNo: DocumentNo, bizAreaCode: BizAreaCode);
             if (Collections.Count == 0)
             {
                 DispatcherService.BeginInvoke(() => MessageBoxService.ShowMessage("수불정보가 없습니다!"
@@ -229,6 +234,7 @@ namespace MesAdmin.ViewModels
                 if (vmMove.ConfirmHeader != null && vmMove.CollectionsDetail != null)
                 {
                     DocumentNo = vmMove.ConfirmHeader.DocumentNo;
+                    BizAreaCode = vmMove.ConfirmHeader.BizAreaCode;
                     OnSearch();
                 }
             }

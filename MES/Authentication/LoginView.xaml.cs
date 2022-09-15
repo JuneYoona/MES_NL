@@ -24,11 +24,5 @@ namespace MesAdmin.Authentication
         {
             InitializeComponent();
         }
-
-        private void DXWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (Id.Text == "") Id.Focus();
-            else Password.Focus();
-        }
     }
 }

@@ -1,22 +1,23 @@
-﻿<UserControl   x:Class="MesAdmin.Views.CommonBOMView"
-               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-               xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
-               xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-               xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
-               xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
-               xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
-               xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
-               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-               xmlns:common="clr-namespace:MesAdmin.Common.Common"
-               xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
-               xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
-               xmlns:ViewModels="clr-namespace:MesAdmin.ViewModels"
-               xmlns:view="clr-namespace:MesAdmin.Views"
-               mc:Ignorable="d"
-               d:DesignHeight="600" d:DesignWidth="600"
-               DataContext="{dxmvvm:ViewModelSource Type=ViewModels:CommonBOMVM}">
+﻿<UserControl x:Class="MesAdmin.Views.CommonBOMView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:common="clr-namespace:MesAdmin.Common.Common"
+             xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
+             xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
+             xmlns:ViewModels="clr-namespace:MesAdmin.ViewModels"
+             xmlns:view="clr-namespace:MesAdmin.Views"
+             mc:Ignorable="d"
+             d:DesignHeight="600"
+             d:DesignWidth="1000"
+             DataContext="{dxmvvm:ViewModelSource Type=ViewModels:CommonBOMVM}">
     <UserControl.Resources>
         <DataTemplate x:Key="ItemCode">
             <dxe:ButtonEdit 
@@ -25,7 +26,7 @@
                 IsTextEditable="False"
                 IsReadOnly="{DXBinding !View.DataContext.IsNew}">
                 <dxmvvm:Interaction.Behaviors>
-                    <dxmvvm:EventToCommand EventName="DefaultButtonClick" Command="{Binding View.DataContext.ShowDialogCmd}" />
+                    <dxmvvm:EventToCommand EventName="DefaultButtonClick" Command="{Binding View.DataContext.ShowDialogCmd}" CommandParameter="{Binding ElementName=view}" />
                 </dxmvvm:Interaction.Behaviors>
             </dxe:ButtonEdit>
         </DataTemplate>
@@ -94,9 +95,31 @@
                                                 <dxmvvm:EventToCommand
                                                     EventName="DefaultButtonClick"
                                                     Command="{Binding DataContext.ShowDialogCmd, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}"
-                                                    CommandParameter="Header" />
+                                                    />
                                             </dxmvvm:Interaction.Behaviors>
                                         </dxe:ButtonEdit>
+                                    </DataTemplate>
+                                </dxb:BarEditItem.EditTemplate>
+                            </dxb:BarEditItem>
+                            <dxb:BarEditItem>
+                                <dxb:BarEditItem.EditTemplate>
+                                    <DataTemplate>
+                                        <dxe:ListBoxEdit
+                                            x:Name="PART_Editor"
+                                            EditValue="{Binding DataContext.Direction, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}"
+                                            Height="48"
+                                            Margin="0 5 0 0">
+                                            <dxe:ListBoxEditItem Content="정전개" Margin="10,0" VerticalAlignment="Center"/>
+                                            <dxe:ListBoxEditItem Content="역전개" Margin="10,0" VerticalAlignment="Center"/>
+                                            <dxe:ListBoxEdit.StyleSettings>
+                                                <dxe:RadioListBoxEditStyleSettings />
+                                            </dxe:ListBoxEdit.StyleSettings>
+                                            <dxe:ListBoxEdit.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Horizontal"/>
+                                                </ItemsPanelTemplate>
+                                            </dxe:ListBoxEdit.ItemsPanel>
+                                        </dxe:ListBoxEdit>
                                     </DataTemplate>
                                 </dxb:BarEditItem.EditTemplate>
                             </dxb:BarEditItem>
@@ -118,6 +141,7 @@
                 <dxg:TreeListControl.Columns>
                     <dxg:TreeListColumn Header="품목코드" FieldName="CItemCode" CellTemplate="{StaticResource ItemCode}" />
                     <dxg:TreeListColumn Header="품목명" FieldName="ItemName" Width="180" AllowEditing="False" />
+                    <dxg:TreeListColumn Header="품목사양" FieldName="ItemSpec" Width="200" AllowEditing="False" />
                     <dxg:TreeListColumn Header="Level" FieldName="RecursionLevel" Width="50" FixedWidth="True" AllowEditing="False" />
                     <dxg:TreeListColumn Header="자품목기준수" FieldName="CPerQty" Width="100" FixedWidth="True"/>
                     <dxg:TreeListColumn Header="단위" FieldName="CUnit" Width="50" FixedWidth="True" AllowEditing="False"/>

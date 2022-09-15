@@ -99,6 +99,10 @@ namespace MesAdmin
                 Ver = "Application Version : ";
                 Ver += ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
             }
+            else
+            {
+                Ver = "Application Version : Demo";
+            }
         }
 
         public void OnLoad()

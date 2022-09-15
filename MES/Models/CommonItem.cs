@@ -97,6 +97,16 @@ namespace MesAdmin.Models
             get { return GetProperty(() => IsEnabled); }
             set { SetProperty(() => IsEnabled, value); }
         }
+        public string Remark1
+        {
+            get { return GetProperty(() => Remark1); }
+            set { SetProperty(() => Remark1, value); }
+        }
+        public string Remark2
+        {
+            get { return GetProperty(() => Remark2); }
+            set { SetProperty(() => Remark2, value); }
+        }
         public string UpdateId
         {
             get { return GetProperty(() => UpdateId); }
@@ -137,16 +147,7 @@ namespace MesAdmin.Models
                 DbTransaction trans = conn.BeginTransaction();
                 try
                 {
-                    switch (this.State)
-                    {
-                        case EntityState.Added:
-                            Insert(db, trans);
-                            break;
-                        case EntityState.Modified:
-                            Update(db, trans);
-                            break;
-                    }
-                    
+                    Save(db, trans);
                     trans.Commit();
                 }
                 catch
@@ -157,49 +158,26 @@ namespace MesAdmin.Models
             }
         }
 
-        public void Insert(Database db, DbTransaction trans)
+        public void Save(Database db, DbTransaction trans)
         {
-            string str;
-            DbCommand dbCom = null;
-            
-            str = "INSERT INTO common_Item(ItemCode, ItemName, ItemSpec, ItemAccount, BasicUnit, IsEnabled, InWhCode, OutWhCode, InsertId, UpdateId, UpdateDate) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{8}', getdate())";
-            str = string.Format(str
-                , ItemCode.ToUpper()
-                , ItemName
-                , string.IsNullOrEmpty(ItemSpec) ? "" : ItemSpec
-                , ItemAccount
-                , BasicUnit
-                , IsEnabled
-                , InWhCode
-                , OutWhCode
-                , DSUser.Instance.UserID);
-            dbCom = db.GetSqlStringCommand(str);
-            db.ExecuteNonQuery(dbCom, trans);
+            switch (State)
+            {
+                case EntityState.Added:
+                    Insert(db, trans);
+                    break;
+                case EntityState.Deleted:
+                    Delete(db, trans);
+                    break;
+                case EntityState.Modified:
+                    Insert(db, trans);
+                    break;
+            }
         }
 
-        public void Update(Database db, DbTransaction trans)
+        public void Insert(Database db, DbTransaction trans)
         {
-            string str;
-            DbCommand dbCom = null;
-
-            str = "UPDATE common_Item SET "
-                + "ItemName = @ItemName"
-                + ", ItemSpec = @ItemSpec"
-                + ", ItemAccount = @ItemAccount"
-                + ", ProcureType = @ProcureType"
-                + ", BasicUnit = @BasicUnit"
-                + ", IsEnabled = @IsEnabled"
-                + ", IQCFlag = @IQCFlag"
-                + ", LQCFlag = @LQCFlag"
-                + ", FQCFlag = @FQCFlag"
-                + ", OQCFlag = @OQCFlag"
-                + ", InWhCode = @InWhCode"
-                + ", OutWhCode = @OutWhCode"
-                + ", InWaCode = @InWaCode"
-                + ", UpdateId = @UpdateId"
-                + ", UpdateDate = getdate() "
-                + "WHERE ItemCode = @ItemCode";
-            dbCom = db.GetSqlStringCommand(str);
+            DbCommand dbCom = db.GetStoredProcCommand("usp_common_Item");
+            db.AddInParameter(dbCom, "@ItemCode", DbType.String, ItemCode);
             db.AddInParameter(dbCom, "@ItemName", DbType.String, ItemName);
             db.AddInParameter(dbCom, "@ItemSpec", DbType.String, ItemSpec);
             db.AddInParameter(dbCom, "@ItemAccount", DbType.String, ItemAccount);
@@ -213,8 +191,17 @@ namespace MesAdmin.Models
             db.AddInParameter(dbCom, "@InWhcode", DbType.String, InWhCode);
             db.AddInParameter(dbCom, "@OutWhcode", DbType.String, OutWhCode);
             db.AddInParameter(dbCom, "@InWaCode", DbType.String, InWaCode);
-            db.AddInParameter(dbCom, "@UpdateId", DbType.String, DSUser.Instance.UserID);
-            db.AddInParameter(dbCom, "@ItemCode", DbType.String, ItemCode);
+            db.AddInParameter(dbCom, "@Remark1", DbType.String, Remark1);
+            db.AddInParameter(dbCom, "@Remark2", DbType.String, Remark2);
+            db.AddInParameter(dbCom, "@InsertId", DbType.String, DSUser.Instance.UserID);
+            db.AddInParameter(dbCom, "@State", DbType.String, State);
+            db.ExecuteNonQuery(dbCom, trans);
+        }
+
+        public void Delete(Database db, DbTransaction trans)
+        {
+            string str = string.Format("DELETE common_Item WHERE ItemCode = '{0}' ", ItemCode);
+            DbCommand dbCom = db.GetSqlStringCommand(str);
             db.ExecuteNonQuery(dbCom, trans);
         }
     }
@@ -304,6 +291,8 @@ namespace MesAdmin.Models
                         IsEnabled = (bool)u["IsEnabled"],
                         InWhCode = u["InWhCode"].ToString(),
                         OutWhCode = u["OutWhCode"].ToString(),
+                        Remark1 = u["Remark1"].ToString(),
+                        Remark2 = u["Remark2"].ToString(),
                         InWaCode = u["InWaCode"].ToString(),
                         UpdateId = (string)u["UpdateId"],
                         UpdateDate = (DateTime)u["UpdateDate"],

@@ -98,7 +98,7 @@ namespace MesAdmin.ViewModels
             Header = new ProductionWorkOrderNL();
             Header.OrderDate = DateTime.Now;
             ExceptStocks = new List<StockDetail>();            
-            WaCollections = new CommonWorkAreaInfoList("BAC60").Where(u => u.WorkOrderFlag == "Y");
+            WaCollections = new CommonWorkAreaInfoList("BAC60").Where(u => u.WorkOrderFlag == "Y" && u.WaCode != "WE30");
 
             ShowDialogCmd = new DelegateCommand(OnShowDialog);
             SearchCmd = new AsyncCommand(OnSearch, CanSearch);
@@ -328,7 +328,7 @@ namespace MesAdmin.ViewModels
 
                     if (Header.WaCode == "WE30") // 정제
                     {
-                        if ((item.ItemAccount == "29" && item.ItemCode.Substring(0, 3) != "SER") || item.ItemAccount == "35") // 반제품이고 외주가공품이 아닌품목
+                        if (item.ItemAccount == "29" && item.ProcureType == "M") // 반제품이고 외주가공품이 아닌품목
                             Header.Remark2 = item.LotNo;
                     }
 
@@ -408,7 +408,7 @@ namespace MesAdmin.ViewModels
         protected override void OnParameterChanged(object parameter)
         {
             base.OnParameterChanged(parameter);
-            if (ViewModelBase.IsInDesignMode) return;
+            if (IsInDesignMode) return;
 
             DocumentParamter pm = parameter as DocumentParamter;
             if (pm.Type == EntityMessageType.Added)

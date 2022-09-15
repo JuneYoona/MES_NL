@@ -13,7 +13,9 @@
              xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
              xmlns:ViewModels="clr-namespace:MesAdmin.ViewModels"
              mc:Ignorable="d"
-             d:DesignHeight="600" d:DesignWidth="600">
+             xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
+             d:DesignHeight="600"
+             d:DesignWidth="600">
     <UserControl.DataContext>
         <ViewModels:StockDetailVM/>
     </UserControl.DataContext>
@@ -53,6 +55,9 @@
                         </dxr:RibbonPageGroup>
                         <dxr:RibbonPageGroup Caption="Export">
                             <dxb:BarButtonItem Content="Excel" KeyGesture="F6" Command="{Binding ToExcelCmd}" CommandParameter="{Binding ElementName=TableView}" LargeGlyph="{dx:DXImage SvgImages/Export/ExportToXLSX.svg}" />
+                        </dxr:RibbonPageGroup>
+                        <dxr:RibbonPageGroup Caption="Print">
+                            <dxb:BarButtonItem Content="Label" Command="{Binding PrintLabelCmd}" LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}" />
                         </dxr:RibbonPageGroup>
                         <dxr:RibbonPageGroup Caption="사용자정의 Layout">
                             <dxb:BarButtonItem Content="컬럼정의" LargeGlyph="{dx:DXImage SvgImages/Snap/ModifyTableStyle.svg}">
@@ -101,7 +106,11 @@
                         GroupSummaryDisplayMode="AlignByColumns"
                         AllowEditing="False">
                         <dxmvvm:Interaction.Behaviors>
-                            <dxmvvm:EventToCommand EventName="CellValueChanged" Command="{Binding CellValueChangedCmd}" />
+                            <dxmvvm:EventToCommand EventName="CellValueChanged" Command="{Binding CellValueChangedCmd}">
+                                <dxmvvm:EventToCommand.EventArgsConverter>
+                                    <utils:CellValueChangedEventArgsConverter />
+                                </dxmvvm:EventToCommand.EventArgsConverter>
+                            </dxmvvm:EventToCommand>
                         </dxmvvm:Interaction.Behaviors>
                     </custom:DSTableView>
                 </dxg:GridControl.View>
@@ -123,9 +132,10 @@
                             <dxe:TextEditSettings CharacterCasing="Upper"/>
                         </dxg:GridColumn.EditSettings>
                     </dxg:GridColumn>
+                    <dxg:GridColumn FieldName="WE10LotNo" Header="합성로트2" Width="100" Visible="False" />
                     <dxg:GridColumn FieldName="Remark5" Header="합성로트순번" Width="100" AllowEditing="True">
                         <dxg:GridColumn.EditSettings>
-                            <dxe:TextEditSettings MaskType="RegEx"  Mask="\d{6}" MaskUseAsDisplayFormat="True"/>
+                            <dxe:TextEditSettings MaskType="RegEx" Mask="\d{6}"/>
                         </dxg:GridColumn.EditSettings>
                     </dxg:GridColumn>
                     <dxg:GridColumn FieldName="Qty" Header="수량" Width="100" />

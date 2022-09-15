@@ -92,6 +92,11 @@ namespace MesAdmin.ViewModels
         }
         public CommonItemList Items { get; set; }
         private List<StockDetail> ExceptStocks { get; set; }
+        public string BizAreaCode
+        {
+            get { return GetProperty(() => BizAreaCode); }
+            set { SetProperty(() => BizAreaCode, value); }
+        }
         public bool IsBusy
         {
             get { return GetProperty(() => IsBusy); }
@@ -186,7 +191,7 @@ namespace MesAdmin.ViewModels
                 }
             }
 
-            Collections = new StockMovementDetailList(documentNo: DocumentNo);
+            Collections = new StockMovementDetailList(documentNo: DocumentNo, bizAreaCode: BizAreaCode);
             Collections = new StockMovementDetailList(Collections.Where(u => u.DCFlag == "C"));
             if (Collections.Count == 0)
             {
@@ -224,6 +229,7 @@ namespace MesAdmin.ViewModels
                 if (vmMove.ConfirmHeader != null && vmMove.CollectionsDetail != null)
                 {
                     DocumentNo = vmMove.ConfirmHeader.DocumentNo;
+                    BizAreaCode = vmMove.ConfirmHeader.BizAreaCode;
                     OnSearch();
                 }
             }

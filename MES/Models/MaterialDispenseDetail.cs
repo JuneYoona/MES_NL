@@ -94,7 +94,7 @@ namespace MesAdmin.Models
         public MaterialDispenseDetail(string mdNo, int seq)
         {
             Database db = ProviderFactory.Instance;
-            string sql = "SELECT A.*, B.ItemName FROM material_Dispense_Detail (NOLOCK) A "
+            string sql = "SELECT A.*, B.ItemName, B.BasicUnit FROM material_Dispense_Detail (NOLOCK) A "
                         + "INNER JOIN common_Item (NOLOCK) B ON A.ItemCode = B.ItemCode WHERE MDNo = @MDNo AND Seq = @Seq";
 
             DbCommand dbCom = db.GetSqlStringCommand(sql);
@@ -108,6 +108,7 @@ namespace MesAdmin.Models
                 ReqQty = (decimal)u["ReqQty"];
                 ItemCode = (string)u["ItemCode"];
                 ItemName = (string)u["ItemName"];
+                BasicUnit = (string)u["BasicUnit"];
                 InWhCode = (string)u["InWhCode"];
                 PostFlag = (string)u["PostFlag"];
                 CloseFlag = (string)u["CloseFlag"];
@@ -138,20 +139,7 @@ namespace MesAdmin.Models
         {
             base.Clear();
             Database db = ProviderFactory.Instance;
-            string sql = "";
-            if (!string.IsNullOrEmpty(mdNo))
-                sql = "SELECT A.*, B.ItemName, B.ItemSpec, B.BasicUnit, C.ReqDate, C.DlvyDate FROM material_Dispense_Detail (NOLOCK) A "
-                    + "INNER JOIN common_Item (NOLOCK) B ON A.ItemCode = B.ItemCode "
-                    + "INNER JOIN material_Dispense_Header (NOLOCK) C ON A.MDNo = C.MDNo "
-                    + "WHERE A.MDNo = @MDNo";
-            else
-                sql = "SELECT A.*, B.ItemName, B.ItemSpec, B.BasicUnit, C.ReqDate, C.DlvyDate FROM material_Dispense_Detail (NOLOCK) A "
-                    + "INNER JOIN common_Item (NOLOCK) B ON A.ItemCode = B.ItemCode "
-                    + "INNER JOIN material_Dispense_Header (NOLOCK) C ON A.MDNo = C.MDNo "
-                    + "WHERE C.ReqDate BETWEEN @StartDate AND @EndDate "
-                    + "ORDER BY C.ReqDate DESC";
-
-            DbCommand dbCom = db.GetSqlStringCommand(sql);
+            DbCommand dbCom = db.GetStoredProcCommand("usp_MaterialDispense_DetailList");
             db.AddInParameter(dbCom, "@MDNo", DbType.String, mdNo);
             db.AddInParameter(dbCom, "@StartDate", DbType.String, startDate == null ? "" : startDate.Value.ToShortDateString());
             db.AddInParameter(dbCom, "@EndDate", DbType.String, endDate == null ? "" : endDate.Value.ToShortDateString());
