@@ -45,11 +45,7 @@ namespace MesAdmin.ViewModels
             get { return GetProperty(() => Details); }
             set { SetProperty(() => Details, value); }
         }
-        public ObservableCollection<SalesOrderDlvyDetail> SelectedItems
-        {
-            get { return GetProperty(() => SelectedItems); }
-            set { SetProperty(() => SelectedItems, value); }
-        }
+        public ObservableCollection<SalesOrderDlvyDetail> SelectedItems { get; } = new ObservableCollection<SalesOrderDlvyDetail>();
         public SalesOrderDlvyDetail SelectedItem
         {
             get { return GetProperty(() => SelectedItem); }
@@ -115,18 +111,23 @@ namespace MesAdmin.ViewModels
 
             // 품목정보
             Task.Factory.StartNew(() => GlobalCommonItem.Instance).ContinueWith(task => { Items = task.Result; });
-            BindingBizPartnerList();
+
+            // 업체정보가져오기
+            Task.Run(() => { return GlobalCommonBizPartner.Instance.Where(u => u.BizType == "C" || u.BizType == "CS" && u.IsEnabled == true); })
+                .ContinueWith(t => { BizPartnerList = t.Result; });
+
             WhCode = new CommonMinorList
             (
                 GlobalCommonMinor.Instance.Where(u => u.MajorCode == "I0011")
             ); // 창고정보
+
             OrderType = new SalesOrderTypeConfigList(); // 수주형태
             IsNew = true;
             DelCmd = new DelegateCommand<object>(Delete, CanDel);
             SaveCmd = new AsyncCommand(OnSave, CanSave);
-            SearchCmd = new AsyncCommand(OnSearch, CanSearch);
-            ReferSoCmd = new DelegateCommand(OnReferSo, CanReferSo);
-            AddCmd = new DelegateCommand(OnAdd, CanAdd);
+            SearchCmd = new AsyncCommand(OnSearch, () => !string.IsNullOrEmpty(Header.DnNo));
+            ReferSoCmd = new DelegateCommand(OnReferSo, () => IsNew);
+            AddCmd = new DelegateCommand(OnAdd, () => IsNew && ReqDetail != null);
             NewCmd = new DelegateCommand(OnNew);
             ShowDialogCmd = new DelegateCommand(OnShowDialog);
             ShowDialogSalesCmd = new DelegateCommand(OnShowDialogSales);
@@ -136,42 +137,12 @@ namespace MesAdmin.ViewModels
             PrintCmd = new DelegateCommand(OnPrint);
             PostDeliveryCmd = new DelegateCommand(OnPostDelivery, CanPostDelivery);
             PostDeliveryCancelCmd = new DelegateCommand(OnPostDeliveryCancel, CanPostDeliveryCancel);
-            COAGFCmd = new DelegateCommand(OnCOAGF, CanCOAGF);
-
-            SelectedItems = new ObservableCollection<SalesOrderDlvyDetail>();
-            SelectedItems.CollectionChanged += SelectedItems_CollectionChanged;
 
             Header = new SalesOrderDlvyHeader();
             Details = new SalesOrderDlvyDetailList();
             ExceptStocks = new List<StockDetail>();
         }
 
-        // 시간이 많이 걸리는 작업이어서 async binding
-        private async void BindingBizPartnerList()
-        {
-            var task = Task<IEnumerable<CommonBizPartner>>.Factory.StartNew(LoadingBizPartnerLiss);
-            await task;
-
-            if (task.IsCompleted)
-            {
-                BizPartnerList = task.Result;
-            }
-        }
-
-        private IEnumerable<CommonBizPartner> LoadingBizPartnerLiss()
-        {
-            return (new CommonBizPartnerList()).Where(u => u.BizType.Substring(0, 1) == "C");
-        }
-
-        private void SelectedItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            DelCmd.RaiseCanExecuteChanged();
-        }
-
-        public bool CanAdd()
-        {
-            return IsNew && ReqDetail != null;
-        }
         public void OnAdd()
         {
             Details.Insert(Details.Count, new SalesOrderDlvyDetail
@@ -216,7 +187,7 @@ namespace MesAdmin.ViewModels
         public Task OnSave()
         {
             IsBusy = true;
-            return Task.Factory.StartNew(SaveCore);
+            return Task.Factory.StartNew(SaveCore).ContinueWith(t => IsBusy = false);
         }
         public void SaveCore()
         {
@@ -243,6 +214,7 @@ namespace MesAdmin.ViewModels
                 Details.Save();
                 var task = OnSearch();
                 while (!task.IsCompleted) IsNew = false; // 비동기 실행때문에 제일 마지막처리
+
                 // send mesaage to parent view
                 Messenger.Default.Send<string>("Refresh");
             }
@@ -256,13 +228,8 @@ namespace MesAdmin.ViewModels
                                                     , MessageButton.OK
                                                     , MessageIcon.Information));
             }
-            IsBusy = false;
         }
 
-        public bool CanReferSo()
-        {
-            return IsNew;
-        }
         public void OnReferSo()
         {
             var vmOrderReqDetail = ViewModelSource.Create(() => new PopupSalesOrderReqDetailVM());
@@ -383,9 +350,10 @@ namespace MesAdmin.ViewModels
                                 WhCode = item.WhCode,
                                 WaCode = item.WaCode,
                                 LotNo = item.LotNo,
+                                DnLotNo = item.LotNo,
                                 Qty = item.Qty - item.PickingQty,
                                 AvailableQty = item.Qty - item.PickingQty,
-                                Memo = item.BottleLotNo,
+                                Remark1 = item.Remark5, // 제품 합성로트순번
 
                                 // header 정보
                                 CustItemCode = ReqDetail.CustItemCode,
@@ -475,10 +443,6 @@ namespace MesAdmin.ViewModels
             Details.Clear();
         }
 
-        public bool CanSearch()
-        {
-            return !string.IsNullOrEmpty(Header.DnNo);
-        }
         public Task OnSearch()
         {
             IsBusy = true;
@@ -512,54 +476,9 @@ namespace MesAdmin.ViewModels
 
         public void OnPrint()
         {
-            //PackingOrder report = new PackingOrder();
-            //PrintHelper.ShowPrintPreview(System.Windows.Application.Current.MainWindow, report);
-        }
-
-        public bool CanCOAGF()
-        {
-            return !IsNew;
-        }
-        public void OnCOAGF()
-        {
-            //// Minor Code에 등록된 성적서를 가져온다
-            //CommonMinor minor = new CommonMinorList(majorCode: "GFCOA").Where(u => u.Ref01 == Header.ShipTo).FirstOrDefault();
-
-            //string reportName = minor == null || string.IsNullOrEmpty(minor.Ref02) ? "GlassFritCOADefault" : minor.Ref02;
-
-            //Type type = Type.GetType("MesAdmin.Reports." + reportName, true);
-            //XtraReport report = (XtraReport)Activator.CreateInstance(type);
-
-            //string itemCode = string.Empty;
-            //try
-            //{
-            //    foreach (var item in Details)
-            //    {
-            //        XtraReport temp = (XtraReport)Activator.CreateInstance(type);
-            //        temp.Parameters["BizCode"].Value = Header.ShipTo;
-            //        temp.Parameters["ItemCode"].Value = item.ItemCode;
-            //        temp.Parameters["LotNo"].Value = item.LotNo;
-            //        temp.Parameters["Qty"].Value = item.Qty;
-            //        temp.CreateDocument();
-            //        report.Pages.AddRange(temp.Pages);
-
-            //        itemCode = item.ItemCode;
-            //    }
-            //}
-            //catch { }
-
-            //// Ag Paste 검사성적서 추가
-            //if(minor != null && !string.IsNullOrEmpty(minor.Ref03))
-            //{ 
-            //    GlassFritCOAAg agPaste = new GlassFritCOAAg();
-            //    agPaste.Parameters["DnNo"].Value = Header.DnNo;
-            //    agPaste.Parameters["BizCode"].Value = Header.ShipTo;
-            //    agPaste.Parameters["ItemCode"].Value = itemCode;
-            //    agPaste.CreateDocument();
-            //    report.Pages.AddRange(agPaste.Pages);
-            //}
-
-            //DevExpress.Xpf.Printing.PrintHelper.ShowPrintPreview(System.Windows.Application.Current.MainWindow, report);
+            PackingOrder report = new PackingOrder();
+            report.Parameters["DnNo"].Value = Header.DnNo;
+            PrintHelper.ShowPrintPreview(System.Windows.Application.Current.MainWindow, report);
         }
 
         protected override void OnParameterChanged(object parameter)
@@ -568,11 +487,20 @@ namespace MesAdmin.ViewModels
             if (ViewModelBase.IsInDesignMode) return;
 
             DocumentParamter pm = parameter as DocumentParamter;
-            if (pm.Type == EntityMessageType.Added) return;
-
-            Header.DnNo = pm.Item as string;
-            OnSearch();
-            IsNew = false;
+            if (pm.Type == EntityMessageType.Added)
+            {
+                ((MainViewModel)pm.ParentViewmodel).TabLoadingClose();
+                IsNew = true;
+            }
+            else
+            {
+                Header.DnNo = pm.Item as string;
+                Task.Factory.StartNew(SearchCore).ContinueWith(task =>
+                {
+                    ((MainViewModel)pm.ParentViewmodel).TabLoadingClose();
+                    IsNew = false;
+                });
+            }
         }
     }
 }

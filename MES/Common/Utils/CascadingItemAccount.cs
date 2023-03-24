@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows.Data;
 using MesAdmin.Models;
+using System.Collections;
 
 namespace MesAdmin.Common.Utils
 {
@@ -12,7 +13,14 @@ namespace MesAdmin.Common.Utils
             string bizAreaCode = value as string;
             if (bizAreaCode == "") return string.Empty;
 
-            return GlobalCommonMinor.Instance.Where(p => p.MajorCode == "P1001" && p.Ref01 == bizAreaCode && p.IsEnabled == true);
+            IEnumerable accounts = null;
+            try
+            {
+                accounts = GlobalCommonMinor.Instance.Where(p => p.MajorCode == "P1001" && p.Ref01 == bizAreaCode && p.IsEnabled == true);
+            }
+            catch { }
+
+            return accounts;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using System.Windows.Data;
 using MesAdmin.Models;
@@ -12,7 +13,14 @@ namespace MesAdmin.Common.Utils
             string bizAreaCode = value as string;
             if (bizAreaCode == "") return string.Empty;
 
-            return GlobalCommonMinor.Instance.Where(p => p.MajorCode == "I0011" && p.Ref01 == bizAreaCode && p.IsEnabled == true);
+            IEnumerable whNames = null;
+            try
+            {
+                whNames = GlobalCommonMinor.Instance.Where(p => p.MajorCode == "I0011" && p.Ref01 == bizAreaCode && p.IsEnabled == true);
+            }
+            catch { }
+
+            return whNames;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

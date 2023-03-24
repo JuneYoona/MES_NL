@@ -178,10 +178,10 @@ namespace MesAdmin.ViewModels
         protected override void OnParameterChanged(object parameter)
         {
             base.OnParameterChanged(parameter);
-            if (ViewModelBase.IsInDesignMode) return;
+            if (IsInDesignMode) return;
 
             DocumentParamter pm = parameter as DocumentParamter;
-            Task.Factory.StartNew(SearchCore).ContinueWith(task =>
+            Task.Run(SearchCore).ContinueWith(task =>
             {
                 ((MainViewModel)pm.ParentViewmodel).TabLoadingClose();
             });

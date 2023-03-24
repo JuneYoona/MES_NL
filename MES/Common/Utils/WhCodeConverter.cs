@@ -12,7 +12,13 @@ namespace MesAdmin.Common.Utils
             string whCode = value as string;
             if (whCode == "") return string.Empty;
 
-            CommonMinor minor = GlobalCommonMinor.Instance.Where(u => u.MajorCode == "I0011" && u.MinorCode == whCode).FirstOrDefault();
+            CommonMinor minor = null;
+            try
+            {
+                minor = GlobalCommonMinor.Instance.Where(u => u.MajorCode == "I0011" && u.MinorCode == whCode).FirstOrDefault();
+            }
+            catch { }
+
             if (minor == null) return string.Empty;
             return minor.MinorName;
         }

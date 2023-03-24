@@ -14,13 +14,6 @@
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:local="clr-namespace:MesAdmin.Authentication"
                  Icon="pack://application:,,,/MesNL;component/App.ico">
-    <dx:ThemedWindow.Resources>
-        <Style x:Key="EditorStyle" TargetType="dxe:BaseEdit">
-            <Setter Property="Height" Value="23" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="BorderBrush" Value="#94ADCC" />
-        </Style>
-    </dx:ThemedWindow.Resources>
     <dx:ThemedWindow.DataContext>
         <local:LoginVM />
     </dx:ThemedWindow.DataContext>
@@ -38,11 +31,11 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="0" />
             <RowDefinition Height="35" />
-            <RowDefinition Height="26" />
-            <RowDefinition Height="26" />
-            <RowDefinition Height="26" />
-            <RowDefinition Height="26" />
-            <RowDefinition Height="26" />
+            <RowDefinition Height="28" />
+            <RowDefinition Height="28" />
+            <RowDefinition Height="28" />
+            <RowDefinition Height="28" />
+            <RowDefinition Height="28" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
@@ -75,13 +68,12 @@
         <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Content="공장정보 :" HorizontalAlignment="Right" VerticalAlignment="Center" />
         <Label Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Content="Database :" HorizontalAlignment="Right" VerticalAlignment="Center" />
         <dxe:TextEdit x:Name="Id"
-                      Style="{StaticResource EditorStyle}"
                       Grid.Row="2"
                       Grid.Column="2"
                       Grid.ColumnSpan="3"
                       HorizontalAlignment="Stretch"
                       IsEnabled="{Binding IsEnabled}"
-                      Margin="5 3 5 0"
+                      Margin="5 2 5 0"
                       Text="{Binding UserId, UpdateSourceTrigger=PropertyChanged}">
             <dxe:TextEdit.InputBindings>
                 <KeyBinding Key="Enter" Command="{Binding LoginCmd}" />
@@ -91,13 +83,12 @@
             </dxmvvm:Interaction.Behaviors>
         </dxe:TextEdit>
         <dxe:PasswordBoxEdit x:Name="Password"
-                             Style="{StaticResource EditorStyle}"
                              Grid.Row="3"
                              Grid.Column="2"
                              Grid.ColumnSpan="3"
                              IsEnabled="{Binding IsEnabled}"
                              HorizontalAlignment="Stretch"
-                             Margin="5 3 5 0"
+                             Margin="5 2 5 0"
                              Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}">
             <dxe:PasswordBoxEdit.InputBindings>
                 <KeyBinding Key="Enter" Command="{Binding LoginCmd}" />
@@ -106,8 +97,7 @@
                 <dxmvvm:FocusBehavior SourceObject="{Binding }" PropertyName="PasswordFocus" />
             </dxmvvm:Interaction.Behaviors>
         </dxe:PasswordBoxEdit>
-        <dxe:ComboBoxEdit Style="{StaticResource EditorStyle}"
-                          Grid.Row="4"
+        <dxe:ComboBoxEdit Grid.Row="4"
                           Grid.Column="2"
                           Grid.ColumnSpan="3"
                           IsEnabled="{Binding IsEnabled}"
@@ -117,13 +107,12 @@
                           EditValue="{Binding EditBizArea, UpdateSourceTrigger=PropertyChanged}"
                           DisplayMember="MinorName"
                           ValueMember="MinorCode"
-                          Margin="5 3 5 0">
+                          Margin="5 2 5 0">
             <dxe:ComboBoxEdit.InputBindings>
                 <KeyBinding Key="Enter" Command="{Binding LoginCmd}" />
             </dxe:ComboBoxEdit.InputBindings>
         </dxe:ComboBoxEdit>
-        <dxe:ComboBoxEdit Style="{StaticResource EditorStyle}"
-                          Grid.Row="5"
+        <dxe:ComboBoxEdit Grid.Row="5"
                           Grid.Column="2"
                           Grid.ColumnSpan="3"
                           IsEnabled="{Binding IsEnabled}"
@@ -133,7 +122,7 @@
                           EditValue="{Binding SelectedDB, UpdateSourceTrigger=PropertyChanged}"
                           DisplayMember="MinorCode"
                           ValueMember="MinorCode"
-                          Margin="5 3 5 0">
+                          Margin="5 2 5 0">
             <dxe:ComboBoxEdit.InputBindings>
                 <KeyBinding Key="Enter" Command="{Binding LoginCmd}" />
             </dxe:ComboBoxEdit.InputBindings>

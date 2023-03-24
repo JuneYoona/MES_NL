@@ -125,7 +125,7 @@
                         <TextBlock>비고</TextBlock>
                     </Border>
                     <dxe:ButtonEdit 
-                        Grid.Row="0" 
+                        Grid.Row="0"
                         Grid.Column="1"
                         IsReadOnly="{Binding IsNew, Converter={StaticResource BooleanNegationConverter}}"
                         VerticalAlignment="Bottom"
@@ -159,7 +159,11 @@
                         AutoPopulateColumns="False"
                         InvalidValueBehavior="AllowLeaveEditor"
                         IsPopupAutoWidth="False"
-                        PopupContentTemplate="{StaticResource WaCodeTemplate}" />
+                        PopupContentTemplate="{StaticResource WaCodeTemplate}">
+                        <dxmvvm:Interaction.Behaviors>
+                            <dxmvvm:EventToCommand EventName="EditValueChanged" Command="{Binding EditValueChangedCmd}" PassEventArgsToCommand="True"/>
+                        </dxmvvm:Interaction.Behaviors>
+                    </dxg:LookUpEdit>
                     <!--<dxe:ButtonEdit
                         Grid.Row="2"
                         Grid.Column="1"
@@ -259,7 +263,7 @@
                         VerticalAlignment="Bottom"
                         Background="#F6EDCB" />
                     <dxe:SpinEdit
-                        Text="{Binding Header.OrderQty}"
+                        Text="{Binding Header.OrderQty, UpdateSourceTrigger=PropertyChanged}"
                         IsEnabled="{Binding IsEnabled}"
                         VerticalAlignment="Bottom"
                         Margin="2 0 0 0"
@@ -331,7 +335,7 @@
                         <dxg:GridColumn FieldName="ItemName" Header="품목명" AllowEditing="False" Width="150"/>
                         <dxg:GridColumn FieldName="ItemSpec" Header="품목사양" AllowEditing="False" Width="180"/>
                         <dxg:GridColumn FieldName="LotNo" Header="로트번호" AllowEditing="False" Width="140" />
-                        <dxg:GridColumn FieldName="Qty" Header="수량" Width="100" EditSettings="{StaticResource NumericEditor}" />
+                        <dxg:GridColumn FieldName="Qty" Header="수량" Width="100" EditSettings="{StaticResource NumericEditor3}" />
                         <dxg:GridColumn FieldName="BasicUnit" Header="단위" AllowEditing="False" FixedWidth="True" Width="100" />
                         <dxg:GridColumn FieldName="WhCode" Header="창고" Width="150" AllowEditing="False">
                             <dxg:GridColumn.Binding>

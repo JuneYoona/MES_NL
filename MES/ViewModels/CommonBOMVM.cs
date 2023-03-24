@@ -1,5 +1,6 @@
 ﻿using DevExpress.Mvvm;
 using DevExpress.Mvvm.POCO;
+using DevExpress.Xpf.Bars;
 using DevExpress.Xpf.Grid;
 using MesAdmin.Common.Common;
 using MesAdmin.Common.Utils;
@@ -61,7 +62,7 @@ namespace MesAdmin.ViewModels
         public DelegateCommand<object> DeleteCmd { get; set; }
         public ICommand SaveCmd { get; set; }
         public ICommand SyncErpCmd { get; set; }
-        public AsyncCommand SearchCmd { get; set; }
+        public AsyncCommand<object> SearchCmd { get; set; }
         public ICommand EditCmd { get; set; }
         public ICommand CellValueChangedCmd { get; set; }
         public ICommand<TreeListView> ShowDialogCmd { get; set; }
@@ -73,7 +74,7 @@ namespace MesAdmin.ViewModels
             Direction = "정전개";
             DeleteCmd = new DelegateCommand<object>(OnDelete, CanDelete);
             AddCmd = new DelegateCommand<object>(OnAdd, CanAdd);
-            SearchCmd = new AsyncCommand(OnSearch);
+            SearchCmd = new AsyncCommand<object>(OnSearch);
             SaveCmd = new DelegateCommand(OnSave, CanSave);
             CellValueChangedCmd = new DelegateCommand(OnCellValueChanged);
             HiddenEditorCmd = new DelegateCommand<HiddenTreeListEditorEvent>(OnHiddenEditor);
@@ -81,7 +82,8 @@ namespace MesAdmin.ViewModels
             SyncErpCmd = new DelegateCommand(OnSyncErp);
             CheckDate = DateTime.Now;
 
-            Items = new CommonItemList(); // 품목정보
+            // 품목정보
+            Task.Run(() => GlobalCommonItem.Instance).ContinueWith(t => { Items = t.Result; });
         }
 
         public void OnCellValueChanged()
@@ -89,7 +91,7 @@ namespace MesAdmin.ViewModels
             if (FocusedItem.State == EntityState.Unchanged)
                 FocusedItem.State = EntityState.Modified;
         }
-        
+
         public bool CanSave()
         {
             bool ret = true;
@@ -148,8 +150,15 @@ namespace MesAdmin.ViewModels
             view.ExpandNode(i[0]);
         }
 
-        public Task OnSearch()
+        public Task OnSearch(object pm = null)
         {
+            // 변경된 내용을 source로 update(정전개/역전개 control, 역전개일경우 품목추가 금지), UpdateSourceTrigger=Explicit
+            if (pm != null)
+            {
+                BarEditItem be = (BarEditItem)pm;
+                be.GetBindingExpression(BarEditItem.EditValueProperty).UpdateSource();
+            }
+
             IsBusy = true;
             FocusedItem = null;
             Collections = null;
@@ -247,13 +256,10 @@ namespace MesAdmin.ViewModels
         protected override void OnParameterChanged(object parameter)
         {
             base.OnParameterChanged(parameter);
-            if (ViewModelBase.IsInDesignMode) return;
+            if (IsInDesignMode) return;
 
             DocumentParamter pm = parameter as DocumentParamter;
-            Task.Factory.StartNew(SearchCore).ContinueWith(task =>
-            {
-                ((MainViewModel)pm.ParentViewmodel).TabLoadingClose();
-            });
+            ((MainViewModel)pm.ParentViewmodel).TabLoadingClose();
         }
     }
 }

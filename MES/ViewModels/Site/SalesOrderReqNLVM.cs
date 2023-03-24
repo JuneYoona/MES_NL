@@ -198,7 +198,7 @@ namespace MesAdmin.ViewModels
                 if (Details.Count == 0) return false;
             }
             else
-                ret = Details.Where(u => u.State == EntityState.Deleted).Count() > 0;
+                ret = Details.Where(u => u.State == EntityState.Deleted).Count() > 0 || Header.IsDirty == true;
 
             return ret;
         }
@@ -219,6 +219,8 @@ namespace MesAdmin.ViewModels
                     Header.Save();
                     Details.ToList().ForEach(u => u.ReqNo = Header.ReqNo);
                 }
+
+                Header.Update(); // 수저번호 업데이트
                 Details.Save();
                 SearchCore();
                 IsNew = false;

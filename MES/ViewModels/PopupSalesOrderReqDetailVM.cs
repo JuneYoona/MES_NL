@@ -65,6 +65,16 @@ namespace MesAdmin.ViewModels
             get { return GetProperty(() => EndDate); }
             set { SetProperty(() => EndDate, value); }
         }
+        public IEnumerable<CommonMinor> BizAreaCodeList
+        {
+            get { return GetProperty(() => BizAreaCodeList); }
+            set { SetProperty(() => BizAreaCodeList, value); }
+        }
+        public string BizAreaCode
+        {
+            get { return GetProperty(() => BizAreaCode); }
+            set { SetProperty(() => BizAreaCode, value); }
+        }
         public bool IsBusy
         {
             get { return GetProperty(() => IsBusy); }
@@ -82,11 +92,18 @@ namespace MesAdmin.ViewModels
 
         public PopupSalesOrderReqDetailVM()
         {
-            BindingBizPartnerList();
+            BizAreaCodeList = GlobalCommonMinor.Instance.Where(u => u.MajorCode == "I0004" && u.IsEnabled == true);
+            if (!string.IsNullOrEmpty(DSUser.Instance.BizAreaCode))
+                BizAreaCode = DSUser.Instance.BizAreaCode;
+
+            // 업체정보가져오기
+            Task<IEnumerable<CommonBizPartner>>.Factory.StartNew(LoadingBizPartnerList)
+                .ContinueWith(task => { BizPartnerList = task.Result; });
+
             OrderType = (new SalesOrderTypeConfigList()).Where(u => u.IsEnabled == true); // 수주형태
 
             StartDate = DateTime.Now.AddMonths(-1);
-            EndDate = DateTime.Now.AddMonths(1);
+            EndDate = DateTime.Now.AddDays(4);
 
             // dialog command
             ConfirmUICmd = new UICommand()
@@ -113,21 +130,9 @@ namespace MesAdmin.ViewModels
             OnSearch();
         }
 
-        // 시간이 많이 걸리는 작업이어서 async binding
-        private async void BindingBizPartnerList()
-        {
-            var task = Task<IEnumerable<CommonBizPartner>>.Factory.StartNew(LoadingBizPartnerList);
-            await task;
-
-            if (task.IsCompleted)
-            {
-                BizPartnerList = task.Result;
-            }
-        }
-
         private IEnumerable<CommonBizPartner> LoadingBizPartnerList()
         {
-            return (new CommonBizPartnerList()).Where(u => u.BizType.Substring(0, 1) == "C");
+            return GlobalCommonBizPartner.Instance.Where(u => u.BizType == "C" || u.BizType == "CS");
         }
 
         public Task OnSearch()
@@ -141,12 +146,12 @@ namespace MesAdmin.ViewModels
             string soType = SoType;
             string bizCode = BizCode;
 
-            Collections = new SalesOrderReqDetailList(startDate: StartDate, endDate: EndDate);
-            Collections = Collections
+            var collections = new SalesOrderReqDetailList(startDate: StartDate, endDate: EndDate);
+            Collections = collections
                             .Where(p => string.IsNullOrEmpty(reqNo) ? true : p.ReqNo == reqNo)
                             .Where(p => string.IsNullOrEmpty(bizCode) ? true : p.ShipTo == bizCode)
                             .Where(p => string.IsNullOrEmpty(soType) ? true : p.SoType == soType)
-                            .Where(p => p.Qty != p.DlvyQty);
+                            .Where(p => p.Qty > p.DlvyQty);
             IsBusy = false;
         }
 

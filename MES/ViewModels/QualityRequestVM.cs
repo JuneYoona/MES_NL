@@ -148,6 +148,8 @@ namespace MesAdmin.ViewModels
         public ICommand CellValueChangedCmd { get; set; }
         public ICommand<HiddenEditorEvent> HiddenEditorCmd { get; set; }
         public ICommand UpdateRawDataCmd { get; set; }
+        public ICommand LossStockCmd { get; set; }
+        public ICommand LossStockCancelCmd { get; set; }
         #endregion
 
         public QualityRequestVM()
@@ -168,6 +170,9 @@ namespace MesAdmin.ViewModels
             HiddenEditorCmd = new DelegateCommand<HiddenEditorEvent>(OnHiddenEditor);
             PrintAnalysisLetterCmd = new DelegateCommand(OnPrintAnalysisLetter, CanPrintAnalysisLetter);
             UpdateRawDataCmd = new DelegateCommand(() => { CanEdit = true; }, () => Header != null && Header.TransferFlag);
+
+            LossStockCmd = new DelegateCommand(OnLossStock, () => Header != null && !IsNew && Header.Status && Header.Result == "Fail" && Header.ResultOrder == Header.LastOrder && !Header.LossFlag);
+            LossStockCancelCmd = new DelegateCommand(OnLossStockCancel, () => Header != null && Header.LossFlag);
 
             AddedFiles = new FileInformList();
             DeletedFiles = new FileInformList();
@@ -380,7 +385,11 @@ namespace MesAdmin.ViewModels
                 Collections.Clear();
                 if (!Header.Status)
                 {
-                    InspectItem = new QualityInspectItemList(vmQr.ConfirmItem.QrType, vmQr.ConfirmItem.ItemCode);
+                    string bizCode = Header.BizCode;
+                    // 도전볼은 업체별 검사항목등록
+                    if (Header.BizAreaCode != "BAC40") bizCode = "";
+
+                    InspectItem = new QualityInspectItemList(vmQr.ConfirmItem.QrType, vmQr.ConfirmItem.ItemCode, bizCode);
                     foreach (var item in InspectItem)
                     {
                         Collections.Add(new QualityResult
@@ -505,6 +514,32 @@ namespace MesAdmin.ViewModels
             DevExpress.Xpf.Printing.PrintHelper.ShowPrintPreview(System.Windows.Application.Current.MainWindow, report);
         }
 
+        public void OnLossStock()
+        {
+            try
+            {
+                Header.LossStock();
+                Header = new QualityRequest(Header.QrNo, Header.LastOrder);
+            }
+            catch (Exception ex)
+            {
+                MessageBoxService.ShowMessage(ex.Message, "Information", MessageButton.OK, MessageIcon.Information);
+            }
+        }
+
+        public void OnLossStockCancel()
+        {
+            try
+            {
+                Header.LossStockCancel();
+                Header = new QualityRequest(Header.QrNo, Header.LastOrder);
+            }
+            catch (Exception ex)
+            {
+                MessageBoxService.ShowMessage(ex.Message, "Information", MessageButton.OK, MessageIcon.Information);
+            }
+        }
+
         protected override void OnParameterChanged(object parameter)
         {
             base.OnParameterChanged(parameter);
@@ -520,7 +555,11 @@ namespace MesAdmin.ViewModels
 
                 if (!Header.Status)
                 {
-                    InspectItem = new QualityInspectItemList(QrType, Header.ItemCode);
+                    string bizCode = Header.BizCode;
+                    // 도전볼은 업체별 검사항목등록
+                    if (BizAreaCode != "BAC40") bizCode = "";
+                    InspectItem = new QualityInspectItemList(QrType, Header.ItemCode, bizCode);
+
                     foreach (var item in InspectItem)
                     {
                         Collections.Add(new QualityResult

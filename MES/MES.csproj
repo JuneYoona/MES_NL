@@ -37,7 +37,7 @@
     <SuiteName>MES-NL</SuiteName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>default.htm</WebPage>
-    <ApplicationRevision>35</ApplicationRevision>
+    <ApplicationRevision>52</ApplicationRevision>
     <ApplicationVersion>21.2.3.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -288,6 +288,7 @@
     <Compile Include="Common\Services\AppProcessHelper.cs" />
     <Compile Include="Common\Services\SilentUpdater.cs" />
     <Compile Include="Common\Services\UpdateProgressChangedEventArgs.cs" />
+    <Compile Include="Common\Utils\BizAreaCodeConverter.cs" />
     <Compile Include="Common\Utils\BizCodeConverter.cs" />
     <Compile Include="Common\Utils\BoolToDefaultBooleanConverter.cs" />
     <Compile Include="Common\Utils\CascadingEquipment.cs" />
@@ -302,6 +303,7 @@
     <Compile Include="Common\Utils\DebitCreditConverter.cs" />
     <Compile Include="Common\Utils\HiddenTreeListEditorEventArgsConverter.cs" />
     <Compile Include="Common\Utils\MouseOverBehavior.cs" />
+    <Compile Include="Common\Utils\MoveTypeConverter.cs" />
     <Compile Include="Common\Utils\NotVisibilityConverter.cs" />
     <Compile Include="Common\Utils\RowNumberConverter.cs" />
     <Compile Include="Common\Utils\StockTypeConverter.cs" />
@@ -312,6 +314,7 @@
     <Compile Include="Common\Utils\PastingFromClipboardEventArgsConverter.cs" />
     <Compile Include="Common\Utils\RestrictEditingHelper.cs" />
     <Compile Include="Common\Utils\SoTypeCodeConverter.cs" />
+    <Compile Include="Common\Utils\TransTypeConverter.cs" />
     <Compile Include="Common\Utils\WaCodeConverter.cs" />
     <Compile Include="Common\Utils\WhCodeConverter.cs" />
     <Compile Include="Models\BAC60PRODUCTION002.cs" />
@@ -336,6 +339,33 @@
     <Compile Include="Reports\MaterialOLED.Designer.cs">
       <DependentUpon>MaterialOLED.cs</DependentUpon>
     </Compile>
+    <Compile Include="Reports\PackingOrder.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PackingOrder.Designer.cs">
+      <DependentUpon>PackingOrder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PackingOrderBAC40.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PackingOrderBAC40.Designer.cs">
+      <DependentUpon>PackingOrderBAC40.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PackingOrderBAC40Sub.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PackingOrderBAC40Sub.Designer.cs">
+      <DependentUpon>PackingOrderBAC40Sub.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\PopupSalesDlvyNoteVM.cs" />
+    <Compile Include="ViewModels\PopupSalesDlvyReqDetailVM.cs" />
+    <Compile Include="ViewModels\QualityInspectItemBizVM.cs" />
+    <Compile Include="ViewModels\SalesDlvyNoteDetailsVM.cs" />
+    <Compile Include="ViewModels\SalesDlvyNoteVM.cs" />
+    <Compile Include="ViewModels\SalesDlvyReqDetailsVM.cs" />
+    <Compile Include="ViewModels\Site\BAC60SALES002R.cs" />
+    <Compile Include="ViewModels\Site\BAC60PRODUCTION004R.cs" />
+    <Compile Include="ViewModels\Site\BAC60SALES001R.cs" />
     <Compile Include="ViewModels\Site\BAC60PRODUCTION003C.cs" />
     <Compile Include="ViewModels\Site\BAC60PRODUCTION002R.cs" />
     <Compile Include="ViewModels\Site\BAC60PRODUCTION001R.cs" />
@@ -594,6 +624,39 @@
     <Compile Include="ViewModels\Site\StockDetailPE10VM.cs" />
     <Compile Include="ViewModels\StockItemVM.cs" />
     <Compile Include="ViewModels\StockMoveReportVM.cs" />
+    <Compile Include="Views\PopupSalesDlvyNoteView.xaml.cs">
+      <DependentUpon>PopupSalesDlvyNoteView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PopupSalesDlvyReqDetailView.xaml.cs">
+      <DependentUpon>PopupSalesDlvyReqDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\QualityInspectItemBizView.xaml.cs">
+      <DependentUpon>QualityInspectItemBizView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\QualityRequestDetailBizView.xaml.cs">
+      <DependentUpon>QualityRequestDetailBizView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\QualityRequestOQCBizView.xaml.cs">
+      <DependentUpon>QualityRequestOQCBizView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SalesDlvyNoteDetailsView.xaml.cs">
+      <DependentUpon>SalesDlvyNoteDetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SalesDlvyNoteView.xaml.cs">
+      <DependentUpon>SalesDlvyNoteView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SalesDlvyReqDetailsView.xaml.cs">
+      <DependentUpon>SalesDlvyReqDetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Site\BAC60SALES002R.xaml.cs">
+      <DependentUpon>BAC60SALES002R.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Site\BAC60PRODUCTION004R.xaml.cs">
+      <DependentUpon>BAC60PRODUCTION004R.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Site\BAC60SALES001R.xaml.cs">
+      <DependentUpon>BAC60SALES001R.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Site\BAC60PRODUCTION003C.xaml.cs">
       <DependentUpon>BAC60PRODUCTION003C.xaml</DependentUpon>
     </Compile>
@@ -1024,6 +1087,50 @@
     <Page Include="Resources\Dictionary\ResourceDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PopupSalesDlvyNoteView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PopupSalesDlvyReqDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\QualityInspectItemBizView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\QualityRequestDetailBizView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\QualityRequestOQCBizView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SalesDlvyNoteDetailsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SalesDlvyNoteView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SalesDlvyReqDetailsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Site\BAC60SALES002R.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Site\BAC60PRODUCTION004R.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Site\BAC60SALES001R.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Site\BAC60PRODUCTION003C.xaml">
       <SubType>Designer</SubType>
@@ -1590,6 +1697,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\PackingList.resx">
       <DependentUpon>PackingList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PackingOrder.resx">
+      <DependentUpon>PackingOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PackingOrderBAC40.resx">
+      <DependentUpon>PackingOrderBAC40.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PackingOrderBAC40Sub.resx">
+      <DependentUpon>PackingOrderBAC40Sub.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\SalesCheckList.resx">
       <DependentUpon>SalesCheckList.cs</DependentUpon>

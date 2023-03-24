@@ -109,6 +109,11 @@ namespace MesAdmin.Models
             get { return GetProperty(() => UnitPrice); }
             set { SetProperty(() => UnitPrice, value); }
         }
+        public int Bottle
+        {
+            get { return GetProperty(() => Bottle); }
+            set { SetProperty(() => Bottle, value); }
+        }
         public string ReqNo
         {
             get { return GetProperty(() => ReqNo); }
@@ -164,6 +169,11 @@ namespace MesAdmin.Models
             get { return GetProperty(() => Memo); }
             set { SetProperty(() => Memo, value); }
         }
+        public DateTime? ProductDate
+        {
+            get { return GetProperty(() => ProductDate); }
+            set { SetProperty(() => ProductDate, value); }
+        }
         public string UpdateId
         {
             get { return GetProperty(() => UpdateId); }
@@ -174,6 +184,22 @@ namespace MesAdmin.Models
             get { return GetProperty(() => UpdateDate); }
             set { SetProperty(() => UpdateDate, value); }
         }
+        public string Remark1
+        {
+            get { return GetProperty(() => Remark1); }
+            set { SetProperty(() => Remark1, value); }
+        }
+        public string Remark2
+        {
+            get { return GetProperty(() => Remark2); }
+            set { SetProperty(() => Remark2, value); }
+        }
+        public string Remark3
+        {
+            get { return GetProperty(() => Remark3); }
+            set { SetProperty(() => Remark3, value); }
+        }
+        public string FormatQty { get; set; }
     }
 
     public class SalesOrderDlvyDetailList : ObservableCollection<SalesOrderDlvyDetail>
@@ -246,6 +272,9 @@ namespace MesAdmin.Models
                         SoNo = (string)u["SoNo"],
                         SoSeq = (int)u["SoSeq"],
                         Memo = u["Memo"].ToString(),
+                        Remark1 = u["Remark1"].ToString(),
+                        Remark2 = u["Remark2"].ToString(),
+                        Remark3 = u["Remark3"].ToString(),
                         UpdateId = (string)u["UpdateId"],
                         UpdateDate = (DateTime)u["UpdateDate"]
                     }
@@ -300,6 +329,9 @@ namespace MesAdmin.Models
                 db.AddInParameter(dbCom, "@SoNo", DbType.String, item.SoNo);
                 db.AddInParameter(dbCom, "@SoSeq", DbType.Int16, item.SoSeq);
                 db.AddInParameter(dbCom, "@Memo", DbType.String, item.Memo);
+                db.AddInParameter(dbCom, "@Remark1", DbType.String, item.Remark1);
+                db.AddInParameter(dbCom, "@Remark2", DbType.String, item.Remark2);
+                db.AddInParameter(dbCom, "@Remark3", DbType.String, item.Remark3);
                 db.AddInParameter(dbCom, "@InsertId", DbType.String, DSUser.Instance.UserID);
                 db.ExecuteNonQuery(dbCom, trans);
             }
@@ -370,6 +402,182 @@ namespace MesAdmin.Models
 
             if (ds.Tables.Count > 0)
                 Collections = ds.Tables[0];
+        }
+    }
+
+    public class SalesDlvyNoteDetailList : ObservableCollection<SalesOrderDlvyDetail>
+    {
+        private string dnNo;
+        private DateTime? startDate;
+        private DateTime? endDate;
+
+        public SalesDlvyNoteDetailList() { }
+        public SalesDlvyNoteDetailList(IEnumerable<SalesOrderDlvyDetail> items) : base(items) { }
+        public SalesDlvyNoteDetailList(string dnNo = "", DateTime? startDate = null, DateTime? endDate = null)
+        {
+            this.dnNo = dnNo;
+            this.startDate = startDate;
+            this.endDate = endDate;
+            InitializeList();
+        }
+
+        public void InitializeList()
+        {
+            base.Clear();
+            Database db = ProviderFactory.Instance;
+            string sql = "";
+            if (!string.IsNullOrEmpty(dnNo))
+                sql = "SELECT A.*, B.ItemName, B.ItemSpec, C.ReqDate, C.ShipTo, C.SoType, C.MoveType FROM sales_DlvyNote_Detail (NOLOCK) A "
+                    + "INNER JOIN common_Item (NOLOCK) B ON A.ItemCode = B.ItemCode "
+                    + "INNER JOIN sales_DlvyNote_Header (NOLOCK) C ON A.DnNo = C.DnNo "
+                    + "WHERE A.DnNo = @DnNo";
+            else
+                sql = "SELECT A.*, B.ItemName, B.ItemSpec, C.ReqDate, C.ShipTo, C.SoType, C.MoveType FROM sales_DlvyNote_Detail (NOLOCK) A "
+                    + "INNER JOIN common_Item (NOLOCK) B ON A.ItemCode = B.ItemCode "
+                    + "INNER JOIN sales_DlvyNote_Header (NOLOCK) C ON A.DnNo = C.DnNo "
+                    + "WHERE C.ReqDate BETWEEN @StartDate AND @EndDate "
+                    + "ORDER BY C.ReqDate DESC";
+
+            DbCommand dbCom = db.GetSqlStringCommand(sql);
+            db.AddInParameter(dbCom, "@DnNo", DbType.String, dnNo);
+            db.AddInParameter(dbCom, "@StartDate", DbType.String, startDate == null ? "" : startDate.Value.ToShortDateString());
+            db.AddInParameter(dbCom, "@EndDate", DbType.String, endDate == null ? "" : endDate.Value.ToShortDateString());
+            DataSet ds = db.ExecuteDataSet(dbCom);
+
+            ds.Tables[0].AsEnumerable().ToList().ForEach(u =>
+                base.Add(
+                    new SalesOrderDlvyDetail
+                    {
+                        DnNo = (string)u["DnNo"],
+                        Seq = (int)u["Seq"],
+                        ReqDate = (DateTime)u["ReqDate"],
+                        ItemCode = (string)u["ItemCode"],
+                        ItemName = (string)u["ItemName"],
+                        ItemSpec = (string)u["ItemSpec"],
+                        BasicUnit = (string)u["BasicUnit"],
+                        SoType = (string)u["SoType"],
+                        MoveType = (string)u["MoveType"],
+                        WhCode = (string)u["WhCode"],
+                        ShipTo = (string)u["ShipTo"],
+                        CustItemCode = (string)u["CustItemCode"],
+                        DnLotNo = (string)u["DnLotNo"],
+                        LotNo = (string)u["LotNo"],
+                        Qty = (decimal)u["Qty"],
+                        UnitPrice = (decimal)u["UnitPrice"],
+                        ExchangeRate = (decimal)u["ExchangeRate"],
+                        NetAmt = (decimal)u["NetAmt"],
+                        NetAmtLocal = (decimal)u["NetAmtLocal"],
+                        VATRate = (decimal)u["VATRate"],
+                        VATAmt = (decimal)u["VATAmt"],
+                        VATAmtLocal = (decimal)u["VATAmtLocal"],
+                        ReqNo = (string)u["ReqNo"],
+                        ReqSeq = (int)u["ReqSeq"],
+                        SoNo = (string)u["SoNo"],
+                        SoSeq = (int)u["SoSeq"],
+                        Memo = u["Memo"].ToString(),
+                        Remark1 = u["Remark1"].ToString(),
+                        Remark2 = u["Remark2"].ToString(),
+                        Remark3 = u["Remark3"].ToString(),
+                        FormatQty = "n2",
+                        ProductDate = u["ProductDate"] == DBNull.Value ? null : (DateTime?)u["ProductDate"],
+                        UpdateId = (string)u["UpdateId"],
+                        UpdateDate = (DateTime)u["UpdateDate"]
+                    }
+                )
+            );
+        }
+
+        public void Save()
+        {
+            IEnumerable<SalesOrderDlvyDetail> items = this.Items;
+            Database db = ProviderFactory.Instance;
+            DbCommand dbCom = null;
+            using (DbConnection conn = db.CreateConnection())
+            {
+                conn.Open();
+                DbTransaction trans = conn.BeginTransaction();
+                try
+                {
+                    Insert(items.Where(u => u.State == EntityState.Added), db, trans, dbCom);
+                    Delete(items.Where(u => u.State == EntityState.Deleted), db, trans, dbCom);
+                    trans.Commit();
+                }
+                catch
+                {
+                    trans.Rollback();
+                    throw;
+                }
+            }
+        }
+
+        public void Insert(IEnumerable<SalesOrderDlvyDetail> items, Database db, DbTransaction trans, DbCommand dbCom)
+        {
+            foreach (SalesOrderDlvyDetail detail in items)
+            {
+                dbCom = db.GetStoredProcCommand("usp_sales_DlvyNote_Detail");
+                dbCom.CommandType = CommandType.StoredProcedure;
+                db.AddInParameter(dbCom, "@DnNo", DbType.String, detail.DnNo);
+                db.AddInParameter(dbCom, "@BizAreaCode", DbType.String, detail.BizAreaCode);
+                db.AddInParameter(dbCom, "@ItemCode", DbType.String, detail.ItemCode);
+                db.AddInParameter(dbCom, "@BasicUnit", DbType.String, detail.BasicUnit);
+                db.AddInParameter(dbCom, "@CustItemCode", DbType.String, detail.CustItemCode);
+                db.AddInParameter(dbCom, "@WhCode", DbType.String, detail.WhCode);
+                db.AddInParameter(dbCom, "@WaCode", DbType.String, detail.WaCode);
+                db.AddInParameter(dbCom, "@DnLotNo", DbType.String, detail.DnLotNo);
+                db.AddInParameter(dbCom, "@LotNo", DbType.String, detail.LotNo);
+                db.AddInParameter(dbCom, "@Qty", DbType.Decimal, detail.Qty);
+                db.AddInParameter(dbCom, "@UnitPrice", DbType.Decimal, detail.UnitPrice);
+                db.AddInParameter(dbCom, "@ExchangeRate", DbType.Decimal, detail.ExchangeRate);
+                db.AddInParameter(dbCom, "@VATRate", DbType.Decimal, detail.VATRate);
+                db.AddInParameter(dbCom, "@ReqNo", DbType.String, detail.ReqNo);
+                db.AddInParameter(dbCom, "@ReqSeq", DbType.Int16, detail.ReqSeq);
+                db.AddInParameter(dbCom, "@SoNo", DbType.String, detail.SoNo);
+                db.AddInParameter(dbCom, "@SoSeq", DbType.Int16, detail.SoSeq);
+                db.AddInParameter(dbCom, "@Memo", DbType.String, detail.Memo);
+                db.AddInParameter(dbCom, "@Remark3", DbType.String, detail.Remark3);
+                db.AddInParameter(dbCom, "@ProductDate", DbType.Date, detail.ProductDate);
+                db.AddInParameter(dbCom, "@InsertId", DbType.String, DSUser.Instance.UserID);
+                db.ExecuteNonQuery(dbCom, trans);
+            }
+
+            if (items.Count() == 0) return;
+            SalesOrderDlvyDetail item = items.First();
+
+
+            // ERP함수 호출
+            if (item.BizAreaCode == "BAC40")
+            {
+                dbCom = db.GetStoredProcCommand("USP_S1X41MA2_KO656");
+                db.AddInParameter(dbCom, "@DN_NO", DbType.String, item.DnNo);
+                db.AddInParameter(dbCom, "@USER_ID", DbType.String, DSUser.Instance.UserID);
+                db.ExecuteNonQuery(dbCom, trans);
+            }
+
+            // 출하검사 요청
+            if (item.BizAreaCode == "BAC40")
+            {
+                dbCom = db.GetStoredProcCommand("usp_QualityCheckOQC_Biz");
+                db.AddInParameter(dbCom, "@DnNo", DbType.String, item.DnNo);
+                db.AddInParameter(dbCom, "@BizAreaCode", DbType.String, item.BizAreaCode);
+                db.ExecuteNonQuery(dbCom, trans);
+            }
+        }
+
+        public void Delete(IEnumerable<SalesOrderDlvyDetail> items, Database db, DbTransaction trans, DbCommand dbCom)
+        {
+            if (items.Count() == 0) return;
+            dbCom = db.GetStoredProcCommand("USP_S1X41MA1_KO656_CANCEL");
+            db.AddInParameter(dbCom, "@DN_NO", DbType.String, items.First().DnNo);
+            db.AddInParameter(dbCom, "@USER_ID", DbType.String, DSUser.Instance.UserID);
+            db.ExecuteNonQuery(dbCom, trans);
+
+            string str;
+            foreach (SalesOrderDlvyDetail item in items)
+            {
+                str = string.Format("DELETE sales_DlvyNote_Detail WHERE DnNo = '{0}' AND Seq = {1}", item.DnNo, item.Seq);
+                dbCom = db.GetSqlStringCommand(str);
+                db.ExecuteNonQuery(dbCom, trans);
+            }
         }
     }
 }

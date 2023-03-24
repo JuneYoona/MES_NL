@@ -12,6 +12,11 @@ namespace MesAdmin.Models
 {
     public class SalesOrderReqDetail : StateBusinessObject
     {
+        public string BizAreaCode
+        {
+            get { return GetProperty(() => BizAreaCode); }
+            set { SetProperty(() => BizAreaCode, value); }
+        }
         public string ReqNo
         {
             get { return GetProperty(() => ReqNo); }
@@ -83,10 +88,20 @@ namespace MesAdmin.Models
             get { return GetProperty(() => Qty); }
             set { SetProperty(() => Qty, value); }
         }
+        public int Bottle
+        {
+            get { return GetProperty(() => Bottle); }
+            set { SetProperty(() => Bottle, value); }
+        }
         public decimal DlvyQty
         {
             get { return GetProperty(() => DlvyQty); }
             set { SetProperty(() => DlvyQty, value); }
+        }
+        public decimal RemainQty
+        {
+            get { return GetProperty(() => RemainQty); }
+            set { SetProperty(() => RemainQty, value); }
         }
         public decimal UnitPrice
         {
@@ -148,6 +163,8 @@ namespace MesAdmin.Models
             get { return GetProperty(() => Remark1); }
             set { SetProperty(() => Remark1, value); }
         }
+        public string FormatQty { get; set; }
+        public decimal? QtyPerBtl { get; set; }
         public string UpdateId
         {
             get { return GetProperty(() => UpdateId); }
@@ -227,12 +244,12 @@ namespace MesAdmin.Models
             Database db = ProviderFactory.Instance;
             string sql = "";
             if (!string.IsNullOrEmpty(reqNo))
-                sql = "SELECT A.*, B.ItemName, B.ItemSpec, C.ReqDate, C.ShipTo, C.SoType, C.MoveType, C.Remark1 FROM sales_OrderReq_Detail (NOLOCK) A "
+                sql = "SELECT C.SoNo, A.*, B.ItemName, B.ItemSpec, C.ReqDate, C.ShipTo, C.SoType, C.MoveType, C.Remark1 FROM sales_OrderReq_Detail (NOLOCK) A "
                     + "INNER JOIN common_Item (NOLOCK) B ON A.ItemCode = B.ItemCode "
                     + "INNER JOIN sales_OrderReq_Header (NOLOCK) C ON A.ReqNo = C.ReqNo "
                     + "WHERE A.ReqNo = @ReqNo";
             else
-                sql = "SELECT A.*, B.ItemName, B.ItemSpec, C.ReqDate, C.ShipTo, C.SoType, C.MoveType, C.Remark1 FROM sales_OrderReq_Detail (NOLOCK) A "
+                sql = "SELECT C.SoNo, A.*, B.ItemName, B.ItemSpec, C.ReqDate, C.ShipTo, C.SoType, C.MoveType, C.Remark1 FROM sales_OrderReq_Detail (NOLOCK) A "
                     + "INNER JOIN common_Item (NOLOCK) B ON A.ItemCode = B.ItemCode "
                     + "INNER JOIN sales_OrderReq_Header (NOLOCK) C ON A.ReqNo = C.ReqNo "
                     + "WHERE C.ReqDate BETWEEN @StartDate AND @EndDate "
@@ -269,7 +286,7 @@ namespace MesAdmin.Models
                         VATRate = (decimal)u["VATRate"],
                         VATAmt = (decimal)u["VATAmt"],
                         VATAmtLocal = (decimal)u["VATAmtLocal"],
-                        SoNo = (string)u["SoNo"],
+                        SoNo = u["SoNo"].ToString(),
                         SoSeq = (int)u["SoSeq"],
                         Memo = u["Memo"].ToString(),
                         Remark1 = u["Remark1"].ToString(),
@@ -335,6 +352,286 @@ namespace MesAdmin.Models
                 dbCom = db.GetSqlStringCommand(str);
                 db.ExecuteNonQuery(dbCom, trans);
             }
+        }
+    }
+
+    public class SalesDlvyReqDetail : StateBusinessObject
+    {
+        public string BizAreaCode
+        {
+            get { return GetProperty(() => BizAreaCode); }
+            set { SetProperty(() => BizAreaCode, value); }
+        }
+        public string ReqNo
+        {
+            get { return GetProperty(() => ReqNo); }
+            set { SetProperty(() => ReqNo, value); }
+        }
+        public int Seq
+        {
+            get { return GetProperty(() => Seq); }
+            set { SetProperty(() => Seq, value); }
+        }
+        public DateTime ReqDate
+        {
+            get { return GetProperty(() => ReqDate); }
+            set { SetProperty(() => ReqDate, value); }
+        }
+        public string ItemCode
+        {
+            get { return GetProperty(() => ItemCode); }
+            set { SetProperty(() => ItemCode, value); }
+        }
+        public string ItemName
+        {
+            get { return GetProperty(() => ItemName); }
+            set { SetProperty(() => ItemName, value); }
+        }
+        public string ItemSpec
+        {
+            get { return GetProperty(() => ItemSpec); }
+            set { SetProperty(() => ItemSpec, value); }
+        }
+        public string BasicUnit
+        {
+            get { return GetProperty(() => BasicUnit); }
+            set { SetProperty(() => BasicUnit, value); }
+        }
+        public string WhCode
+        {
+            get { return GetProperty(() => WhCode); }
+            set { SetProperty(() => WhCode, value); }
+        }
+        public string ShipTo
+        {
+            get { return GetProperty(() => ShipTo); }
+            set { SetProperty(() => ShipTo, value); }
+        }
+        public string SoType
+        {
+            get { return GetProperty(() => SoType); }
+            set { SetProperty(() => SoType, value); }
+        }
+        public string MoveType
+        {
+            get { return GetProperty(() => MoveType); }
+            set { SetProperty(() => MoveType, value); }
+        }
+        public string CustItemCode
+        {
+            get { return GetProperty(() => CustItemCode); }
+            set { SetProperty(() => CustItemCode, value); }
+        }
+        public DateTime? DlvyDate
+        {
+            get { return GetProperty(() => DlvyDate); }
+            set { SetProperty(() => DlvyDate, value); }
+        }
+        [Required(ErrorMessage = "필수입력값 입니다.")]
+        public decimal Qty
+        {
+            get { return GetProperty(() => Qty); }
+            set { SetProperty(() => Qty, value); }
+        }
+        public int Bottle
+        {
+            get { return GetProperty(() => Bottle); }
+            set { SetProperty(() => Bottle, value); }
+        }
+        public decimal DlvyQty
+        {
+            get { return GetProperty(() => DlvyQty); }
+            set { SetProperty(() => DlvyQty, value); }
+        }
+        public decimal RemainQty
+        {
+            get { return GetProperty(() => RemainQty); }
+            set { SetProperty(() => RemainQty, value); }
+        }
+        public decimal UnitPrice
+        {
+            get { return GetProperty(() => UnitPrice); }
+            set { SetProperty(() => UnitPrice, value); }
+        }
+        public string Currency
+        {
+            get { return GetProperty(() => Currency); }
+            set { SetProperty(() => Currency, value); }
+        }
+        public string SoNo
+        {
+            get { return GetProperty(() => SoNo); }
+            set { SetProperty(() => SoNo, value); }
+        }
+        public int SoSeq
+        {
+            get { return GetProperty(() => SoSeq); }
+            set { SetProperty(() => SoSeq, value); }
+        }
+        public decimal ExchangeRate
+        {
+            get { return GetProperty(() => ExchangeRate); }
+            set { SetProperty(() => ExchangeRate, value); }
+        }
+        public decimal NetAmt
+        {
+            get { return GetProperty(() => NetAmt); }
+            set { SetProperty(() => NetAmt, value); }
+        }
+        public decimal NetAmtLocal
+        {
+            get { return GetProperty(() => NetAmtLocal); }
+            set { SetProperty(() => NetAmtLocal, value); }
+        }
+        public decimal VATRate
+        {
+            get { return GetProperty(() => VATRate); }
+            set { SetProperty(() => VATRate, value); }
+        }
+        public decimal VATAmt
+        {
+            get { return GetProperty(() => VATAmt); }
+            set { SetProperty(() => VATAmt, value); }
+        }
+        public decimal VATAmtLocal
+        {
+            get { return GetProperty(() => VATAmtLocal); }
+            set { SetProperty(() => VATAmtLocal, value); }
+        }
+        public string Memo
+        {
+            get { return GetProperty(() => Memo); }
+            set { SetProperty(() => Memo, value); }
+        }
+        public string Remark1
+        {
+            get { return GetProperty(() => Remark1); }
+            set { SetProperty(() => Remark1, value); }
+        }
+        public string FormatQty { get; set; }
+        public decimal? QtyPerBtl { get; set; }
+        public string UpdateId
+        {
+            get { return GetProperty(() => UpdateId); }
+            set { SetProperty(() => UpdateId, value); }
+        }
+        public DateTime UpdateDate
+        {
+            get { return GetProperty(() => UpdateDate); }
+            set { SetProperty(() => UpdateDate, value); }
+        }
+
+        public SalesDlvyReqDetail() { }
+        public SalesDlvyReqDetail(string reqNo, int seq)
+        {
+            Database db = ProviderFactory.Instance;
+            string sql = "";
+            sql = "SELECT A.*, B.ItemName, B.ItemSpec, C.ReqDate, C.ShipTo, C.SoType, C.MoveType FROM sales_DlvyReq_Detail (NOLOCK) A "
+                    + "INNER JOIN common_Item (NOLOCK) B ON A.ItemCode = B.ItemCode "
+                    + "INNER JOIN sales_DlvyReq_Header (NOLOCK) C ON A.ReqNo = C.ReqNo "
+                    + "WHERE A.ReqNo = @ReqNo AND A.Seq = @Seq";
+
+            DbCommand dbCom = db.GetSqlStringCommand(sql);
+            db.AddInParameter(dbCom, "@ReqNo", DbType.String, reqNo);
+            db.AddInParameter(dbCom, "@Seq", DbType.Int16, seq);
+            DataSet ds = db.ExecuteDataSet(dbCom);
+            ds.Tables[0].AsEnumerable().ToList().ForEach(u =>
+            {
+                ReqNo = (string)u["ReqNo"];
+                Seq = (int)u["Seq"];
+                ReqDate = (DateTime)u["ReqDate"];
+                ItemCode = (string)u["ItemCode"];
+                ItemName = (string)u["ItemName"];
+                ItemSpec = (string)u["ItemSpec"];
+                BasicUnit = (string)u["BasicUnit"];
+                SoType = (string)u["SoType"];
+                MoveType = (string)u["MoveType"];
+                WhCode = (string)u["WhCode"];
+                ShipTo = (string)u["ShipTo"];
+                CustItemCode = (string)u["CustItemCode"];
+                Qty = (decimal)u["Qty"];
+                DlvyQty = (decimal)u["DlvyQty"];
+                UnitPrice = (decimal)u["UnitPrice"];
+                ExchangeRate = (decimal)u["ExchangeRate"];
+                NetAmt = (decimal)u["NetAmt"];
+                NetAmtLocal = (decimal)u["NetAmtLocal"];
+                VATRate = (decimal)u["VATRate"];
+                VATAmt = (decimal)u["VATAmt"];
+                VATAmtLocal = (decimal)u["VATAmtLocal"];
+                SoNo = (string)u["SoNo"];
+                SoSeq = (int)u["SoSeq"];
+                Memo = u["Memo"].ToString();
+                UpdateId = (string)u["UpdateId"];
+                UpdateDate = (DateTime)u["UpdateDate"];
+            });
+        }
+    }
+
+    public class SalesDlvyReqDetailList : ObservableCollection<SalesDlvyReqDetail>
+    {
+        private string reqNo;
+        private string bizAreaCode;
+        private DateTime? startDate;
+        private DateTime? endDate;
+
+        public SalesDlvyReqDetailList() { }
+        public SalesDlvyReqDetailList(IEnumerable<SalesDlvyReqDetail> items) : base(items) { }
+        public SalesDlvyReqDetailList(string reqNo = "", DateTime? startDate = null, DateTime? endDate = null, string bizAreaCode = "")
+        {
+            this.reqNo = reqNo;
+            this.bizAreaCode = bizAreaCode;
+            this.startDate = startDate;
+            this.endDate = endDate;
+            InitializeList();
+        }
+
+        public void InitializeList()
+        {
+            base.Clear();
+            Database db = ProviderFactory.Instance;
+            DbCommand dbCom = db.GetStoredProcCommand("usp_sales_DlvyReq_Detail");
+            db.AddInParameter(dbCom, "@BizAreaCode", DbType.String, bizAreaCode);
+            db.AddInParameter(dbCom, "@StartDate", DbType.Date, startDate == null ? "" : startDate.Value.ToShortDateString());
+            db.AddInParameter(dbCom, "@EndDate", DbType.Date, endDate == null ? "" : endDate.Value.ToShortDateString());
+            DataSet ds = db.ExecuteDataSet(dbCom);
+
+            ds.Tables[0].AsEnumerable().ToList().ForEach(u =>
+                base.Add(
+                    new SalesDlvyReqDetail
+                    {
+                        ReqNo = (string)u["ReqNo"],
+                        Seq = (int)u["Seq"],
+                        ReqDate = (DateTime)u["ReqDate"],
+                        ItemCode = (string)u["ItemCode"],
+                        ItemName = (string)u["ItemName"],
+                        ItemSpec = (string)u["ItemSpec"],
+                        BasicUnit = (string)u["BasicUnit"],
+                        SoType = (string)u["SoType"],
+                        MoveType = (string)u["MoveType"],
+                        WhCode = (string)u["WhCode"],
+                        ShipTo = (string)u["ShipTo"],
+                        CustItemCode = (string)u["CustItemCode"],
+                        Qty = (decimal)u["Qty"],
+                        Bottle = (int)u["Bottle"],
+                        DlvyQty = (decimal)u["DlvyQty"],
+                        RemainQty = (decimal)u["Qty"] - (decimal)u["DlvyQty"],
+                        UnitPrice = (decimal)u["UnitPrice"],
+                        ExchangeRate = (decimal)u["ExchangeRate"],
+                        NetAmt = (decimal)u["NetAmt"],
+                        NetAmtLocal = (decimal)u["NetAmtLocal"],
+                        VATRate = (decimal)u["VATRate"],
+                        VATAmt = (decimal)u["VATAmt"],
+                        VATAmtLocal = (decimal)u["VATAmtLocal"],
+                        SoNo = (string)u["SoNo"],
+                        SoSeq = (int)u["SoSeq"],
+                        Memo = u["Memo"].ToString(),
+                        FormatQty = u["FormatQty"].ToString(),
+                        QtyPerBtl = u["BOTTLE_QTY"] == DBNull.Value ? null : (decimal?)u["BOTTLE_QTY"],
+                        UpdateId = (string)u["UpdateId"],
+                        UpdateDate = (DateTime)u["UpdateDate"]
+                    }
+                )
+            );
         }
     }
 }

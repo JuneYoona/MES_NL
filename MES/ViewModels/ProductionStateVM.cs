@@ -69,6 +69,7 @@ namespace MesAdmin.ViewModels
             set { SetProperty(() => IsBusy, value); }
         }
         public bool OLED { get { return DSUser.Instance.BizAreaCode == "BAC60"; } }
+        public bool CP { get { return DSUser.Instance.BizAreaCode == "BAC40"; } }
 
         public ObservableCollection<ItemInfo> Type { get; set; }
         public string SelectedType
@@ -157,10 +158,10 @@ namespace MesAdmin.ViewModels
 
             DocumentParamter pm = parameter as DocumentParamter;
 
-            Task.Factory.StartNew(SearchCore).ContinueWith(task =>
-            {
-                ((MainViewModel)pm.ParentViewmodel).TabLoadingClose();
-            });
+            // CP는 실적데이터가 많아 하루만 데이터만 조회
+            if (DSUser.Instance.BizAreaCode == "BAC40") StartDate = DateTime.Now.AddDays(-7);
+
+            Task.Run(SearchCore).ContinueWith(task => ((MainViewModel)pm.ParentViewmodel).TabLoadingClose());
         }
     }
 }

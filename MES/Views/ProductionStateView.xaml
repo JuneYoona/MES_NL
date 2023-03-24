@@ -238,8 +238,10 @@
                                             </dxg:GridColumn.EditSettings>
                                         </dxg:GridColumn>
                                         <dxg:GridColumn FieldName="WorkerName" Header="작업자" Width="110" />
-                                        <dxg:GridColumn FieldName="Remark4" Header="합성로트" Width="90"/>
-                                        <dxg:GridColumn FieldName="Remark5" Header="로트순번" Width="80"/>
+                                        <dxg:GridColumn FieldName="LQCResult" Header="공정검사" Width="80" Visible="{Binding CP}"/>
+                                        <dxg:GridColumn FieldName="Remark1" Header="비고1" Width="150" />
+                                        <dxg:GridColumn FieldName="Remark4" Header="합성로트" Width="90" Visible="{Binding OLED}"/>
+                                        <dxg:GridColumn FieldName="Remark5" Header="로트순번" Width="80" Visible="{Binding OLED}"/>
                                         <dxg:GridColumn FieldName="UpdateId" Header="입력자 Id" Width="80" />
                                         <dxg:GridColumn FieldName="UpdateDate" Header="입력시간" Width="110">
                                             <dxg:GridColumn.EditSettings>

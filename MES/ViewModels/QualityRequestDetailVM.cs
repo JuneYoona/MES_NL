@@ -73,7 +73,7 @@ namespace MesAdmin.ViewModels
             get { return GetProperty(() => BizCode); }
             set { SetProperty(() => BizCode, value); }
         }
-        public IEnumerable<CommonBizPartner> BizPartnerList { get; set; }
+        public IEnumerable<CommonBizPartner> BizCodeList { get; set; }
         public string Visibility
         {
             get { return GetProperty(() => Visibility); }
@@ -109,9 +109,6 @@ namespace MesAdmin.ViewModels
             EndDate = DateTime.Now;
             SearchCmd = new AsyncCommand(OnSearch, CanSearch);
             MouseDoubleClickCmd = new DelegateCommand(OnMouseDoubleClick, CanMouseDoubleClick);
-
-            // IQC 용
-            BizPartnerList = GlobalCommonBizPartner.Instance.Where(u => (u.BizType == "V" || u.BizType == "CV") && u.IsEnabled == true);
         }
 
         // 시간이 많이 걸리는 작업이어서 async binding
@@ -122,13 +119,13 @@ namespace MesAdmin.ViewModels
 
             if (task.IsCompleted)
             {
-                BizPartnerList = task.Result;
+                BizCodeList = task.Result;
             }
         }
 
         private IEnumerable<CommonBizPartner> LoadingBizPartnerList()
         {
-            return GlobalCommonBizPartner.Instance.Where(u => (u.BizType == "V" || u.BizType == "CV") && u.IsEnabled == true);
+            return GlobalCommonBizPartner.Instance.Where(u => (u.BizType == "C" || u.BizType == "CS") && u.IsEnabled == true);
         }
 
         public bool CanSearch() { return true; }
@@ -169,8 +166,8 @@ namespace MesAdmin.ViewModels
                     title = "최종검사등록";
                     break;
                 case "OQC":
-                    viewName = "QualityRequestOQCView";
-                    title = "포장검사등록";
+                    viewName = (string)SelectedItem["BizAreaCode"] == "BAC40" ? "QualityRequestOQCBizView" : "QualityRequestOQCView";
+                    title = (string)SelectedItem["BizAreaCode"] == "BAC40" ? "출하검사등록" : "포장검사등록";
                     break;
                 default:
                     break;

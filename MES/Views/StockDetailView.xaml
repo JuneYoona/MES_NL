@@ -14,11 +14,9 @@
              xmlns:ViewModels="clr-namespace:MesAdmin.ViewModels"
              mc:Ignorable="d"
              xmlns:utils="clr-namespace:MesAdmin.Common.Utils"
-             d:DesignHeight="600"
-             d:DesignWidth="600">
-    <UserControl.DataContext>
-        <ViewModels:StockDetailVM/>
-    </UserControl.DataContext>
+             d:DesignHeight="1000"
+             d:DesignWidth="1000"
+             DataContext="{dxmvvm:ViewModelSource ViewModels:StockDetailVM}">
     <Grid>
         <DockPanel>
             <dxr:RibbonControl DockPanel.Dock="Top">
@@ -115,14 +113,7 @@
                     </custom:DSTableView>
                 </dxg:GridControl.View>
                 <dxg:GridControl.Columns>
-                    <dxg:GridColumn Header="공장정보" Width="100">
-                        <dxg:GridColumn.Binding>
-                            <MultiBinding Converter="{StaticResource MinorCodeConverter}">
-                                <Binding Source="I0004" />
-                                <Binding Path="Data.BizAreaCode" />
-                            </MultiBinding>
-                        </dxg:GridColumn.Binding>
-                    </dxg:GridColumn>
+                    <dxg:GridColumn FieldName="BizAreaCode" Header="제조파트" Width="100" EditSettings="{StaticResource BizAreaCodeDisplayTextConverter}"/>
                     <dxg:GridColumn FieldName="ItemCode" Header="품목코드" Width="100" />
                     <dxg:GridColumn FieldName="ItemName" Header="품목명" Width="150" />
                     <dxg:GridColumn FieldName="ItemSpec" Header="품목사양" Width="150" />
@@ -144,27 +135,8 @@
                     <dxg:GridColumn FieldName="BadQty" Header="불량" Width="100" Visible="False" />
                     <dxg:GridColumn FieldName="PickingQty" Width="100" Header="예약 수량" />
                     <dxg:GridColumn FieldName="BasicUnit" Header="단위" Width="60" />
-                    <dxg:GridColumn Header="창고" Width="150" FieldName="WhCode">
-                        <dxg:GridColumn.Binding>
-                            <MultiBinding Converter="{StaticResource MinorCodeConverter}">
-                                <Binding Source="I0011" />
-                                <Binding Path="Data.WhCode" />
-                            </MultiBinding>
-                        </dxg:GridColumn.Binding>
-                        <dxg:GridColumn.GroupValueTemplate>
-                            <DataTemplate>
-                                <TextBlock Margin="10,0,0,0">
-                                    <TextBlock.Text>
-                                        <MultiBinding Converter="{StaticResource MinorCodeConverter}">
-                                            <Binding Source="I0011" />
-                                            <Binding Path="Data.WhCode" />
-                                        </MultiBinding>
-                                    </TextBlock.Text>
-                                </TextBlock>
-                            </DataTemplate>
-                        </dxg:GridColumn.GroupValueTemplate>
-                    </dxg:GridColumn>
-                    <dxg:GridColumn Binding="{Binding RowData.Row.WaCode, Converter={StaticResource WaCodeConverter}}" Header="공정" Width="80"/>
+                    <dxg:GridColumn FieldName="WhCode" Header="창고" Width="150" EditSettings="{StaticResource WhCodeDisplayTextConverter}" />
+                    <dxg:GridColumn FieldName="WaCode" Header="공정" Width="80" EditSettings="{StaticResource WaCodeDisplayTextConverter}" />
                     <dxg:GridColumn FieldName="Remark6" Header="TSC PIG(%)" Width="80" />
                     <dxg:GridColumn FieldName="Remark7" Header="TSC Total(%)" Width="80" />
                     <dxg:GridColumn FieldName="ExpDate" Header="유효기간" Width="90" AllowEditing="True"/>

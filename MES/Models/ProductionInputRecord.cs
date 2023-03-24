@@ -143,6 +143,12 @@ namespace MesAdmin.Models
             get { return GetProperty(() => UpdateDate); }
             set { SetProperty(() => UpdateDate, value); }
         }
+        public string LQCResult
+        {
+            get { return GetProperty(() => LQCResult); }
+            set { SetProperty(() => LQCResult, value); }
+        }
+        
         // 선행로트 관련 속성
         public string Color
         {
@@ -218,14 +224,22 @@ namespace MesAdmin.Models
             base.Clear();
             Database db = ProviderFactory.Instance;
 
-            string sql = "SELECT * FROM fn_production_InputRecord(@BizAreaCode, @WaCode, @LotNo, @StartDate, @EndDate) ";
-
-            if (!string.IsNullOrEmpty(color))
+            string sql;
+            if (bizAreaCode == "BAC40")
             {
-                sql += "WHERE Show = 'Visible' AND Color = '" + color + "'";
+                sql = "SELECT * FROM fn_production_InputRecord_BAC40(@BizAreaCode, @WaCode, @LotNo, @StartDate, @EndDate) ORDER BY OrderNo desc";
             }
+            else
+            {
+                sql = "SELECT * FROM fn_production_InputRecord(@BizAreaCode, @WaCode, @LotNo, @StartDate, @EndDate) ";
 
-            sql += " ORDER BY OrderNo desc";
+                if (!string.IsNullOrEmpty(color))
+                {
+                    sql += "WHERE Show = 'Visible' AND Color = '" + color + "'";
+                }
+
+                sql += " ORDER BY OrderNo desc";
+            }
 
             DbCommand dbCom = db.GetSqlStringCommand(sql);
             db.AddInParameter(dbCom, "@BizAreaCode", DbType.String, bizAreaCode);
@@ -270,9 +284,10 @@ namespace MesAdmin.Models
                         PauseTime = (int)u["PauseTime"],
                         WorkTime = (int)u["LeadTime"] - (int)u["PauseTime"],
                         LeadTime2 = u["LeadTime2"].ToString(),
-                        Color = u["Color"].ToString(),
-                        Show = u["Show"].ToString(),
-                        Tip = u["Tip"].ToString(),
+                        LQCResult = bizAreaCode == "BAC40" ? u["LQCResult"].ToString() : null,
+                        Color = bizAreaCode == "BAC40" ? null : u["Color"].ToString(),
+                        Show = bizAreaCode == "BAC40" ? null : u["Show"].ToString(),
+                        Tip = bizAreaCode == "BAC40" ? null : u["Tip"].ToString(),
                     }
                 )
             );

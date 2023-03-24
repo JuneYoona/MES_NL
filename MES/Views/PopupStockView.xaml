@@ -9,6 +9,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
+             xmlns:common="clr-namespace:MesAdmin.Common.Common"
              mc:Ignorable="d"
              d:DesignHeight="400"
              d:DesignWidth="670"
@@ -24,7 +25,25 @@
         <DockPanel Grid.Row="0">
             <dxb:ToolBarControl ShowDragWidget="False" BarItemDisplayMode="ContentAndGlyph" AllowQuickCustomization="False" DockPanel.Dock="Top">
                 <dxb:BarButtonItem Content="조회" KeyGesture="F5" Glyph="{dx:DXImage SvgImages/Spreadsheet/Zoom.svg}" Command="{Binding SearchCmd}" IsEnabled="{Binding IsEnabled}"/>
-                <dxb:BarStaticItem />
+                <dxb:BarItemSeparator />
+                <dxb:BarButtonItem Content="컬럼정의" Glyph="{dx:DXImage SvgImages/Snap/ModifyTableStyle.svg}">
+                    <dxmvvm:Interaction.Behaviors>
+                        <dxmvvm:ConfirmationBehavior 
+                            Command="{Binding SaveLayoutCmd, ElementName=SerializeHelper}"
+                            MessageText="현재설정으로 저장하시겠습니까?"
+                            MessageIcon="Question"
+                            MessageButton="YesNo"/>
+                    </dxmvvm:Interaction.Behaviors>
+                </dxb:BarButtonItem>
+                <dxb:BarButtonItem Content="기본컬럼" Glyph="{dx:DXImage SvgImages/Dashboards/Grid.svg}">
+                    <dxmvvm:Interaction.Behaviors>
+                        <dxmvvm:ConfirmationBehavior 
+                            Command="{Binding RestoreLayoutCmd, ElementName=SerializeHelper}"
+                            MessageText="기본설정으로 초기화됩니다."
+                            MessageIcon="Question"
+                            MessageButton="YesNo"/>
+                    </dxmvvm:Interaction.Behaviors>
+                </dxb:BarButtonItem>
             </dxb:ToolBarControl>
             <Grid DockPanel.Dock="Top" Style="{StaticResource SearchPanel}">
                 <Grid.ColumnDefinitions>
@@ -102,6 +121,7 @@
                 <dxmvvm:Interaction.Behaviors>
                     <dxmvvm:EventToCommand Command="{Binding SelectionChangedCmd}" CommandParameter="{Binding ElementName=gridView}" EventName="SelectionChanged" />
                     <dxmvvm:EventToCommand Command="{Binding ConfirmCmd}" EventName="MouseDoubleClick"/>
+                    <common:GridLayoutSaveCommand x:Name="SerializeHelper" ViewName="PopupStockView"/>
                 </dxmvvm:Interaction.Behaviors>
                 <!--<dxg:GridControl.Resources>
                     <ControlTemplate x:Key="{dxgt:GridControlThemeKey IsThemeIndependent=true, ResourceKey=BorderTemplate}" TargetType="{x:Type ContentControl}">
@@ -131,6 +151,7 @@
                     <dxg:GridColumn FieldName="QrQty" Width="80" Header="검사중 수량" EditSettings="{StaticResource NumericEditor4}"/>
                     <dxg:GridColumn FieldName="PickingQty" Width="80" Header="예약 수량" EditSettings="{StaticResource NumericEditor4}"/>
                     <dxg:GridColumn FieldName="BasicUnit" Width="50" Header="단위"/>
+                    <dxg:GridColumn FieldName="Remark5" Header="합성로트순번" Width="90"/>
                     <dxg:GridColumn Binding="{Binding RowData.Row.WaCode, Converter={StaticResource WaCodeConverter}}" Width="80" Header="공정"/>
                 </dxg:GridControl.Columns>
             </custom:DSGridControl>

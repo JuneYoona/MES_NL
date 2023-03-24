@@ -223,8 +223,6 @@
                         </Border>
                         <dxe:ComboBoxEdit
                             EditValue="{Binding SelectedItem.Remark1, UpdateSourceTrigger=PropertyChanged}"
-                            DisplayMember="WaName"
-                            ValueMember="WaCode"
                             NullValueButtonPlacement="EditBox"
                             Grid.Row="5"
                             Grid.Column="1"
@@ -233,6 +231,18 @@
                             <dxe:ComboBoxEditItem>Y</dxe:ComboBoxEditItem>
                             <dxe:ComboBoxEditItem>N</dxe:ComboBoxEditItem>
                         </dxe:ComboBoxEdit>
+                        <Border Grid.Row="5" Grid.Column="3">
+                            <TextBlock>소분중량</TextBlock>
+                        </Border>
+                        <dxe:SpinEdit
+                            Grid.Row="5"
+                            Grid.Column="4"
+                            EditValue="{Binding SelectedItem.BtlQty, UpdateSourceTrigger=PropertyChanged}"
+                            ShowEditorButtons="False"
+                            VerticalAlignment="Bottom"
+                            Mask="n2"
+                            MaskUseAsDisplayFormat="True"
+                            Margin="2 0 0 0"/>
                         <Border Grid.Row="7" Grid.Column="0">
                             <TextBlock>수입검사</TextBlock>
                         </Border>

@@ -308,7 +308,7 @@
                         Style="{StaticResource  NumericStyle}"
                         Grid.Row="6" Grid.Column="1" />
                     <dxe:TextEdit
-                        Text="{Binding ReqDetail.MoveType, Converter={StaticResource MinorCodeConverter}}"
+                        Text="{Binding ReqDetail.MoveType, Converter={StaticResource MoveTypeConverter}}"
                         IsReadOnly="True"
                         IsEnabled="False"
                         VerticalAlignment="Bottom"
@@ -332,7 +332,7 @@
                         Background="#F3F6FB" 
                         Grid.Row="8" Grid.Column="2" />
                     <dxe:TextEdit
-                        Text="{Binding ReqDetail.WhCode, Converter={StaticResource MinorCodeConverter}}"
+                        Text="{Binding ReqDetail.WhCode, Converter={StaticResource WhCodeConverter}}"
                         IsReadOnly="True"
                         IsEnabled="False"
                         VerticalAlignment="Bottom"

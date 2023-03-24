@@ -160,6 +160,7 @@ namespace MesAdmin.ViewModels
                     {
                         message = ex.Message;
                     }
+
                     DispatcherService.BeginInvoke(() => MessageBoxService.ShowMessage(message
                                                         , "Information"
                                                         , MessageButton.OK

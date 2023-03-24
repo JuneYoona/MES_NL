@@ -132,15 +132,55 @@ namespace MesAdmin.Models
             get { return GetProperty(() => Status); }
             set { SetProperty(() => Status, value); }
         }
+        public bool LossFlag
+        {
+            get { return GetProperty(() => LossFlag); }
+            set { SetProperty(() => LossFlag, value); }
+        }
         public bool TransferFlag
         {
             get { return GetProperty(() => TransferFlag); }
             set { SetProperty(() => TransferFlag, value); }
         }
+        public string BizAreaCode
+        {
+            get { return GetProperty(() => BizAreaCode); }
+            set { SetProperty(() => BizAreaCode, value); }
+        }
         public string Memo
         {
             get { return GetProperty(() => Memo); }
             set { SetProperty(() => Memo, value); }
+        }
+        public string DnNo
+        {
+            get { return GetProperty(() => DnNo); }
+            set { SetProperty(() => DnNo, value); }
+        }
+        public DateTime? ReqDate
+        {
+            get { return GetProperty(() => ReqDate); }
+            set { SetProperty(() => ReqDate, value); }
+        }
+        public string BizName
+        {
+            get { return GetProperty(() => BizName); }
+            set { SetProperty(() => BizName, value); }
+        }
+        public string SoNo
+        {
+            get { return GetProperty(() => SoNo); }
+            set { SetProperty(() => SoNo, value); }
+        }
+        public string ReqNo
+        {
+            get { return GetProperty(() => ReqNo); }
+            set { SetProperty(() => ReqNo, value); }
+        }
+        public int? ReqSeq
+        {
+            get { return GetProperty(() => ReqSeq); }
+            set { SetProperty(() => ReqSeq, value); }
         }
         public string UpdateId
         {
@@ -164,6 +204,7 @@ namespace MesAdmin.Models
             DataSet ds = db.ExecuteDataSet(dbCom);
 
             ds.Tables[0].AsEnumerable().ToList().ForEach(u => {
+                BizAreaCode = (string)u["BizAreaCode"];
                 QrNo = (string)u["QrNo"];
                 QrType = (string)u["QrType"];
                 ItemAccount = (string)u["ItemAccount"];
@@ -187,7 +228,14 @@ namespace MesAdmin.Models
                 LastOrder = (int)u["LastOrder"];
                 Status = (bool)u["Status"];
                 TransferFlag = (bool)u["TransferFlag"];
+                LossFlag = (bool)u["LossFlag"];
                 Memo = u["Memo"].ToString();
+                DnNo = u["DnNo"].ToString();
+                ReqDate = u["ReqDate"] == DBNull.Value ? null : (DateTime?)u["ReqDate"];
+                BizName = u["BizName"].ToString();
+                SoNo = u["SoNo"].ToString();
+                ReqNo = u["ReqNo"].ToString();
+                ReqSeq = u["ReqSeq"] == DBNull.Value ? null : (int?)u["ReqSeq"];
                 UpdateId = (string)u["UpdateId"];
                 UpdateDate = (DateTime)u["UpdateDate"];
             });
@@ -265,6 +313,60 @@ namespace MesAdmin.Models
                 }
             }
         }
+
+        public void LossStock()
+        {
+            Database db = ProviderFactory.Instance;
+            using (DbConnection conn = db.CreateConnection())
+            {
+                conn.Open();
+                DbTransaction trans = conn.BeginTransaction();
+                DbCommand dbCom = null;
+                try
+                {
+                    dbCom = db.GetStoredProcCommand("usp_Quality_Stock_Movement");
+                    dbCom.CommandType = CommandType.StoredProcedure;
+                    db.AddInParameter(dbCom, "@QrNo", DbType.String, QrNo);
+                    db.AddInParameter(dbCom, "@TransType", DbType.String, "OI");
+                    db.AddInParameter(dbCom, "@MoveType", DbType.String, "I98");
+                    db.ExecuteNonQuery(dbCom, trans);
+
+                    trans.Commit();
+                }
+                catch (SqlException ex)
+                {
+                    trans.Rollback();
+                    throw new Exception(ex.Errors[0].Message);
+                }
+            }
+        }
+
+        public void LossStockCancel()
+        {
+            Database db = ProviderFactory.Instance;
+            using (DbConnection conn = db.CreateConnection())
+            {
+                conn.Open();
+                DbTransaction trans = conn.BeginTransaction();
+                DbCommand dbCom = null;
+                try
+                {
+                    string sql = "UPDATE stock_Movement_Detail SET DelFlag = 'Y' WHERE DocumentNo = (SELECT PmNo FROM quality_Request (NOLOCK) WHERE QrNo = @QrNo) ";
+                    sql += "UPDATE quality_Request SET LossFlag = 0 WHERE QrNo = @QrNo";
+
+                    dbCom = db.GetSqlStringCommand(sql);
+                    db.AddInParameter(dbCom, "@QrNo", DbType.String, QrNo);
+                    db.ExecuteNonQuery(dbCom, trans);
+
+                    trans.Commit();
+                }
+                catch (SqlException ex)
+                {
+                    trans.Rollback();
+                    throw new Exception(ex.Errors[0].Message);
+                }
+            }
+        }
     }
 
     public class QualityRequestList : ObservableCollection<QualityRequest>
@@ -331,6 +433,7 @@ namespace MesAdmin.Models
                         ResultOrder = (int)u["ResultOrder"],
                         Status = (bool)u["Status"],
                         TransferFlag = (bool)u["TransferFlag"],
+                        BizAreaCode = (string)u["BizAreaCode"],
                         UpdateId = (string)u["UpdateId"],
                         UpdateDate = (DateTime)u["UpdateDate"]
                     }
@@ -341,7 +444,7 @@ namespace MesAdmin.Models
         public DataTable GetRequestDetail(string qrType, DateTime startDate, DateTime endDate, string bizCode, string bizAreaCode)
         {
             Database db = ProviderFactory.Instance;
-            DbCommand dbCom = db.GetSqlStringCommand("SELECT * FROM fn_qualityRequest(@QrType, @StartDate, @EndDate, @BizCode, @BizAreaCode)");
+            DbCommand dbCom = db.GetSqlStringCommand("SELECT * FROM fn_qualityRequest(@QrType, @StartDate, @EndDate, @BizCode, @BizAreaCode) ORDER BY QrNo DESC");
             db.AddInParameter(dbCom, "@QrType", DbType.String, qrType);
             db.AddInParameter(dbCom, "@StartDate", DbType.String, startDate.ToShortDateString());
             db.AddInParameter(dbCom, "@EndDate", DbType.String, endDate.ToShortDateString());

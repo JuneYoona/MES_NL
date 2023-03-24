@@ -152,6 +152,7 @@
                                         <dxg:GridColumn FieldName="OrderQty" Header="계획량" Width="100" EditSettings="{StaticResource NumericEditor}"/>
                                         <dxg:GridColumn FieldName="BasicUnit" Header="단위" Width="50" />
                                         <dxg:GridColumn FieldName="Remark2" Header="로트번호 헤더" Width="120" Visible="{Binding LotHeader}"/>
+                                        <dxg:GridColumn FieldName="Remark3" Header="합성연번" Width="80"/>
                                         <dxg:GridColumn FieldName="Remark" Header="비고" Width="160"/>
                                         <dxg:GridColumn FieldName="UpdateId" Header="입력자 Id" Width="80" ReadOnly="True" />
                                         <dxg:GridColumn FieldName="IsEnd" Header="작지마감" FixedWidth="True" Width="60" ReadOnly="True">

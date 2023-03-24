@@ -60,6 +60,11 @@ namespace MesAdmin.Models
             get { return GetProperty(() => Remark2); }
             set { SetProperty(() => Remark2, value); }
         }
+        public string Remark3
+        {
+            get { return GetProperty(() => Remark3); }
+            set { SetProperty(() => Remark3, value); }
+        }
         public string ItemName
         {
             get { return GetProperty(() => ItemName); }
@@ -136,6 +141,7 @@ namespace MesAdmin.Models
                         OrderQty = (decimal)u["OrderQty"],
                         Remark = u["Remark"].ToString(),
                         Remark2 = u["Remark2"].ToString(),
+                        Remark3 = u["Remark3"].ToString(),
                         IsEnd = Convert.ToChar(u["IsEnd"]),
                         UpdateId = (string)u["UpdateId"],
                         UpdateDate = (DateTime)u["UpdateDate"]

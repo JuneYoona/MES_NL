@@ -109,7 +109,8 @@
                         <dxg:GridColumn FieldName="Qty" Header="수량" Width="100" EditSettings="{StaticResource NumericEditor}"/>
                         <dxg:GridColumn FieldName="BasicUnit" Header="단위" Width="80" />
                         <dxg:GridColumn FieldName="QrState" Header="품질검사여부" Width="110"/>
-                        <dxg:GridColumn FieldName="Memo" Header="메모" Width="300" />
+                        <dxg:GridColumn FieldName="Memo" Header="메모" Width="200" />
+                        <dxg:GridColumn FieldName="StockNo" Header="보관함" Width="100" />
                         <dxg:GridColumn FieldName="InsertId" Header="입력자 Id" MinWidth="80" />
                         <dxg:GridColumn FieldName="InsertName" Header="입력자명" MinWidth="80" />
                         <dxg:GridColumn FieldName="InsertDate" Header="입력시간" MinWidth="120">

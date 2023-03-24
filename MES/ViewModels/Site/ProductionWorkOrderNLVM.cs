@@ -12,7 +12,7 @@ using DevExpress.Mvvm.POCO;
 using System.Threading.Tasks;
 using MesAdmin.Common.Utils;
 using DevExpress.Xpf.Grid;
-using MesAdmin.Reports;
+using DevExpress.Xpf.Editors;
 using System.Data.SqlClient;
 
 namespace MesAdmin.ViewModels
@@ -90,6 +90,7 @@ namespace MesAdmin.ViewModels
         public ICommand AddCmd { get; set; }
         public AsyncCommand SaveCmd { get; set; }
         public AsyncCommand SearchCmd { get; set; }
+        public ICommand<EditValueChangedEventArgs> EditValueChangedCmd { get; set; }
         #endregion
 
         public ProductionWorkOrderNLVM()
@@ -98,7 +99,7 @@ namespace MesAdmin.ViewModels
             Header = new ProductionWorkOrderNL();
             Header.OrderDate = DateTime.Now;
             ExceptStocks = new List<StockDetail>();            
-            WaCollections = new CommonWorkAreaInfoList("BAC60").Where(u => u.WorkOrderFlag == "Y" && u.WaCode != "WE30");
+            WaCollections = new CommonWorkAreaInfoList("BAC60").Where(u => u.WorkOrderFlag == "Y");
 
             ShowDialogCmd = new DelegateCommand(OnShowDialog);
             SearchCmd = new AsyncCommand(OnSearch, CanSearch);
@@ -108,6 +109,7 @@ namespace MesAdmin.ViewModels
             ShowStockCmd = new DelegateCommand(OnShowStock);
             NewCmd = new DelegateCommand(OnNew);
             CellValueChangedCmd = new DelegateCommand<CellValueChangedEvent>(OnCellValueChanged);
+            EditValueChangedCmd = new DelegateCommand<EditValueChangedEventArgs>(OnEditValueChanged);
 
             SelectedItems = new ObservableCollection<ProductionWorkOrderDetail>();
             SelectedItems.CollectionChanged += SelectedItems_CollectionChanged;
@@ -205,6 +207,12 @@ namespace MesAdmin.ViewModels
             {
                 // 합성공정 로트번호는 작업지시에서 생성
                 if (Header.WaCode == "WE10") Header.CreateLotNo();
+
+                // 포장공정은 계획량 필수(자동출력때문)
+                if (Header.WaCode == "WE60" && Header.OrderQty == 0)
+                {
+                    throw new Exception("계획량을 입력하세요!(라벨출력용)");
+                }
 
                 Details = Details ?? new ProductionWorkOrderDetailList();
                 Details.Insert(Details.Count, new ProductionWorkOrderDetail
@@ -335,13 +343,15 @@ namespace MesAdmin.ViewModels
                     if (Header.WaCode == "WE40") // 분쇄/과립
                     {
                         if (item.ItemAccount == "29") // 합성로트
-                            Header.Remark2 = item.LotNo.Substring(2, 7);
+                            //Header.Remark2 = item.LotNo.Substring(2, 7);
+                            Header.Remark2 = item.LotNo.Substring(0, 9);
                     }
 
                     if (Header.WaCode == "WE50") // 성형
                     {
                         if (item.ItemAccount == "29") // 합성로트
-                            Header.Remark2 = item.LotNo.Substring(0, 7);
+                            //Header.Remark2 = item.LotNo.Substring(0, 7);
+                            Header.Remark2 = item.LotNo.Substring(0, 9);
                     }
 
                     if (Header.WaCode == "WE60") // 포장
@@ -405,10 +415,19 @@ namespace MesAdmin.ViewModels
             catch (Exception ex) { MessageBoxService.ShowMessage(ex.Message); }
         }
 
+        public void OnEditValueChanged(EditValueChangedEventArgs e)
+        {
+            if (IsNew && e.NewValue != null && e.NewValue.ToString() == "WE30")
+            {
+                MessageBoxService.ShowMessage("정제공정은 \"작업지시 등록(정제)\" 메뉴에서 입력하세요!", "Information", MessageButton.OK, MessageIcon.Information);
+                Header.WaCode = e.OldValue == null ? null : e.OldValue.ToString();
+            }
+        }
+
         protected override void OnParameterChanged(object parameter)
         {
             base.OnParameterChanged(parameter);
-            if (IsInDesignMode) return;
+            if (ViewModelBase.IsInDesignMode) return;
 
             DocumentParamter pm = parameter as DocumentParamter;
             if (pm.Type == EntityMessageType.Added)

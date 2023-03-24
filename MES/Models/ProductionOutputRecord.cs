@@ -130,7 +130,7 @@ namespace MesAdmin.Models
                         ItemCode = (string)u["ItemCode"],
                         ItemName = (string)u["ItemName"],
                         ItemSpec = (string)u["ItemSpec"],
-                        BasicUnit = (string)u["BasicUnit"],
+                        BasicUnit = (string)u["OutUnit"],
                         Qty = (decimal)u["Qty"],
                         InsertId = (string)u["InsertId"],
                         InsertDate = (DateTime)u["InsertDate"],

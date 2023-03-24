@@ -110,6 +110,7 @@
                             EnableImmediatePosting="True" />
                     </dxg:GridControl.View>
                     <dxg:GridControl.Columns>
+                        <dxg:GridColumn FieldName="SoNo" Header="수주번호" Width="100" />
                         <dxg:GridColumn FieldName="ReqNo" Header="출하요청번호" Width="100" />
                         <dxg:GridColumn FieldName="Seq" Header="순번" Width="60" />
                         <dxg:GridColumn Binding="{Binding RowData.Row.ShipTo, Converter={StaticResource BizCodeConverter}}" Header="판매처" Width="260"/>

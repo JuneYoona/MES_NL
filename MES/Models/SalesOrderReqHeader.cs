@@ -11,6 +11,7 @@ namespace MesAdmin.Models
 {
     public class SalesOrderReqHeader : ViewModelBase
     {
+        public bool IsDirty { get; set; }
         public string ReqNo
         {
             get { return GetProperty(() => ReqNo); }
@@ -66,6 +67,16 @@ namespace MesAdmin.Models
             get { return GetProperty(() => UpdateId); }
             set { SetProperty(() => UpdateId, value); }
         }
+        public string Remark2
+        {
+            get { return GetValue<string>(); }
+            set { SetValue(value); }
+        }
+        public string SoNo
+        {
+            get { return GetValue<string>(); }
+            set { SetValue(value, () => IsDirty = true); }
+        }
         public DateTime UpdateDate
         {
             get { return GetProperty(() => UpdateDate); }
@@ -92,9 +103,13 @@ namespace MesAdmin.Models
                 Memo = u["Memo"].ToString();
                 FinalFlag = u["FinalFlag"].ToString();
                 Remark1 = u["Remark1"].ToString();
+                Remark2 = u["Remark2"].ToString();
+                SoNo = u["SoNo"].ToString();
                 UpdateId = (string)u["UpdateId"];
                 UpdateDate = (DateTime)u["UpdateDate"];
             });
+
+            IsDirty = false;
         }
 
         public void Delete()
@@ -108,6 +123,28 @@ namespace MesAdmin.Models
                 try
                 {
                     dbCom = db.GetSqlStringCommand(string.Format("DELETE sales_OrderReq_Header WHERE ReqNo = '{0}'", ReqNo));
+                    db.ExecuteNonQuery(dbCom, trans);
+                    trans.Commit();
+                }
+                catch
+                {
+                    trans.Rollback();
+                    throw;
+                }
+            }
+        }
+
+        public void Update()
+        {
+            Database db = ProviderFactory.Instance;
+            using (DbConnection conn = db.CreateConnection())
+            {
+                conn.Open();
+                DbTransaction trans = conn.BeginTransaction();
+                DbCommand dbCom = null;
+                try
+                {
+                    dbCom = db.GetSqlStringCommand(string.Format("UPDATE sales_OrderReq_Header SET SoNo = '{1}' WHERE ReqNo = '{0}'", ReqNo, SoNo));
                     db.ExecuteNonQuery(dbCom, trans);
                     trans.Commit();
                 }
@@ -139,6 +176,8 @@ namespace MesAdmin.Models
                     db.AddInParameter(dbCom, "@Currency", DbType.String, Currency);
                     db.AddInParameter(dbCom, "@Memo", DbType.String, Memo);
                     db.AddInParameter(dbCom, "@Remark1", DbType.String, Remark1);
+                    db.AddInParameter(dbCom, "@Remark2", DbType.String, Remark2);
+                    db.AddInParameter(dbCom, "@SoNo", DbType.String, SoNo);
                     db.AddInParameter(dbCom, "@InsertId", DbType.String, DSUser.Instance.UserID);
                     db.AddOutParameter(dbCom, "@OutDrNo", DbType.String, 20);
                     db.ExecuteNonQuery(dbCom, trans);
@@ -221,6 +260,8 @@ namespace MesAdmin.Models
                         ReqDate = (DateTime)u["ReqDate"],
                         Memo = u["Memo"].ToString(),
                         Remark1 = u["Remark1"].ToString(),
+                        Remark2 = u["Remark2"].ToString(),
+                        SoNo = u["SoNo"].ToString(),
                         UpdateId = (string)u["UpdateId"],
                         UpdateDate = (DateTime)u["UpdateDate"]
                     }

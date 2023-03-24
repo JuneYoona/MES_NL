@@ -124,8 +124,10 @@
                         Text="{Binding Memo}"
                         VerticalAlignment="Bottom"
                         IsEnabled="{Binding IsNew}"
-                        Margin="2 0 0 0" Background="White"
-                        Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"/>
+                        Margin="2 0 0 0"
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2"/>
                 </Grid>
                 <custom:DSGridControl
                     ItemsSource="{Binding Collections}"
@@ -166,6 +168,7 @@
                         <dxg:GridColumn FieldName="LotNo" Header="로트번호" Width="120" AllowEditing="False" />
                         <dxg:GridColumn FieldName="Qty" Header="수량" Width="120" AllowEditing="False" EditSettings="{StaticResource NumericEditor}"/>
                         <dxg:GridColumn FieldName="BasicUnit" Header="단위" AllowEditing="False" FixedWidth="True" Width="100" />
+                        <dxg:GridColumn FieldName="StockNo" Header="보관함" Width="120" ReadOnly="{DXBinding !IsNew}" />
                     </dxg:GridControl.Columns>
                     <dxg:GridControl.TotalSummary>
                         <dxg:GridSummaryItem FieldName="Qty" SummaryType="Sum" DisplayFormat=" {0}"/>

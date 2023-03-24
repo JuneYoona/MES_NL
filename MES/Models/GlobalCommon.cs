@@ -20,7 +20,11 @@ namespace MesAdmin.Models
             {
                 if (m_instance == null)
                 {
-                    m_instance = new CommonMinorList();
+                    try
+                    {
+                        m_instance = new CommonMinorList();
+                    }
+                    catch { }
                 }
                 return m_instance;
             }
@@ -38,7 +42,11 @@ namespace MesAdmin.Models
             {
                 if (m_instance == null)
                 {
-                    m_instance = new CommonWorkAreaInfoList();
+                    try
+                    {
+                        m_instance = new CommonWorkAreaInfoList();
+                    }
+                    catch { }
                 }
                 return m_instance;
             }

@@ -15,7 +15,8 @@
              xmlns:ViewModels="clr-namespace:MesAdmin.ViewModels"
              xmlns:view="clr-namespace:MesAdmin.Views"
              mc:Ignorable="d"
-             d:DesignHeight="600" d:DesignWidth="800">
+             d:DesignHeight="600"
+             d:DesignWidth="800">
     <UserControl.DataContext>
         <ViewModels:SalesOrderDlvyVM/>
     </UserControl.DataContext>
@@ -29,7 +30,7 @@
             </dx:DialogService.ViewTemplate>
             <dx:DialogService.DialogStyle>
                 <Style TargetType="dx:DXDialogWindow">
-                    <Setter Property="Width" Value="750"/>
+                    <Setter Property="Width" Value="850"/>
                     <Setter Property="Height" Value="650"/>
                 </Style>
             </dx:DialogService.DialogStyle>
@@ -42,7 +43,7 @@
             </dx:DialogService.ViewTemplate>
             <dx:DialogService.DialogStyle>
                 <Style TargetType="dx:DXDialogWindow">
-                    <Setter Property="Width" Value="800"/>
+                    <Setter Property="Width" Value="850"/>
                     <Setter Property="Height" Value="600"/>
                 </Style>
             </dx:DialogService.DialogStyle>
@@ -148,40 +149,40 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                        <!--<RowDefinition/>
+                        <RowDefinition/>-->
                     </Grid.RowDefinitions>
                     <Border Grid.Row="0" Grid.Column="0">
-                        <TextBlock>출고번호</TextBlock>
+                        <TextBlock>출하번호</TextBlock>
                     </Border>
                     <Border Grid.Row="1" Grid.Column="0">
                         <TextBlock>납품처</TextBlock>
                     </Border>
-                    <Border Grid.Row="2" Grid.Column="0">
+                    <!--<Border Grid.Row="2" Grid.Column="0">
                         <TextBlock>수주형태</TextBlock>
-                    </Border>
-                    <Border Grid.Row="3" Grid.Column="0">
+                    </Border>-->
+                    <Border Grid.Row="2" Grid.Column="0">
                         <TextBlock>출하요청일</TextBlock>
                     </Border>
-                    <Border Grid.Row="4" Grid.Column="0">
+                    <Border Grid.Row="3" Grid.Column="0">
                         <TextBlock>품목코드</TextBlock>
                     </Border>
-                    <Border Grid.Row="5" Grid.Column="0">
-                        <TextBlock>출하요청수량</TextBlock>
+                    <Border Grid.Row="4" Grid.Column="0">
+                        <TextBlock>출하요청수량/단위</TextBlock>
                     </Border>
+                    <Border Grid.Row="5" Grid.Column="0">
+                        <TextBlock>출하수량</TextBlock>
+                    </Border>
+                    <!--<Border Grid.Row="7" Grid.Column="0">
+                        <TextBlock>출하형태</TextBlock>
+                    </Border>-->
                     <Border Grid.Row="6" Grid.Column="0">
-                        <TextBlock>출고수량</TextBlock>
+                        <TextBlock>출하요청번호/순번</TextBlock>
                     </Border>
                     <Border Grid.Row="7" Grid.Column="0">
-                        <TextBlock>출하형태</TextBlock>
-                    </Border>
-                    <Border Grid.Row="8" Grid.Column="0">
-                        <TextBlock>출하요청번호</TextBlock>
-                    </Border>
-                    <Border Grid.Row="9" Grid.Column="0">
                         <TextBlock>출고창고</TextBlock>
                     </Border>
-                    <Border Grid.Row="10" Grid.Column="0">
+                    <Border Grid.Row="8" Grid.Column="0">
                         <TextBlock>비고</TextBlock>
                     </Border>
                     <dxe:ButtonEdit 
@@ -198,12 +199,15 @@
                         <dxe:ButtonEdit.Buttons>
                             <dxe:ButtonInfo IsDefaultButton="True" GlyphKind="Regular" Command="{Binding ShowDialogCmd}"/>
                         </dxe:ButtonEdit.Buttons>
+                        <dxe:ButtonEdit.Style>
+                            <Style TargetType="dxe:ButtonEdit" BasedOn="{StaticResource DocumentNoStyle}" />
+                        </dxe:ButtonEdit.Style>
                     </dxe:ButtonEdit>
                     <dxg:LookUpEdit
                         ItemsSource="{Binding BizPartnerList}"
                         SelectedItem="{Binding SelectedPartner}"
                         IsEnabled="False"
-                        DisplayMember="BizCode"
+                        DisplayMember="BizName"
                         ValueMember="BizCode"
                         EditValue="{Binding ReqDetail.ShipTo, UpdateSourceTrigger=PropertyChanged}"
                         Grid.Row="1"
@@ -236,7 +240,7 @@
                         </dxg:LookUpEdit.PopupContentTemplate>
                     </dxg:LookUpEdit>
                     <dxe:TextEdit 
-                        Text="{Binding SelectedPartner.BizName}"
+                        Text="{Binding SelectedPartner.BizCode}"
                         IsEnabled="False"
                         Grid.Row="1"
                         Grid.Column="2"
@@ -244,7 +248,7 @@
                         VerticalAlignment="Bottom"
                         Background="#F6EDCB"
                         IsReadOnly="True" />
-                    <dxe:ComboBoxEdit 
+                    <!--<dxe:ComboBoxEdit 
                         Grid.Row="2"
                         Grid.Column="1"
                         HorizontalAlignment="Stretch"
@@ -255,10 +259,11 @@
                         Margin="2 0 0 0"
                         IsEnabled="False"
                         DisplayMember="SoTypeName"
-                        ValueMember="SoType">
-                    </dxe:ComboBoxEdit>
+                        ValueMember="SoType"
+                        VerticalAlignment="Bottom">
+                    </dxe:ComboBoxEdit>-->
                     <dxe:DateEdit
-                        Grid.Row="3"
+                        Grid.Row="2"
                         Grid.Column="1" 
                         EditValue="{Binding ReqDetail.ReqDate, UpdateSourceTrigger=PropertyChanged}"
                         IsEnabled="False"
@@ -268,93 +273,83 @@
                     <dxe:TextEdit
                         Text="{Binding ReqDetail.ItemCode}"
                         IsReadOnly="True"
-                        IsEnabled="False"
                         VerticalAlignment="Bottom"
                         Margin="2 0 0 0"
                         Background="#F3F6FB" 
-                        Grid.Row="4" Grid.Column="1" />
+                        Grid.Row="3"
+                        Grid.Column="1" />
                     <dxe:TextEdit
                         Text="{Binding ReqDetail.ItemName}"
                         IsReadOnly="True"
-                        IsEnabled="False"
                         VerticalAlignment="Bottom"
                         Margin="2 0 0 0"
                         Background="#F3F6FB" 
-                        Grid.Row="4" Grid.Column="2" />
+                        Grid.Row="3"
+                        Grid.Column="2" />
                     <dxe:TextEdit
                         Text="{Binding ReqDetail.Qty}"
                         IsReadOnly="True"
-                        IsEnabled="False"
                         VerticalAlignment="Bottom"
                         Margin="2 0 0 0"
                         Background="#F3F6FB"
-                        Grid.Row="5" Grid.Column="1" />
+                        Grid.Row="4"
+                        Grid.Column="1" />
                     <dxe:TextEdit
                         Text="{Binding ReqDetail.BasicUnit}"
                         IsReadOnly="True"
-                        IsEnabled="False"
                         VerticalAlignment="Bottom"
                         Margin="2 0 0 0"
                         Background="#F3F6FB"
-                        Grid.Row="5" Grid.Column="2" />
+                        Grid.Row="4"
+                        Grid.Column="2" />
                     <dxe:TextEdit
                         Text="{Binding ReqDetail.DlvyQty}"
                         IsReadOnly="True"
-                        IsEnabled="False"
                         VerticalAlignment="Bottom"
                         Margin="2 0 0 0"
                         Background="#F3F6FB"
-                        Grid.Row="6" Grid.Column="1" />
-                    <dxe:TextEdit
+                        Grid.Row="5"
+                        Grid.Column="1" />
+                    <!--<dxe:TextEdit
+                        Text="{Binding ReqDetail.MoveType, Converter={StaticResource MoveTypeConverter}}"
                         IsReadOnly="True"
-                        IsEnabled="False"
                         VerticalAlignment="Bottom"
                         Margin="2 0 0 0"
                         Background="#F3F6FB" 
-                        Grid.Row="7" Grid.Column="1">
-                        <dxe:TextEdit.EditValue>
-                            <MultiBinding Converter="{StaticResource MinorCodeConverter}">
-                                <Binding Source="I0001" Mode="OneWay" />
-                                <Binding Path="ReqDetail.MoveType" />
-                            </MultiBinding>
-                        </dxe:TextEdit.EditValue>
-                    </dxe:TextEdit>
+                        Grid.Row="7"
+                        Grid.Column="1"/>-->
                     <dxe:TextEdit
                         Text="{Binding ReqDetail.ReqNo}"
                         IsReadOnly="True"
-                        IsEnabled="False"
                         VerticalAlignment="Bottom"
                         Margin="2 0 0 0"
                         Background="#F3F6FB" 
-                        Grid.Row="8" Grid.Column="1" />
+                        Grid.Row="6"
+                        Grid.Column="1" />
                     <dxe:TextEdit
                         Text="{Binding ReqDetail.Seq}"
                         IsReadOnly="True"
-                        IsEnabled="False"
                         VerticalAlignment="Bottom"
                         Margin="2 0 0 0"
                         Background="#F3F6FB" 
-                        Grid.Row="8" Grid.Column="2" />
+                        Grid.Row="6"
+                        Grid.Column="2" />
                     <dxe:TextEdit
+                        Text="{Binding ReqDetail.WhCode, Converter={StaticResource WhCodeConverter}}"
                         IsReadOnly="True"
-                        IsEnabled="False"
                         VerticalAlignment="Bottom"
                         Margin="2 0 0 0"
                         Background="#F3F6FB"
-                        Grid.Row="9" Grid.Column="1">
-                        <dxe:TextEdit.EditValue>
-                            <MultiBinding Converter="{StaticResource MinorCodeConverter}">
-                                <Binding Source="I0011" Mode="OneWay" />
-                                <Binding Path="ReqDetail.WhCode" />
-                            </MultiBinding>
-                        </dxe:TextEdit.EditValue>
-                    </dxe:TextEdit>
+                        Grid.Row="7"
+                        Grid.Column="1"/>
                     <dxe:TextEdit
                         Text="{Binding Header.Memo}"
                         VerticalAlignment="Bottom"
                         IsEnabled="{Binding IsNew}"
-                        Margin="2 0 0 0" Background="White"
-                        Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="2"/>
+                        Margin="2 0 0 0"
+                        Grid.Row="8"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2"/>
                 </Grid>
                 <custom:DSGridControl
                     ItemsSource="{Binding Details}"
@@ -400,15 +395,16 @@
                         </custom:DSTableView>
                     </dxg:GridControl.View>
                     <dxg:GridControl.Columns>
-                        <dxg:GridColumn FieldName="ItemCode" Header="품목코드" Width="100" CellTemplate="{StaticResource ItemCode}" />
+                        <dxg:GridColumn FieldName="ItemCode" Header="품목코드" Width="110" CellTemplate="{StaticResource ItemCode}" />
                         <dxg:GridColumn FieldName="ItemName" Header="품목명" AllowEditing="False" Width="150"/>
                         <dxg:GridColumn FieldName="ItemSpec" Header="품목사양" AllowEditing="False" Width="150"/>
-                        <dxg:GridColumn FieldName="DnLotNo" Header="출하로트" Width="120" ShowValidationAttributeErrors="False" />
+                        <dxg:GridColumn FieldName="DnLotNo" Header="출하로트" Width="140" ReadOnly="True" ShowValidationAttributeErrors="False" />
                         <dxg:GridColumn FieldName="Qty" Header="수량" Width="100" />
                         <dxg:GridColumn FieldName="BasicUnit" Header="단위" AllowEditing="False" FixedWidth="True" Width="80" />
-                        <dxg:GridColumn FieldName="LotNo" Header="생산로트" AllowEditing="False" Width="120" />
-                        <dxg:GridColumn FieldName="WhCode" Header="창고" AllowEditing="False" Width="120" CellTemplate="{StaticResource WhCode}"/>
-                        <dxg:GridColumn FieldName="Memo" Header="비고" Width="200"/>
+                        <dxg:GridColumn FieldName="LotNo" Header="생산로트" AllowEditing="False" Width="140" />
+                        <dxg:GridColumn FieldName="WhCode" Header="창고" AllowEditing="False" Width="140" CellTemplate="{StaticResource WhCode}"/>
+                        <dxg:GridColumn FieldName="Remark1" Header="합성로트순번" Width="90" ReadOnly="True"/>
+                        <dxg:GridColumn FieldName="Memo" Header="비고" Width="250"/>
                     </dxg:GridControl.Columns>
                     <dxg:GridControl.TotalSummary>
                         <dxg:GridSummaryItem FieldName="Qty" SummaryType="Sum" DisplayFormat=" {0}"/>

@@ -159,5 +159,25 @@ namespace MesAdmin.Models
                 throw;
             }
         }
+
+        public static DataTable BAC60PRODUCTION004RS(string lotNo)
+        {
+            Database db = ProviderFactory.Instance;
+            DbCommand dbCom = db.GetSqlStringCommand("SELECT * FROM Z_BAC60BOTTLEWEIGHT WHERE LotNo = @LotNo");
+            db.AddInParameter(dbCom, "@LotNo", DbType.String, lotNo);
+            DataSet ds = db.ExecuteDataSet(dbCom);
+
+            return ds.Tables[0].Rows.Count == 0 ? null : ds.Tables[0];
+        }
+
+        public static DataTable BAC60SALES002RS(string dnNo)
+        {
+            Database db = ProviderFactory.Instance;
+            DbCommand dbCom = db.GetStoredProcCommand("BAC60SALES002RS");
+            db.AddInParameter(dbCom, "@DnNo", DbType.String, dnNo);
+            DataSet ds = db.ExecuteDataSet(dbCom);
+
+            return ds.Tables[0].Rows.Count == 0 ? null : ds.Tables[0];
+        }
     }
 }

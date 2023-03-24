@@ -12,7 +12,13 @@ namespace MesAdmin.Common.Utils
             string waCode = value as string;
             if (waCode == "") return string.Empty;
 
-            CommonWorkAreaInfo workAreaInfo = GlobalCommonWorkAreaInfo.Instance.Where(u => u.WaCode == waCode).FirstOrDefault();
+            CommonWorkAreaInfo workAreaInfo = null;
+            try
+            {
+                workAreaInfo = GlobalCommonWorkAreaInfo.Instance.Where(u => u.WaCode == waCode).FirstOrDefault();
+            }
+            catch { }
+
             if (workAreaInfo == null) return string.Empty;
             return workAreaInfo.WaName;
         }

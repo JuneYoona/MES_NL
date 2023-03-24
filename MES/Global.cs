@@ -72,7 +72,13 @@ namespace MesAdmin
             get
             {
                 if (instance == null)
-                    instance = new DatabaseProviderFactory().Create(DBInfo.Instance.Name);
+                {
+                    try
+                    {
+                        instance = new DatabaseProviderFactory().Create(DBInfo.Instance.Name);
+                    }
+                    catch { }
+                }
                 return instance;
             }
             set { instance = value; }

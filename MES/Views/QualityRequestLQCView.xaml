@@ -110,6 +110,24 @@
                                             MessageButton="YesNo" />
                                     </dxmvvm:Interaction.Behaviors>
                                 </dxb:BarButtonItem>
+                                <dxb:BarButtonItem Content="Loss 출고" LargeGlyph="{dx:DXImage SvgImages/RichEdit/TrackingChanges_Previous.svg}">
+                                    <dxmvvm:Interaction.Behaviors>
+                                        <dxmvvm:ConfirmationBehavior
+                                            Command="{Binding LossStockCmd}"
+                                            MessageText="Loss 처리 하시겠습니까?"
+                                            MessageIcon="Question"
+                                            MessageButton="YesNo"/>
+                                    </dxmvvm:Interaction.Behaviors>
+                                </dxb:BarButtonItem>
+                                <dxb:BarButtonItem Content="Loss 취소" LargeGlyph="{dx:DXImage SvgImages/RichEdit/TrackingChanges_Reject.svg}">
+                                    <dxmvvm:Interaction.Behaviors>
+                                        <dxmvvm:ConfirmationBehavior
+                                            Command="{Binding LossStockCancelCmd}"
+                                            MessageText="취소 하시겠습니까?"
+                                            MessageIcon="Question"
+                                            MessageButton="YesNo"/>
+                                    </dxmvvm:Interaction.Behaviors>
+                                </dxb:BarButtonItem>
                             </dxr:RibbonPageGroup>
                             <dxr:RibbonPageGroup Caption="File">
                                 <dxb:BarButtonItem Content="파일삽입" Command="{Binding AddFileCmd}" LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_FileAttachment.svg}" />

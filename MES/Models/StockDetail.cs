@@ -81,6 +81,11 @@ namespace MesAdmin.Models
             set { SetProperty(() => PickingQty, value); }
 
         }
+        public int Bottle
+        {
+            get { return GetProperty(() => Bottle); }
+            set { SetProperty(() => Bottle, value); }
+        }
         public string BasicUnit
         {
             get { return GetProperty(() => BasicUnit); }
@@ -150,6 +155,11 @@ namespace MesAdmin.Models
             set { SetProperty(() => ExpDate, value); }
 
         }
+        public DateTime? ProductDate
+        {
+            get { return GetProperty(() => ProductDate); }
+            set { SetProperty(() => ProductDate, value); }
+        }
         public string FontColor { get; set; }
 
         public bool Equals(StockDetail other)
@@ -216,7 +226,7 @@ namespace MesAdmin.Models
             base.Clear();
             Database db = ProviderFactory.Instance;
 
-            string str = "SELECT * FROM view_StockDetailEx WHERE (Qty > 0 OR EqpQty > 0 OR QrQty > 0 OR BadQty > 0) ";
+            string str = "SELECT * FROM view_StockDetailEx WHERE Qty + EqpQty + QrQty + BadQty > 0";
             if (!string.IsNullOrEmpty(bizAreaCode))
                 str += " And BizAreaCode = '" + bizAreaCode + "'";
             if (!string.IsNullOrEmpty(whCode))
@@ -252,6 +262,7 @@ namespace MesAdmin.Models
                         Remark7 = u["TSC"].ToString(),
                         WE10LotNo = u["WE10LotNo"].ToString(),
                         ExpDate = u["ExpDate"] == DBNull.Value ? null : (DateTime?)u["ExpDate"],
+                        ProductDate = u["ProductDate"] == DBNull.Value ? null : (DateTime?)u["ProductDate"],
                     }
                 )
             );

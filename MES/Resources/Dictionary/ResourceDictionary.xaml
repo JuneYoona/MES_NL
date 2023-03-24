@@ -11,6 +11,7 @@
                     xmlns:models="clr-namespace:MesAdmin.Models">
     <!--#region Cascading and Converter-->
     <local:MultiValueConverter x:Key="MultiValueConverter"/>
+    <local:BizAreaCodeConverter x:Key="BizAreaCodeConverter"/>
     <local:CascadingItemCode x:Key="CascadingItemCode"/>
     <local:MinorCodeConverter x:Key="MinorCodeConverter"/>
     <local:WhCodeConverter x:Key="WhCodeConverter"/>
@@ -23,8 +24,15 @@
     <local:CascadingMoveType x:Key="CascadingMoveType"/>
     <local:EqpCodeConverter x:Key="EqpCodeConverter"/>
     <local:CascadingEquipment x:Key="CascadingEquipment"/>
+    <local:TransTypeConverter x:Key="TransTypeConverter"/>
+    <local:MoveTypeConverter x:Key="MoveTypeConverter"/>
     <local:StockTypeConverter x:Key="StockTypeConverter"/>
     <local:DebitCreditConverter x:Key="DebitCreditConverter"/>
+    <!--#endregion-->
+    <!--#region DisplayTextConverter-->
+    <dxe:TextEditSettings x:Key="BizAreaCodeDisplayTextConverter" DisplayTextConverter="{StaticResource BizAreaCodeConverter}"/>
+    <dxe:TextEditSettings x:Key="WaCodeDisplayTextConverter" DisplayTextConverter="{StaticResource WaCodeConverter}"/>
+    <dxe:TextEditSettings x:Key="WhCodeDisplayTextConverter" DisplayTextConverter="{StaticResource WhCodeConverter}"/>
     <!--#endregion-->
     <!--#region Style-->
     <Style TargetType="Grid">
@@ -114,6 +122,13 @@
         </DataTemplate.Triggers>
     </DataTemplate>
     <!--#endregion-->
+    <!--#region NumberFormat-->
+    <DataTemplate x:Key="NumberFormat">
+        <dxe:SpinEdit Name="PART_Editor"
+            Mask="{Binding RowData.Row.FormatQty}"
+            MaskUseAsDisplayFormat="True" />
+    </DataTemplate>
+    <!--#endregion-->
     <!--#region numeric mask 0~4-->
     <dxe:TextEditSettings x:Key="NumericEditor0" MaskType="Numeric" Mask="n0" MaskUseAsDisplayFormat="True" DisplayFormat="n0" />
     <dxe:TextEditSettings x:Key="NumericEditor" MaskType="Numeric" Mask="n2" MaskUseAsDisplayFormat="True" DisplayFormat="n2" />
@@ -138,9 +153,9 @@
                                 <VisualState x:Name="InternalUnfocused" />
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <Border BorderBrush="#94ADCC" Height="23" BorderThickness="1" Background="{Binding Path=Background, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type dxe:TextEdit}}}"/>
+                        <Border BorderBrush="#94ADCC" MinHeight="23" BorderThickness="1" Background="{Binding Path=Background, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type dxe:TextEdit}}}"/>
                         <ContentPresenter />
-                        <Border x:Name="FocusElement" Height="23" BorderBrush="#FF2B579A" BorderThickness="1" Opacity="0" />
+                        <Border x:Name="FocusElement" MinHeight="23" BorderBrush="#FF2B579A" BorderThickness="1" Opacity="0" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -162,9 +177,9 @@
                                 <VisualState x:Name="InternalUnfocused" />
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <Border BorderBrush="#94ADCC" Height="23" BorderThickness="1" Background="{Binding Path=Background, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type dxe:TextEdit}}}"/>
+                        <Border BorderBrush="#94ADCC" MinHeight="23" BorderThickness="1" Background="{Binding Path=Background, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type dxe:TextEdit}}}"/>
                         <ContentPresenter />
-                        <Border x:Name="FocusElement" Height="23" BorderBrush="#FF2B579A" BorderThickness="1" Opacity="0" />
+                        <Border x:Name="FocusElement" MinHeight="23" BorderBrush="#FF2B579A" BorderThickness="1" Opacity="0" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -189,6 +204,9 @@
     <!--#endregion-->
 
     <Style TargetType="dxe:TextEdit" BasedOn="{StaticResource BaseEditStyle}">
+        <Setter Property="ShowNullTextIfFocused" Value="True"/>
+    </Style>
+    <Style TargetType="dxe:PasswordBoxEdit" BasedOn="{StaticResource BaseEditStyle}">
         <Setter Property="ShowNullTextIfFocused" Value="True"/>
     </Style>
     <Style TargetType="dxe:ComboBoxEdit" BasedOn="{StaticResource BaseEditStyle}">

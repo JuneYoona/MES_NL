@@ -28,6 +28,11 @@ namespace MesAdmin.Models
             get { return GetProperty(() => InspectName); }
             set { SetProperty(() => InspectName, value); }
         }
+        public string BizCode
+        {
+            get { return GetProperty(() => BizCode); }
+            set { SetProperty(() => BizCode, value); }
+        }
         public string InspectSpec
         {
             get { return GetProperty(() => InspectSpec); }
@@ -90,13 +95,15 @@ namespace MesAdmin.Models
     {
         private string qrType;
         private string itemCode;
+        private string bizCode;
 
         public QualityInspectItemList() { }
         public QualityInspectItemList(IEnumerable<QualityInspectItem> items) : base(items) { }
-        public QualityInspectItemList(string qrType, string itemCode)
+        public QualityInspectItemList(string qrType, string itemCode, string bizCode = "")
         {
             this.qrType = qrType;
             this.itemCode = itemCode;
+            this.bizCode = bizCode;
             InitializeList();
         }
 
@@ -104,10 +111,10 @@ namespace MesAdmin.Models
         {
             base.Clear();
             Database db = ProviderFactory.Instance;
-            string sql;
-            sql = "SELECT * FROM quality_InspectItem WHERE QrType='" + qrType + "' AND ItemCode='" + itemCode + "' ORDER BY [Order]";
-
-            DbCommand dbCom = db.GetSqlStringCommand(sql);
+            DbCommand dbCom = db.GetStoredProcCommand("usp_Quality_InspectItem");
+            db.AddInParameter(dbCom, "@QrType", DbType.String, qrType);
+            db.AddInParameter(dbCom, "@ItemCode", DbType.String, itemCode);
+            db.AddInParameter(dbCom, "@BizCode", DbType.String, bizCode);
             DataSet ds = db.ExecuteDataSet(dbCom);
 
             ds.Tables[0].AsEnumerable().ToList().ForEach(u =>
@@ -118,6 +125,7 @@ namespace MesAdmin.Models
                         QrType = (string)u["QrType"],
                         ItemCode = (string)u["ItemCode"],
                         InspectName = (string)u["InspectName"],
+                        BizCode = (string)u["BizCode"],
                         InspectSpec = u["InspectSpec"].ToString(),
                         DownRate = u["DownRate"].ToString(),
                         UpRate = u["UpRate"].ToString(),
@@ -155,12 +163,13 @@ namespace MesAdmin.Models
                 {
                     foreach (QualityInspectItem item in items)
                     {
-                        sql = "INSERT INTO quality_InspectItem(QrType, ItemCode, [Order], InspectName, InspectSpec, DownRate, UpRate, Unit, Equipment, Editor, Memo1, Memo2, InsertId, InsertDate, UpdateId, UpdateDate) VALUES "
-                            + "(@QrType, @ItemCode, @Order, @InspectName, @InspectSpec, @DownRate, @UpRate, @Unit, @Equipment, @Editor, @Memo1, @Memo2, @InsertId, getdate(), @InsertId, getdate())";
+                        sql = "INSERT INTO quality_InspectItem(QrType, ItemCode, [Order], BizCode, InspectName, InspectSpec, DownRate, UpRate, Unit, Equipment, Editor, Memo1, Memo2, InsertId, InsertDate, UpdateId, UpdateDate) VALUES "
+                            + "(@QrType, @ItemCode, @Order, @BizCode, @InspectName, @InspectSpec, @DownRate, @UpRate, @Unit, @Equipment, @Editor, @Memo1, @Memo2, @InsertId, getdate(), @InsertId, getdate())";
                         dbCom = db.GetSqlStringCommand(sql);
                         db.AddInParameter(dbCom, "@QrType", DbType.String, item.QrType);
                         db.AddInParameter(dbCom, "@ItemCode", DbType.String, item.ItemCode);
                         db.AddInParameter(dbCom, "@Order", DbType.Int16, item.Order);
+                        db.AddInParameter(dbCom, "@BizCode", DbType.String, item.BizCode == null ? "" : item.BizCode);
                         db.AddInParameter(dbCom, "@InspectName", DbType.String, item.InspectName);
                         db.AddInParameter(dbCom, "@InspectSpec", DbType.String, item.InspectSpec);
                         db.AddInParameter(dbCom, "@DownRate", DbType.String, item.DownRate);
@@ -207,11 +216,12 @@ namespace MesAdmin.Models
                             + ", Memo2 = @Memo2 "
                             + ", UpdateId = @UpdateId "
                             + ", UpdateDate = getdate() "
-                            + "WHERE QrType = @QrType AND ItemCode = @ItemCode AND InspectName = @InspectName";
+                            + "WHERE QrType = @QrType AND ItemCode = @ItemCode AND InspectName = @InspectName AND BizCode = @BizCode";
                         dbCom = db.GetSqlStringCommand(sql);
                         db.AddInParameter(dbCom, "@QrType", DbType.String, item.QrType);
                         db.AddInParameter(dbCom, "@ItemCode", DbType.String, item.ItemCode);
                         db.AddInParameter(dbCom, "@InspectName", DbType.String, item.InspectName);
+                        db.AddInParameter(dbCom, "@BizCode", DbType.String, item.BizCode == null ? "" : item.BizCode);
                         db.AddInParameter(dbCom, "@Order", DbType.Int16, item.Order);
                         db.AddInParameter(dbCom, "@InspectSpec", DbType.String, item.InspectSpec);
                         db.AddInParameter(dbCom, "@DownRate", DbType.String, item.DownRate);
@@ -247,11 +257,12 @@ namespace MesAdmin.Models
                 {
                     foreach (QualityInspectItem item in items)
                     {
-                        sql = "DELETE quality_InspectItem WHERE QrType = @QrType AND ItemCode = @ItemCode AND InspectName = @InspectName";
+                        sql = "DELETE quality_InspectItem WHERE QrType = @QrType AND ItemCode = @ItemCode AND InspectName = @InspectName AND BizCode = @BizCode";
                         dbCom = db.GetSqlStringCommand(sql);
                         db.AddInParameter(dbCom, "@QrType", DbType.String, item.QrType);
                         db.AddInParameter(dbCom, "@ItemCode", DbType.String, item.ItemCode);
                         db.AddInParameter(dbCom, "@InspectName", DbType.String, item.InspectName);
+                        db.AddInParameter(dbCom, "@BizCode", DbType.String, item.BizCode);
                         db.ExecuteNonQuery(dbCom, trans);
                     }
                     trans.Commit();

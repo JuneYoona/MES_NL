@@ -111,6 +111,7 @@
                             Header="품목단위"
                             FixedWidth="True"
                             Width="100"/>
+                        <dxg:GridColumn FieldName="BtlQty" Header="소분중량" Width="80" FixedWidth="True" EditSettings="{StaticResource NumericEditor2}" />
                         <dxg:GridColumn FieldName="UpdateId" Header="입력자 Id" FixedWidth="True" Width="100" ReadOnly="True" />
                         <dxg:GridColumn FieldName="UpdateDate" Header="입력일" FixedWidth="True" Width="100" ReadOnly="True" />
                         <dxg:GridColumn Header="IQC" FieldName="IQCFlag" FixedWidth="True" Width="60" HorizontalHeaderContentAlignment="Center" />

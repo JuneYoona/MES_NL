@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
-using DevExpress.Mvvm;
-using MesAdmin.Models;
-using MesAdmin.Common.Common;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Data;
+﻿using DevExpress.Mvvm;
 using DevExpress.Mvvm.POCO;
-using MesAdmin.Reports;
 using DevExpress.Xpf.Printing;
+using MesAdmin.Common.Common;
+using MesAdmin.Models;
+using MesAdmin.Reports;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace MesAdmin.ViewModels
 {
@@ -133,7 +131,7 @@ namespace MesAdmin.ViewModels
 
         private IEnumerable<CommonBizPartner> LoadingBizPartnerList()
         {
-            return (new CommonBizPartnerList()).Where(u => u.BizType.Substring(0, 1) == "C");
+            return new CommonBizPartnerList().Where(u => u.BizType.Substring(0, 1) == "C");
         }
 
         public bool CanSearch() { return true; }
@@ -144,7 +142,7 @@ namespace MesAdmin.ViewModels
         }
         public void SearchCore()
         {
-            Collections = (new SalesOrderDlvyHeaderTable(StartDate, EndDate, SoType, ItemCode, BizCode)).Collections;
+            Collections = new SalesOrderDlvyHeaderTable(StartDate, EndDate, SoType, ItemCode, BizCode).Collections;
             Details = null;
             IsBusy = false;
         }

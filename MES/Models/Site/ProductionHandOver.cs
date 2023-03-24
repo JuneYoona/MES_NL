@@ -96,6 +96,11 @@ namespace MesAdmin.Models
             get { return GetProperty(() => Memo); }
             set { SetProperty(() => Memo, value); }
         }
+        public string StockNo
+        {
+            get { return GetProperty(() => StockNo); }
+            set { SetProperty(() => StockNo, value); }
+        }
         public DateTime InsertDate
         {
             get { return GetProperty(() => InsertDate); }
@@ -159,6 +164,7 @@ namespace MesAdmin.Models
                         InsertDate = (DateTime)u["InsertDate"],
                         Memo = u["Memo"].ToString(),
                         QrState = u["QrState"].ToString(),
+                        StockNo = u["StockNo"].ToString(),
                     }
                 )
             );
@@ -200,6 +206,7 @@ namespace MesAdmin.Models
                         db.AddInParameter(dbCom, "@InsertId", DbType.String, DSUser.Instance.UserID);
                         db.AddInParameter(dbCom, "@InsertName", DbType.String, DSUser.Instance.UserName);
                         db.AddInParameter(dbCom, "@Memo", DbType.String, item.Memo);
+                        db.AddInParameter(dbCom, "@StockNo", DbType.String, item.StockNo);
                         db.AddOutParameter(dbCom, "@ReturnNo", DbType.String, 20);
                         db.ExecuteNonQuery(dbCom, trans);
                         hoNo = db.GetParameterValue(dbCom, "@ReturnNo").ToString();

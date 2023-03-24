@@ -72,6 +72,11 @@ namespace MesAdmin.Models
             get { return GetProperty(() => InWaCode); }
             set { SetProperty(() => InWaCode, value); }
         }
+        public decimal? BtlQty
+        {
+            get { return GetProperty(() => BtlQty); }
+            set { SetProperty(() => BtlQty, value); }
+        }
         public bool IQCFlag
         {
             get { return GetProperty(() => IQCFlag); }
@@ -191,6 +196,7 @@ namespace MesAdmin.Models
             db.AddInParameter(dbCom, "@InWhcode", DbType.String, InWhCode);
             db.AddInParameter(dbCom, "@OutWhcode", DbType.String, OutWhCode);
             db.AddInParameter(dbCom, "@InWaCode", DbType.String, InWaCode);
+            db.AddInParameter(dbCom, "@BtlQty", DbType.Decimal, BtlQty == null ? null : BtlQty);
             db.AddInParameter(dbCom, "@Remark1", DbType.String, Remark1);
             db.AddInParameter(dbCom, "@Remark2", DbType.String, Remark2);
             db.AddInParameter(dbCom, "@InsertId", DbType.String, DSUser.Instance.UserID);
@@ -288,6 +294,7 @@ namespace MesAdmin.Models
                         LQCFlag = (bool)u["LQCFlag"],
                         FQCFlag = (bool)u["FQCFlag"],
                         OQCFlag = (bool)u["OQCFlag"],
+                        BtlQty = u["BtlQty"] == DBNull.Value ? null : (decimal?)u["BtlQty"],
                         IsEnabled = (bool)u["IsEnabled"],
                         InWhCode = u["InWhCode"].ToString(),
                         OutWhCode = u["OutWhCode"].ToString(),

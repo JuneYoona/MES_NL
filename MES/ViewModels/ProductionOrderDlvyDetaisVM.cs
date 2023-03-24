@@ -87,7 +87,7 @@ namespace MesAdmin.ViewModels
         public ProductionOrderDlvyDetaisVM()
         {
             BindingBizPartnerList();
-            OrderType = (new SalesOrderTypeConfigList()).Where(u => u.IsEnabled == true); // 수주형태
+            OrderType = new SalesOrderTypeConfigList().Where(u => u.IsEnabled == true); // 수주형태
 
             StartDate = DateTime.Now.AddMonths(-1);
             EndDate = DateTime.Now.AddMonths(1);
@@ -122,7 +122,7 @@ namespace MesAdmin.ViewModels
         }
         public void SearchCore()
         {
-            Collections = (new SalesOrderDlvyHeaderTable(StartDate, EndDate, SoType, ItemCode, BizCode)).Collections;
+            Collections = new SalesOrderDlvyHeaderTable(StartDate, EndDate, SoType, ItemCode, BizCode).Collections;
             Details = null;
             IsBusy = false;
         }
