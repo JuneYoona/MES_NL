@@ -75,9 +75,6 @@ namespace MesAdmin.ViewModels
             get { return GetProperty(() => ShowCOA); }
             set { SetProperty(() => ShowCOA, value); }
         }
-        #endregion
-
-        #region Commands
         public bool IsNew
         {
             get { return GetProperty(() => IsNew); }
@@ -88,6 +85,9 @@ namespace MesAdmin.ViewModels
             get { return GetProperty(() => IsBusy); }
             set { SetProperty(() => IsBusy, value); }
         }
+        #endregion
+
+        #region Commands        
         public ICommand ShowDialogCmd { get; set; }
         public ICommand ShowDialogSalesCmd { get; set; }
         public ICommand<HiddenEditorEvent> HiddenEditorCmd { get; set; }
@@ -320,7 +320,7 @@ namespace MesAdmin.ViewModels
             var vmItem = ViewModelSource.Create(() =>
             new PopupStockVM
             (
-                GlobalCommonMinor.Instance.Where(u => u.MinorCode == ReqDetail.WhCode).FirstOrDefault(), ReqDetail.ItemCode, ExceptStocks
+                GlobalCommonMinor.Instance.Where(u => u.MinorCode == ReqDetail.WhCode).FirstOrDefault().MinorCode, ReqDetail.ItemCode, ExceptStocks
             )); // 재고를 조회할 창고전달
 
 

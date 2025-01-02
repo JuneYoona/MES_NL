@@ -195,20 +195,8 @@
                                             </dxg:GridColumn.DisplayTemplate>
                                         </dxg:GridColumn>
                                         <dxg:GridColumn FieldName="ProductOrderNo" Header="제조번호" Width="100" FixedWidth="True" />
-                                        <dxg:GridColumn FieldName="WaCode" Binding="{Binding RowData.Row.WaCode, Converter={StaticResource WaCodeConverter}}" Header="공정" Width="120">
-                                            <dxg:GridColumn.GroupValueTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock Margin="10,0,0,0" Text="{Binding Data.WaCode, Converter={StaticResource WaCodeConverter}}" />
-                                                </DataTemplate>
-                                            </dxg:GridColumn.GroupValueTemplate>
-                                        </dxg:GridColumn>
-                                        <dxg:GridColumn FieldName="EqpCode" Binding="{Binding RowData.Row.EqpCode, Converter={StaticResource EqpCodeConverter}}" Header="설비" Width="130">
-                                            <dxg:GridColumn.GroupValueTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock Margin="10,0,0,0" Text="{Binding Data.EqpCode, Converter={StaticResource EqpCodeConverter}}" />
-                                                </DataTemplate>
-                                            </dxg:GridColumn.GroupValueTemplate>
-                                        </dxg:GridColumn>
+                                        <dxg:GridColumn FieldName="WaName" Header="공정" Width="120" />
+                                        <dxg:GridColumn FieldName="EqpName" Header="설비" Width="130" />
                                         <dxg:GridColumn FieldName="ItemCode" Header="품목코드" Width="100"/>
                                         <dxg:GridColumn FieldName="ItemName" Header="품목명" Width="120"/>
                                         <dxg:GridColumn FieldName="ItemSpec" Header="품목사양" Width="140"/>

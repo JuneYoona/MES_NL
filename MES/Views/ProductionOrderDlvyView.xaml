@@ -125,7 +125,7 @@
                                 <dxb:BarButtonItem Content="출하요청내역" Command="{Binding ReferSoCmd}" LargeGlyph="{dx:DXImageOffice2013 Image=Up_32x32.png}" />
                             </dxr:RibbonPageGroup>
                             <dxr:RibbonPageGroup Caption="Print">
-                                <dxb:BarButtonItem Content="포장작업지시서" Command="{Binding PrintCmd}" LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}" 
+                                <dxb:BarButtonItem Content="포장작업 지시서" Command="{Binding PrintCmd}" LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}" 
                                                    IsEnabled="{Binding IsNew, Converter={StaticResource BooleanNegationConverter}}" />
                                 <dxb:BarButtonItem Content="성적서" Command="{Binding COAGFCmd}" LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}" IsVisible="{Binding ShowCOA}" 
                                                    IsEnabled="{Binding IsNew, Converter={StaticResource BooleanNegationConverter}}" />

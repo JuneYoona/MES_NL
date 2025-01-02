@@ -54,7 +54,8 @@
                                     EditValue="{Binding BizAreaCode, UpdateSourceTrigger=PropertyChanged}"
                                     EditWidth="180"
                                     Margin="0 5 0 0"
-                                    EditTemplate="{StaticResource BizAreaCode}" />
+                                    EditTemplate="{StaticResource BizAreaCode}"
+                                    IsEnabled="{Binding BACCodeEnabled}" />
                                 <dxb:BarEditItem
                                     EditValue="{Binding WaCode, UpdateSourceTrigger=PropertyChanged}"
                                     EditWidth="180"
@@ -135,7 +136,7 @@
                             FieldName="EqpName"
                             Header="설비명"
                             MinWidth="150"/>
-                        <dxg:GridColumn FieldName="WaCode" CellTemplate="{StaticResource WaCodeField}" Header="공정" MinWidth="100"/>
+                        <dxg:GridColumn FieldName="WaCode" Header="공정" MinWidth="100" CellTemplate="{StaticResource WaCodeField}" EditSettings="{StaticResource WaCodeDisplayTextConverter}"/>
                         <dxg:GridColumn 
                             FieldName="EqpState" 
                             Header="설비상태"

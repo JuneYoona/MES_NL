@@ -10,6 +10,7 @@ using System.Data;
 using DevExpress.XtraReports.UI;
 using MesAdmin.Common.Utils;
 using DevExpress.Xpf.Grid;
+using DevExpress.DataAccess.Sql;
 
 namespace MesAdmin.ViewModels
 {
@@ -144,6 +145,7 @@ namespace MesAdmin.ViewModels
             if (SelectedItem.BizAreaCode == "BAC60")
             {
                 rpt = new Reports.MaterialOLED();
+                (rpt.DataSource as SqlDataSource).ConnectionName = DBInfo.Instance.Name;
 
                 rpt.Parameters["ItemCode"].Value = SelectedItem.ItemCode;
                 rpt.Parameters["ItemName"].Value = SelectedItem.ItemName;
@@ -154,6 +156,7 @@ namespace MesAdmin.ViewModels
             else
             {
                 rpt = new Reports.MaterialBPDL();
+                (rpt.DataSource as SqlDataSource).ConnectionName = DBInfo.Instance.Name;
 
                 rpt.AfterPrint += (s, e) =>
                 {

@@ -36,6 +36,10 @@
             RestorePreviouslySelectedDirectory="True"
             Filter="All Files (*.*)|*.*|Pdf files (*.Pdf)|*.Pdf|Office Files|*.doc;*.xls;*.ppt;*.docx;*.xlsx;*.pptx"
             FilterIndex="1"/>
+        <dxmvvm:OpenFileDialogService Name="OpenPDF" Title="검사결과 등록"
+            RestorePreviouslySelectedDirectory="True"
+            Filter="Pdf files (*.Pdf)|*.Pdf"
+            FilterIndex="1"/>
         <dx:DialogService Name="PopupQualityRequestView" DialogWindowStartupLocation="CenterOwner">
             <dx:DialogService.ViewTemplate>
                 <DataTemplate>
@@ -124,6 +128,10 @@
                                 <!--<dxb:BarButtonItem Content="성적서" Command="{Binding ExportPDFCmd}" LargeGlyph="{dx:DXImageOffice2013 Image=ExportToPDF_32x32.png}" />-->
                                 <dxb:BarButtonItem Content="분석의뢰서" Command="{Binding PrintAnalysisLetterCmd}" 
                                                    LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}" />
+                            </dxr:RibbonPageGroup>
+
+                            <dxr:RibbonPageGroup Caption="File2">                                
+                                <dxb:BarButtonItem Content="검사결과등록" Command="{Binding ImportPDFCmd}" LargeGlyph="{dx:DXImage SvgImages/Export/ExportToPDF.svg}" />
                             </dxr:RibbonPageGroup>
                         </dxr:RibbonPage>
                     </dxr:RibbonDefaultPageCategory>

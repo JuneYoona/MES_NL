@@ -15,8 +15,8 @@
              xmlns:custom="clr-namespace:MesAdmin.Common.CustomControl"
              xmlns:viewmodel="clr-namespace:MesAdmin.ViewModels"
              mc:Ignorable="d"
-             d:DesignHeight="436"
-             d:DesignWidth="800">
+             d:DesignHeight="800"
+             d:DesignWidth="1200">
     <UserControl.DataContext>
         <viewmodel:SalesLabelPrintHistoryVM />
     </UserControl.DataContext>
@@ -73,6 +73,7 @@
                         </dxr:RibbonPageGroup>
                         <dxr:RibbonPageGroup Caption="Print">
                             <dxb:BarButtonItem Content="Check List" Command="{Binding PrintCmd}" LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}" />
+                            <dxb:BarButtonItem Content="포장작업 지시서" Command="{Binding PrintPackingCmd}" LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"/>
                         </dxr:RibbonPageGroup>
                     </dxr:RibbonPage>
                 </dxr:RibbonDefaultPageCategory>
@@ -81,7 +82,7 @@
             <dxdo:DockLayoutManager AllowDocumentSelector="False">
                 <dxdo:DockLayoutManager.LayoutRoot>
                     <dxdo:LayoutGroup Orientation="Vertical" Margin="0">
-                        <dxdo:LayoutPanel HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" ItemHeight="7*" AllowClose="False" AllowDrag="False" AllowFloat="False" AllowHide="False" ShowCaption="False" ShowBorder="False">
+                        <dxdo:LayoutPanel HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" ItemHeight="6*" AllowClose="False" AllowDrag="False" AllowFloat="False" AllowHide="False" ShowCaption="False" ShowBorder="False">
                             <dxlc:GroupBox Padding="0" BorderThickness="0 0 0 1">
                                 <dxlc:GroupBox.HeaderTemplate>
                                     <DataTemplate>
@@ -108,7 +109,6 @@
                                     </dxg:GridControl.Resources>
                                     <dxmvvm:Interaction.Behaviors>
                                         <dxmvvm:EventToCommand Command="{Binding MouseDownCmd}" EventName="SelectedItemChanged"/>
-                                        <!--<dxmvvm:EventToCommand Command="{Binding MouseDoubleClickCmd}" EventName="MouseDoubleClick"/>-->
                                     </dxmvvm:Interaction.Behaviors>
                                     <dxg:GridControl.View>
                                         <custom:DSTableView x:Name="TableView" 
@@ -122,6 +122,11 @@
                                             EnableImmediatePosting="True" />
                                     </dxg:GridControl.View>
                                     <dxg:GridControl.Columns>
+                                        <dxg:GridColumn FieldName="DnFlag" Header="출하등록" Width="60" HorizontalHeaderContentAlignment="Center">
+                                            <dxg:GridColumn.EditSettings>
+                                                <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                                            </dxg:GridColumn.EditSettings>
+                                        </dxg:GridColumn>
                                         <dxg:GridColumn FieldName="PrintFlag" Header="라벨출력" Width="60" HorizontalHeaderContentAlignment="Center">
                                             <dxg:GridColumn.EditSettings>
                                                 <dxe:TextEditSettings HorizontalContentAlignment="Center" />
@@ -145,68 +150,90 @@
                                 </custom:DSGridControl>
                             </dxlc:GroupBox>
                         </dxdo:LayoutPanel>
-                        <dxdo:LayoutPanel HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" ItemHeight="3*" AllowClose="False" AllowDrag="False" AllowFloat="False" AllowHide="False" ShowCaption="False" ShowBorder="False">
-                            <dxlc:GroupBox Padding="0" BorderThickness="0 1 0 0">
-                                <dxlc:GroupBox.HeaderTemplate>
-                                    <DataTemplate>
-                                        <Border>
-                                            <TextBlock FontStyle="Italic" FontWeight="Bold" Margin="-5 3 0 3" Text="라벨출력내역"/>
-                                        </Border>
-                                    </DataTemplate>
-                                </dxlc:GroupBox.HeaderTemplate>
-                                <custom:DSGridControl                     
-                                    ItemsSource="{Binding Details}"
-                                    SelectedItem="{Binding SelectedDetail, UpdateSourceTrigger=PropertyChanged}"
-                                    ShowBorder="False"
-                                    SelectionMode="Cell"
-                                    ClipboardCopyMode="ExcludeHeader"
-                                    ShowLoadingPanel="{Binding DetailBusy, Mode=TwoWay}"                         
-                                    EnableSmartColumnsGeneration="True">
-                                    <dxg:GridControl.Resources>
-                                        <ControlTemplate x:Key="{dxgt:GridControlThemeKey IsThemeIndependent=true, ResourceKey=BorderTemplate}" TargetType="{x:Type ContentControl}">
-                                            <Border BorderThickness="0 0 0 0" BorderBrush="#859EBF">
-                                                <ContentPresenter />
-                                            </Border>
-                                        </ControlTemplate>
-                                    </dxg:GridControl.Resources>
-                                    <dxg:GridControl.View>
-                                        <custom:DSTableView 
+                        <dxdo:LayoutPanel HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled" ItemHeight="4*" AllowClose="False" AllowDrag="False" AllowFloat="False" AllowHide="False" ShowCaption="False" ShowBorder="False">
+                            <dx:DXTabControl Margin="2 2 2 2" VerticalAlignment="Stretch" >
+                                <dx:DXTabItem Header="라벨출력내역">
+                                    <custom:DSGridControl                     
+                                        ItemsSource="{Binding Details}"
+                                        SelectionMode="Cell"
+                                        ClipboardCopyMode="ExcludeHeader"
+                                        ShowLoadingPanel="{Binding DetailBusy, Mode=TwoWay}"
+                                        EnableSmartColumnsGeneration="True">
+                                        <dxg:GridControl.View>
+                                            <custom:DSTableView 
+                                                AllowPerPixelScrolling="True" 
+                                                VerticalScrollbarVisibility="Auto"
+                                                FocusedRow="{Binding SelectedDetail, UpdateSourceTrigger=PropertyChanged}"
+                                                ShowTotalSummary="True"
+                                                ShowGroupPanel="False"
+                                                AllowEditing="False"
+                                                AutoWidth="False"
+                                                ShowValidationAttributeErrors="False" />
+                                        </dxg:GridControl.View>
+                                        <dxg:GridControl.Columns>
+                                            <dxg:GridColumn FieldName="PrintSeq" Header="출력횟수" Width="60" />
+                                            <dxg:GridColumn FieldName="LotNo" Header="Lot No." Width="120" />
+                                            <dxg:GridColumn FieldName="Qty" Header="계량무게(g)" Width="80" />
+                                            <dxg:GridColumn FieldName="TareWeight" Header="Tare Weight" Width="80" />
+                                            <dxg:GridColumn FieldName="Cnt" Header="제품연번" Width="60" />
+                                            <dxg:GridColumn FieldName="ProductDate" Header="제조일자" Width="80" />
+                                            <dxg:GridColumn FieldName="ExDate" Header="유효기간" Width="80" />
+                                            <dxg:GridColumn FieldName="QRCode" Header="QR Code" Width="510" />
+                                            <dxg:GridColumn FieldName="QRLength" Header="QR 자릿수" Width="80" />
+                                            <dxg:GridColumn FieldName="InsertId" Header="입력자 Id" MinWidth="80" />
+                                            <dxg:GridColumn FieldName="InsertDate" Header="입력시간" MinWidth="120">
+                                                <dxg:GridColumn.EditSettings>
+                                                    <dxe:DateEditSettings Mask="yyyy-MM-dd HH:mm" MaskType="DateTime" MaskUseAsDisplayFormat="True" />
+                                                </dxg:GridColumn.EditSettings>
+                                            </dxg:GridColumn>
+                                            <dxg:GridColumn FieldName="PDAId" Header="PDA 검사자Id" MinWidth="80" />
+                                            <dxg:GridColumn FieldName="PDADate" Header="PDA 검사시간" MinWidth="125">
+                                                <dxg:GridColumn.EditSettings>
+                                                    <dxe:DateEditSettings Mask="yyyy-MM-dd HH:mm:ss" MaskType="DateTime" MaskUseAsDisplayFormat="True" />
+                                                </dxg:GridColumn.EditSettings>
+                                            </dxg:GridColumn>
+                                        </dxg:GridControl.Columns>
+                                        <dxg:GridControl.TotalSummary>
+                                            <dxg:GridSummaryItem FieldName="Qty" SummaryType="Sum" DisplayFormat=" {0:n0}"/>
+                                        </dxg:GridControl.TotalSummary>
+                                    </custom:DSGridControl>
+                                </dx:DXTabItem>
+                                <dx:DXTabItem Header="라벨검사내역">
+                                    <custom:DSGridControl                       
+                                        ItemsSource="{Binding InspDetails}"
+                                        SelectionMode="Cell"
+                                        ShowLoadingPanel="{Binding DetailBusy, Mode=TwoWay}"
+                                        ClipboardCopyMode="ExcludeHeader"
+                                        RowIndicatorNumberOnly="True"
+                                        EnableSmartColumnsGeneration="True">
+                                        <dxg:GridControl.View>
+                                            <custom:DSTableView 
                                             AllowPerPixelScrolling="True" 
                                             VerticalScrollbarVisibility="Auto"
                                             ShowTotalSummary="True"
                                             ShowGroupPanel="False"
                                             AllowEditing="False"
-                                            AutoWidth="False"
+                                            ShowGroupFooters="True"
                                             ShowValidationAttributeErrors="False" />
-                                    </dxg:GridControl.View>
-                                    <dxg:GridControl.Columns>
-                                        <dxg:GridColumn FieldName="PrintSeq" Header="출력횟수" Width="60" />
-                                        <dxg:GridColumn FieldName="LotNo" Header="Lot No." Width="120" />
-                                        <dxg:GridColumn FieldName="Qty" Header="계량무게(g)" Width="80" />
-                                        <dxg:GridColumn FieldName="TareWeight" Header="Tare Weight" Width="80" />
-                                        <dxg:GridColumn FieldName="Cnt" Header="제품연번" Width="60" />
-                                        <dxg:GridColumn FieldName="ProductDate" Header="제조일자" Width="80" />
-                                        <dxg:GridColumn FieldName="ExDate" Header="유효기간" Width="80" />
-                                        <dxg:GridColumn FieldName="QRCode" Header="QR Code" Width="480" />
-                                        <dxg:GridColumn FieldName="QRLength" Header="QR 자릿수" Width="80" />
-                                        <dxg:GridColumn FieldName="InsertId" Header="입력자 Id" MinWidth="80" />
-                                        <dxg:GridColumn FieldName="InsertDate" Header="입력시간" MinWidth="120">
-                                            <dxg:GridColumn.EditSettings>
-                                                <dxe:DateEditSettings Mask="yyyy-MM-dd HH:mm" MaskType="DateTime" MaskUseAsDisplayFormat="True" />
-                                            </dxg:GridColumn.EditSettings>
-                                        </dxg:GridColumn>
-                                        <dxg:GridColumn FieldName="PDAId" Header="PDA 검사자Id" MinWidth="80" />
-                                        <dxg:GridColumn FieldName="PDADate" Header="PDA 검사시간" MinWidth="125">
-                                            <dxg:GridColumn.EditSettings>
-                                                <dxe:DateEditSettings Mask="yyyy-MM-dd HH:mm:ss" MaskType="DateTime" MaskUseAsDisplayFormat="True" />
-                                            </dxg:GridColumn.EditSettings>
-                                        </dxg:GridColumn>
-                                    </dxg:GridControl.Columns>
-                                    <dxg:GridControl.TotalSummary>
-                                        <dxg:GridSummaryItem FieldName="Qty" SummaryType="Sum" DisplayFormat=" {0:n0}"/>
-                                    </dxg:GridControl.TotalSummary>
-                                </custom:DSGridControl>
-                            </dxlc:GroupBox>
+                                        </dxg:GridControl.View>
+                                        <dxg:GridControl.Columns>
+                                            <dxg:GridColumn FieldName="LotNo" Header="Lot No." Width="120" />
+                                            <dxg:GridColumn FieldName="OrderNo" Header="작업번호" Width="100" />
+                                            <dxg:GridColumn FieldName="Num" Header="작업순번" Width="70" />
+                                            <dxg:GridColumn FieldName="Scan1" Header="제품라벨코드" Width="340" />
+                                            <dxg:GridColumn FieldName="Scan2" Header="출하라벨코드" Width="510" />
+                                            <dxg:GridColumn FieldName="Result" Header="검사결과" Width="80" />
+                                            <dxg:GridColumn FieldName="InspTime" Header="검사시간" Width="130">
+                                                <dxg:GridColumn.EditSettings>
+                                                    <dxe:DateEditSettings Mask="yyyy-MM-dd HH:mm:ss" MaskType="DateTime" MaskUseAsDisplayFormat="True" />
+                                                </dxg:GridColumn.EditSettings>
+                                            </dxg:GridColumn>
+                                            <dxg:GridColumn FieldName="Type" Header="검사방법" Width="80" />
+                                            <dxg:GridColumn FieldName="Remark" Header="Remark" Width="250" />
+                                        </dxg:GridControl.Columns>
+                                    </custom:DSGridControl>
+                                </dx:DXTabItem>
+                            </dx:DXTabControl>
                         </dxdo:LayoutPanel>
                     </dxdo:LayoutGroup>
                 </dxdo:DockLayoutManager.LayoutRoot>

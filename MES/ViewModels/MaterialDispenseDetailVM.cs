@@ -11,6 +11,7 @@ using DevExpress.Mvvm.POCO;
 using MesAdmin.Reports;
 using DevExpress.Xpf.Printing;
 using DevExpress.XtraReports.UI;
+using DevExpress.DataAccess.Sql;
 
 namespace MesAdmin.ViewModels
 {
@@ -159,13 +160,15 @@ namespace MesAdmin.ViewModels
             if (SelectedItem == null) return;
 
             report = new MaterialDispense();
+            (report.DataSource as SqlDataSource).ConnectionName = DBInfo.Instance.Name;
             report.Parameters["MDNo"].Value = SelectedItem.MDNo;
 
-            XtraReport sub = null;
+            XtraReport sub;
 
             if (SelectedItem.InWhCode == "WE10") sub = new MaterialDispenseDetails();
             else sub = new MaterialDispenseDetailsBAC90();
 
+            (sub.DataSource as SqlDataSource).ConnectionName = DBInfo.Instance.Name;
             sub.Parameters["MDNo"].Value = SelectedItem.MDNo;
             report.xrSubreport1.ReportSource = sub;
             report.xrSubreport2.ReportSource = sub;

@@ -1,6 +1,7 @@
 ﻿using DevExpress.Mvvm;
 using DevExpress.Mvvm.POCO;
 using DevExpress.Xpf.Printing;
+using DevExpress.XtraReports.UI;
 using MesAdmin.Common.Common;
 using MesAdmin.Models;
 using MesAdmin.Reports;
@@ -37,6 +38,11 @@ namespace MesAdmin.ViewModels
         {
             get { return GetProperty(() => Details); }
             set { SetProperty(() => Details, value); }
+        }
+        public DataTable InspDetails
+        {
+            get { return GetProperty(() => InspDetails); }
+            set { SetProperty(() => InspDetails, value); }
         }
         public SalesLabelPrintHistory SelectedDetail
         {
@@ -91,13 +97,14 @@ namespace MesAdmin.ViewModels
         public AsyncCommand SearchCmd { get; set; }
         public ICommand ShowItemDialogCmd { get; set; }
         public ICommand PrintCmd { get; set; }
+        public ICommand PrintPackingCmd { get; set; }        
         public AsyncCommand MouseDownCmd { get; set; }
         public DelegateCommand<object> DelCmd { get; set; }
         public AsyncCommand SaveCmd { get; set; }
         #endregion
 
         #region Report
-        SalesCheckList report;
+        XtraReport report;
         #endregion
 
         public SalesLabelPrintHistoryVM()
@@ -110,7 +117,8 @@ namespace MesAdmin.ViewModels
             EndDate = DateTime.Now.AddMonths(1);
 
             ShowItemDialogCmd = new DelegateCommand(OnShowDialog);
-            PrintCmd = new DelegateCommand(OnPrint, CanPrint);
+            PrintCmd = new DelegateCommand(OnPrint, () => SelectedItem != null);
+            PrintPackingCmd = new DelegateCommand(OnPrintPacking, () => SelectedItem != null);
             SearchCmd = new AsyncCommand(OnSearch, CanSearch);
             MouseDownCmd = new AsyncCommand(OnMouseDown);
             SaveCmd = new AsyncCommand(OnSave, CanSave);
@@ -138,26 +146,30 @@ namespace MesAdmin.ViewModels
         public Task OnSearch()
         {
             IsBusy = true;
-            return Task.Factory.StartNew(SearchCore);
+            return Task.Factory.StartNew(SearchCore).ContinueWith(t => IsBusy = false);
         }
         public void SearchCore()
         {
             Collections = new SalesOrderDlvyHeaderTable(StartDate, EndDate, SoType, ItemCode, BizCode).Collections;
             Details = null;
-            IsBusy = false;
+            InspDetails = null;
         }
 
         public Task OnMouseDown()
         {
+            DetailBusy = true;
             SelectedDetail = null;
-            return Task.Factory.StartNew(MouseDownCore);
+            return Task.Factory.StartNew(MouseDownCore).ContinueWith(t => DetailBusy = false);
         }
         public void MouseDownCore()
         {
-            DetailBusy = true;
-            if (SelectedItem != null)
-                Details = new SalesLabelPrintHistoryList((string)SelectedItem.Row["ReqNo"], int.Parse(SelectedItem.Row["ReqSeq"].ToString()));
-            DetailBusy = false;
+            if (SelectedItem == null) return;
+
+            string reqNo = (string)SelectedItem.Row["ReqNo"];
+            int reqSeq = int.Parse(SelectedItem.Row["ReqSeq"].ToString());
+
+            Details = new SalesLabelPrintHistoryList(reqNo, reqSeq);
+            InspDetails = Commonsp.usps_sales_PrintInspection(reqNo, reqSeq);
         }
 
         public void OnShowDialog()
@@ -210,23 +222,25 @@ namespace MesAdmin.ViewModels
             OnMouseDown();
         }
 
-        public bool CanPrint()
-        {
-            return SelectedItem != null;
-        }
         public void OnPrint()
         {
-            if (SelectedItem == null) return;
-
             report = new SalesCheckList();
             report.Parameters["ReqNo"].Value = (string)SelectedItem.Row["ReqNo"];
+            PrintHelper.ShowPrintPreview(System.Windows.Application.Current.MainWindow, report);
+        }
+
+        public void OnPrintPacking()
+        {
+            report = new PackingOrderBAC60();
+            report.Parameters["ReqNo"].Value = (string)SelectedItem.Row["ReqNo"];
+            report.Parameters["ReqSeq"].Value = int.Parse(SelectedItem.Row["ReqSeq"].ToString());
             PrintHelper.ShowPrintPreview(System.Windows.Application.Current.MainWindow, report);
         }
 
         protected override void OnParameterChanged(object parameter)
         {
             base.OnParameterChanged(parameter);
-            if (ViewModelBase.IsInDesignMode) return;
+            if (IsInDesignMode) return;
 
             DocumentParamter pm = parameter as DocumentParamter;
             Task.Factory.StartNew(SearchCore).ContinueWith(task =>

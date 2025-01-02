@@ -21,18 +21,13 @@ namespace MesAdmin.ViewModels
         #region Public Properties
         public CommonEquipmentList Collections
         {
-            get { return GetProperty(() => Collections); }
-            set { SetProperty(() => Collections, value); }
+            get { return GetValue<CommonEquipmentList>(); }
+            set { SetValue(value, () => RaisePropertyChanged(nameof(BACCodeEnabled))); }
         }
         public CommonEquipment SelectedItem
         {
             get { return GetProperty(() => SelectedItem); }
             set { SetProperty(() => SelectedItem, value); }
-        }
-        public CommonWorkAreaInfoList WaCode
-        {
-            get { return GetProperty(() => WaCode); }
-            set { SetProperty(() => WaCode, value); }
         }
         public IEnumerable<CommonMinor> BizAreaCodeList
         {
@@ -43,6 +38,11 @@ namespace MesAdmin.ViewModels
         {
             get { return GetProperty(() => BizAreaCode); }
             set { SetProperty(() => BizAreaCode, value); }
+        }
+        public string WaCode
+        {
+            get { return GetProperty(() => WaCode); }
+            set { SetProperty(() => WaCode, value); }
         }
         public string EqpCode
         {
@@ -59,6 +59,7 @@ namespace MesAdmin.ViewModels
             get { return GetProperty(() => IsBusy); }
             set { SetProperty(() => IsBusy, value); }
         }
+        public bool BACCodeEnabled { get { return Collections.Where(o => o.State == EntityState.Added).Count() == 0; } }
         #endregion
 
         #region Commands
@@ -76,8 +77,6 @@ namespace MesAdmin.ViewModels
             BizAreaCodeList = GlobalCommonMinor.Instance.Where(u => u.MajorCode == "I0004");
             if (!string.IsNullOrEmpty(DSUser.Instance.BizAreaCode))
                 BizAreaCode = BizAreaCodeList.FirstOrDefault(u => u.MinorCode == DSUser.Instance.BizAreaCode).MinorCode;
-
-            WaCode = new CommonWorkAreaInfoList();
 
             NewCmd = new DelegateCommand(OnNew);
             DeleteCmd = new DelegateCommand(OnDelete);
@@ -139,33 +138,31 @@ namespace MesAdmin.ViewModels
         public Task OnSearch()
         {
             IsBusy = true;
-            return Task.Factory.StartNew(SearchCore);
+            return Task.Factory.StartNew(SearchCore).ContinueWith(t => IsBusy = false);
         }
         public void SearchCore()
         {
             string bizAreaCode = BizAreaCode;
-            string eqpCode = EqpCode;
             string eqpName = EqpName;
+            string waCode = WaCode;
 
             if (Collections == null)
                 Collections = new CommonEquipmentList();
             while (DispatcherService == null) { System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.1)); }
-            
-            DispatcherService.BeginInvoke(() =>
-            {
-                Collections.InitializeList();
-                Collections = new CommonEquipmentList
-                (
-                    Collections
-                        .Where(p =>
-                            string.IsNullOrEmpty(eqpCode) ? true : p.EqpCode.ToUpper().Contains(EqpCode.ToUpper()))
-                        .Where(p =>
-                            string.IsNullOrEmpty(eqpName) ? true : p.EqpName.ToUpper().Contains(EqpName.ToUpper()))
-                        .Where(p =>
-                            string.IsNullOrEmpty(bizAreaCode) ? true : p.BizAreaCode.Contains(bizAreaCode))
-                );
-            });
-            IsBusy = false;
+
+            Collections = null;
+            Collections = new CommonEquipmentList
+            (
+                new CommonEquipmentList()
+                    .Where(p =>
+                        string.IsNullOrEmpty(eqpName) ? true : p.EqpName.ToUpper().Contains(EqpName.ToUpper()))
+                    .Where(p =>
+                        string.IsNullOrEmpty(bizAreaCode) ? true : p.BizAreaCode == bizAreaCode)
+                    .Where(p =>
+                        string.IsNullOrEmpty(waCode) ? true : p.WaCode == waCode)
+            );
+
+            Collections.CollectionChanged += (s, e) => RaisePropertyChanged(nameof(BACCodeEnabled));
         }
 
         public void OnSyncErp()

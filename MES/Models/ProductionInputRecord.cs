@@ -43,10 +43,20 @@ namespace MesAdmin.Models
             get { return GetProperty(() => WaCode); }
             set { SetProperty(() => WaCode, value); }
         }
+        public string WaName
+        {
+            get { return GetProperty(() => WaName); }
+            set { SetProperty(() => WaName, value); }
+        }
         public string EqpCode
         {
             get { return GetProperty(() => EqpCode); }
             set { SetProperty(() => EqpCode, value); }
+        }
+        public string EqpName
+        {
+            get { return GetProperty(() => EqpName); }
+            set { SetProperty(() => EqpName, value); }
         }
         public DateTime FinishDate
         {
@@ -132,6 +142,21 @@ namespace MesAdmin.Models
         {
             get { return GetProperty(() => Remark5); }
             set { SetProperty(() => Remark5, value); }
+        }
+        public string Remark6
+        {
+            get { return GetProperty(() => Remark6); }
+            set { SetProperty(() => Remark6, value); }
+        }
+        public string Remark7
+        {
+            get { return GetProperty(() => Remark7); }
+            set { SetProperty(() => Remark7, value); }
+        }
+        public string Remark8
+        {
+            get { return GetProperty(() => Remark8); }
+            set { SetProperty(() => Remark8, value); }
         }
         public string UpdateId
         {
@@ -227,7 +252,7 @@ namespace MesAdmin.Models
             string sql;
             if (bizAreaCode == "BAC40")
             {
-                sql = "SELECT * FROM fn_production_InputRecord_BAC40(@BizAreaCode, @WaCode, @LotNo, @StartDate, @EndDate) ORDER BY OrderNo desc";
+                sql = "SELECT * FROM fn_production_InputRecord_BAC40(@BizAreaCode, @WaCode, @LotNo, @StartDate, @EndDate) ORDER BY ProductOrderNo desc";
             }
             else
             {
@@ -261,7 +286,9 @@ namespace MesAdmin.Models
                         Seq = (int)u["Seq"],
                         WhCode = (string)u["WhCode"],
                         WaCode = (string)u["WaCode"],
+                        WaName = (string)u["WaName"],
                         EqpCode = (string)u["EqpCode"],
+                        EqpName = (string)u["EqpName"],
                         FinishDate = (DateTime)u["FinishDate"],
                         StartDate = (DateTime)u["StartDate"],
                         EndDate = (DateTime)u["EndDate"],
@@ -278,6 +305,9 @@ namespace MesAdmin.Models
                         Remark1 = u["Remark1"].ToString(),
                         Remark4 = u["Remark4"].ToString(),
                         Remark5 = u["Remark5"].ToString(),
+                        Remark6 = u["Remark6"].ToString(),
+                        Remark7 = u["Remark7"].ToString(),
+                        Remark8 = u["Remark8"].ToString(),
                         UpdateId = (string)u["UpdateId"],
                         UpdateDate = (DateTime)u["UpdateDate"],
                         LeadTime = (int)u["LeadTime"],

@@ -318,7 +318,11 @@ namespace MesAdmin.Models
             DataSet ds = db.ExecuteDataSet(dbCom);
 
             if (ds.Tables.Count > 0)
-                Collections = ds.Tables[0];
+            {
+                var dt = ds.Tables[0];
+                var rows = dt.AsEnumerable().Where(o => o.Field<string>("ItemCode").StartsWith("PE"));
+                Collections = rows.Any() ? rows.CopyToDataTable() : dt.Clone();
+            }
         }
     }
 

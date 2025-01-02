@@ -167,7 +167,7 @@ namespace MesAdmin.ViewModels
             int seq = Header.Seq;
             Header = new MaterialDispenseDetail(mdNo, seq);
             Details = new MaterialDispenseDetailSubList(mdNo: mdNo, seq: seq);
-            EditOutWhCode = Details.FirstOrDefault().OutWhCode;
+            EditOutWhCode = Details.FirstOrDefault() == null ? null : Details.FirstOrDefault().OutWhCode;
             IsBusy = false;
         }
 
@@ -261,7 +261,7 @@ namespace MesAdmin.ViewModels
                     LotNo = u.LotNo,
                 }));
 
-                var vm = ViewModelSource.Create(() => new PopupStockVM(OutWhCode, Header.ItemCode, ExceptStocks)); // 재고를 조회할 창고전달
+                var vm = ViewModelSource.Create(() => new PopupStockVM(OutWhCode.MinorCode, Header.ItemCode, ExceptStocks)); // 재고를 조회할 창고전달
                 StockView.ShowDialog(
                     dialogCommands: vm.DialogCmds,
                     title: "재고선택",

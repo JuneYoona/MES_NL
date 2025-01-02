@@ -32,12 +32,16 @@
             DevExpress.DataAccess.Sql.StoredProcQuery storedProcQuery1 = new DevExpress.DataAccess.Sql.StoredProcQuery();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter1 = new DevExpress.DataAccess.Sql.QueryParameter();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MaterialDispense));
+            DevExpress.XtraPrinting.BarCode.QRCodeGenerator qrCodeGenerator1 = new DevExpress.XtraPrinting.BarCode.QRCodeGenerator();
+            DevExpress.XtraPrinting.BarCode.QRCodeGenerator qrCodeGenerator2 = new DevExpress.XtraPrinting.BarCode.QRCodeGenerator();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
             this.sqlDataSource1 = new DevExpress.DataAccess.Sql.SqlDataSource(this.components);
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.MDNo = new DevExpress.XtraReports.Parameters.Parameter();
             this.GroupHeader1 = new DevExpress.XtraReports.UI.GroupHeaderBand();
+            this.xrBarCode2 = new DevExpress.XtraReports.UI.XRBarCode();
+            this.xrBarCode1 = new DevExpress.XtraReports.UI.XRBarCode();
             this.xrPictureBox1 = new DevExpress.XtraReports.UI.XRPictureBox();
             this.xrLabel4 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLine2 = new DevExpress.XtraReports.UI.XRLine();
@@ -48,8 +52,8 @@
             this.xrLabel1 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel10 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrSubreport1 = new DevExpress.XtraReports.UI.XRSubreport();
-            this.calculatedField1 = new DevExpress.XtraReports.UI.CalculatedField();
             this.xrSubreport2 = new DevExpress.XtraReports.UI.XRSubreport();
+            this.calculatedField1 = new DevExpress.XtraReports.UI.CalculatedField();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // Detail
@@ -70,7 +74,8 @@
             queryParameter1.Name = "@MDNo";
             queryParameter1.Type = typeof(DevExpress.DataAccess.Expression);
             queryParameter1.Value = new DevExpress.DataAccess.Expression("[Parameters.MDNo]", typeof(string));
-            storedProcQuery1.Parameters.Add(queryParameter1);
+            storedProcQuery1.Parameters.AddRange(new DevExpress.DataAccess.Sql.QueryParameter[] {
+            queryParameter1});
             storedProcQuery1.StoredProcName = "usp_report_MaterialDispense";
             this.sqlDataSource1.Queries.AddRange(new DevExpress.DataAccess.Sql.SqlQuery[] {
             storedProcQuery1});
@@ -101,6 +106,8 @@
             // GroupHeader1
             // 
             this.GroupHeader1.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrBarCode2,
+            this.xrBarCode1,
             this.xrPictureBox1,
             this.xrLabel4,
             this.xrLine2,
@@ -118,9 +125,45 @@
             this.GroupHeader1.Name = "GroupHeader1";
             this.GroupHeader1.PageBreak = DevExpress.XtraReports.UI.PageBreak.AfterBand;
             // 
+            // xrBarCode2
+            // 
+            this.xrBarCode2.Alignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            this.xrBarCode2.AutoModule = true;
+            this.xrBarCode2.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "?MDNo")});
+            this.xrBarCode2.LocationFloat = new DevExpress.Utils.PointFloat(704.9865F, 387.6665F);
+            this.xrBarCode2.Name = "xrBarCode2";
+            this.xrBarCode2.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 2, 2, 100F);
+            this.xrBarCode2.ShowText = false;
+            this.xrBarCode2.SizeF = new System.Drawing.SizeF(55F, 55F);
+            this.xrBarCode2.StylePriority.UsePadding = false;
+            this.xrBarCode2.StylePriority.UseTextAlignment = false;
+            qrCodeGenerator1.CompactionMode = DevExpress.XtraPrinting.BarCode.QRCodeCompactionMode.Byte;
+            qrCodeGenerator1.Version = DevExpress.XtraPrinting.BarCode.QRCodeVersion.Version3;
+            this.xrBarCode2.Symbology = qrCodeGenerator1;
+            this.xrBarCode2.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            // 
+            // xrBarCode1
+            // 
+            this.xrBarCode1.Alignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            this.xrBarCode1.AutoModule = true;
+            this.xrBarCode1.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "?MDNo")});
+            this.xrBarCode1.LocationFloat = new DevExpress.Utils.PointFloat(704.9865F, 1F);
+            this.xrBarCode1.Name = "xrBarCode1";
+            this.xrBarCode1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 2, 2, 100F);
+            this.xrBarCode1.ShowText = false;
+            this.xrBarCode1.SizeF = new System.Drawing.SizeF(55F, 55F);
+            this.xrBarCode1.StylePriority.UsePadding = false;
+            this.xrBarCode1.StylePriority.UseTextAlignment = false;
+            qrCodeGenerator2.CompactionMode = DevExpress.XtraPrinting.BarCode.QRCodeCompactionMode.Byte;
+            qrCodeGenerator2.Version = DevExpress.XtraPrinting.BarCode.QRCodeVersion.Version3;
+            this.xrBarCode1.Symbology = qrCodeGenerator2;
+            this.xrBarCode1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            // 
             // xrPictureBox1
             // 
-            this.xrPictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("xrPictureBox1.Image")));
+            this.xrPictureBox1.ImageSource = new DevExpress.XtraPrinting.Drawing.ImageSource("img", resources.GetString("xrPictureBox1.ImageSource"));
             this.xrPictureBox1.LocationFloat = new DevExpress.Utils.PointFloat(35F, 1.000008F);
             this.xrPictureBox1.Name = "xrPictureBox1";
             this.xrPictureBox1.SizeF = new System.Drawing.SizeF(134.0833F, 55F);
@@ -178,7 +221,7 @@
             // 
             // xrPictureBox2
             // 
-            this.xrPictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("xrPictureBox2.Image")));
+            this.xrPictureBox2.ImageSource = new DevExpress.XtraPrinting.Drawing.ImageSource("img", resources.GetString("xrPictureBox2.ImageSource"));
             this.xrPictureBox2.LocationFloat = new DevExpress.Utils.PointFloat(35.00002F, 387.6665F);
             this.xrPictureBox2.Name = "xrPictureBox2";
             this.xrPictureBox2.SizeF = new System.Drawing.SizeF(134.0833F, 55F);
@@ -221,19 +264,19 @@
             this.xrSubreport1.SizeF = new System.Drawing.SizeF(729.1251F, 179.25F);
             this.xrSubreport1.BeforePrint += new System.Drawing.Printing.PrintEventHandler(this.xrSubreport2_BeforePrint);
             // 
-            // calculatedField1
-            // 
-            this.calculatedField1.DataMember = "usp_report_MaterialDispense";
-            this.calculatedField1.FieldType = DevExpress.XtraReports.UI.FieldType.Int32;
-            this.calculatedField1.Name = "calculatedField1";
-            this.calculatedField1.GetValue += new DevExpress.XtraReports.UI.GetValueEventHandler(this.calculatedField1_GetValue);
-            // 
             // xrSubreport2
             // 
             this.xrSubreport2.LocationFloat = new DevExpress.Utils.PointFloat(34.91667F, 450.6665F);
             this.xrSubreport2.Name = "xrSubreport2";
             this.xrSubreport2.SizeF = new System.Drawing.SizeF(729.1251F, 179.25F);
             this.xrSubreport2.BeforePrint += new System.Drawing.Printing.PrintEventHandler(this.xrSubreport2_BeforePrint);
+            // 
+            // calculatedField1
+            // 
+            this.calculatedField1.DataMember = "usp_report_MaterialDispense";
+            this.calculatedField1.FieldType = DevExpress.XtraReports.UI.FieldType.Int32;
+            this.calculatedField1.Name = "calculatedField1";
+            this.calculatedField1.GetValue += new DevExpress.XtraReports.UI.GetValueEventHandler(this.calculatedField1_GetValue);
             // 
             // MaterialDispense
             // 
@@ -256,7 +299,7 @@
             this.MDNo});
             this.ShowPrintMarginsWarning = false;
             this.ShowPrintStatusDialog = false;
-            this.Version = "18.1";
+            this.Version = "21.2";
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 
         }
@@ -281,5 +324,7 @@
         private DevExpress.XtraReports.UI.XRLine xrLine1;
         public DevExpress.XtraReports.UI.XRSubreport xrSubreport1;
         public DevExpress.XtraReports.UI.XRSubreport xrSubreport2;
+        private DevExpress.XtraReports.UI.XRBarCode xrBarCode2;
+        private DevExpress.XtraReports.UI.XRBarCode xrBarCode1;
     }
 }

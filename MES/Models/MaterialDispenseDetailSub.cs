@@ -243,6 +243,7 @@ namespace MesAdmin.Models
                 db.AddInParameter(dbCom, "@BasicUnit", DbType.String, item.BasicUnit);
                 db.AddInParameter(dbCom, "@OutWhCode", DbType.String, item.OutWhCode);
                 db.AddInParameter(dbCom, "@InWhCode", DbType.String, item.InWhCode);
+                db.AddInParameter(dbCom, "@WaCode", DbType.String, item.WaCode);
                 db.AddInParameter(dbCom, "@Memo", DbType.String, item.Memo);
                 db.AddInParameter(dbCom, "@TSC", DbType.String, item.TSC);
                 db.AddInParameter(dbCom, "@PIG", DbType.String, item.PIG);

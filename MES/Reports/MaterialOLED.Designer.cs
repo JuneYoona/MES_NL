@@ -66,6 +66,9 @@ namespace MesAdmin.Reports
             this.xrTableRow7 = new DevExpress.XtraReports.UI.XRTableRow();
             this.xrTableCell11 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell12 = new DevExpress.XtraReports.UI.XRTableCell();
+            this.xrTableRow9 = new DevExpress.XtraReports.UI.XRTableRow();
+            this.xrTableCell14 = new DevExpress.XtraReports.UI.XRTableCell();
+            this.xrTableCell15 = new DevExpress.XtraReports.UI.XRTableCell();
             this.ItemCode = new DevExpress.XtraReports.Parameters.Parameter();
             this.LotNo = new DevExpress.XtraReports.Parameters.Parameter();
             this.출력개수 = new DevExpress.XtraReports.Parameters.Parameter();
@@ -111,7 +114,7 @@ namespace MesAdmin.Reports
             this.xrBarCode1.Dpi = 254F;
             this.xrBarCode1.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[QRCode]")});
-            this.xrBarCode1.LocationFloat = new DevExpress.Utils.PointFloat(6F, 11F);
+            this.xrBarCode1.LocationFloat = new DevExpress.Utils.PointFloat(34F, 38F);
             this.xrBarCode1.Module = 5.08F;
             this.xrBarCode1.Name = "xrBarCode1";
             this.xrBarCode1.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 5, 5, 5, 254F);
@@ -130,11 +133,11 @@ namespace MesAdmin.Reports
             this.xrLabel1.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "?ItemName")});
             this.xrLabel1.Font = new System.Drawing.Font("맑은 고딕", 22F, System.Drawing.FontStyle.Bold);
-            this.xrLabel1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
+            this.xrLabel1.LocationFloat = new DevExpress.Utils.PointFloat(190.5F, 0F);
             this.xrLabel1.Multiline = true;
             this.xrLabel1.Name = "xrLabel1";
             this.xrLabel1.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 5, 0, 0, 254F);
-            this.xrLabel1.SizeF = new System.Drawing.SizeF(1000F, 186.6075F);
+            this.xrLabel1.SizeF = new System.Drawing.SizeF(809.5001F, 186.6075F);
             this.xrLabel1.StylePriority.UseFont = false;
             this.xrLabel1.Text = "9PC2Br";
             // 
@@ -221,7 +224,7 @@ namespace MesAdmin.Reports
             // xrTable1
             // 
             this.xrTable1.Dpi = 254F;
-            this.xrTable1.LocationFloat = new DevExpress.Utils.PointFloat(44.62501F, 204.8958F);
+            this.xrTable1.LocationFloat = new DevExpress.Utils.PointFloat(44.62502F, 204.8958F);
             this.xrTable1.Name = "xrTable1";
             this.xrTable1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
             this.xrTable1.Rows.AddRange(new DevExpress.XtraReports.UI.XRTableRow[] {
@@ -229,8 +232,9 @@ namespace MesAdmin.Reports
             this.xrTableRow4,
             this.xrTableRow5,
             this.xrTableRow6,
-            this.xrTableRow7});
-            this.xrTable1.SizeF = new System.Drawing.SizeF(673.1875F, 317.5F);
+            this.xrTableRow7,
+            this.xrTableRow9});
+            this.xrTable1.SizeF = new System.Drawing.SizeF(673.1876F, 341.3124F);
             // 
             // xrTableRow1
             // 
@@ -247,7 +251,7 @@ namespace MesAdmin.Reports
             this.xrTableCell1.Multiline = true;
             this.xrTableCell1.Name = "xrTableCell1";
             this.xrTableCell1.StylePriority.UseTextAlignment = false;
-            this.xrTableCell1.Text = "Lot no.";
+            this.xrTableCell1.Text = "Lot No.";
             this.xrTableCell1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             this.xrTableCell1.Weight = 1D;
             // 
@@ -385,6 +389,36 @@ namespace MesAdmin.Reports
             this.xrTableCell12.StylePriority.UseTextAlignment = false;
             this.xrTableCell12.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
             this.xrTableCell12.Weight = 1.6503444881889764D;
+            // 
+            // xrTableRow9
+            // 
+            this.xrTableRow9.Cells.AddRange(new DevExpress.XtraReports.UI.XRTableCell[] {
+            this.xrTableCell14,
+            this.xrTableCell15});
+            this.xrTableRow9.Dpi = 254F;
+            this.xrTableRow9.Name = "xrTableRow9";
+            this.xrTableRow9.Weight = 1D;
+            // 
+            // xrTableCell14
+            // 
+            this.xrTableCell14.Dpi = 254F;
+            this.xrTableCell14.Multiline = true;
+            this.xrTableCell14.Name = "xrTableCell14";
+            this.xrTableCell14.StylePriority.UseTextAlignment = false;
+            this.xrTableCell14.Text = "공급처 로트";
+            this.xrTableCell14.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            this.xrTableCell14.Weight = 1D;
+            // 
+            // xrTableCell15
+            // 
+            this.xrTableCell15.Dpi = 254F;
+            this.xrTableCell15.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[VendorLot]")});
+            this.xrTableCell15.Multiline = true;
+            this.xrTableCell15.Name = "xrTableCell15";
+            this.xrTableCell15.StylePriority.UseTextAlignment = false;
+            this.xrTableCell15.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleLeft;
+            this.xrTableCell15.Weight = 1.6503444881889764D;
             // 
             // ItemCode
             // 
@@ -531,5 +565,8 @@ namespace MesAdmin.Reports
         private DevExpress.DataAccess.Sql.SqlDataSource sqlDataSource1;
         private DevExpress.XtraReports.UI.XRTableRow xrTableRow8;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell13;
+        private DevExpress.XtraReports.UI.XRTableRow xrTableRow9;
+        private DevExpress.XtraReports.UI.XRTableCell xrTableCell14;
+        private DevExpress.XtraReports.UI.XRTableCell xrTableCell15;
     }
 }

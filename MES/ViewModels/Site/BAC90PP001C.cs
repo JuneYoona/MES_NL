@@ -65,7 +65,7 @@ namespace MesAdmin.ViewModels
         private List<StockDetail> ExceptStocks { get; set; }
         public bool IsEnabled
         {
-            get { return Details == null && Details.Count > 0; }
+            get { return Details == null; }
         }
         #endregion
 
@@ -171,7 +171,7 @@ namespace MesAdmin.ViewModels
         {
             try
             {
-                if (Header.WaCode == "WB20" && Details == null) Header.CreateLotNoWB20();
+                if (Header.WaCode == "WB20" && Details == null) Header.CreateLotNoWB20(Header.ItemCode);
 
                 Details = Details ?? new ProductionWorkOrderDetailList();
                 Details.Insert(Details.Count, new ProductionWorkOrderDetail

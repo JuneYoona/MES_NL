@@ -6,6 +6,7 @@
                  WindowStartupLocation="CenterScreen"
                  ResizeMode="NoResize"
                  EnableAcrylic="True"
+                 AcrylicOpacity="0.85"
                  AcrylicColor="Lavender"
                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                  xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
@@ -39,7 +40,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="5" Content="{Binding Message}" VerticalAlignment="Center" Margin="18 0 0 0" Foreground="DarkRed" />
+        <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="5" Content="{Binding Message}" VerticalAlignment="Center" Margin="18 0 0 0" Foreground="#FFB82929" />
         <dxe:ProgressBarEdit
             Grid.Row="1"
             Grid.Column="1"
@@ -103,10 +104,10 @@
                           IsEnabled="{Binding IsEnabled}"
                           HorizontalAlignment="Stretch"
                           IsTextEditable="False"
-                          ItemsSource="{Binding BizAreaCollections, UpdateSourceTrigger=PropertyChanged}"
+                          ItemsSource="{Binding BizAreaList, UpdateSourceTrigger=PropertyChanged}"
                           EditValue="{Binding EditBizArea, UpdateSourceTrigger=PropertyChanged}"
-                          DisplayMember="MinorName"
-                          ValueMember="MinorCode"
+                          DisplayMember="Text"
+                          ValueMember="Value"
                           Margin="5 2 5 0">
             <dxe:ComboBoxEdit.InputBindings>
                 <KeyBinding Key="Enter" Command="{Binding LoginCmd}" />
@@ -118,10 +119,8 @@
                           IsEnabled="{Binding IsEnabled}"
                           HorizontalAlignment="Stretch"
                           IsTextEditable="False"
-                          ItemsSource="{Binding DBNameCollections, UpdateSourceTrigger=PropertyChanged}"
+                          ItemsSource="{Binding DBNameList, UpdateSourceTrigger=PropertyChanged}"
                           EditValue="{Binding SelectedDB, UpdateSourceTrigger=PropertyChanged}"
-                          DisplayMember="MinorCode"
-                          ValueMember="MinorCode"
                           Margin="5 2 5 0">
             <dxe:ComboBoxEdit.InputBindings>
                 <KeyBinding Key="Enter" Command="{Binding LoginCmd}" />

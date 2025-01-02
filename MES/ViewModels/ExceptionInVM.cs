@@ -1,20 +1,18 @@
-﻿using System;
-using System.Data;
-using System.Collections.ObjectModel;
-using System.Linq;
-using DevExpress.Mvvm;
-using System.Windows.Input;
-using MesAdmin.Models;
-using MesAdmin.Common.Common;
-using System.Collections.Generic;
-using System.Collections.Specialized;
+﻿using DevExpress.Mvvm;
 using DevExpress.Mvvm.POCO;
-using System.Threading.Tasks;
-using MesAdmin.Common.Utils;
 using DevExpress.Xpf.Grid;
-using System.Data.SqlClient;
+using MesAdmin.Common.Common;
+using MesAdmin.Common.Utils;
+using MesAdmin.Models;
+using System;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Data;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
-namespace MesAdmin.ViewModels 
+namespace MesAdmin.ViewModels
 {
     public class ExceptionInVM : ViewModelBase
     {

@@ -20,6 +20,7 @@ namespace MesAdmin.ViewModels
     {
         #region Services
         IDialogService PopupItemView { get { return GetService<IDialogService>("PopupItemView"); } }
+        IDialogService PopupStockView { get { return GetService<IDialogService>("StockView"); } }
         IDialogService ReqView { get { return GetService<IDialogService>("ReqView"); } }
         IMessageBoxService MessageBoxService { get { return GetService<IMessageBoxService>(); } }
         IDispatcherService DispatcherService { get { return GetService<IDispatcherService>(); } }
@@ -68,6 +69,7 @@ namespace MesAdmin.ViewModels
         public DelegateCommand<object> DelCmd { get; set; }
         public AsyncCommand SaveCmd { get; set; }
         public AsyncCommand SearchCmd { get; set; }
+        public ICommand ShowStockCmd { get; set; }
         #endregion
 
         public MaterialDispenseReqVM()
@@ -81,6 +83,7 @@ namespace MesAdmin.ViewModels
             ShowDialogCmd = new DelegateCommand<string>(ShowDialog);
             HiddenEditorCmd = new DelegateCommand<HiddenEditorEvent>(OnHiddenEditor);
             SearchCmd = new AsyncCommand(OnSearch, CanSearch);
+            ShowStockCmd = new DelegateCommand(OnShowStock);
 
             SelectedItems = new ObservableCollection<MaterialDispenseDetail>();
             SelectedItems.CollectionChanged += SelectedItems_CollectionChanged;
@@ -280,6 +283,30 @@ namespace MesAdmin.ViewModels
             Header = new MaterialDispenseHeader();
             Details.Clear();
             SelectedItems.Clear();
+        }
+
+        public void OnShowStock()
+        {
+            CommonMinor whCode = GlobalCommonMinor.Instance.First(o => o.MajorCode == "I0011" && o.MinorCode == "ME10");
+            var vmItem = ViewModelSource.Create(() => new PopupStockVM(whCode.MinorCode, SelectedItems[0].ItemCode)); // 재고를 조회할 창고전달
+
+            PopupStockView.ShowDialog(
+                dialogCommands: vmItem.DialogCmds,
+                title: "로트선택",
+                viewModel: vmItem
+            );
+
+            if (vmItem.ConfirmItems != null && vmItem.ConfirmItems.Count > 0)
+            {
+                try
+                {
+                    SelectedItems[0].Memo = vmItem.ConfirmItem.LotNo;
+                }
+                catch (Exception ex)
+                {
+                    MessageBoxService.ShowMessage(ex.Message, "Information", MessageButton.OK, MessageIcon.Information);
+                }
+            }
         }
 
         protected override void OnParameterChanged(object parameter)

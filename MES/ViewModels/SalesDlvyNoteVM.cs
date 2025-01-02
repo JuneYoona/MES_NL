@@ -344,7 +344,7 @@ namespace MesAdmin.ViewModels
             var vmItem = ViewModelSource.Create(() =>
             new PopupStockVM
             (
-                GlobalCommonMinor.Instance.Where(u => u.MinorCode == ReqDetail.WhCode).FirstOrDefault(), ReqDetail.ItemCode, ExceptStocks, ""
+                GlobalCommonMinor.Instance.Where(u => u.MinorCode == ReqDetail.WhCode).FirstOrDefault().MinorCode, ReqDetail.ItemCode, ExceptStocks, ""
             )); // 재고를 조회할 창고전달
 
 

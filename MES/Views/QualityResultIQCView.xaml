@@ -96,13 +96,14 @@
                                                     </dxe:ButtonEdit>
                                                     <dxg:LookUpEdit
                                                         NullText="공급처"
-                                                        ItemsSource="{Binding DataContext.BizPartnerList, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}" 
+                                                        ItemsSource="{Binding DataContext.BizCodeList, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}" 
                                                         EditValue="{Binding DataContext.BizCode, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}"
                                                         DisplayMember="BizName"
                                                         ValueMember="BizCode"
                                                         ShowSizeGrip="False"
                                                         IsTextEditable="True"
-                                                        AutoComplete="False" FilterCondition="Contains"
+                                                        AutoComplete="False"
+                                                        FilterCondition="Contains"
                                                         ImmediatePopup="True"
                                                         AutoPopulateColumns="False"
                                                         Background="White"

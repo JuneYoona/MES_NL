@@ -18,7 +18,7 @@ namespace MesAdmin.ViewModels
         #endregion
 
         #region Public Properties
-        public CommonMinor WhCode
+        public string WhCode
         {
             get { return GetProperty(() => WhCode); }
             set { SetProperty(() => WhCode, value); }
@@ -105,10 +105,10 @@ namespace MesAdmin.ViewModels
         public ICommand<object> SelectionChangedCmd { get; set; }
         #endregion
 
-        public PopupStockVM(CommonMinor whCode) : this(whCode, "") { }
-        public PopupStockVM(CommonMinor whCode, string itemCode) : this(whCode, itemCode, null) { }
-        public PopupStockVM(CommonMinor whCode, string itemCode, List<StockDetail> exceptStocks) : this(whCode, itemCode, exceptStocks, "") { }
-        public PopupStockVM(CommonMinor whCode, string itemCode, List<StockDetail> exceptStocks, string itemAcct)
+        public PopupStockVM(string whCode) : this(whCode, "") { }
+        public PopupStockVM(string whCode, string itemCode) : this(whCode, itemCode, null) { }
+        public PopupStockVM(string whCode, string itemCode, List<StockDetail> exceptStocks) : this(whCode, itemCode, exceptStocks, "") { }
+        public PopupStockVM(string whCode, string itemCode, List<StockDetail> exceptStocks, string itemAcct)
         {
             WhCode = whCode;
             ItemCode = itemCode;
@@ -157,7 +157,7 @@ namespace MesAdmin.ViewModels
         }
         public void SearchCore()
         {
-            Collections = new StockDetailList(whCode: WhCode.MinorCode, itemAccount: EditItemAcct)
+            Collections = new StockDetailList(whCode: WhCode, itemAccount: EditItemAcct)
                     .Where(p =>
                         string.IsNullOrEmpty(ItemCode) ? true : p.ItemCode.ToUpper().Contains(ItemCode.ToUpper()))
                     .Where(p =>

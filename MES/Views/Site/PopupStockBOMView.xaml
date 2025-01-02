@@ -65,6 +65,7 @@
                 ClipboardCopyMode="ExcludeHeader"
                 ShowLoadingPanel="{Binding IsBusy}"
                 EnableSmartColumnsGeneration="True"
+                RowIndicatorNumberOnly="True"
                 AutoExpandAllGroups="True">
                 <dxmvvm:Interaction.Behaviors>
                     <dxmvvm:EventToCommand Command="{Binding ConfirmCmd}" EventName="MouseDoubleClick"/>
@@ -91,10 +92,10 @@
                     <dxg:GridColumn FieldName="ItemName" Header="품목명"/>
                     <dxg:GridColumn FieldName="ItemSpec" Header="품목사양"/>
                     <dxg:GridColumn FieldName="LotNo" Width="140" Header="Lot No."/>
-                    <dxg:GridColumn FieldName="Qty" Width="80" Header="수량" EditSettings="{StaticResource NumericEditor}"/>
-                    <dxg:GridColumn FieldName="QrQty" Width="80" Header="검사중 수량" EditSettings="{StaticResource NumericEditor}"/>
-                    <dxg:GridColumn FieldName="EqpQty" Width="80" Header="설비내 수량" EditSettings="{StaticResource NumericEditor}"/>
-                    <dxg:GridColumn FieldName="PickingQty" Width="80" Header="예약 수량" EditSettings="{StaticResource NumericEditor}"/>
+                    <dxg:GridColumn FieldName="Qty" Width="80" Header="수량" EditSettings="{StaticResource NumericEditor3}"/>
+                    <dxg:GridColumn FieldName="QrQty" Width="80" Header="검사중 수량" EditSettings="{StaticResource NumericEditor3}"/>
+                    <dxg:GridColumn FieldName="EqpQty" Width="80" Header="설비내 수량" EditSettings="{StaticResource NumericEditor3}"/>
+                    <dxg:GridColumn FieldName="PickingQty" Width="80" Header="예약 수량" EditSettings="{StaticResource NumericEditor3}"/>
                     <dxg:GridColumn FieldName="BasicUnit" Width="50" Header="단위"/>
                     <dxg:GridColumn Binding="{Binding RowData.Row.WaCode, Converter={StaticResource WaCodeConverter}}" Width="80" Header="공정"/>
                 </dxg:GridControl.Columns>

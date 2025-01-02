@@ -97,6 +97,11 @@ namespace MesAdmin.Models
             get { return GetProperty(() => WhCode); }
             set { SetProperty(() => WhCode, value); }
         }
+        public string WaName
+        {
+            get { return GetProperty(() => WaName); }
+            set { SetProperty(() => WaName, value); }
+        }
         public string GrNo
         {
             get { return GetProperty(() => GrNo); }
@@ -426,6 +431,7 @@ namespace MesAdmin.Models
                         Qty = (decimal)u["Qty"],
                         BasicUnit = (string)u["BasicUnit"],
                         WhCode = (string)u["WhCode"],
+                        WaName = u["WaName"].ToString(),
                         GrNo = (string)u["GrNo"],
                         GrSeq = (int?)u["GrSeq"],
                         PmNo = (string)u["PmNo"],

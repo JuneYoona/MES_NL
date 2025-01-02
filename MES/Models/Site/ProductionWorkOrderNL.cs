@@ -220,7 +220,7 @@ namespace MesAdmin.Models
             }
         }
 
-        public void CreateLotNoWB20()
+        public void CreateLotNoWB20(string itemCode)
         {
             Database db = ProviderFactory.Instance;
             using (DbConnection conn = db.CreateConnection())
@@ -233,6 +233,7 @@ namespace MesAdmin.Models
                     dbCom = db.GetStoredProcCommand("usps_getProductionLotNoWB20");
                     dbCom.CommandType = CommandType.StoredProcedure;
                     db.AddInParameter(dbCom, "@OrderDate", DbType.Date, OrderDate);
+                    db.AddInParameter(dbCom, "@ItemCode", DbType.String, itemCode);
                     db.AddOutParameter(dbCom, "@LotNo", DbType.String, 50);
                     db.ExecuteNonQuery(dbCom, trans);
                     LotNo = db.GetParameterValue(dbCom, "@LotNo").ToString();

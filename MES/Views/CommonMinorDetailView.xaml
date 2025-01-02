@@ -55,6 +55,10 @@
                                                 AutoPopulateColumns="False"
                                                 InvalidValueBehavior="AllowLeaveEditor"
                                                 IsPopupAutoWidth="False"
+                                                FilterCondition="Contains"
+                                                ImmediatePopup="True"
+                                                IncrementalFiltering="True"
+                                                AutoComplete="False"
                                                 PopupContentTemplate="{StaticResource MajorCodeTemplate}">
                                                 <dxg:LookUpEdit.InputBindings>
                                                     <KeyBinding Key="Enter" Command="{Binding DataContext.SearchCmd, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=dxb:LightweightBarItemLinkControl}}" />

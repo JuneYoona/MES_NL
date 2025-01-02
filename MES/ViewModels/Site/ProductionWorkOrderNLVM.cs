@@ -14,6 +14,8 @@ using MesAdmin.Common.Utils;
 using DevExpress.Xpf.Grid;
 using DevExpress.Xpf.Editors;
 using System.Data.SqlClient;
+using DevExpress.XtraReports.UI;
+using DevExpress.DataAccess.Sql;
 
 namespace MesAdmin.ViewModels
 {
@@ -91,6 +93,7 @@ namespace MesAdmin.ViewModels
         public AsyncCommand SaveCmd { get; set; }
         public AsyncCommand SearchCmd { get; set; }
         public ICommand<EditValueChangedEventArgs> EditValueChangedCmd { get; set; }
+        public ICommand PrintLabelCmd { get; set; }
         #endregion
 
         public ProductionWorkOrderNLVM()
@@ -110,6 +113,7 @@ namespace MesAdmin.ViewModels
             NewCmd = new DelegateCommand(OnNew);
             CellValueChangedCmd = new DelegateCommand<CellValueChangedEvent>(OnCellValueChanged);
             EditValueChangedCmd = new DelegateCommand<EditValueChangedEventArgs>(OnEditValueChanged);
+            PrintLabelCmd = new DelegateCommand(OnPrintLabel, () => !IsNew);
 
             SelectedItems = new ObservableCollection<ProductionWorkOrderDetail>();
             SelectedItems.CollectionChanged += SelectedItems_CollectionChanged;
@@ -154,7 +158,8 @@ namespace MesAdmin.ViewModels
             {
                 if (IsNew)
                 {
-                    if (string.IsNullOrEmpty(Header.Remark2))
+                    // 혼합공정은 헤더가 필요없고 썩이는 로트중 수량이 많은 로트의 헤더를 가져간다.(실적등록시)
+                    if (string.IsNullOrEmpty(Header.Remark2) && Header.WaCode != "WE42")
                         throw new Exception("로트번호 헤더가 비어 있습니다.");
 
                     if (Header.WaCode == "WE30")
@@ -334,23 +339,15 @@ namespace MesAdmin.ViewModels
                             Header.Remark2 = item.LotNo.Substring(0, 9);
                     }
 
-                    if (Header.WaCode == "WE30") // 정제
+                    if (Header.WaCode == "WE30" || Header.WaCode == "WE47") // 정제/2차 Melting
                     {
                         if (item.ItemAccount == "29" && item.ProcureType == "M") // 반제품이고 외주가공품이 아닌품목
                             Header.Remark2 = item.LotNo;
                     }
 
-                    if (Header.WaCode == "WE40") // 분쇄/과립
+                    if (Header.WaCode == "WE40" || Header.WaCode == "WE50") // 분쇄/성형
                     {
-                        if (item.ItemAccount == "29") // 합성로트
-                            //Header.Remark2 = item.LotNo.Substring(2, 7);
-                            Header.Remark2 = item.LotNo.Substring(0, 9);
-                    }
-
-                    if (Header.WaCode == "WE50") // 성형
-                    {
-                        if (item.ItemAccount == "29") // 합성로트
-                            //Header.Remark2 = item.LotNo.Substring(0, 7);
+                        if (item.ItemAccount == "29")
                             Header.Remark2 = item.LotNo.Substring(0, 9);
                     }
 
@@ -422,6 +419,17 @@ namespace MesAdmin.ViewModels
                 MessageBoxService.ShowMessage("정제공정은 \"작업지시 등록(정제)\" 메뉴에서 입력하세요!", "Information", MessageButton.OK, MessageIcon.Information);
                 Header.WaCode = e.OldValue == null ? null : e.OldValue.ToString();
             }
+        }
+
+        protected void OnPrintLabel()
+        {
+            XtraReport rpt = new Reports.WorkOrderDetail();
+
+            (rpt.DataSource as SqlDataSource).ConnectionName = DBInfo.Instance.Name;
+            rpt.Parameters["OrderNo"].Value = Header.OrderNo;
+            rpt.CreateDocument();
+
+            DevExpress.Xpf.Printing.PrintHelper.ShowPrintPreview(System.Windows.Application.Current.MainWindow, rpt);
         }
 
         protected override void OnParameterChanged(object parameter)

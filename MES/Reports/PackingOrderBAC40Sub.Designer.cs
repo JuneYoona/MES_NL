@@ -172,6 +172,8 @@
             this.xrLabel2 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel3 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel4 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrTableCell111 = new DevExpress.XtraReports.UI.XRTableCell();
+            this.xrTableCell112 = new DevExpress.XtraReports.UI.XRTableCell();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable2)).BeginInit();
@@ -718,7 +720,7 @@
             this.xrTableCell110.Dpi = 254F;
             this.xrTableCell110.Multiline = true;
             this.xrTableCell110.Name = "xrTableCell110";
-            this.xrTableCell110.Text = "Pass / Fail";
+            this.xrTableCell110.Text = "유  /  무";
             this.xrTableCell110.Weight = 0.38280253004200382D;
             // 
             // xrTableRow13
@@ -749,7 +751,7 @@
             this.xrTableCell46.Multiline = true;
             this.xrTableCell46.Name = "xrTableCell46";
             this.xrTableCell46.StylePriority.UseFont = false;
-            this.xrTableCell46.Text = "Tray (5구) 분리배출 표시 유/무";
+            this.xrTableCell46.Text = "출하 성적서 및 납품서 Box 內 동봉 확인";
             this.xrTableCell46.Weight = 0.82802750376726353D;
             // 
             // xrTableCell101
@@ -759,8 +761,8 @@
             this.xrTableCell101.Multiline = true;
             this.xrTableCell101.Name = "xrTableCell101";
             this.xrTableCell101.StylePriority.UseFont = false;
-            this.xrTableCell101.Text = "In Box 분리배출 표시 유/무";
-            this.xrTableCell101.Weight = 0.6092440912038114D;
+            this.xrTableCell101.Text = "출하 성적서 및 납품서 Box 內 동봉 확인";
+            this.xrTableCell101.Weight = 0.87849488960751942D;
             // 
             // xrTableCell102
             // 
@@ -769,15 +771,16 @@
             this.xrTableCell102.Multiline = true;
             this.xrTableCell102.Name = "xrTableCell102";
             this.xrTableCell102.StylePriority.UseFont = false;
-            this.xrTableCell102.Text = "Out Box 분리배출 표시 유/무";
-            this.xrTableCell102.Weight = 0.69553130399311036D;
+            this.xrTableCell102.Weight = 0.42628050558940239D;
             // 
             // xrTableRow14
             // 
             this.xrTableRow14.Cells.AddRange(new DevExpress.XtraReports.UI.XRTableCell[] {
             this.xrTableCell103,
             this.xrTableCell104,
+            this.xrTableCell112,
             this.xrTableCell105,
+            this.xrTableCell111,
             this.xrTableCell106});
             this.xrTableRow14.Dpi = 254F;
             this.xrTableRow14.Name = "xrTableRow14";
@@ -796,22 +799,22 @@
             // xrTableCell104
             // 
             this.xrTableCell104.Dpi = 254F;
-            this.xrTableCell104.ForeColor = System.Drawing.Color.DimGray;
+            this.xrTableCell104.ForeColor = System.Drawing.Color.Black;
             this.xrTableCell104.Multiline = true;
             this.xrTableCell104.Name = "xrTableCell104";
             this.xrTableCell104.StylePriority.UseForeColor = false;
-            this.xrTableCell104.Text = "Pass / Fail";
-            this.xrTableCell104.Weight = 0.82802750376726353D;
+            this.xrTableCell104.Text = "생산그룹";
+            this.xrTableCell104.Weight = 0.28136311378011153D;
             // 
             // xrTableCell105
             // 
             this.xrTableCell105.Dpi = 254F;
-            this.xrTableCell105.ForeColor = System.Drawing.Color.DimGray;
+            this.xrTableCell105.ForeColor = System.Drawing.Color.Black;
             this.xrTableCell105.Multiline = true;
             this.xrTableCell105.Name = "xrTableCell105";
             this.xrTableCell105.StylePriority.UseForeColor = false;
-            this.xrTableCell105.Text = "Pass / Fail";
-            this.xrTableCell105.Weight = 0.60924413620440609D;
+            this.xrTableCell105.Text = "품질그룹";
+            this.xrTableCell105.Weight = 0.27761712120631366D;
             // 
             // xrTableCell106
             // 
@@ -824,8 +827,7 @@
             this.xrTableCell106.Name = "xrTableCell106";
             this.xrTableCell106.StylePriority.UseBorders = false;
             this.xrTableCell106.StylePriority.UseForeColor = false;
-            this.xrTableCell106.Text = "Pass / Fail";
-            this.xrTableCell106.Weight = 0.69553125899251556D;
+            this.xrTableCell106.Weight = 0.42628046058880759D;
             // 
             // DnNo
             // 
@@ -1513,6 +1515,24 @@
             this.xrLabel4.StylePriority.UseTextAlignment = false;
             this.xrLabel4.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
             // 
+            // xrTableCell111
+            // 
+            this.xrTableCell111.Dpi = 254F;
+            this.xrTableCell111.ForeColor = System.Drawing.Color.DimGray;
+            this.xrTableCell111.Multiline = true;
+            this.xrTableCell111.Name = "xrTableCell111";
+            this.xrTableCell111.StylePriority.UseForeColor = false;
+            this.xrTableCell111.Weight = 0.60087781340180046D;
+            // 
+            // xrTableCell112
+            // 
+            this.xrTableCell112.Dpi = 254F;
+            this.xrTableCell112.ForeColor = System.Drawing.Color.DimGray;
+            this.xrTableCell112.Multiline = true;
+            this.xrTableCell112.Name = "xrTableCell112";
+            this.xrTableCell112.StylePriority.UseForeColor = false;
+            this.xrTableCell112.Weight = 0.54666438998715194D;
+            // 
             // PackingOrderBAC40Sub
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -1689,5 +1709,7 @@
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell108;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell109;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell110;
+        private DevExpress.XtraReports.UI.XRTableCell xrTableCell112;
+        private DevExpress.XtraReports.UI.XRTableCell xrTableCell111;
     }
 }

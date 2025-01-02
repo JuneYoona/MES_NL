@@ -81,6 +81,11 @@ namespace MesAdmin.Models
             set { SetProperty(() => PickingQty, value); }
 
         }
+        public decimal BalanceQty
+        {
+            get { return GetProperty(() => BalanceQty); }
+            set { SetProperty(() => BalanceQty, value); }
+        }
         public int Bottle
         {
             get { return GetProperty(() => Bottle); }
@@ -147,6 +152,18 @@ namespace MesAdmin.Models
         {
             get { return GetProperty(() => ProcureType); }
             set { SetProperty(() => ProcureType, value); }
+
+        }
+        public string StockNo
+        {
+            get { return GetProperty(() => StockNo); }
+            set { SetProperty(() => StockNo, value); }
+
+        }
+        public string Container
+        {
+            get { return GetProperty(() => Container); }
+            set { SetProperty(() => Container, value); }
 
         }
         public DateTime? ExpDate
@@ -251,6 +268,7 @@ namespace MesAdmin.Models
                         WaCode = (string)u["WaCode"],
                         LotNo = (string)u["LotNo"],
                         Qty = (decimal)u["Qty"],
+                        BalanceQty = (decimal)u["Qty"] - (decimal)u["PickingQty"],
                         EqpQty = (decimal)u["EqpQty"],
                         QrQty = (decimal)u["QrQty"],
                         BadQty = (decimal)u["BadQty"],
@@ -263,6 +281,8 @@ namespace MesAdmin.Models
                         WE10LotNo = u["WE10LotNo"].ToString(),
                         ExpDate = u["ExpDate"] == DBNull.Value ? null : (DateTime?)u["ExpDate"],
                         ProductDate = u["ProductDate"] == DBNull.Value ? null : (DateTime?)u["ProductDate"],
+                        StockNo = u["StockNo"].ToString(),
+                        Container = u["PartCode"].ToString(),
                     }
                 )
             );

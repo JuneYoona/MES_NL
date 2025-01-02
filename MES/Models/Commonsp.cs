@@ -163,7 +163,8 @@ namespace MesAdmin.Models
         public static DataTable BAC60PRODUCTION004RS(string lotNo)
         {
             Database db = ProviderFactory.Instance;
-            DbCommand dbCom = db.GetSqlStringCommand("SELECT * FROM Z_BAC60BOTTLEWEIGHT WHERE LotNo = @LotNo");
+            //DbCommand dbCom = db.GetSqlStringCommand("SELECT * FROM Z_BAC60BOTTLEWEIGHT WHERE LotNo = @LotNo");
+            DbCommand dbCom = db.GetStoredProcCommand("BAC60PRODUCTION004RS");
             db.AddInParameter(dbCom, "@LotNo", DbType.String, lotNo);
             DataSet ds = db.ExecuteDataSet(dbCom);
 
@@ -178,6 +179,106 @@ namespace MesAdmin.Models
             DataSet ds = db.ExecuteDataSet(dbCom);
 
             return ds.Tables[0].Rows.Count == 0 ? null : ds.Tables[0];
+        }
+
+        public static DataTable BAC60SALES003RS(string lotNo)
+        {
+            Database db = ProviderFactory.Instance;
+            DbCommand dbCom = db.GetStoredProcCommand("BAC60SALES003RS");
+            db.AddInParameter(dbCom, "@LotNo", DbType.String, lotNo);
+            DataSet ds = db.ExecuteDataSet(dbCom);
+
+            return ds.Tables[0].Rows.Count == 0 ? null : ds.Tables[0];
+        }
+
+        public static DataTable BAC60SALES003RHS(DateTime startDate, DateTime endDate, string lotNo)
+        {
+            Database db = ProviderFactory.Instance;
+            DbCommand dbCom = db.GetStoredProcCommand("BAC60SALES003RHS");
+            db.AddInParameter(dbCom, "@StartDate", DbType.Date, startDate);
+            db.AddInParameter(dbCom, "@EndDate", DbType.Date, endDate);
+            db.AddInParameter(dbCom, "@LotNo", DbType.String, lotNo);
+            DataSet ds = db.ExecuteDataSet(dbCom);
+
+            return ds.Tables[0].Rows.Count == 0 ? null : ds.Tables[0];
+        }
+
+        public static DataTable usps_sales_PrintInspection(string reqNo, int reqSeq)
+        {
+            Database db = ProviderFactory.Instance;
+            DbCommand dbCom = db.GetStoredProcCommand("usps_sales_PrintInspection");
+            db.AddInParameter(dbCom, "@ReqNo", DbType.String, reqNo);
+            db.AddInParameter(dbCom, "@reqSeq", DbType.Int32, reqSeq);
+            DataSet ds = db.ExecuteDataSet(dbCom);
+
+            return ds.Tables[0].Rows.Count == 0 ? null : ds.Tables[0];
+        }
+                
+        public static DataSet BAC60MM001RS(DateTime startDate, DateTime endDate)
+        {
+            Database db = ProviderFactory.Instance;
+            DbCommand dbCom = db.GetStoredProcCommand("BAC60MM001RS");
+            db.AddInParameter(dbCom, "@StartDate", DbType.Date, startDate);
+            db.AddInParameter(dbCom, "@EndDate", DbType.Date, endDate);
+            DataSet ds = db.ExecuteDataSet(dbCom);
+
+            return ds;
+        }
+
+        public static DataSet BAC60PRODUCTION005IS(DateTime startDate, DateTime endDate, string lotNo)
+        {
+            Database db = ProviderFactory.Instance;
+            DbCommand dbCom = db.GetStoredProcCommand("BAC60PRODUCTION005IS");
+            db.AddInParameter(dbCom, "@StartDate", DbType.Date, startDate);
+            db.AddInParameter(dbCom, "@EndDate", DbType.Date, endDate);
+            db.AddInParameter(dbCom, "@LotNo", DbType.String, lotNo);
+            DataSet ds = db.ExecuteDataSet(dbCom);
+
+            return ds;
+        }
+
+        public static DataTable BAC60PRODUCTION006HS(DateTime startDate, DateTime endDate, string lotNo)
+        {
+            Database db = ProviderFactory.Instance;
+            DbCommand dbCom = db.GetStoredProcCommand("BAC60PRODUCTION006HS");
+            db.AddInParameter(dbCom, "@StartDate", DbType.Date, startDate);
+            db.AddInParameter(dbCom, "@EndDate", DbType.Date, endDate);
+            db.AddInParameter(dbCom, "@LotNo", DbType.String, lotNo);
+            DataSet ds = db.ExecuteDataSet(dbCom);
+
+            return ds.Tables[0];
+        }
+
+        public static DataTable BAC60PRODUCTION006DS(string orderNo)
+        {
+            Database db = ProviderFactory.Instance;
+            DbCommand dbCom = db.GetStoredProcCommand("BAC60PRODUCTION006DS");
+            db.AddInParameter(dbCom, "@OrderNo", DbType.String, orderNo);
+            DataSet ds = db.ExecuteDataSet(dbCom);
+
+            return ds.Tables[0];
+        }
+
+        public static DataTable BAC60STOCKDETAIL001()
+        {
+            Database db = ProviderFactory.Instance;
+            DbCommand dbCom = db.GetSqlStringCommand("SELECT * FROM views_StockDetail_PE10_2");
+            DataSet ds = db.ExecuteDataSet(dbCom);
+
+            return ds.Tables[0];
+        }
+
+        public static DataTable BAC60QUALITY002RS(string qrType, DateTime startDate, DateTime endDate, string lotNo)
+        {
+            Database db = ProviderFactory.Instance;
+            DbCommand dbCom = db.GetStoredProcCommand("BAC60QUALITY002RS");
+            db.AddInParameter(dbCom, "@QrType", DbType.String, qrType);
+            db.AddInParameter(dbCom, "@StartDate", DbType.Date, startDate);
+            db.AddInParameter(dbCom, "@EndDate", DbType.Date, endDate);
+            db.AddInParameter(dbCom, "@LotNo", DbType.String, lotNo);
+            DataSet ds = db.ExecuteDataSet(dbCom);
+
+            return ds.Tables[0];
         }
     }
 }

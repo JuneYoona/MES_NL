@@ -80,6 +80,9 @@
                                 <dxb:BarButtonItem Content="삭제" KeyGesture="CTRL+D" Command="{Binding DelCmd}" LargeGlyph="{dx:DXImage SvgImages/Snap/SnapDeleteList.svg}" />
                                 <dxb:BarButtonItem Content="검색" KeyGesture="F5" Command="{Binding SearchCmd}" LargeGlyph="{dx:DXImage SvgImages/Spreadsheet/Zoom.svg}" />
                             </dxr:RibbonPageGroup>
+                            <dxr:RibbonPageGroup Caption="Print">
+                                <dxb:BarButtonItem Content="Label" Command="{Binding PrintLabelCmd}" LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}" />
+                            </dxr:RibbonPageGroup>
                         </dxr:RibbonPage>
                     </dxr:RibbonDefaultPageCategory>
                 </dxr:RibbonControl>

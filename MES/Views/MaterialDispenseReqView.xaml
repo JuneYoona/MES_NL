@@ -46,6 +46,19 @@
                 </Style>
             </dx:DialogService.DialogStyle>
         </dx:DialogService>
+        <dx:DialogService Name="StockView" DialogWindowStartupLocation="CenterOwner">
+            <dx:DialogService.ViewTemplate>
+                <DataTemplate>
+                    <view:PopupStockView/>
+                </DataTemplate>
+            </dx:DialogService.ViewTemplate>
+            <dx:DialogService.DialogStyle>
+                <Style TargetType="dx:DXDialogWindow">
+                    <Setter Property="Width" Value="750"/>
+                    <Setter Property="Height" Value="650"/>
+                </Style>
+            </dx:DialogService.DialogStyle>
+        </dx:DialogService>
     </dxmvvm:Interaction.Behaviors>
 
     <UserControl.Resources>
@@ -75,6 +88,17 @@
                 InvalidValueBehavior="AllowLeaveEditor"
                 IsPopupAutoWidth="False"
                 PopupContentTemplate="{StaticResource WaCodeTemplate}" />
+        </DataTemplate>
+        <DataTemplate x:Key="Memo">
+            <dxe:ButtonEdit 
+                Name="PART_Editor"
+                EditValue="{Binding RowData.Row.Memo, UpdateSourceTrigger=PropertyChanged}"
+                IsTextEditable="True"
+                IsReadOnly="{DXBinding !View.DataContext.IsNew}">
+                <dxmvvm:Interaction.Behaviors>
+                    <dxmvvm:EventToCommand EventName="DefaultButtonClick" Command="{Binding View.DataContext.ShowStockCmd}" />
+                </dxmvvm:Interaction.Behaviors>
+            </dxe:ButtonEdit>
         </DataTemplate>
     </UserControl.Resources>
 
@@ -267,7 +291,7 @@
                         <dxg:GridColumn FieldName="ItemSpec" Header="품목사양" AllowEditing="False" MinWidth="150"/>
                         <dxg:GridColumn FieldName="BasicUnit" Header="단위" AllowEditing="False" MinWidth="80"/>
                         <dxg:GridColumn FieldName="ReqQty" Header="요청수량" MinWidth="120" EditSettings="{StaticResource NumericEditor3}"/>
-                        <dxg:GridColumn FieldName="Memo" Header="비고" Width="250"/>
+                        <dxg:GridColumn FieldName="Memo" Header="비고" Width="350" CellTemplate="{StaticResource Memo}"/>
                     </dxg:GridControl.Columns>
                 </custom:DSGridControl>
             </DockPanel>

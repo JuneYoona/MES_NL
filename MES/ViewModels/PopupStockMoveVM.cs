@@ -147,7 +147,7 @@ namespace MesAdmin.ViewModels
                 if (SelectedHeader != null)
                 {
                     CollectionsDetail = new StockMovementDetailList(documentNo: SelectedHeader.DocumentNo, startDate: SelectedHeader.DocumentDate, endDate: SelectedHeader.DocumentDate, transType: TransType)
-                    .Where(o => o.DCFlag == "C"); ;
+                    .Where(o => TransType == "ST" ? o.DCFlag == "C" : true);
                 }
             });
         }

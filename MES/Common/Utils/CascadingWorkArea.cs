@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows.Data;
 using MesAdmin.Models;
+using System.Collections.Generic;
 
 namespace MesAdmin.Common.Utils
 {
@@ -12,7 +13,14 @@ namespace MesAdmin.Common.Utils
             string bizAreaCode = value as string;
             if (bizAreaCode == "") return string.Empty;
 
-            return GlobalCommonWorkAreaInfo.Instance.Where(p => p.BizAreaCode == bizAreaCode && p.IsEnabled == true);
+            IEnumerable<CommonWorkAreaInfo> wa = null;
+            try
+            {
+                wa = GlobalCommonWorkAreaInfo.Instance.Where(p => p.BizAreaCode == bizAreaCode && p.IsEnabled == true);
+            }
+            catch { }
+
+            return wa;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

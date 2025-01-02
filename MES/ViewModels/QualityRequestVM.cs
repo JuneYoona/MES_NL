@@ -14,6 +14,9 @@ using DevExpress.Xpf.Editors;
 using MesAdmin.Common.Utils;
 using DevExpress.Xpf.Grid;
 using MesAdmin.Reports;
+using DevExpress.Pdf;
+using System.Collections.Generic;
+using System.Text;
 
 namespace MesAdmin.ViewModels
 {
@@ -24,6 +27,7 @@ namespace MesAdmin.ViewModels
         IMessageBoxService MessageBoxService { get { return GetService<IMessageBoxService>(); } }
         IDispatcherService DispatcherService { get { return GetService<IDispatcherService>(); } }
         IOpenFileDialogService OpenFileDialogService { get { return GetService<IOpenFileDialogService>(); } }
+        IOpenFileDialogService OpenPDFDialogService { get { return GetService<IOpenFileDialogService>("OpenPDF"); } }
         ISaveFileDialogService SaveFileDialogService { get { return this.GetService<ISaveFileDialogService>(); } }
         #endregion
 
@@ -115,7 +119,7 @@ namespace MesAdmin.ViewModels
             get { return GetProperty(() => SelectedItem); }
             set { SetProperty(() => SelectedItem, value); }
         }
-        public bool QualityRole { get { return DSUser.Instance.RoleName.Contains("Quality"); } }
+        public bool QualityRole { get { return DSUser.Instance.RoleName.Contains("Quality") || DSUser.Instance.RoleName.Contains("ProductCP") || DSUser.Instance.RoleName.Contains("admin"); } }
         public bool CanEdit
         {
             get { return GetProperty(() => CanEdit); }
@@ -150,6 +154,7 @@ namespace MesAdmin.ViewModels
         public ICommand UpdateRawDataCmd { get; set; }
         public ICommand LossStockCmd { get; set; }
         public ICommand LossStockCancelCmd { get; set; }
+        public ICommand ImportPDFCmd { get; set; }
         #endregion
 
         public QualityRequestVM()
@@ -170,6 +175,7 @@ namespace MesAdmin.ViewModels
             HiddenEditorCmd = new DelegateCommand<HiddenEditorEvent>(OnHiddenEditor);
             PrintAnalysisLetterCmd = new DelegateCommand(OnPrintAnalysisLetter, CanPrintAnalysisLetter);
             UpdateRawDataCmd = new DelegateCommand(() => { CanEdit = true; }, () => Header != null && Header.TransferFlag);
+            ImportPDFCmd = new DelegateCommand(OnImportPDF);
 
             LossStockCmd = new DelegateCommand(OnLossStock, () => Header != null && !IsNew && Header.Status && Header.Result == "Fail" && Header.ResultOrder == Header.LastOrder && !Header.LossFlag);
             LossStockCancelCmd = new DelegateCommand(OnLossStockCancel, () => Header != null && Header.LossFlag);
@@ -267,7 +273,7 @@ namespace MesAdmin.ViewModels
                 Header = new QualityRequest(Header.QrNo, Header.LastOrder);
                 Collections = new QualityResultList(Header.QrNo, Header.ResultOrder);
                 // send mesaage to parent view
-                Messenger.Default.Send<string>("Refresh");
+                Messenger.Default.Send("Refresh");
             }
             catch (Exception ex)
             {
@@ -601,6 +607,33 @@ namespace MesAdmin.ViewModels
                 users = NetUsers.Select();
             var user = users.Where(u => u.UserName == inspectorId);
             return user.FirstOrDefault().Profile.KorName;
+        }
+
+        public void OnImportPDF()
+        {
+            bool dialogResult = OpenPDFDialogService.ShowDialog();
+            if (dialogResult)
+            {
+                string filePath = OpenPDFDialogService.Files?.FirstOrDefault().GetFullName();
+                string documentText = ExtractTextFromPDF(filePath);
+                Debug.WriteLine(documentText);
+            }
+        }
+
+        string ExtractTextFromPDF(string filePath)
+        {
+            string documentText = "";
+            try
+            {
+                using (PdfDocumentProcessor documentProcessor =
+                new PdfDocumentProcessor())
+                {
+                    documentProcessor.LoadDocument(filePath);
+                    documentText = documentProcessor.Text;
+                }
+            }
+            catch { }
+            return documentText;
         }
 
         public void OnHiddenEditor(HiddenEditorEvent pm)

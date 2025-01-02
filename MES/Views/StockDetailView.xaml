@@ -130,16 +130,19 @@
                         </dxg:GridColumn.EditSettings>
                     </dxg:GridColumn>
                     <dxg:GridColumn FieldName="Qty" Header="수량" Width="100" />
+                    <dxg:GridColumn FieldName="PickingQty" Width="100" Header="예약 수량" />
+                    <dxg:GridColumn FieldName="BalanceQty" Width="100" Header="가용 수량" />
                     <dxg:GridColumn FieldName="EqpQty" Header="설비내 수량" Width="100" />
                     <dxg:GridColumn FieldName="QrQty" Header="검사중 수량" Width="100" />
                     <dxg:GridColumn FieldName="BadQty" Header="불량" Width="100" Visible="False" />
-                    <dxg:GridColumn FieldName="PickingQty" Width="100" Header="예약 수량" />
                     <dxg:GridColumn FieldName="BasicUnit" Header="단위" Width="60" />
                     <dxg:GridColumn FieldName="WhCode" Header="창고" Width="150" EditSettings="{StaticResource WhCodeDisplayTextConverter}" />
                     <dxg:GridColumn FieldName="WaCode" Header="공정" Width="80" EditSettings="{StaticResource WaCodeDisplayTextConverter}" />
                     <dxg:GridColumn FieldName="Remark6" Header="TSC PIG(%)" Width="80" />
                     <dxg:GridColumn FieldName="Remark7" Header="TSC Total(%)" Width="80" />
                     <dxg:GridColumn FieldName="ExpDate" Header="유효기간" Width="90" AllowEditing="True"/>
+                    <dxg:GridColumn FieldName="StockNo" Header="보관함" Width="100" />
+                    <dxg:GridColumn FieldName="Container" Header="용기코드" Width="100" />
                 </dxg:GridControl.Columns>
                 <dxg:GridControl.TotalSummary>
                     <dxg:GridSummaryItem FieldName="Qty" SummaryType="Sum" DisplayFormat=" {0:n4}"/>

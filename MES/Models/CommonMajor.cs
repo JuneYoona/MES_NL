@@ -54,7 +54,8 @@ namespace MesAdmin.Models
             base.Clear();
             Database db = ProviderFactory.Instance;
 
-            DbCommand dbCom = db.GetSqlStringCommand("SELECT * FROM common_Major");
+            DbCommand dbCom = db.GetStoredProcCommand("usp_common_Major");
+            db.AddInParameter(dbCom, "@RoleName", DbType.String, string.Join(",", DSUser.Instance.RoleName));
             DataSet ds = db.ExecuteDataSet(dbCom);
 
             ds.Tables[0].AsEnumerable().ToList().ForEach(u =>

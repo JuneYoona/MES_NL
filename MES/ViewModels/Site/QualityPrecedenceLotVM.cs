@@ -193,7 +193,7 @@ namespace MesAdmin.ViewModels
             }
             else // 재고조회
             {
-                var vmItem = ViewModelSource.Create(() => new PopupStockVM(new CommonMinor { MinorCode = "PE10", MinorName = "완제품창고" }, "")); // 재고를 조회할 창고전달
+                var vmItem = ViewModelSource.Create(() => new PopupStockVM("PE10", "")); // 재고를 조회할 창고전달
                 PopupStockView.ShowDialog(
                     dialogCommands: vmItem.DialogCmds,
                     title: "재고선택",

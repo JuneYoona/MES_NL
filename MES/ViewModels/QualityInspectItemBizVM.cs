@@ -118,7 +118,7 @@ namespace MesAdmin.ViewModels
 
         private IEnumerable<CommonBizPartner> LoadingBizPartnerList()
         {
-            return GlobalCommonBizPartner.Instance.Where(u => u.BizType == "C" || u.BizType == "CS");
+            return GlobalCommonBizPartner.Instance.Where(u => (u.BizType == "C" || u.BizType == "CS") && u.IsEnabled);
         }
 
         public bool CanSearch()

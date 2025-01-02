@@ -251,7 +251,7 @@ namespace MesAdmin.ViewModels
                     });
                 }
 
-                var vmItem = ViewModelSource.Create(() => new PopupStockVM(SelectedWh, "", ExceptStocks)); // 재고를 조회할 창고전달
+                var vmItem = ViewModelSource.Create(() => new PopupStockVM(SelectedWh.MinorCode, "", ExceptStocks)); // 재고를 조회할 창고전달
                 PopupStockView.ShowDialog(
                     dialogCommands: vmItem.DialogCmds,
                     title: "재고선택",

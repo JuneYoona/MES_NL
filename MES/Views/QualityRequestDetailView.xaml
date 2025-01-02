@@ -84,10 +84,11 @@
                         <dxg:GridColumn FieldName="QrNo" Header="검사의뢰번호" Width="120" VisibleIndex="2"/>
                         <dxg:GridColumn FieldName="Order" Header="검사차수" Width="60" VisibleIndex="3"/>
                         <dxg:GridColumn FieldName="QrRequestDate" Header="검사요청일" Width="90" VisibleIndex="4"/>
-                        <dxg:GridColumn FieldName="ItemCode" Header="품목코드" Width="120" VisibleIndex="5"/>
-                        <dxg:GridColumn FieldName="ItemName" Header="품목명" Width="120" VisibleIndex="6"/>
-                        <dxg:GridColumn FieldName="ItemSpec" Header="품목사양" Width="140" VisibleIndex="7"/>
-                        <dxg:GridColumn FieldName="LotNo" Header="Lot No" Width="110" VisibleIndex="8"/>
+                        <dxg:GridColumn FieldName="WaName" Header="공정" Width="100" VisibleIndex="5"/>
+                        <dxg:GridColumn FieldName="ItemCode" Header="품목코드" Width="120" VisibleIndex="6"/>
+                        <dxg:GridColumn FieldName="ItemName" Header="품목명" Width="120" VisibleIndex="7"/>
+                        <dxg:GridColumn FieldName="ItemSpec" Header="품목사양" Width="140" VisibleIndex="8"/>
+                        <dxg:GridColumn FieldName="LotNo" Header="Lot No" Width="110" VisibleIndex="9"/>
                         <dxg:GridColumn FieldName="Qty" Header="로트수량" Width="70" EditSettings="{StaticResource NumericEditor}"/>
                         <dxg:GridColumn FieldName="BasicUnit" Width="80" Header="단위"/>
                         <dxg:GridColumn FieldName="InspectDate" Header="검사일" Width="90"/>

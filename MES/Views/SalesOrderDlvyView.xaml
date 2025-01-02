@@ -20,6 +20,7 @@
     <UserControl.DataContext>
         <ViewModels:SalesOrderDlvyVM/>
     </UserControl.DataContext>
+
     <dxmvvm:Interaction.Behaviors>
         <dx:DialogService Name="StockView" DialogWindowStartupLocation="CenterOwner">
             <dx:DialogService.ViewTemplate>
@@ -106,7 +107,7 @@
                                             Command="{Binding PostDeliveryCmd}"
                                             MessageText="출하처리 하시겠습니까?"
                                             MessageIcon="Question"
-                                            MessageButton="YesNo" />
+                                            MessageButton="YesNo"/>
                                     </dxmvvm:Interaction.Behaviors>
                                 </dxb:BarButtonItem>
                                 <dxb:BarButtonItem Content="출하취소" KeyGesture="CTRL+B" LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Delete.svg}">
@@ -115,7 +116,7 @@
                                             Command="{Binding PostDeliveryCancelCmd}"
                                             MessageText="출하취소 하시겠습니까?"
                                             MessageIcon="Question"
-                                            MessageButton="YesNo" />
+                                            MessageButton="YesNo"/>
                                     </dxmvvm:Interaction.Behaviors>
                                 </dxb:BarButtonItem>
                             </dxr:RibbonPageGroup>
@@ -288,7 +289,7 @@
                         VerticalAlignment="Bottom"
                         Margin="2 0 0 0"
                         Background="#F3F6FB"
-                        Style="{StaticResource  NumericStyle}"
+                        Style="{StaticResource NumericStyle}"
                         Grid.Row="5" Grid.Column="1" />
                     <dxe:TextEdit
                         Text="{Binding ReqDetail.BasicUnit}"
@@ -393,7 +394,7 @@
                         </dxg:TableView>
                     </dxg:GridControl.View>
                     <dxg:GridControl.Columns>
-                        <dxg:GridColumn FieldName="ItemCode" Header="품목코드" Width="100" CellTemplate="{StaticResource ItemCode}" />
+                        <dxg:GridColumn FieldName="ItemCode" Header="품목코드" Width="110" CellTemplate="{StaticResource ItemCode}" />
                         <dxg:GridColumn FieldName="ItemName" Header="품목명" AllowEditing="False" Width="150"/>
                         <dxg:GridColumn FieldName="ItemSpec" Header="품목사양" AllowEditing="False" Width="150"/>
                         <dxg:GridColumn FieldName="DnLotNo" Header="출하로트" Width="120" />

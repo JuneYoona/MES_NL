@@ -434,7 +434,20 @@
             <models:ItemInfo Text="Fail" Value="Fail"/>
             <models:ItemInfo Text="N/A" Value="N/A"/>
         </dxe:ComboBoxEdit>
-    </DataTemplate>    
+    </DataTemplate>
+
+    <DataTemplate x:Key="QcGate">
+        <dxe:ComboBoxEdit Name="PART_Editor" DisplayMember="Text" ValueMember="Value" Background="#F6EDCB" NullText="검사분류">
+            <dxmvvm:Interaction.Behaviors>
+                <dxmvvm:KeyToCommand KeyGesture="Enter"
+                    Command="{Binding DataContext.SearchCmd, RelativeSource={RelativeSource AncestorType={x:Type dxb:LightweightBarItemLinkControl}}}" />
+            </dxmvvm:Interaction.Behaviors>
+            <models:ItemInfo Text="수입검사" Value="IQC"/>
+            <models:ItemInfo Text="공정검사" Value="LQC"/>
+            <models:ItemInfo Text="최종검사" Value="FQC"/>
+            <models:ItemInfo Text="출하검사" Value="OQC"/>
+        </dxe:ComboBoxEdit>
+    </DataTemplate>
     <!--#endregion-->
     <!--#region ControlTemplate contorls-->
     <!--WaCode ControlTemplate -->

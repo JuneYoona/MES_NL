@@ -152,8 +152,8 @@
                                         <dxg:GridColumn FieldName="DnNo" Header="출하번호" Width="100" />
                                         <dxg:GridColumn FieldName="OrderNo" Header="작업번호" Width="100" />
                                         <dxg:GridColumn FieldName="Num" Header="작업순번" Width="50" />
-                                        <dxg:GridColumn FieldName="Scan1" Header="출하라벨코드" Width="250" />
-                                        <dxg:GridColumn FieldName="Scan2" Header="제품라벨코드" Width="100" />
+                                        <dxg:GridColumn FieldName="Scan1" Header="출하라벨코드" Width="320" />
+                                        <dxg:GridColumn FieldName="Scan2" Header="제품라벨코드" Width="250" />
                                         <dxg:GridColumn FieldName="Result" Header="검사결과" Width="80" />
                                         <dxg:GridColumn FieldName="InspTime" Header="검사시간" Width="130">
                                             <dxg:GridColumn.EditSettings>

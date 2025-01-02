@@ -1,8 +1,10 @@
 ﻿using DevExpress.Mvvm;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Core;
+using System;
 using System.Threading;
 using System.Windows;
+using System.Deployment.Application;
 
 namespace MesAdmin
 {
@@ -13,6 +15,14 @@ namespace MesAdmin
     {
         static App()
         {
+            SplashScreenManager.Create(() => new SplashScreen1(), new DXSplashScreenViewModel
+            {
+                IsIndeterminate = true,
+                Title = "DS Neolux MES",
+                Subtitle = ApplicationDeployment.IsNetworkDeployed ? ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString() : "21.2.3.67",
+                Logo = new Uri("pack://application:,,,/Resources/Images/App-5.png")
+            }).ShowOnStartup();
+
             // DispatcherService globally
             ServiceContainer.Default.RegisterService("DispatcherService", new DispatcherService());
             // Download excel globally

@@ -543,7 +543,6 @@ namespace MesAdmin.Models
             if (items.Count() == 0) return;
             SalesOrderDlvyDetail item = items.First();
 
-
             // ERP함수 호출
             if (item.BizAreaCode == "BAC40")
             {

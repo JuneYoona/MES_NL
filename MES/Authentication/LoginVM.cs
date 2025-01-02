@@ -25,27 +25,27 @@ namespace MesAdmin.Authentication
         public string UserId
         {
             get { return GetProperty(() => UserId); }
-            set { SetProperty(() => UserId, value); }
+            set { SetProperty(() => UserId, value, () => Message = BizAreaList != null ? "" : Message); }
         }
         public string Password
         {
             get { return GetProperty(() => Password); }
-            set { SetProperty(() => Password, value); }
+            set { SetProperty(() => Password, value, () => Message = BizAreaList != null ? "" : Message); }
         }
         public string SelectedDB
         {
             get { return GetProperty(() => SelectedDB); }
             set { SetProperty(() => SelectedDB, value); }
         }
-        public IEnumerable<CommonMinor> DBNameCollections
+        public List<string> DBNameList
         {
-            get { return GetProperty(() => DBNameCollections); }
-            set { SetProperty(() => DBNameCollections, value); }
+            get { return GetProperty(() => DBNameList); }
+            set { SetProperty(() => DBNameList, value); }
         }
-        public IEnumerable<CommonMinor> BizAreaCollections
+        public List<ItemInfo> BizAreaList
         {
-            get { return GetProperty(() => BizAreaCollections); }
-            set { SetProperty(() => BizAreaCollections, value); }
+            get { return GetProperty(() => BizAreaList); }
+            set { SetProperty(() => BizAreaList, value); }
         }
         public string EditBizArea
         {
@@ -103,17 +103,15 @@ namespace MesAdmin.Authentication
             UserId = Properties.Settings.Default.UserId;
 
             #region 사업부 및 database 정보
-            DBInfo.Instance.Name = "DSNL_MES";
+            DBNameList = new List<string> { "DSNL_MES", "DSNL_TEST" };
+            EditBizArea = Properties.Settings.Default.BizAreaCode;
+            SelectedDB = Properties.Settings.Default.DBName;
 
-            Task.Run(() =>
-            {
-                BizAreaCollections = new CommonMinorList(majorCode: "I0004").Where(o => o.IsEnabled == true);
-                DBNameCollections = new CommonMinorList(majorCode: "C1X01").Where(o => o.IsEnabled == true);
-            }).ContinueWith(t =>
-            {
-                EditBizArea = Properties.Settings.Default.BizAreaCode;
-                SelectedDB = Properties.Settings.Default.DBName;
-            });
+            BizAreaList = new List<ItemInfo>();
+            BizAreaList.Add(new ItemInfo { Value = "BAC40", Text = "도전볼" });
+            BizAreaList.Add(new ItemInfo { Value = "BAC60", Text = "OLED" });
+            BizAreaList.Add(new ItemInfo { Value = "BAC90", Text = "BPDL" });
+            BizAreaList.Add(new ItemInfo { Value = "BAC95", Text = "QD" });
             #endregion
 
             // after loading target control
@@ -131,8 +129,11 @@ namespace MesAdmin.Authentication
         {
             if (!TryOpenConnection()) return;
 
-            if (Membership.ValidateUser(UserId, Password) == true)
+            if (Membership.ValidateUser(UserId, Password))
             {
+                IsEnabled = false;
+                Message = "";
+
                 #region Password 만료일 check
                 MembershipUser user = Membership.GetUser(UserId);
                 DateTime lastPasswordChangedDate = user.LastPasswordChangedDate;
@@ -176,18 +177,20 @@ namespace MesAdmin.Authentication
             try
             {
                 IsEnabled = false;
-                Message = "DataBase 연결중......";
+                Message = "Database 연결중......";
                 Database db = new DatabaseProviderFactory().Create(SelectedDB);
                 using (DbConnection con = db.CreateConnection())
                 {
                     con.Open();
+                    IsEnabled = true;
+                    Message = "";
                     return true;
                 }
             }
             catch
             {
                 IsEnabled = true;
-                Message = "연결에 실패하였습니다.";
+                Message = "Database 연결에 실패하였습니다.";
                 return false;
             }
         }

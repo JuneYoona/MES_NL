@@ -319,7 +319,7 @@
                         <dxg:GridColumn FieldName="ItemName" Header="품목명" AllowEditing="False" Width="150"/>
                         <dxg:GridColumn FieldName="ItemSpec" Header="품목사양" AllowEditing="False" Width="180"/>
                         <dxg:GridColumn FieldName="EqpCode" Header="설비" Width="150" CellTemplate="{StaticResource EqpCode}"/>
-                        <dxg:GridColumn FieldName="OrderQty" Header="투입량" Width="100" EditSettings="{StaticResource NumericEditor}" />
+                        <dxg:GridColumn FieldName="OrderQty" Header="투입량" Width="100" EditSettings="{StaticResource NumericEditor3}" />
                         <dxg:GridColumn FieldName="BasicUnit" Header="단위" AllowEditing="False" FixedWidth="True" Width="100" />
                         <dxg:GridColumn FieldName="Remark" Header="비고" FixedWidth="True" Width="180" />
                     </dxg:GridControl.Columns>
